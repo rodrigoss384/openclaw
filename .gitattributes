@@ -1,1 +1,9 @@
 * text=auto eol=lf
+
+# Preserve byte checksums of the pinned control-plane runtime.
+skills/architecture/context-discovery.md -text
+skills/architecture/examples.md -text
+skills/architecture/pattern-selection.md -text
+skills/architecture/patterns-reference.md -text
+skills/architecture/SKILL.md -text
+skills/architecture/trade-off-analysis.md -text
