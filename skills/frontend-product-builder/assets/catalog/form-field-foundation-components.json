@@ -1,0 +1,3146 @@
+{
+  "$schema": "../schemas/component-catalog.schema.json",
+  "meta": {
+    "id": "frontend-product-builder-form-field-foundation-components",
+    "name": "Frontend Product Builder Form Field Foundation Components",
+    "version": "1.0.0",
+    "status": "approved",
+    "owner": "frontend-product-builder",
+    "category": "forms",
+    "source": "./form-field-foundation-components.json",
+    "designSystem": "docs/frontend/design-system/design-system.json",
+    "generated": false,
+    "description": "Canonical form-field composition, help, error, character-count, grouped-input, and search-input components."
+  },
+  "components": {
+    "FormField": {
+      "id": "form-field",
+      "name": "FormField",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical composition connecting one form control to its visible label, required state, help, validation error, supporting content, and accessibility relationships.",
+      "capabilities": [
+        "Associate one visible label with one primary form control.",
+        "Present optional, required, disabled, read-only, invalid, and pending field states.",
+        "Connect help and error text through programmatic relationships.",
+        "Preserve field anatomy and spacing across control types.",
+        "Support React Hook Form or controlled feature composition without owning business validation.",
+        "Prevent placeholder text from replacing the field label."
+      ],
+      "keywords": [
+        "form-field",
+        "label",
+        "control",
+        "validation",
+        "help",
+        "error",
+        "required"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/form-field.tsx",
+      "publicImport": "@/components/form/form-field",
+      "contract": "docs/frontend/design-system/components/form-field.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Native label semantics, Stack, FieldHelp, FieldError",
+        "components": [
+          "Stack",
+          "FieldHelp",
+          "FieldError"
+        ],
+        "reason": "Field composition requires stable labeling, description relationships, validation state, spacing ownership, and control-slot contracts beyond a generic wrapper."
+      },
+      "tokens": [
+        "component.formField.gap.labelControl",
+        "component.formField.gap.controlMessage",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.status.danger.foreground",
+        "semantic.focus.ring",
+        "reference.space.1",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.font.size.sm"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Present an ordinary editable application field.",
+          "default": true,
+          "allowedUse": [
+            "Text input.",
+            "Textarea.",
+            "Select.",
+            "Date input.",
+            "Custom approved control."
+          ],
+          "prohibitedUse": [
+            "Checkbox or radio layout requiring specialized field composition.",
+            "Read-only entity information.",
+            "Complete fieldset of related controls."
+          ],
+          "tokens": [
+            "semantic.text.primary",
+            "component.formField.gap.labelControl"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only",
+            "loading"
+          ]
+        },
+        "compact": {
+          "intent": "Present an ordinary field in a dense but still readable operational form.",
+          "allowedUse": [
+            "Compact filter panels.",
+            "Dense administration dialogs.",
+            "Bounded operational field groups."
+          ],
+          "prohibitedUse": [
+            "Long help or validation content.",
+            "Touch-first workflow requiring larger spacing.",
+            "Using density to conceal excessive field count."
+          ],
+          "tokens": [
+            "reference.space.1",
+            "reference.space.2",
+            "reference.font.size.sm"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        },
+        "readOnly": {
+          "intent": "Present a form-associated value that participates in workflow context but is not editable.",
+          "allowedUse": [
+            "Calculated field displayed beside editable fields.",
+            "Server-controlled immutable value.",
+            "Workflow-state-controlled value that remains visible."
+          ],
+          "prohibitedUse": [
+            "Ordinary entity-detail attributes better represented by DefinitionList.",
+            "Using disabled inputs to represent all read-only content.",
+            "Protected values that must not be disclosed."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "read-only",
+            "unavailable"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense field spacing for approved operational contexts.",
+          "allowedUse": [
+            "Compact filters.",
+            "Dense dialogs.",
+            "Small contextual forms."
+          ],
+          "tokens": [
+            "reference.space.1",
+            "reference.space.2"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary application form-field spacing.",
+          "default": true,
+          "allowedUse": [
+            "Route forms.",
+            "Dialogs.",
+            "Authentication.",
+            "Administration."
+          ],
+          "tokens": [
+            "reference.space.2",
+            "reference.space.3"
+          ]
+        },
+        "comfortable": {
+          "intent": "Expanded spacing for complex instructions or high-attention input.",
+          "allowedUse": [
+            "Review rationale.",
+            "Sensitive confirmation input.",
+            "Long descriptive fields."
+          ],
+          "tokens": [
+            "reference.space.3",
+            "reference.space.4"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "focus-visible",
+        "disabled",
+        "invalid",
+        "read-only",
+        "loading",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Visible field label associated with the primary control.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Label",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "The label must identify the expected value.",
+            "Placeholder text must not replace the label.",
+            "Do not include implementation or DTO terminology."
+          ]
+        },
+        {
+          "name": "requiredIndicator",
+          "description": "Optional localized indication that the value is required.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required state must also exist in form semantics.",
+            "An asterisk alone must have an accessible explanation in the form context."
+          ]
+        },
+        {
+          "name": "labelAction",
+          "description": "Optional low-frequency action directly related to the field label.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Button",
+            "Tooltip"
+          ],
+          "contentRestrictions": [
+            "Use sparingly.",
+            "Essential help must remain visible.",
+            "The action must not compete with the primary form workflow."
+          ]
+        },
+        {
+          "name": "control",
+          "description": "One primary approved form control.",
+          "required": true,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "Input",
+            "Textarea",
+            "Select",
+            "SearchInput",
+            "InputGroup",
+            "Approved field control"
+          ],
+          "contentRestrictions": [
+            "One FormField normally owns one primary form value.",
+            "Multiple related choices require a specialized group field."
+          ]
+        },
+        {
+          "name": "supporting",
+          "description": "Optional unit, prefix explanation, value provenance, or compact supporting context.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "Text",
+            "MetadataList",
+            "CharacterCount"
+          ],
+          "contentRestrictions": [
+            "Supporting content must not replace FieldHelp or FieldError.",
+            "Critical validation information belongs in FieldError."
+          ]
+        },
+        {
+          "name": "help",
+          "description": "Optional persistent instruction or constraint.",
+          "required": false,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "FieldHelp"
+          ],
+          "contentRestrictions": [
+            "Explain only information needed to enter or understand the value.",
+            "Avoid repeating the label."
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Current user-correctable field validation error.",
+          "required": false,
+          "multiple": false,
+          "order": 7,
+          "allowedComponents": [
+            "FieldError"
+          ],
+          "contentRestrictions": [
+            "Only render when the error is relevant according to the validation-display policy.",
+            "Do not expose raw schema or server implementation messages."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Stable DOM identity used to associate label, control, help, and error.",
+          "semantic": true,
+          "restrictions": [
+            "Must be unique within the rendered document.",
+            "Must not be regenerated on every render."
+          ]
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Form-field name used by the owning form library or native form submission.",
+          "semantic": true,
+          "restrictions": [
+            "The field name is not shown directly to the user.",
+            "Nested paths must remain stable."
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "default | compact | readOnly",
+          "required": false,
+          "default": "default",
+          "description": "Semantic presentation mode.",
+          "semantic": true,
+          "restrictions": [
+            "Do not select readOnly only to obtain a subtle background."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default | comfortable",
+          "required": false,
+          "default": "default",
+          "description": "Approved field-spacing density.",
+          "semantic": true,
+          "restrictions": [
+            "Individual child margins must not override the field anatomy."
+          ]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the form schema requires a value.",
+          "semantic": true,
+          "restrictions": [
+            "Must remain consistent with validation and native control semantics."
+          ]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the current field value fails the active validation policy.",
+          "semantic": true,
+          "restrictions": [
+            "Invalid state normally requires an associated FieldError.",
+            "Do not mark untouched fields invalid before the project validation policy allows it."
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the user cannot interact with the control and the value may not participate in submission.",
+          "semantic": true,
+          "restrictions": [
+            "Disabled and read-only have different form semantics.",
+            "A disabled field requires a valid eligibility reason when the reason is not obvious."
+          ]
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the current value is visible and retained but not editable.",
+          "semantic": true,
+          "restrictions": [
+            "Use only when the selected control supports valid read-only behavior.",
+            "Read-only display outside a form may require DefinitionList instead."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that a field-specific dependency is pending.",
+          "semantic": true,
+          "restrictions": [
+            "The form must not present incomplete authoritative values as final.",
+            "Loading does not automatically disable unrelated fields."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormSection",
+          "Dialog form",
+          "Authentication form",
+          "Feature form",
+          "Filter panel",
+          "ConfirmationDialog verification"
+        ],
+        "allowedChildren": [
+          "Label",
+          "Input",
+          "Textarea",
+          "Select",
+          "SearchInput",
+          "InputGroup",
+          "FieldHelp",
+          "FieldError",
+          "CharacterCount",
+          "Text",
+          "MetadataList"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "Tooltip",
+          "DataTable cell without an explicit inline-editing pattern"
+        ],
+        "prohibitedChildren": [
+          "Complete form",
+          "Several unrelated controls",
+          "FormSection",
+          "Route-level feedback"
+        ],
+        "spacingOwnership": [
+          "FormField owns spacing among label, control, supporting content, help, and error.",
+          "The control owns its internal padding.",
+          "The form layout owns spacing among sibling FormField components."
+        ],
+        "surfaceOwnership": "FormField owns no independent card surface by default.",
+        "rules": [
+          "One field composition has one primary accessible label.",
+          "Help and error relationships use stable IDs.",
+          "Error content supersedes conflicting help content but does not have to remove useful instructions.",
+          "The owning form controls value, validation, dirty state, and submission.",
+          "Read-only and disabled states remain distinct."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Stack",
+          "FieldHelp",
+          "FieldError"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "required",
+          "notes": "Canonical wrapper for ordinary single-value fields."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "required",
+          "notes": "Credential controls require appropriate autocomplete and safe error messaging."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions"
+          ],
+          "status": "required",
+          "notes": "Capability and read-only states remain explicit."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "required",
+          "notes": "Human rationale and decision fields use visible labels and explicit validation."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters"
+          ],
+          "status": "allowed",
+          "notes": "Compact filters may use FormField, but the primary collection search normally uses SearchInput."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Executing form submission.",
+          "Fetching field values.",
+          "Running mutations.",
+          "Evaluating business permissions.",
+          "Parsing arbitrary server errors."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": true,
+        "serverState": false,
+        "notes": [
+          "The owning form library or feature owns field value, touched state, dirty state, and validation.",
+          "FormField receives resolved state and accessibility identifiers."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The composition may focus the control when its label is activated.",
+          "The owning workflow controls focus movement after validation or submission."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve label-control-help-error association while allowing supporting content and label actions to wrap.",
+        "compact": "Label actions move below or beside the label only when readable. Controls normally fill the field width.",
+        "medium": "Use the owning form-grid width and ordinary field anatomy.",
+        "wide": "Field width remains appropriate to expected content rather than expanding indefinitely.",
+        "ultrawide": "The form recipe constrains field width.",
+        "overflowPolicy": "Labels, help, errors, and supporting content wrap. Controls must not exceed the parent.",
+        "containerQueries": true,
+        "zoomExpectation": "The complete field anatomy remains understandable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "field wrapper containing a native label and associated form control",
+        "accessibleName": "Visible field label.",
+        "keyboard": [
+          "The control follows its native or approved foundation keyboard interaction.",
+          "Label actions remain separately keyboard operable.",
+          "Disabled controls cannot be activated."
+        ],
+        "focus": [
+          "Activating the label focuses or activates the associated control.",
+          "Validation does not remove user-entered values.",
+          "The field wrapper is not focusable by default."
+        ],
+        "announcements": [
+          "Validation errors are programmatically associated with the control.",
+          "Required, disabled, read-only, and pending states are perceivable.",
+          "Errors are not announced repeatedly on every render."
+        ],
+        "aria": [
+          "Use aria-describedby for help and error content.",
+          "Use aria-invalid for invalid controls.",
+          "Prefer native required, disabled, and read-only semantics where supported."
+        ],
+        "colorIndependence": "Required, invalid, disabled, read-only, and pending meaning do not depend only on color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One visible label and one associated primary control.",
+        "typical": "Label, control, optional help, and conditional validation error.",
+        "maximum": "One coherent value-entry composition. Related multi-control choices require a specialized field.",
+        "wrapping": "Labels, help, supporting content, and errors wrap naturally.",
+        "truncation": "Do not truncate labels or validation errors into ambiguity.",
+        "localization": "Support expanded labels, instructions, validation messages, and required-state language.",
+        "emptyBehavior": "A FormField without a label or control is invalid.",
+        "technicalContent": "Raw schema paths, DTO names, validation codes, field keys, and server exception messages are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/form-field.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "Required",
+          "Optional",
+          "WithHelp",
+          "Invalid",
+          "Disabled",
+          "ReadOnly",
+          "LoadingDependency",
+          "WithLabelAction",
+          "WithCharacterCount",
+          "LongLocalizedLabel",
+          "LongError",
+          "Compact",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/form-field.test.tsx",
+        "requiredTests": [
+          "Label-control association",
+          "Required semantics",
+          "Help association",
+          "Error association",
+          "Invalid semantics",
+          "Disabled versus read-only",
+          "Stable IDs",
+          "No placeholder-as-label",
+          "Controlled state"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Route form",
+          "Compact dialog",
+          "Authentication field",
+          "390x844",
+          "125% browser zoom",
+          "Keyboard label activation",
+          "Long localized validation message"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "SelectField",
+          "TextareaField",
+          "DateField",
+          "AuthenticationForm",
+          "AdministrationForm"
+        ]
+      },
+      "notes": [
+        "CheckboxField and RadioGroupField use specialized compositions because their label and control relationships differ from ordinary single-control fields."
+      ]
+    },
+    "FieldHelp": {
+      "id": "field-help",
+      "name": "FieldHelp",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical persistent supporting instruction for a form field, including constraints, examples, units, and noncritical guidance.",
+      "capabilities": [
+        "Explain how to complete or interpret a form field.",
+        "Communicate persistent constraints before validation fails.",
+        "Provide concise examples and formatting guidance.",
+        "Associate help content programmatically with the control.",
+        "Remain available to pointer, keyboard, touch, and assistive-technology users."
+      ],
+      "keywords": [
+        "field-help",
+        "hint",
+        "instruction",
+        "constraint",
+        "example",
+        "description"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/field-help.tsx",
+      "publicImport": "@/components/form/field-help",
+      "contract": "docs/frontend/design-system/components/field-help.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Native descriptive text and approved typography tokens",
+        "components": [
+          "Text"
+        ],
+        "reason": "Persistent field guidance requires constrained content, programmatic association, stable styling, and separation from validation errors and tooltips."
+      },
+      "tokens": [
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "reference.font.size.xs",
+        "reference.font.size.sm",
+        "reference.space.1"
+      ],
+      "variants": {
+        "instruction": {
+          "intent": "Explain how the user should enter or select the value.",
+          "default": true,
+          "allowedUse": [
+            "Formatting instruction.",
+            "Selection guidance.",
+            "Explanation of expected content."
+          ],
+          "prohibitedUse": [
+            "Current validation failure.",
+            "Critical warning.",
+            "Long product documentation."
+          ],
+          "tokens": [
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "constraint": {
+          "intent": "Communicate an input limit or rule before failure.",
+          "allowedUse": [
+            "Allowed file type.",
+            "Maximum length.",
+            "Permitted date range.",
+            "Minimum or maximum numeric value."
+          ],
+          "prohibitedUse": [
+            "Raw Zod schema output.",
+            "Server error."
+          ],
+          "tokens": [
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "example": {
+          "intent": "Provide a concise localized example of an acceptable value.",
+          "allowedUse": [
+            "Identifier format.",
+            "Phone format.",
+            "Expected title structure."
+          ],
+          "prohibitedUse": [
+            "Real sensitive production data.",
+            "Placeholder replacing a visible label."
+          ],
+          "tokens": [
+            "semantic.text.muted"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "context": {
+          "intent": "Explain why the field is requested or how the value will be used.",
+          "allowedUse": [
+            "Privacy or workflow explanation.",
+            "Downstream use.",
+            "Source or calculation context."
+          ],
+          "prohibitedUse": [
+            "Lengthy legal policy.",
+            "Permission denial."
+          ],
+          "tokens": [
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Short constraint or hint in a dense field.",
+          "allowedUse": [
+            "Compact filter.",
+            "Short administrative field."
+          ],
+          "tokens": [
+            "reference.font.size.xs"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary field guidance.",
+          "default": true,
+          "allowedUse": [
+            "Application form.",
+            "Authentication.",
+            "Review rationale."
+          ],
+          "tokens": [
+            "reference.font.size.sm"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "disabled",
+        "read-only"
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Optional supplementary information icon.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "The icon is decorative unless it conveys additional meaning.",
+            "Do not place an information icon beside every field."
+          ]
+        },
+        {
+          "name": "content",
+          "description": "Persistent concise guidance.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text",
+            "Inline code"
+          ],
+          "contentRestrictions": [
+            "Use direct user-facing language.",
+            "Inline code is allowed only for values users genuinely enter or recognize."
+          ]
+        },
+        {
+          "name": "link",
+          "description": "Optional link to additional relevant documentation.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Link"
+          ],
+          "contentRestrictions": [
+            "The field remains completable without opening external documentation.",
+            "The link label must identify the destination."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Stable descriptive ID referenced by the associated control.",
+          "semantic": true,
+          "restrictions": [
+            "Must be unique in the rendered document.",
+            "Must remain stable across renders."
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "instruction | constraint | example | context",
+          "required": false,
+          "default": "instruction",
+          "description": "Semantic type of field guidance.",
+          "semantic": true,
+          "restrictions": [
+            "Do not use a variant only to change typography."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Approved guidance typography size.",
+          "semantic": true,
+          "restrictions": [
+            "Text must remain readable at enlarged text settings."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormField",
+          "CheckboxField",
+          "RadioGroupField",
+          "SelectField",
+          "TextareaField",
+          "DateField",
+          "InputGroup"
+        ],
+        "allowedChildren": [
+          "Text",
+          "Approved icon",
+          "Link",
+          "Inline code"
+        ],
+        "prohibitedParents": [
+          "Tooltip as duplicate help",
+          "Button",
+          "DataTable"
+        ],
+        "prohibitedChildren": [
+          "Interactive form control",
+          "Large documentation block",
+          "Raw validation object"
+        ],
+        "spacingOwnership": [
+          "FieldHelp owns spacing among optional icon, content, and link.",
+          "The owning field controls spacing above and below FieldHelp."
+        ],
+        "surfaceOwnership": "FieldHelp owns no visual surface.",
+        "rules": [
+          "Essential guidance remains visible and is not tooltip-only.",
+          "Help content is distinct from current validation errors.",
+          "The associated control references the help ID.",
+          "Help remains concise and field-specific."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Text"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "required",
+          "notes": "Use when a field has a non-obvious requirement or constraint."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "allowed",
+          "notes": "Avoid revealing sensitive account or credential rules unnecessarily."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions"
+          ],
+          "status": "recommended",
+          "notes": "Explain operational consequences before submission."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "recommended",
+          "notes": "Explain expected rationale or decision evidence."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching help text dynamically without a feature owner.",
+          "Reading validation schema directly.",
+          "Evaluating permissions."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning field supplies localized help content."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Optional documentation links retain their own semantic navigation behavior."
+        ]
+      },
+      "responsive": {
+        "strategy": "Wrap naturally below the associated control without exceeding the field width.",
+        "compact": "Use concise content and allow links to move to a new line.",
+        "medium": "Use the field width.",
+        "wide": "Remain constrained by the field rather than the route.",
+        "ultrawide": "Do not expand the reading line.",
+        "overflowPolicy": "Text and inline examples wrap safely.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain readable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "descriptive text element associated through aria-describedby",
+        "accessibleName": "Content is read as the associated control description.",
+        "keyboard": [
+          "Static help is not focusable.",
+          "Optional links are keyboard operable."
+        ],
+        "focus": [
+          "Help does not alter field focus order."
+        ],
+        "announcements": [
+          "Help is available when the associated control receives focus through programmatic description.",
+          "Static help is not a live region."
+        ],
+        "aria": [
+          "The control references FieldHelp through aria-describedby.",
+          "Decorative icons are hidden from assistive technology."
+        ],
+        "colorIndependence": "Help meaning is communicated through text rather than color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One concise useful instruction.",
+        "typical": "One sentence describing format, constraint, example, or value use.",
+        "maximum": "Two short sentences and one optional documentation link.",
+        "wrapping": "Natural multiline wrapping.",
+        "truncation": "Do not truncate field guidance.",
+        "localization": "Support expanded instructions, examples, and links.",
+        "emptyBehavior": "An empty FieldHelp does not render.",
+        "technicalContent": "Raw schema expressions, regex patterns, API field names, and implementation terminology are prohibited unless the user must genuinely enter or understand them."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/field-help.stories.tsx",
+        "requiredStories": [
+          "Instruction",
+          "Constraint",
+          "Example",
+          "Context",
+          "WithIcon",
+          "WithLink",
+          "LongLocalizedContent",
+          "Compact",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/field-help.test.tsx",
+        "requiredTests": [
+          "Stable ID",
+          "Visible content",
+          "Associated-description composition",
+          "No live-region semantics",
+          "Optional link accessibility"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Form field with help",
+          "Compact dialog",
+          "390x844",
+          "125% browser zoom",
+          "Long localized instruction"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormField",
+          "SelectField",
+          "TextareaField",
+          "DateField"
+        ]
+      },
+      "notes": []
+    },
+    "FieldError": {
+      "id": "field-error",
+      "name": "FieldError",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical user-correctable validation message associated with one form field.",
+      "capabilities": [
+        "Explain why the current field value is invalid.",
+        "Provide a direct correction-oriented message.",
+        "Associate validation feedback programmatically with the field control.",
+        "Normalize client and safe field-level server validation messages.",
+        "Avoid leaking schema, transport, or backend implementation details."
+      ],
+      "keywords": [
+        "field-error",
+        "validation",
+        "invalid",
+        "form-error",
+        "message"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/field-error.tsx",
+      "publicImport": "@/components/form/field-error",
+      "contract": "docs/frontend/design-system/components/field-error.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Native descriptive text, semantic danger tokens, approved validation-message adapter",
+        "components": [
+          "Text"
+        ],
+        "reason": "Field validation requires programmatic association, controlled announcement, safe message normalization, consistent styling, and correction-oriented content."
+      },
+      "tokens": [
+        "semantic.status.danger.foreground",
+        "semantic.status.danger.background",
+        "reference.font.size.xs",
+        "reference.font.size.sm",
+        "reference.space.1",
+        "reference.icon.size.sm"
+      ],
+      "variants": {
+        "validation": {
+          "intent": "Communicate a client- or schema-detected invalid field value.",
+          "default": true,
+          "allowedUse": [
+            "Required value missing.",
+            "Invalid format.",
+            "Value outside an allowed range.",
+            "Cross-field constraint attributed to one field."
+          ],
+          "prohibitedUse": [
+            "Route or server outage.",
+            "Complete form submission failure.",
+            "Permission denial."
+          ],
+          "tokens": [
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "invalid",
+            "error"
+          ]
+        },
+        "server": {
+          "intent": "Communicate a normalized server validation error attributable to one field.",
+          "allowedUse": [
+            "Value already exists.",
+            "Server rejected a field-specific business constraint.",
+            "Current value conflicts with an authoritative field rule."
+          ],
+          "prohibitedUse": [
+            "Raw HTTP error.",
+            "Authentication or authorization failure.",
+            "Non-field mutation failure."
+          ],
+          "tokens": [
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "invalid",
+            "error"
+          ]
+        },
+        "blockingConstraint": {
+          "intent": "Communicate a field-specific condition that blocks continuation until another value or prerequisite changes.",
+          "allowedUse": [
+            "End date precedes start date.",
+            "Selected option is incompatible with another field.",
+            "Current field cannot be modified in the selected workflow state."
+          ],
+          "prohibitedUse": [
+            "General permission state.",
+            "Application failure."
+          ],
+          "tokens": [
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "invalid",
+            "error"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Short validation message in a dense field.",
+          "allowedUse": [
+            "Compact filter or dialog."
+          ],
+          "tokens": [
+            "reference.font.size.xs"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary application field error.",
+          "default": true,
+          "allowedUse": [
+            "Route form.",
+            "Authentication.",
+            "Administration.",
+            "Review decision form."
+          ],
+          "tokens": [
+            "reference.font.size.sm"
+          ]
+        }
+      },
+      "states": [
+        "invalid",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Optional semantic error icon.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "The icon is supplementary.",
+            "The message must remain understandable without it."
+          ]
+        },
+        {
+          "name": "message",
+          "description": "Correction-oriented validation message.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Explain the expected correction.",
+            "Do not display raw validation codes, schema paths, or backend messages."
+          ]
+        },
+        {
+          "name": "action",
+          "description": "Optional low-frequency field-specific recovery action.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Button",
+            "Link"
+          ],
+          "contentRestrictions": [
+            "Use only when the action directly resolves the field error.",
+            "Ordinary value correction should occur through the field control."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Stable error-message ID referenced by the associated invalid control.",
+          "semantic": true,
+          "restrictions": [
+            "Must be unique and stable."
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "validation | server | blockingConstraint",
+          "required": false,
+          "default": "validation",
+          "description": "Source and operational meaning of the field error.",
+          "semantic": true,
+          "restrictions": [
+            "Server variant still requires normalized user-facing content."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Approved validation-message typography size.",
+          "semantic": true,
+          "restrictions": [
+            "Do not reduce text below readable design-system thresholds."
+          ]
+        },
+        {
+          "name": "announcement",
+          "type": "none | polite | assertive",
+          "required": false,
+          "default": "polite",
+          "description": "Live-announcement policy selected by the owning validation workflow.",
+          "semantic": true,
+          "restrictions": [
+            "Do not announce the same error repeatedly.",
+            "Assertive behavior is reserved for unusual urgent blocking feedback."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormField",
+          "CheckboxField",
+          "RadioGroupField",
+          "SelectField",
+          "TextareaField",
+          "DateField",
+          "InputGroup"
+        ],
+        "allowedChildren": [
+          "Text",
+          "Approved icon",
+          "Button",
+          "Link"
+        ],
+        "prohibitedParents": [
+          "FormErrorSummary as duplicate content without field navigation purpose",
+          "Tooltip",
+          "Toast as the only field error"
+        ],
+        "prohibitedChildren": [
+          "Raw Error object",
+          "Stack trace",
+          "Validation issue array",
+          "HTTP response body"
+        ],
+        "spacingOwnership": [
+          "FieldError owns spacing among icon, message, and optional action.",
+          "The owning field controls spacing above FieldError."
+        ],
+        "surfaceOwnership": "FieldError normally owns no independent surface.",
+        "rules": [
+          "The associated control exposes invalid semantics.",
+          "The message is specific and correction-oriented.",
+          "Raw validation output is normalized before rendering.",
+          "The owning workflow determines when an error becomes visible.",
+          "Form-level errors remain separate."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Text"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections",
+            "formErrors"
+          ],
+          "status": "required",
+          "notes": "Field errors remain adjacent to their associated controls."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel",
+            "securityFeedback"
+          ],
+          "status": "required",
+          "notes": "Messages must avoid account enumeration and unsafe credential disclosure."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions"
+          ],
+          "status": "required",
+          "notes": "Business-rule errors must be normalized."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "required",
+          "notes": "Decision rationale and confirmation errors require direct correction guidance."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Parsing unknown server errors.",
+          "Reading schema issue objects directly.",
+          "Executing retries.",
+          "Mutating field state."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning form supplies one normalized message and announcement policy."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Optional recovery action callbacks are supplied externally."
+        ]
+      },
+      "responsive": {
+        "strategy": "Wrap naturally below the field while remaining visually connected to the control.",
+        "compact": "Use concise text and stack optional action.",
+        "medium": "Use the field width.",
+        "wide": "Remain constrained by the associated field.",
+        "ultrawide": "Do not expand line length with the route.",
+        "overflowPolicy": "Messages wrap without horizontal overflow.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain readable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "descriptive validation text associated with an invalid control",
+        "accessibleName": "The visible validation message.",
+        "keyboard": [
+          "Static error text is not focusable.",
+          "Optional recovery actions are keyboard operable."
+        ],
+        "focus": [
+          "The owning form may focus the invalid control or summary link.",
+          "FieldError itself normally does not receive focus."
+        ],
+        "announcements": [
+          "Newly relevant errors may be announced politely.",
+          "The same unchanged message is not repeatedly announced.",
+          "Submission errors may also be summarized by FormErrorSummary."
+        ],
+        "aria": [
+          "The control references the error through aria-describedby.",
+          "The control uses aria-invalid.",
+          "Use one deliberate live-region strategy."
+        ],
+        "colorIndependence": "Invalid meaning is communicated through text and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One specific correction-oriented message.",
+        "typical": "One sentence explaining the invalid value and expected correction.",
+        "maximum": "Two concise sentences and one optional direct recovery action.",
+        "wrapping": "Natural multiline wrapping.",
+        "truncation": "Do not truncate validation errors.",
+        "localization": "Support expanded validation language and action labels.",
+        "emptyBehavior": "An empty FieldError does not render.",
+        "technicalContent": "Schema paths, issue codes, stack traces, HTTP status text, SQL errors, and internal business-rule identifiers are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/field-error.stories.tsx",
+        "requiredStories": [
+          "Validation",
+          "Server",
+          "BlockingConstraint",
+          "WithIcon",
+          "WithAction",
+          "LongLocalizedMessage",
+          "Compact",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/field-error.test.tsx",
+        "requiredTests": [
+          "Stable ID",
+          "Visible correction message",
+          "Announcement policy",
+          "No raw error rendering",
+          "Optional action accessibility"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Invalid route form",
+          "Authentication error",
+          "Compact dialog",
+          "390x844",
+          "125% browser zoom",
+          "Long localized message"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormField",
+          "CheckboxField",
+          "RadioGroupField",
+          "SelectField",
+          "TextareaField",
+          "DateField"
+        ]
+      },
+      "notes": []
+    },
+    "CharacterCount": {
+      "id": "character-count",
+      "name": "CharacterCount",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical character-length feedback for text controls with explicit limits, warning thresholds, accessibility behavior, and localized count presentation.",
+      "capabilities": [
+        "Present current and maximum character count.",
+        "Communicate approaching-limit and exceeded-limit states.",
+        "Distinguish informational counting from actual validation.",
+        "Associate the count with the related text control.",
+        "Avoid excessive live announcements during typing."
+      ],
+      "keywords": [
+        "character-count",
+        "length",
+        "limit",
+        "textarea",
+        "remaining",
+        "validation"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/character-count.tsx",
+      "publicImport": "@/components/form/character-count",
+      "contract": "docs/frontend/design-system/components/character-count.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Localized number formatting and descriptive status text",
+        "components": [
+          "Text"
+        ],
+        "reason": "Character count requires consistent thresholds, invalid-state distinction, localization, programmatic association, and non-disruptive announcements."
+      },
+      "tokens": [
+        "semantic.text.muted",
+        "semantic.text.secondary",
+        "semantic.status.warning.foreground",
+        "semantic.status.danger.foreground",
+        "reference.font.size.xs",
+        "reference.font.size.sm"
+      ],
+      "variants": {
+        "used": {
+          "intent": "Show characters used relative to the maximum.",
+          "default": true,
+          "allowedUse": [
+            "Current and maximum display such as 120 de 500."
+          ],
+          "prohibitedUse": [
+            "The product requires a remaining-count mental model."
+          ],
+          "tokens": [
+            "semantic.text.muted"
+          ],
+          "states": [
+            "default",
+            "warning",
+            "error"
+          ]
+        },
+        "remaining": {
+          "intent": "Show how many characters remain before reaching the limit.",
+          "allowedUse": [
+            "Short constrained submissions.",
+            "Content where remaining capacity is operationally more useful."
+          ],
+          "prohibitedUse": [
+            "No maximum exists.",
+            "Negative count is displayed without invalid explanation."
+          ],
+          "tokens": [
+            "semantic.text.muted"
+          ],
+          "states": [
+            "default",
+            "warning",
+            "error"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Compact count beside or beneath a short text field.",
+          "default": true,
+          "allowedUse": [
+            "Input.",
+            "Compact textarea.",
+            "Dialog."
+          ],
+          "tokens": [
+            "reference.font.size.xs"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary count for longer text entry.",
+          "allowedUse": [
+            "Review rationale.",
+            "Description.",
+            "Notes."
+          ],
+          "tokens": [
+            "reference.font.size.sm"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "warning",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "count",
+          "description": "Localized current count or remaining count.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use localized number formatting.",
+            "Do not expose implementation-specific string length details."
+          ]
+        },
+        {
+          "name": "limit",
+          "description": "Optional visible maximum character limit.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required for used mode.",
+            "Must remain consistent with the actual validation schema."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "used | remaining",
+          "required": false,
+          "default": "used",
+          "description": "Count mental model.",
+          "semantic": true,
+          "restrictions": [
+            "Use one model consistently within the product."
+          ]
+        },
+        {
+          "name": "current",
+          "type": "number",
+          "required": true,
+          "description": "Current authoritative character count.",
+          "semantic": true,
+          "restrictions": [
+            "Must be zero or greater.",
+            "The component does not derive count from arbitrary children."
+          ]
+        },
+        {
+          "name": "maximum",
+          "type": "number",
+          "required": true,
+          "description": "Maximum length defined by the active validation contract.",
+          "semantic": true,
+          "restrictions": [
+            "Must be greater than zero.",
+            "Must match client and server constraints."
+          ]
+        },
+        {
+          "name": "warningThreshold",
+          "type": "number",
+          "required": false,
+          "description": "Count at which warning presentation begins.",
+          "semantic": true,
+          "restrictions": [
+            "Must be below or equal to maximum.",
+            "Use a product default rather than arbitrary per-screen values."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "compact",
+          "description": "Approved count typography size.",
+          "semantic": true,
+          "restrictions": []
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormField supporting slot",
+          "TextareaField",
+          "InputGroup"
+        ],
+        "allowedChildren": [
+          "Text"
+        ],
+        "prohibitedParents": [
+          "FieldError as replacement validation",
+          "Tooltip",
+          "Button"
+        ],
+        "prohibitedChildren": [
+          "Interactive controls",
+          "Validation details"
+        ],
+        "spacingOwnership": [
+          "CharacterCount owns spacing between count and limit.",
+          "The owning field positions the count relative to help and error content."
+        ],
+        "surfaceOwnership": "CharacterCount owns no visual surface.",
+        "rules": [
+          "The count does not replace maxLength or schema validation.",
+          "Exceeded state requires an associated field error when submission is invalid.",
+          "Typing must not generate excessive announcements.",
+          "Thresholds remain synchronized with validation."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Text"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "recommended",
+          "notes": "Use for text controls with meaningful maximum length."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "recommended",
+          "notes": "Useful for rationale limits when the limit is operationally meaningful."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent"
+          ],
+          "status": "allowed",
+          "notes": "Use for bounded labels, descriptions, or templates."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Reading form state directly.",
+          "Changing validation limits.",
+          "Mutating the field value."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning field supplies current and maximum counts."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Remain compact and aligned with supporting field content.",
+        "compact": "May wrap below other supporting information.",
+        "medium": "Align at the end of the supporting row when space permits.",
+        "wide": "Remain constrained to the field width.",
+        "ultrawide": "Does not expand.",
+        "overflowPolicy": "Localized labels wrap safely.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain legible at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "descriptive status text associated with the control",
+        "accessibleName": "Localized count meaning.",
+        "keyboard": [
+          "CharacterCount is not interactive."
+        ],
+        "focus": [
+          "Does not alter focus order."
+        ],
+        "announcements": [
+          "Do not announce every character typed.",
+          "Warning or exceeded thresholds may be announced once according to the owning field policy.",
+          "The associated FieldError communicates invalid submission."
+        ],
+        "aria": [
+          "Associate through aria-describedby when the count is relevant to the control.",
+          "Avoid persistent live-region announcements."
+        ],
+        "colorIndependence": "Approaching and exceeded states use text and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "Current count and maximum or remaining capacity.",
+        "typical": "Localized count such as 120 de 500 caracteres.",
+        "maximum": "One concise count phrase.",
+        "wrapping": "May wrap as one phrase.",
+        "truncation": "Do not truncate the count.",
+        "localization": "Support pluralization and localized number formatting.",
+        "emptyBehavior": "Does not render when no maximum exists.",
+        "technicalContent": "UTF implementation details, byte count, code-unit count, and schema internals are prohibited unless explicitly relevant."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/character-count.stories.tsx",
+        "requiredStories": [
+          "Used",
+          "Remaining",
+          "Empty",
+          "ApproachingLimit",
+          "AtLimit",
+          "Exceeded",
+          "LocalizedLargeNumber",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/character-count.test.tsx",
+        "requiredTests": [
+          "Used calculation presentation",
+          "Remaining calculation presentation",
+          "Warning threshold",
+          "Exceeded state",
+          "No excessive live semantics",
+          "Localization composition"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Textarea supporting row",
+          "Compact dialog",
+          "390x844",
+          "125% browser zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "TextareaField",
+          "FormField"
+        ]
+      },
+      "notes": []
+    },
+    "InputGroup": {
+      "id": "input-group",
+      "name": "InputGroup",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical composition for one input combined with a meaningful prefix, suffix, unit, inline action, or status without breaking field semantics.",
+      "capabilities": [
+        "Combine one primary input with a visible prefix or suffix.",
+        "Present units, currencies, domains, protocols, or compact supporting text.",
+        "Include an approved inline action such as reveal, copy, or clear.",
+        "Preserve one accessible field label and one primary form value.",
+        "Communicate disabled, read-only, invalid, and pending states coherently across the group."
+      ],
+      "keywords": [
+        "input-group",
+        "prefix",
+        "suffix",
+        "unit",
+        "currency",
+        "inline-action",
+        "addon"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/input-group.tsx",
+      "publicImport": "@/components/form/input-group",
+      "contract": "docs/frontend/design-system/components/input-group.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Input, Button, approved grouped-control tokens",
+        "components": [
+          "Input",
+          "Button",
+          "Tooltip"
+        ],
+        "reason": "Grouped inputs require coordinated borders, focus treatment, semantic slot restrictions, one value owner, and accessible inline actions."
+      },
+      "tokens": [
+        "component.input.radius",
+        "component.inputGroup.divider",
+        "semantic.background.surface",
+        "semantic.background.surfaceSubtle",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "reference.control.height.md",
+        "reference.space.2",
+        "reference.space.3"
+      ],
+      "variants": {
+        "prefix": {
+          "intent": "Present a fixed prefix before the editable value.",
+          "default": true,
+          "allowedUse": [
+            "Currency symbol.",
+            "URL protocol.",
+            "Country code.",
+            "Fixed namespace."
+          ],
+          "prohibitedUse": [
+            "A selectable value.",
+            "A prefix whose meaning is not visible or announced.",
+            "Decorative icon without function."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "component.inputGroup.divider"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        },
+        "suffix": {
+          "intent": "Present a fixed unit or suffix after the editable value.",
+          "allowedUse": [
+            "Percentage.",
+            "Duration unit.",
+            "Domain suffix.",
+            "Measurement unit."
+          ],
+          "prohibitedUse": [
+            "Separate editable field.",
+            "Ambiguous abbreviation without explanation."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "component.inputGroup.divider"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        },
+        "action": {
+          "intent": "Place one compact input-specific action beside the primary control.",
+          "allowedUse": [
+            "Reveal password.",
+            "Clear search.",
+            "Copy generated value.",
+            "Open approved picker."
+          ],
+          "prohibitedUse": [
+            "Form submission.",
+            "Unrelated navigation.",
+            "Several competing actions."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.focus.ring"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "loading"
+          ]
+        },
+        "combined": {
+          "intent": "Combine a fixed prefix or suffix with one approved inline action.",
+          "allowedUse": [
+            "Protocol plus copy action.",
+            "Currency plus calculator disclosure.",
+            "Identifier prefix plus clear action."
+          ],
+          "prohibitedUse": [
+            "Several editable values.",
+            "Complex toolbar."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.background.surfaceSubtle",
+            "component.inputGroup.divider"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only",
+            "loading"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense grouped input for compact operational contexts.",
+          "allowedUse": [
+            "Filter panel.",
+            "Compact dialog."
+          ],
+          "tokens": [
+            "reference.control.height.sm",
+            "reference.space.2"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary application grouped input.",
+          "default": true,
+          "allowedUse": [
+            "Route form.",
+            "Authentication.",
+            "Administration."
+          ],
+          "tokens": [
+            "reference.control.height.md",
+            "reference.space.3"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "focus-visible",
+        "disabled",
+        "invalid",
+        "read-only",
+        "loading"
+      ],
+      "slots": [
+        {
+          "name": "prefix",
+          "description": "Optional fixed content before the control.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text",
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "Prefix must be concise and non-editable.",
+            "Meaning must be perceivable to assistive technology."
+          ]
+        },
+        {
+          "name": "control",
+          "description": "One primary form control.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Input"
+          ],
+          "contentRestrictions": [
+            "Only one primary editable value.",
+            "The InputGroup does not own a second form field."
+          ]
+        },
+        {
+          "name": "suffix",
+          "description": "Optional fixed content after the control.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Text",
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "Suffix must be concise and non-editable.",
+            "Ambiguous units require visible or associated explanation."
+          ]
+        },
+        {
+          "name": "action",
+          "description": "Optional compact action directly related to the current input.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "One action only.",
+            "Icon-only actions require accessible names.",
+            "The action must not submit the complete form unless explicitly acting as the field control."
+          ]
+        },
+        {
+          "name": "status",
+          "description": "Optional compact pending, success, or availability indication.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "StatusBadge",
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "Do not use status as a replacement for FieldError.",
+            "Dynamic success should not remain permanently decorative."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "prefix | suffix | action | combined",
+          "required": false,
+          "default": "prefix",
+          "description": "Semantic grouped-input anatomy.",
+          "semantic": true,
+          "restrictions": [
+            "The variant must match the actual slots."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Approved grouped-control height and spacing.",
+          "semantic": true,
+          "restrictions": [
+            "All direct control regions share a coherent height."
+          ]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Applies a coherent invalid state to the group and primary control.",
+          "semantic": true,
+          "restrictions": [
+            "An invalid group requires an associated FieldError through FormField."
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Disables the primary control and related action when appropriate.",
+          "semantic": true,
+          "restrictions": [
+            "Decorative prefix and suffix remain perceivable.",
+            "Action eligibility must remain consistent with the input."
+          ]
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Makes the editable control read-only while retaining the visible value.",
+          "semantic": true,
+          "restrictions": [
+            "Copy action may remain available when policy allows it."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormField",
+          "Authentication field",
+          "Administration form",
+          "Filter field"
+        ],
+        "allowedChildren": [
+          "Input",
+          "Text",
+          "Approved icon",
+          "Button",
+          "StatusBadge"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "Tooltip",
+          "DataTable cell without inline-editing policy"
+        ],
+        "prohibitedChildren": [
+          "Second editable input",
+          "Complete Select",
+          "Form submission bar",
+          "Several actions"
+        ],
+        "spacingOwnership": [
+          "InputGroup owns internal borders, region spacing, and coordinated focus treatment.",
+          "FormField owns label, help, error, and external spacing.",
+          "The embedded Input retains text padding but does not add an independent outer border."
+        ],
+        "surfaceOwnership": "InputGroup owns one unified control surface.",
+        "rules": [
+          "One group represents one primary value.",
+          "Prefix and suffix are not submitted as independent fields.",
+          "Inline actions must remain directly related to the input.",
+          "The group preserves one coherent focus and invalid-state treatment.",
+          "Do not use arbitrary negative margins to visually merge controls."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Input",
+          "Button",
+          "Tooltip"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "recommended",
+          "notes": "Use when one value requires a fixed unit, prefix, suffix, or local action."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "recommended",
+          "notes": "Password reveal uses an accessible inline action."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions"
+          ],
+          "status": "allowed",
+          "notes": "Useful for domains, identifiers, units, and approved generated values."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters"
+          ],
+          "status": "allowed",
+          "notes": "SearchInput remains preferred for the primary collection search."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching suggestions.",
+          "Executing mutations.",
+          "Reading form state directly.",
+          "Determining action permissions."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": true,
+        "serverState": false,
+        "notes": [
+          "The owning field controls value, invalid state, disabled state, read-only state, and action callbacks."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Inline action side effects such as copy or reveal are supplied by the owning field.",
+          "Focus remains inside the grouped control."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve one unified control while constraining prefixes, suffixes, and actions.",
+        "compact": "Use concise fixed content and one compact action. Long units may move to FieldHelp.",
+        "medium": "Use ordinary grouped layout.",
+        "wide": "The field width remains determined by expected value length.",
+        "ultrawide": "Does not expand to fill route width automatically.",
+        "overflowPolicy": "The editable control shrinks before fixed actions. Fixed labels must not force page overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Regions must remain distinguishable and operable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "grouped visual control preserving native input and button semantics",
+        "accessibleName": "Supplied by the owning FormField label.",
+        "keyboard": [
+          "The input uses native editing behavior.",
+          "Inline action is independently keyboard operable.",
+          "Tab order follows input then action unless the action must logically precede it."
+        ],
+        "focus": [
+          "The group displays coherent focus-within treatment.",
+          "Individual interactive controls retain visible focus.",
+          "Activating an action must not unexpectedly remove input focus unless required."
+        ],
+        "announcements": [
+          "Prefix and suffix meaning are included in the accessible description when needed.",
+          "Pending or status changes are announced only when operationally useful."
+        ],
+        "aria": [
+          "Do not hide meaningful units from assistive technology.",
+          "Icon-only actions require accessible names.",
+          "The primary control receives invalid and descriptive relationships."
+        ],
+        "colorIndependence": "Focus, invalid, disabled, read-only, and pending states use semantics and structure in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One Input and one meaningful fixed region or action.",
+        "typical": "Input with a short unit, prefix, suffix, or one inline action.",
+        "maximum": "One input, two fixed supporting regions, and one directly related action.",
+        "wrapping": "The complete control normally remains one line; lengthy explanation moves to FieldHelp.",
+        "truncation": "Do not truncate units or prefixes into ambiguity.",
+        "localization": "Support expanded units and action labels while preserving one usable control.",
+        "emptyBehavior": "Without prefix, suffix, action, or status, use Input directly.",
+        "technicalContent": "Internal field prefixes, database namespaces, and transport formatting are prohibited unless users genuinely enter or recognize them."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/input-group.stories.tsx",
+        "requiredStories": [
+          "Prefix",
+          "Suffix",
+          "Action",
+          "Combined",
+          "Currency",
+          "Percentage",
+          "PasswordReveal",
+          "ReadOnlyCopy",
+          "Invalid",
+          "Disabled",
+          "LoadingAction",
+          "LongLocalizedUnit",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/input-group.test.tsx",
+        "requiredTests": [
+          "Single primary input",
+          "Prefix and suffix semantics",
+          "Action accessible name",
+          "Focus-within behavior",
+          "Invalid-state propagation",
+          "Disabled behavior",
+          "Read-only behavior",
+          "Slot constraints"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Currency field",
+          "Password field",
+          "Read-only copy field",
+          "390x844",
+          "125% browser zoom",
+          "Keyboard input and action"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormField",
+          "AuthenticationForm",
+          "AdministrationForm"
+        ]
+      },
+      "notes": []
+    },
+    "SearchInput": {
+      "id": "search-input",
+      "name": "SearchInput",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical search-query input with explicit search semantics, controlled value, clear behavior, optional submission, pending state, keyboard support, and URL-state integration owned externally.",
+      "capabilities": [
+        "Receive a user search query.",
+        "Expose native search semantics and clear behavior.",
+        "Support immediate, debounced, or explicit-submit search modes.",
+        "Communicate pending search without replacing existing results.",
+        "Integrate with URL-owned query state through controlled props.",
+        "Preserve query values across result loading and error states."
+      ],
+      "keywords": [
+        "search",
+        "query",
+        "filter",
+        "debounce",
+        "clear",
+        "results"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/search-input.tsx",
+      "publicImport": "@/components/form/search-input",
+      "contract": "docs/frontend/design-system/components/search-input.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "InputGroup, native search input, Button",
+        "components": [
+          "InputGroup",
+          "Input",
+          "Button",
+          "LoadingState"
+        ],
+        "reason": "Search requires a specialized semantic control with clear behavior, input-mode policy, pending feedback, accessible labels, and controlled synchronization."
+      },
+      "tokens": [
+        "component.input.radius",
+        "semantic.background.surface",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "reference.control.height.sm",
+        "reference.control.height.md",
+        "reference.icon.size.sm",
+        "reference.space.2",
+        "reference.space.3"
+      ],
+      "variants": {
+        "instant": {
+          "intent": "Update the owning search state after an approved debounce while the user types.",
+          "default": true,
+          "allowedUse": [
+            "Searchable collection with server or client filtering.",
+            "Small option collection.",
+            "Search where each query update is safe and reversible."
+          ],
+          "prohibitedUse": [
+            "Expensive operation without debounce and cancellation.",
+            "Search requiring a complete multi-field submission.",
+            "Sensitive action disguised as search."
+          ],
+          "tokens": [
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "loading",
+            "disabled",
+            "invalid"
+          ]
+        },
+        "submit": {
+          "intent": "Update the owning search only after explicit user submission.",
+          "allowedUse": [
+            "Expensive remote search.",
+            "Search requiring a stable complete phrase.",
+            "Search where explicit invocation improves user control."
+          ],
+          "prohibitedUse": [
+            "Tiny local filtering interaction where submission adds needless friction."
+          ],
+          "tokens": [
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "loading",
+            "disabled",
+            "invalid"
+          ]
+        },
+        "local": {
+          "intent": "Filter an already available bounded collection locally.",
+          "allowedUse": [
+            "Command list.",
+            "Small option list.",
+            "Bounded local administration collection."
+          ],
+          "prohibitedUse": [
+            "Partial server page presented as if the complete dataset were local.",
+            "Large collection requiring server filtering."
+          ],
+          "tokens": [
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled"
+          ]
+        },
+        "compact": {
+          "intent": "Present search inside a constrained toolbar, drawer, or contextual panel.",
+          "allowedUse": [
+            "Navigation search.",
+            "Evidence navigator.",
+            "Compact administration panel."
+          ],
+          "prohibitedUse": [
+            "Primary search requiring long queries or visible instructions."
+          ],
+          "tokens": [
+            "reference.control.height.sm"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "loading",
+            "disabled"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Compact toolbar or panel search.",
+          "allowedUse": [
+            "Contextual panels.",
+            "Navigation.",
+            "Compact filters."
+          ],
+          "tokens": [
+            "reference.control.height.sm"
+          ]
+        },
+        "default": {
+          "intent": "Primary collection search.",
+          "default": true,
+          "allowedUse": [
+            "Searchable-list recipe.",
+            "Administration collection.",
+            "Entity relationship search."
+          ],
+          "tokens": [
+            "reference.control.height.md"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "focus-visible",
+        "loading",
+        "disabled",
+        "invalid"
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Search icon identifying the control purpose.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved search icon"
+          ],
+          "contentRestrictions": [
+            "The icon is supplementary and does not replace the accessible label."
+          ]
+        },
+        {
+          "name": "control",
+          "description": "Native search input.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Input"
+          ],
+          "contentRestrictions": [
+            "Use type=search where behavior is appropriate.",
+            "The input requires a visible or visually hidden accessible label."
+          ]
+        },
+        {
+          "name": "pending",
+          "description": "Optional compact indication that a search update is pending.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Approved spinner",
+            "Status text"
+          ],
+          "contentRestrictions": [
+            "Existing results remain visible while searching.",
+            "Do not announce every debounced request."
+          ]
+        },
+        {
+          "name": "clearAction",
+          "description": "Optional action clearing the current query.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "Render only when a query exists.",
+            "Require an accessible label such as Limpar busca."
+          ]
+        },
+        {
+          "name": "submitAction",
+          "description": "Optional explicit search action.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "Required only in submit mode.",
+            "Label or accessible name must identify search execution."
+          ]
+        },
+        {
+          "name": "shortcut",
+          "description": "Optional discoverability hint for a supported keyboard shortcut.",
+          "required": false,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "KeyboardShortcut"
+          ],
+          "contentRestrictions": [
+            "Display only when the shortcut actually exists.",
+            "Do not interfere with ordinary input typing."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "instant | submit | local | compact",
+          "required": false,
+          "default": "instant",
+          "description": "Semantic search execution model.",
+          "semantic": true,
+          "restrictions": [
+            "The selected mode must match collection size, backend behavior, and expected request cost."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Approved control height and density.",
+          "semantic": true,
+          "restrictions": [
+            "Compact does not remove the accessible label."
+          ]
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "description": "Controlled current query text.",
+          "semantic": true,
+          "restrictions": [
+            "The component does not own URL state.",
+            "The value remains visible during pending requests."
+          ]
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "description": "Controlled input-change callback.",
+          "semantic": true,
+          "restrictions": [
+            "The callback does not execute the remote request directly inside the shared component."
+          ]
+        },
+        {
+          "name": "onSubmit",
+          "type": "(value: string) => void",
+          "required": false,
+          "description": "Explicit search-submission callback.",
+          "semantic": true,
+          "restrictions": [
+            "Required for submit mode.",
+            "Must not reload the browser unintentionally."
+          ]
+        },
+        {
+          "name": "onClear",
+          "type": "() => void",
+          "required": false,
+          "description": "Clears the query through the owning state model.",
+          "semantic": true,
+          "restrictions": [
+            "Clearing must also reconcile URL state and pagination when those are externally owned."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the current query is being resolved.",
+          "semantic": true,
+          "restrictions": [
+            "Must not clear current results.",
+            "Must not prevent query editing unless the search contract requires it."
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that search is unavailable.",
+          "semantic": true,
+          "restrictions": [
+            "The reason should be visible when not obvious."
+          ]
+        },
+        {
+          "name": "minimumLength",
+          "type": "number",
+          "required": false,
+          "default": 0,
+          "description": "Minimum query length before instant or submitted search is eligible.",
+          "semantic": true,
+          "restrictions": [
+            "Must be justified by product or backend behavior.",
+            "The user receives visible guidance when the value is greater than zero."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Searchable-list search and filters region",
+          "Administration collection toolbar",
+          "Evidence navigator",
+          "Navigation search",
+          "Command interface"
+        ],
+        "allowedChildren": [
+          "InputGroup",
+          "Input",
+          "Button",
+          "Approved icon",
+          "KeyboardShortcut"
+        ],
+        "prohibitedParents": [
+          "FormField when a duplicate external label creates redundant semantics",
+          "Button",
+          "Tooltip"
+        ],
+        "prohibitedChildren": [
+          "Complete filter form",
+          "Several unrelated actions",
+          "Search results"
+        ],
+        "spacingOwnership": [
+          "SearchInput owns spacing and grouping among icon, input, pending indicator, clear action, submit action, and shortcut.",
+          "The search-and-filters region owns spacing around SearchInput and between search and filters."
+        ],
+        "surfaceOwnership": "SearchInput owns one unified search-control surface.",
+        "rules": [
+          "Search mode is explicit.",
+          "Remote search uses approved debounce, cancellation, and query ownership outside the shared component.",
+          "Existing results remain visible during background search.",
+          "Clearing query reconciles external pagination and URL state.",
+          "Primary search remains distinguishable from filters."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "InputGroup",
+          "Input",
+          "Button"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters"
+          ],
+          "status": "required",
+          "notes": "Canonical primary text search for a searchable collection."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationNavigation",
+            "administrationContent"
+          ],
+          "status": "recommended",
+          "notes": "Search users, roles, integrations, or audit events through the correct server or local model."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "evidenceNavigator"
+          ],
+          "status": "allowed",
+          "notes": "Use to search bounded or server-backed evidence collections."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "allowed",
+          "notes": "Use for related-record collections, not entity identity."
+        },
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "globalHeader"
+          ],
+          "status": "allowed",
+          "notes": "Global search requires a dedicated product contract and must not be improvised."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Executing remote search.",
+          "Owning TanStack Query hooks.",
+          "Reading or writing URL search parameters.",
+          "Debouncing network requests internally without an explicit adapter.",
+          "Parsing search results."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning screen, feature, or URL adapter controls query text.",
+          "Remote result data remains query-owned outside the component."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Search, clear, shortcut, and submission callbacks are supplied externally.",
+          "The component may focus the input through an approved shortcut."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve query visibility, clear behavior, and search execution while moving low-priority hints out of constrained space.",
+        "compact": "Fill the available width. Hide nonessential shortcut hints. Preserve clear and submit actions.",
+        "medium": "Use the primary search-region width and allow adjacent filters to wrap.",
+        "wide": "Use a constrained search width appropriate to expected query length.",
+        "ultrawide": "Do not stretch across the complete route unless the product contract requires a global search bar.",
+        "overflowPolicy": "The input shrinks before actions. Labels and pending context must not create page overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain operable at 200% text scaling and 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "search input inside a labeled search region or form where appropriate",
+        "accessibleName": "Visible or visually hidden label naming the searched collection or domain.",
+        "keyboard": [
+          "Use native text-editing behavior.",
+          "Enter submits in submit mode.",
+          "Escape may clear only when the product keyboard policy defines it.",
+          "Clear and submit actions are keyboard operable.",
+          "Supported shortcuts must not override ordinary text entry unexpectedly."
+        ],
+        "focus": [
+          "Clear action returns focus to the search input.",
+          "Pending result updates do not reset focus.",
+          "Search-result navigation follows the owning collection policy."
+        ],
+        "announcements": [
+          "Pending requests are not announced on every keystroke.",
+          "Result counts and no-results states are announced by the owning collection.",
+          "Clearing the query may trigger a concise result-state update."
+        ],
+        "aria": [
+          "Use an accessible search label.",
+          "Icon-only clear and submit actions require explicit names.",
+          "Use aria-busy only on the appropriate results or search region."
+        ],
+        "colorIndependence": "Focus, disabled, pending, and invalid state do not depend only on color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "An accessible search label and editable query input.",
+        "typical": "Search icon, input, conditional clear action, and optional pending indicator.",
+        "maximum": "One query input, clear action, optional submit action, and optional shortcut hint.",
+        "wrapping": "The unified control remains one line; external filter regions wrap separately.",
+        "truncation": "The editable query uses native input scrolling rather than visual ellipsis.",
+        "localization": "Support expanded labels, placeholder examples, clear actions, and submit actions.",
+        "emptyBehavior": "An empty query represents the unfiltered or default collection state according to the owning feature.",
+        "technicalContent": "Query syntax, search engine operators, database field names, and endpoint parameters are prohibited unless explicitly supported for expert users."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/search-input.stories.tsx",
+        "requiredStories": [
+          "Instant",
+          "Submit",
+          "Local",
+          "Compact",
+          "Empty",
+          "WithValue",
+          "Loading",
+          "Disabled",
+          "MinimumLength",
+          "WithShortcut",
+          "LongQuery",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/search-input.test.tsx",
+        "requiredTests": [
+          "Accessible search label",
+          "Controlled value",
+          "Clear behavior",
+          "Clear focus restoration",
+          "Submit behavior",
+          "Minimum-length eligibility",
+          "Pending-state semantics",
+          "Keyboard interaction",
+          "No internal remote request"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Searchable collection",
+          "Server search preserving results",
+          "Compact evidence navigator",
+          "390x844",
+          "1024x768 filters wrapping",
+          "125% browser zoom",
+          "Keyboard clear and submit",
+          "Long localized label"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "SearchableListRoute",
+          "AdministrationCollection",
+          "EvidenceNavigator",
+          "GlobalSearchFeature"
+        ]
+      },
+      "notes": [
+        "Debounce, URL synchronization, pagination reset, request cancellation, and query execution belong to the owning feature or screen adapter."
+      ]
+    }
+  },
+  "validation": {
+    "schema": "../assets/schemas/component-catalog.schema.json",
+    "checks": [
+      {
+        "id": "FORM-FOUNDATION-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The form-field foundation catalog must validate against the component catalog schema.",
+        "command": "node scripts/validate-component-catalog.mjs ~/.agents/skills/frontend-product-builder/assets/catalog/form-field-foundation-components.json",
+        "remediation": "Correct invalid or missing form-field component fields."
+      },
+      {
+        "id": "FORM-FOUNDATION-002",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Form-field component IDs, names, implementations, public imports, and responsibilities must remain unique.",
+        "command": "node scripts/audit-component-catalog-collisions.mjs",
+        "remediation": "Resolve duplicate ownership or merge overlapping field components."
+      },
+      {
+        "id": "FORM-FOUNDATION-003",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Shared field components must not execute queries, mutations, business validation, permission checks, URL synchronization, or transport parsing.",
+        "command": "node scripts/audit-component-dependencies.mjs",
+        "remediation": "Move data access, validation ownership, permission logic, and side effects to the owning form, feature, or route."
+      },
+      {
+        "id": "FORM-FOUNDATION-004",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Every ordinary form control must have a visible or explicitly approved visually hidden label and correctly associated help and validation content.",
+        "command": "npm run test:components -- form-field",
+        "remediation": "Correct label, htmlFor, id, aria-describedby, aria-invalid, required, disabled, or read-only relationships."
+      },
+      {
+        "id": "FORM-FOUNDATION-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Help, field validation, form-level errors, loading, permission, and read-only states must remain semantically distinct.",
+        "remediation": "Replace the message or field treatment with the canonical component matching the actual state."
+      },
+      {
+        "id": "FORM-FOUNDATION-006",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Placeholder text must not replace a visible field label.",
+        "remediation": "Add a visible label and retain placeholder text only as optional example content."
+      },
+      {
+        "id": "FORM-FOUNDATION-007",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Form fields must remain readable, operable, correctly associated, and free from page-level horizontal overflow across approved viewports and zoom levels.",
+        "command": "npm run test:e2e:forms",
+        "remediation": "Correct field width, wrapping, label actions, grouped controls, error placement, or responsive form layout."
+      },
+      {
+        "id": "FORM-FOUNDATION-008",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "SearchInput must preserve current results during pending remote search and must not execute remote data access directly.",
+        "remediation": "Move debounce, query execution, URL state, pagination reset, and cancellation to the owning feature."
+      },
+      {
+        "id": "FORM-FOUNDATION-009",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "CharacterCount limits must remain synchronized with active client and server validation.",
+        "remediation": "Use one authoritative field schema and pass the resolved limit into the component."
+      },
+      {
+        "id": "FORM-FOUNDATION-010",
+        "severity": "warning",
+        "method": "script",
+        "blocking": false,
+        "description": "Page-local field wrappers, help text, validation messages, grouped inputs, character counters, and search boxes similar to canonical components require review.",
+        "command": "node scripts/audit-component-duplicates.mjs",
+        "remediation": "Reuse the canonical field component or document why the local composition is semantically distinct."
+      }
+    ]
+  },
+  "deprecations": []
+}

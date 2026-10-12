@@ -1,0 +1,142 @@
+{
+  "$schema": "../schemas/visual-composition-evidence.schema.json",
+  "meta": {
+    "screenId": "<screen-id>",
+    "stateId": "data",
+    "capturedAt": "2026-01-01T12:00:00Z",
+    "runner": "project-browser-runner"
+  },
+  "contractHashes": {
+    "screenSpecSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "designSystemSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "compositionProofSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "craftContractSha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "contractSetSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+  },
+  "theme": {
+    "id": "dark",
+    "scheme": "dark",
+    "separationModelObserved": "mixed",
+    "contextValidated": true
+  },
+  "viewports": [
+    {
+      "id": "wide",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "regions": [
+    {
+      "id": "mainContent",
+      "viewport": "wide",
+      "parentRegionId": null,
+      "surfaceRole": "canvas",
+      "surfaceLevel": 0,
+      "accentRole": null,
+      "borderRole": null,
+      "borderPurpose": null,
+      "containerBox": {
+        "x": 24,
+        "y": 24,
+        "width": 960,
+        "height": 220
+      },
+      "contentBox": {
+        "x": 24,
+        "y": 24,
+        "width": 960,
+        "height": 220
+      },
+      "contentOccupancy": 1,
+      "nestingDepth": 0,
+      "heightStrategyObserved": "content-driven",
+      "rendered": true,
+      "presenceSignal": null
+    }
+  ],
+  "elements": [
+    {
+      "id": "primary-heading",
+      "viewport": "wide",
+      "regionId": "mainContent",
+      "componentUsageId": null,
+      "semanticElement": "h1",
+      "textRole": "pageTitle",
+      "priority": "primary",
+      "semanticDataRole": null,
+      "presentationFamily": null,
+      "contrastRole": "primary",
+      "contrastRatio": 12,
+      "semanticColorRole": null,
+      "colorSource": "neutral-token",
+      "accentRole": null,
+      "box": {
+        "x": 32,
+        "y": 32,
+        "width": 420,
+        "height": 36
+      },
+      "containerBox": {
+        "x": 32,
+        "y": 32,
+        "width": 420,
+        "height": 36
+      },
+      "contentBox": {
+        "x": 32,
+        "y": 32,
+        "width": 420,
+        "height": 36
+      },
+      "computedStyle": {
+        "fontSize": "24px",
+        "fontWeight": "600",
+        "lineHeight": "32px",
+        "letterSpacing": "0px",
+        "color": "rgb(248, 250, 252)"
+      },
+      "tokens": [
+        "tokens.semantic.font.size.pageTitle",
+        "tokens.semantic.font.weight.semibold"
+      ],
+      "rendered": true,
+      "presenceSignal": null
+    }
+  ],
+  "presenceSignals": [],
+  "interactions": [],
+  "wayfinding": {
+    "mode": "not-applicable",
+    "rendered": false,
+    "targetId": null,
+    "parentRoute": null
+  },
+  "decisionSignals": [],
+  "relations": {
+    "readingOrder": [
+      "primary-heading"
+    ],
+    "alignment": [
+      {
+        "id": "main-content-left-keyline",
+        "status": "passed",
+        "evidence": "measured delta"
+      }
+    ],
+    "proximity": [
+      {
+        "id": "heading-and-summary",
+        "status": "passed",
+        "evidence": "measured relation"
+      }
+    ],
+    "contrast": [
+      {
+        "id": "primary-heading-contrast",
+        "status": "passed",
+        "evidence": "contrast result"
+      }
+    ]
+  }
+}

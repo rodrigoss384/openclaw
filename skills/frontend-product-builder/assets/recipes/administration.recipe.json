@@ -1,0 +1,1017 @@
+{
+  "$schema": "../schemas/layout-recipe.schema.json",
+  "meta": {
+    "id": "administration",
+    "name": "Administration Workspace",
+    "version": "1.1.0",
+    "status": "stable",
+    "category": "administration",
+    "description": "Capability-oriented administration workspace for accounts, permissions, configuration, integrations, and sensitive system actions.",
+    "owner": "frontend-product-builder",
+    "source": "assets/recipes/administration.recipe.json",
+    "tags": [
+      "administration",
+      "configuration",
+      "permissions",
+      "sensitive-actions",
+      "settings"
+    ]
+  },
+  "purpose": "Allow authorized users to understand and change system configuration safely while separating ordinary settings, sensitive permissions, irreversible actions, and technical diagnostics.",
+  "useWhen": [
+    "The user configures organization, account, user, role, integration, or product settings.",
+    "Actions have broad impact or elevated permission requirements.",
+    "The interface includes read-only status, editable configuration, and sensitive actions.",
+    "Administrative information must be grouped by capability rather than backend modules."
+  ],
+  "doNotUseWhen": [
+    "The task is an ordinary operational workflow.",
+    "The screen is only a simple user profile form.",
+    "The dominant task is reviewing one record.",
+    "Technical diagnostics are being presented to ordinary users."
+  ],
+  "requiredInputs": [
+    "Administration capability map",
+    "Role and permission matrix",
+    "Configuration categories",
+    "Sensitive action inventory",
+    "Audit requirements",
+    "Tenant or organization boundaries",
+    "Confirmation requirements",
+    "Read-only versus editable behavior"
+  ],
+  "screenContract": {
+    "requiredFields": [
+      "purpose",
+      "primaryUser",
+      "primaryTask",
+      "route",
+      "dataDependencies",
+      "primaryAction",
+      "secondaryActions",
+      "permissions",
+      "states",
+      "responsiveTransformations",
+      "accessibilityRequirements",
+      "acceptanceCriteria"
+    ],
+    "selectionQuestions": [
+      "Which administrative capabilities belong to this workspace?",
+      "Which actions affect one user, one organization, or the complete system?",
+      "Which settings require immediate save, explicit save, or separate approval?",
+      "Which technical details are appropriate for the target role?",
+      "Which actions are destructive, reversible, or auditable?",
+      "How are permissions represented without relying on role-name comparisons?",
+      "Which configuration changes require reauthentication or elevated confirmation?"
+    ]
+  },
+  "regions": [
+    {
+      "id": "pageHeader",
+      "name": "Administration Header",
+      "role": "Identify the administrative scope, current organization context, and limited workspace-level actions.",
+      "required": true,
+      "order": 1,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "PageHeader",
+        "OrganizationContext",
+        "EnvironmentIndicator",
+        "OverflowMenu"
+      ],
+      "prohibitedComponents": [
+        "Ordinary destructive action",
+        "Several configuration save buttons",
+        "Raw tenant UUID as the primary identity",
+        "Large technical status panel"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "header",
+      "labelRequirement": "not-required",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Top of the workspace.",
+          "layout": "Stack title, organization context, and low-frequency overflow action.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "wrap",
+          "notes": "Do not present sensitive actions here."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Top of the workspace.",
+          "layout": "Compact title and context.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "wrap",
+          "notes": "Maintain clear environment context."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Top of the workspace.",
+          "layout": "Horizontal header with context and utility overflow.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "The header remains visually restrained."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Top of the workspace.",
+          "layout": "Horizontal header.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Do not add technical metadata merely to fill space."
+        }
+      },
+      "rules": [
+        "The current administrative scope is explicit.",
+        "Production, staging, or environment context is visible only when operationally relevant.",
+        "Technical IDs remain secondary or copyable details."
+      ]
+    },
+    {
+      "id": "administrationNavigation",
+      "name": "Administration Navigation",
+      "role": "Group administrative capabilities into predictable user-oriented categories.",
+      "required": false,
+      "order": 2,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "SettingsNavigation",
+        "SidebarSectionNavigation",
+        "SectionNavigation",
+        "SelectNavigation",
+        "NavigationGroup"
+      ],
+      "prohibitedComponents": [
+        "Unbounded horizontal tab row",
+        "Backend module names",
+        "Restricted destinations disclosed without policy"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "nav",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": true,
+        "container": "administration workspace",
+        "offsetToken": "reference.space.0",
+        "zIndexToken": "reference.zIndex.sticky",
+        "compactBehavior": "Transform into grouped select or disclosure navigation."
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible when more than one administrative capability exists.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Below the page header.",
+          "layout": "Grouped select or compact disclosure navigation.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "collapse",
+          "notes": "The active category remains explicit."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Below the page header.",
+          "layout": "Compact horizontal or vertical navigation.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "collapse",
+          "notes": "Low-frequency areas may move to overflow."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Left administrative rail or grouped navigation above content.",
+          "layout": "Vertical grouped navigation.",
+          "width": "240px",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Navigation remains separate from the global application navigation."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Left administrative rail.",
+          "layout": "Vertical grouped navigation.",
+          "width": "256px",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Do not widen indefinitely."
+        }
+      },
+      "rules": [
+        "Categories represent administrative jobs.",
+        "Users see only capabilities allowed by disclosure policy.",
+        "Security, integrations, billing, users, and general settings are not mixed without grouping.",
+        "Active state does not depend only on color."
+      ]
+    },
+    {
+      "id": "scopeSummary",
+      "name": "Administrative Scope Summary",
+      "role": "Present the identity, status, ownership, and risk context of the object being administered.",
+      "required": false,
+      "order": 3,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "EntitySummary",
+        "StatusBadge",
+        "DefinitionList",
+        "FreshnessIndicator",
+        "PermissionSummary"
+      ],
+      "prohibitedComponents": [
+        "Full operational dashboard",
+        "Raw JSON",
+        "Authentication tokens",
+        "Unmasked secrets"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when an organization, account, integration, user, or role context must remain clear.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Below administration navigation.",
+          "layout": "Single-column summary.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Technical metadata remains progressively disclosed."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Below navigation.",
+          "layout": "Two-column definition summary when content permits.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Status and ownership remain visible."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Top of administrative content.",
+          "layout": "Compact summary row.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Do not create a large hero card."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Top of administrative content.",
+          "layout": "Compact summary row.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Remain concise."
+        }
+      },
+      "rules": [
+        "The summary clarifies what is being administered.",
+        "Status labels use user-facing terminology.",
+        "Sensitive values remain masked.",
+        "Technical identifiers appear only when they support an administrative task."
+      ]
+    },
+    {
+      "id": "administrationContent",
+      "name": "Administration Content",
+      "role": "Host the active administrative capability using approved list, detail, or form patterns.",
+      "required": true,
+      "order": 4,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "SettingsSection",
+        "DataTable",
+        "Form",
+        "PermissionMatrix",
+        "IntegrationPanel",
+        "FeatureConfiguration",
+        "EmptyState",
+        "ErrorState"
+      ],
+      "prohibitedComponents": [
+        "Unregistered settings controls",
+        "Raw permission object",
+        "Role-name checks embedded in JSX",
+        "All settings in one undifferentiated form"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Below scope summary.",
+          "layout": "Single-column active administrative capability.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Nested tables use controlled overflow or approved list adaptation."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Below or beside compact navigation.",
+          "layout": "Single primary content column.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Keep sensitive actions separated."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Right of administration navigation.",
+          "layout": "Primary administrative content with optional contextual information.",
+          "width": "minmax(0, 1fr)",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Use nested approved recipes."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Right of administration navigation.",
+          "layout": "Primary administrative content with constrained reading and form widths.",
+          "width": "minmax(0, 1fr)",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Do not stretch forms indefinitely."
+        }
+      },
+      "rules": [
+        "Each capability has a clear heading and purpose.",
+        "Lists, forms, and detail areas use their corresponding nested recipes.",
+        "Permission configuration uses capability-oriented language.",
+        "Read-only and editable states remain explicit."
+      ]
+    },
+    {
+      "id": "sensitiveActions",
+      "name": "Sensitive and Destructive Actions",
+      "role": "Isolate actions that disable, delete, revoke, reset, rotate, or materially alter administrative access.",
+      "required": false,
+      "order": 5,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "critical",
+      "allowedComponents": [
+        "DangerZone",
+        "SensitiveActionPanel",
+        "Button",
+        "ConfirmationDialog",
+        "ReauthenticationDialog",
+        "ImpactSummary"
+      ],
+      "prohibitedComponents": [
+        "Primary action styling",
+        "Action without impact explanation",
+        "Secret value rendered in plain text",
+        "Several destructive actions without grouping"
+      ],
+      "ownsSpacing": true,
+      "surface": "critical",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only to eligible capabilities and only when sensitive actions exist.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "After ordinary administrative content.",
+          "layout": "Stacked action descriptions and controls.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "wrap",
+          "notes": "Actions require explicit confirmation."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "After ordinary content.",
+          "layout": "Stacked danger panels.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "wrap",
+          "notes": "Keep impact explanation visible."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "After ordinary administrative content.",
+          "layout": "Constrained danger zone.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Do not place beside ordinary save actions."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "After ordinary administrative content.",
+          "layout": "Constrained danger zone.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Remain visually separated."
+        }
+      },
+      "rules": [
+        "Sensitive actions appear after ordinary configuration.",
+        "Impact, scope, reversibility, and audit consequence are explicit.",
+        "Reauthentication is required when the approved security policy demands it.",
+        "Confirmation labels name the affected object."
+      ]
+    },
+    {
+      "id": "auditAndDiagnostics",
+      "name": "Audit and Diagnostics",
+      "role": "Provide authorized administrative history and technical diagnostics through controlled progressive disclosure.",
+      "required": false,
+      "order": 6,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "audit",
+      "allowedComponents": [
+        "AuditTimeline",
+        "ChangeHistory",
+        "DiagnosticSummary",
+        "CorrelationDetails",
+        "Disclosure",
+        "CopyButton"
+      ],
+      "prohibitedComponents": [
+        "Raw stack trace",
+        "Bearer token",
+        "Password hash",
+        "Unfiltered environment variables",
+        "Full internal response body"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only for authorized administrative or support roles.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Dedicated collapsed section.",
+          "layout": "Single-column diagnostic summary.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Long identifiers wrap or copy safely."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Dedicated section.",
+          "layout": "Structured definition list or timeline.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Remain progressively disclosed."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Dedicated administrative section.",
+          "layout": "Structured audit and diagnostics.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Do not mix with ordinary settings."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Dedicated administrative section.",
+          "layout": "Structured audit and diagnostics.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Preserve reading width."
+        }
+      },
+      "rules": [
+        "Audit history remains available when required.",
+        "Diagnostics expose only safe operational information.",
+        "Correlation identifiers may be copied.",
+        "Raw implementation details remain in logs rather than ordinary UI."
+      ]
+    }
+  ],
+  "composition": {
+    "layoutModel": "split",
+    "widthPolicy": "hybrid",
+    "container": {
+      "component": "AdministrationContainer",
+      "maxWidthToken": "layout.container.administration",
+      "paddingToken": "layout.page.padding"
+    },
+    "columnPolicy": "Compact navigation above content on narrow layouts and a constrained administration rail beside one primary content column on wide layouts.",
+    "verticalRhythmToken": "reference.space.8",
+    "regionGapToken": "reference.space.6",
+    "spacingOwnership": [
+      "The recipe owns spacing between header, administration navigation, scope summary, active content, sensitive actions, and diagnostics.",
+      "Nested list, form, and detail recipes own internal spacing.",
+      "DangerZone owns spacing between impact description and destructive controls."
+    ],
+    "surfacePolicy": [
+      "Ordinary administrative content uses approved surfaces based on nested recipe needs.",
+      "Sensitive actions use a distinct semantic danger surface.",
+      "Diagnostics use a subdued or progressively disclosed surface.",
+      "Do not render every setting inside an unrelated white card on a dark canvas."
+    ],
+    "scrollOwner": "application content canvas",
+    "rules": [
+      "Administration is grouped by capability.",
+      "Sensitive actions remain separated.",
+      "Technical diagnostics remain authorized and progressively disclosed.",
+      "Nested workflows reuse approved recipes."
+    ],
+    "prohibited": [
+      "Mixing ordinary save and destructive actions.",
+      "Administration navigation based directly on backend modules.",
+      "Raw tokens, hashes, JWTs, or security implementation details.",
+      "Several independent light and dark theme conventions.",
+      "Unbounded horizontal tabs.",
+      "Role-name comparisons scattered through presentation code."
+    ]
+  },
+  "actions": {
+    "primaryPlacement": "Inside the active administrative capability or nested form recipe.",
+    "secondaryPlacement": "Section toolbars, administrative overflow, or contextual controls.",
+    "destructivePlacement": "Dedicated sensitive-actions region after ordinary configuration.",
+    "bulkPlacement": "Inside an approved administrative list workflow with explicit selection.",
+    "contextualPlacement": "Inside the relevant capability section.",
+    "overflowPolicy": "Low-frequency export, diagnostic, and utility actions move to overflow.",
+    "maxDominantActionsPerRegion": 1,
+    "compactBehavior": "Preserve the active capability's primary action and move utilities to overflow.",
+    "rules": [
+      "The workspace header normally contains no dominant configuration action.",
+      "Each nested capability owns its save or create action.",
+      "Destructive actions never visually match ordinary configuration actions."
+    ]
+  },
+  "content": {
+    "density": "comfortable-compact",
+    "headingPolicy": "One h1 identifies administration; each capability uses h2; nested sections use h3.",
+    "longContentPolicy": "Organization names, capability labels, permission descriptions, and audit entries support realistic lengths.",
+    "truncationPolicy": "Critical scope and permission information remains accessible in full; secondary technical identifiers may truncate with copy access.",
+    "emptyStatePlacement": "Capability-specific empty states remain inside the active administration content and preserve navigation context.",
+    "loadingStrategy": "Preserve administration navigation while loading the active capability; use local skeletons or loading states.",
+    "errorScope": "Capability failures remain local when administration navigation and scope remain valid; authentication and tenant failures affect the route.",
+    "rules": [
+      "Administrative labels are understandable to the target role.",
+      "Unknown configuration values are not silently presented as disabled.",
+      "Secret and sensitive values remain masked.",
+      "Technical errors are normalized."
+    ]
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "minimumViewport": "320 CSS pixels with compact grouped administration navigation.",
+    "primaryViewport": "1366×768 desktop administration environment.",
+    "zoomExpectation": "Administration must remain usable at 125% browser zoom.",
+    "pageOverflowPolicy": "No unexpected page-level horizontal overflow.",
+    "internalOverflowPolicy": "Permission matrices and tables may use approved internal overflow; forms and ordinary settings must stack.",
+    "transformations": [
+      {
+        "from": "ultrawide",
+        "to": "wide",
+        "change": "Keep the administration rail constrained and preserve the active content width.",
+        "reason": "Navigation should not consume additional space without informational benefit."
+      },
+      {
+        "from": "wide",
+        "to": "medium",
+        "change": "Move the administration rail above content or reduce it to compact navigation.",
+        "reason": "The active configuration workflow requires sufficient content width."
+      },
+      {
+        "from": "medium",
+        "to": "compact",
+        "change": "Transform administrative navigation into a grouped select or disclosure, stack all configuration sections, and move utilities to overflow.",
+        "reason": "Compact viewports cannot sustain a permanent secondary navigation rail and complex settings simultaneously."
+      }
+    ]
+  },
+  "states": [
+    {
+      "id": "initial-loading",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render administrative navigation and scope-shaped skeletons while capability and organization context load.",
+      "userAction": "Wait."
+    },
+    {
+      "id": "data",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render approved administrative capabilities, configuration, permissions, and eligible actions.",
+      "userAction": "Inspect or change configuration."
+    },
+    {
+      "id": "empty",
+      "scope": "region",
+      "required": true,
+      "rendering": "Explain missing users, integrations, roles, or configuration and provide an eligible next action.",
+      "userAction": "Create, invite, connect, or configure."
+    },
+    {
+      "id": "warning",
+      "scope": "region",
+      "required": true,
+      "rendering": "Display non-blocking configuration risk, pending deprecation, or incomplete setup.",
+      "userAction": "Review and correct or continue according to policy."
+    },
+    {
+      "id": "error",
+      "scope": "region",
+      "required": true,
+      "rendering": "Render capability-local recovery without exposing technical response bodies.",
+      "userAction": "Retry or contact support."
+    },
+    {
+      "id": "forbidden",
+      "scope": "route",
+      "required": true,
+      "rendering": "Hide or block restricted administrative capability according to disclosure policy.",
+      "userAction": "Return to an available area."
+    },
+    {
+      "id": "partial",
+      "scope": "region",
+      "required": true,
+      "rendering": "Keep available capabilities usable while isolating unavailable integrations or settings.",
+      "userAction": "Continue or retry the affected capability."
+    },
+    {
+      "id": "stale",
+      "scope": "region",
+      "required": false,
+      "rendering": "Warn when configuration changed elsewhere and current editing context may be outdated.",
+      "userAction": "Reload, compare, or resolve conflict."
+    },
+    {
+      "id": "processing",
+      "scope": "region",
+      "required": true,
+      "rendering": "Show progress for invitations, integration checks, permission updates, key rotation, or configuration mutations.",
+      "userAction": "Wait or cancel only when supported."
+    }
+  ],
+  "accessibility": {
+    "landmarkMap": [
+      "Administration navigation uses a labeled nav landmark.",
+      "Active administrative capability uses a labeled section.",
+      "Sensitive actions use a clearly labeled section.",
+      "Audit and diagnostics use a separate labeled section."
+    ],
+    "headingStructure": [
+      "One h1 identifies the administration workspace.",
+      "The active capability uses h2.",
+      "Configuration groups, danger zones, and diagnostic groups use h3 when nested."
+    ],
+    "focusOrder": [
+      "Page orientation and organization context.",
+      "Administration navigation.",
+      "Scope summary.",
+      "Active capability content.",
+      "Active capability actions.",
+      "Sensitive actions.",
+      "Audit and diagnostics."
+    ],
+    "keyboard": [
+      "Administration navigation is keyboard operable.",
+      "Permission matrices support keyboard access.",
+      "Confirmation and reauthentication dialogs trap and restore focus.",
+      "Copy controls have accessible names."
+    ],
+    "announcements": [
+      "Permission and configuration mutation outcomes are perceivable.",
+      "Sensitive-action pending and completion states are announced.",
+      "Organization-context changes update orientation."
+    ],
+    "minimumTargetToken": "reference.control.target.minimum",
+    "contrastTarget": "WCAG 2.2 AA",
+    "colorIndependence": "Permission state, environment, warning, danger, and disabled state do not depend only on color.",
+    "rules": [
+      "Restricted controls are hidden, disabled with explanation, or read-only according to approved policy.",
+      "Danger zones must not rely solely on red borders.",
+      "Technical identifiers require meaningful labels."
+    ]
+  },
+  "constraints": {
+    "requiredComponents": [
+      "AdministrationContainer",
+      "SettingsNavigation",
+      "SettingsSection",
+      "PermissionState",
+      "DangerZone",
+      "ConfirmationDialog",
+      "ErrorState"
+    ],
+    "prohibitedPatterns": [
+      "Raw technical credentials or tokens.",
+      "Destructive actions styled as ordinary primary actions.",
+      "Permission checks based only on visible role names.",
+      "Every setting placed in one large undifferentiated form.",
+      "Unbounded horizontal administrative tabs.",
+      "Theme-specific contrast failures.",
+      "Technical HTTP messages shown to ordinary administrators."
+    ],
+    "dataMagnitude": [
+      "Administrative lists may contain many users, roles, integrations, or audit events.",
+      "Permission descriptions may be long.",
+      "Organization names and integration labels may exceed fixture lengths."
+    ],
+    "performance": [
+      "Load administrative capabilities independently when useful.",
+      "Do not fetch every administration module before the active category is known.",
+      "Invalidate only affected configuration and permission queries.",
+      "Clear context-dependent cache after organization switching."
+    ],
+    "implementation": [
+      "Capability-based permission helpers control visibility and behavior.",
+      "Nested forms use the form-workflow recipe.",
+      "Nested collections use the searchable-list recipe.",
+      "Technical diagnostics are normalized through the approved error and telemetry layers.",
+      "Machine presence conditions come from presenceDefaults; visibilityCondition prose is explanatory only."
+    ]
+  },
+  "craftDefaults": {
+    "spatialComposition": {
+      "maxVisualNestingDepth": 2,
+      "regionAssignments": [
+        {
+          "regionId": "pageHeader",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "administrationNavigation",
+          "widthStrategy": "constrained",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "scopeSummary",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "administrationContent",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": true
+        },
+        {
+          "regionId": "sensitiveActions",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "auditAndDiagnostics",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        }
+      ]
+    },
+    "perceptualHierarchy": {
+      "surfaceAssignments": [
+        {
+          "regionId": "pageHeader",
+          "role": "canvas"
+        },
+        {
+          "regionId": "administrationNavigation",
+          "role": "surface-subtle"
+        },
+        {
+          "regionId": "scopeSummary",
+          "role": "surface"
+        },
+        {
+          "regionId": "administrationContent",
+          "role": "canvas"
+        },
+        {
+          "regionId": "sensitiveActions",
+          "role": "surface-elevated"
+        },
+        {
+          "regionId": "auditAndDiagnostics",
+          "role": "surface-subtle"
+        }
+      ]
+    }
+  },
+  "presenceDefaults": [
+    {
+      "targetType": "region",
+      "targetId": "pageHeader",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Administration always requires explicit workspace and organization scope orientation."
+    },
+    {
+      "targetType": "region",
+      "targetId": "administrationNavigation",
+      "policy": "conditional",
+      "condition": {
+        "signal": "administration.capabilities.count",
+        "operator": "gt",
+        "value": 1
+      },
+      "rationale": "A workspace with only one available administrative capability must not render secondary navigation with no real choice."
+    },
+    {
+      "targetType": "region",
+      "targetId": "scopeSummary",
+      "policy": "conditional",
+      "condition": {
+        "signal": "administration.scopeContext.present",
+        "operator": "truthy"
+      },
+      "rationale": "Scope summary appears only when a concrete organization, account, integration, user, or role context must remain explicit."
+    },
+    {
+      "targetType": "region",
+      "targetId": "administrationContent",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The active administrative capability is the primary content of the workspace."
+    },
+    {
+      "targetType": "region",
+      "targetId": "sensitiveActions",
+      "policy": "conditional",
+      "condition": {
+        "all": [
+          {
+            "signal": "administration.sensitiveActions.count",
+            "operator": "gt",
+            "value": 0
+          },
+          {
+            "signal": "permissions.canManageSensitiveActions",
+            "operator": "truthy"
+          }
+        ]
+      },
+      "rationale": "Sensitive actions appear only when such actions exist and the current capability is eligible to perform them."
+    },
+    {
+      "targetType": "region",
+      "targetId": "auditAndDiagnostics",
+      "policy": "conditional",
+      "condition": {
+        "all": [
+          {
+            "signal": "administration.auditDiagnostics.available",
+            "operator": "truthy"
+          },
+          {
+            "signal": "permissions.canViewDiagnostics",
+            "operator": "truthy"
+          }
+        ]
+      },
+      "rationale": "Audit and diagnostics remain absent unless safe operational context exists and disclosure is authorized."
+    }
+  ],
+  "validation": {
+    "schema": "assets/schemas/layout-recipe.schema.json",
+    "checks": [
+      {
+        "id": "ADMIN-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The administration recipe must validate against the layout recipe schema.",
+        "remediation": "Correct invalid or missing recipe fields."
+      },
+      {
+        "id": "ADMIN-002",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Ordinary configuration, permissions, destructive actions, and diagnostics must remain structurally distinct.",
+        "remediation": "Regroup administrative capabilities and isolate sensitive regions."
+      },
+      {
+        "id": "ADMIN-003",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Missing capabilities must produce the approved hidden, disabled, read-only, or forbidden behavior.",
+        "remediation": "Correct capability evaluation and disclosure policy."
+      },
+      {
+        "id": "ADMIN-004",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Administration navigation, forms, matrices, and danger zones must not create page-level horizontal overflow.",
+        "remediation": "Correct responsive navigation, nested recipe behavior, or internal overflow."
+      },
+      {
+        "id": "ADMIN-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Secrets, raw tokens, hashes, and unsafe technical values must not appear in the interface.",
+        "remediation": "Remove, mask, or replace the value with a safe administrative representation."
+      },
+      {
+        "id": "ADMIN-006",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Administration navigation and privileged optional regions must follow typed capability and permission presence semantics.",
+        "remediation": "Correct craftDefaults/presenceDefaults and keep conditional regions required=false with cardinality.minimum=0."
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "Tenant administration",
+      "description": "Organization identity, administrators, enabled modules, limits, integration status, audit information, and sensitive disable actions."
+    },
+    {
+      "name": "Identity and access administration",
+      "description": "Users, invitations, roles, capabilities, access review, session revocation, and audit history."
+    }
+  ]
+}

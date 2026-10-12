@@ -1,0 +1,37 @@
+{
+  "$schema": "../../integrations/frontend/global-retrieval-backend.schema.json",
+  "schemaVersion": "1.0.0",
+  "artifactKind": "global-retrieval-backend-contract",
+  "status": "draft",
+  "owner": "<backend-owner>",
+  "sourceRef": "<OpenAPI/GraphQL/route/service contract>",
+  "authorizationMode": "backend-authoritative-query-scope",
+  "authentication": {
+    "required": true,
+    "mechanismRef": "<auth contract or implementation evidence>"
+  },
+  "tenantIsolation": {
+    "required": true,
+    "scopeKey": "<tenant-or-organization-key>",
+    "enforcementPoint": "<where tenant scope is enforced>",
+    "negativeTestRef": "<negative tenant-isolation test evidence>"
+  },
+  "limits": {
+    "maxQueryLength": 256,
+    "maxResults": 50,
+    "rateLimitRef": "<rate-limit contract or evidence>"
+  },
+  "ranking": {
+    "strategyRef": "<ranking contract or implementation evidence>",
+    "deterministicTieBreak": "<stable tie-break rule>"
+  },
+  "timeoutMs": 3000,
+  "sensitiveDataHandling": {
+    "policyRef": "<sensitive-data policy or contract>",
+    "redactionMode": "omit-unauthorized",
+    "forbiddenFields": []
+  },
+  "evidenceRefs": [
+    "<backend integration or contract test evidence>"
+  ]
+}

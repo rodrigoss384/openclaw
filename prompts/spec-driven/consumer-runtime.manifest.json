@@ -1,0 +1,24 @@
+{
+  "$schema": "consumer-runtime.manifest.schema.json",
+  "schemaVersion": "1.0.0",
+  "runtimeVersion": "1.2.0",
+  "workflowVersion": "2.4.0",
+  "stateFile": ".specs/workflow-runtime-install.json",
+  "lockFile": "workflow.lock.json",
+  "fixedEntries": [
+    { "path": "rules.md", "kind": "file" },
+    { "path": "workflow.lock.json", "kind": "file" },
+    { "path": "prompts/spec-driven", "kind": "tree" },
+    { "path": "integrations/governance", "kind": "tree" },
+    { "path": "integrations/frontend", "kind": "tree" },
+    { "path": "integrations/impeccable", "kind": "tree" },
+    { "path": ".github/agents", "kind": "tree" },
+    { "path": ".github/hooks/impeccable.json", "kind": "file" },
+    { "path": ".github/skills/impeccable", "kind": "tree" }
+  ],
+  "lockedSkills": {
+    "enabled": true,
+    "exclude": ["evals", "node_modules"]
+  },
+  "excludedSegments": [".git", ".gitnexus", ".DS_Store", "evals", "node_modules"]
+}

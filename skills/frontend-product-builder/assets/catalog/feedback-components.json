@@ -1,0 +1,3926 @@
+{
+  "$schema": "../schemas/component-catalog.schema.json",
+  "meta": {
+    "id": "frontend-product-builder-feedback-components",
+    "name": "Frontend Product Builder Feedback Components",
+    "version": "1.0.0",
+    "status": "approved",
+    "owner": "frontend-product-builder",
+    "category": "feedback",
+    "source": "./assets/catalog/feedback-components.json",
+    "designSystem": "docs/frontend/design-system/design-system.json",
+    "generated": false,
+    "description": "Canonical feedback components for empty, loading, processing, warning, failure, permission, conflict, stale-data, and confirmation states."
+  },
+  "components": {
+    "EmptyState": {
+      "id": "empty-state",
+      "name": "EmptyState",
+      "level": "shared-composite",
+      "category": "feedback",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical state for communicating that expected content is absent and guiding the user toward the next valid action.",
+      "capabilities": [
+        "Explain why a collection, region, or workflow has no content.",
+        "Distinguish first-use emptiness from filtered no-results state.",
+        "Provide an eligible next action without manufacturing urgency.",
+        "Preserve the surrounding route and task context."
+      ],
+      "keywords": [
+        "empty",
+        "no-results",
+        "first-use",
+        "missing-content",
+        "nothing-found"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/feedback"
+      },
+      "implementation": "src/components/feedback/empty-state.tsx",
+      "publicImport": "@/components/feedback/empty-state",
+      "contract": "docs/frontend/design-system/components/empty-state.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Stack, Button, approved icon system",
+        "components": [
+          "Stack",
+          "Button"
+        ],
+        "reason": "Empty states require semantic variants, controlled action hierarchy, content guidance, and responsive composition beyond a generic card."
+      },
+      "tokens": [
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.background.surfaceSubtle",
+        "reference.space.3",
+        "reference.space.4",
+        "reference.space.6",
+        "reference.icon.size.lg"
+      ],
+      "variants": {
+        "firstUse": {
+          "intent": "Orient a user before the first resource or record has been created.",
+          "default": true,
+          "allowedUse": [
+            "A collection has never contained records.",
+            "A feature requires initial setup.",
+            "The user can create or configure the missing content."
+          ],
+          "prohibitedUse": [
+            "Active filters removed all results.",
+            "The server failed.",
+            "The user lacks permission."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "empty"
+          ]
+        },
+        "noResults": {
+          "intent": "Explain that the current search, filters, or scope produced no matching records.",
+          "allowedUse": [
+            "Search query has no matches.",
+            "Filters exclude all available records.",
+            "The selected scope contains no matching items."
+          ],
+          "prohibitedUse": [
+            "The collection has never contained records.",
+            "The server returned an error.",
+            "The content is still loading."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "empty"
+          ]
+        },
+        "missingPrerequisite": {
+          "intent": "Explain that content cannot exist until another valid prerequisite is completed.",
+          "allowedUse": [
+            "A document must be uploaded first.",
+            "An integration must be connected first.",
+            "A parent record must be selected first."
+          ],
+          "prohibitedUse": [
+            "Unexpected application failure.",
+            "Missing permission.",
+            "Ordinary optional content."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "empty",
+            "unavailable"
+          ]
+        },
+        "archivedScope": {
+          "intent": "Explain that the current scope intentionally contains no active content because it is archived or inactive.",
+          "allowedUse": [
+            "Archived tenant.",
+            "Inactive account.",
+            "Closed workflow with no active items."
+          ],
+          "prohibitedUse": [
+            "Destructive confirmation.",
+            "Technical system error."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "empty"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Region-level empty state inside a table, panel, or subsection.",
+          "allowedUse": [
+            "Table body.",
+            "Dashboard panel.",
+            "Contextual aside."
+          ],
+          "tokens": [
+            "reference.space.4"
+          ]
+        },
+        "default": {
+          "intent": "Route- or major-region empty state.",
+          "default": true,
+          "allowedUse": [
+            "Primary collection region.",
+            "Feature route.",
+            "Major workflow section."
+          ],
+          "tokens": [
+            "reference.space.6"
+          ]
+        }
+      },
+      "states": [
+        "empty",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Optional supporting icon illustrating the empty-state category.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "The icon must not be the only source of meaning.",
+            "Avoid decorative illustrations that consume excessive vertical space."
+          ]
+        },
+        {
+          "name": "title",
+          "description": "Concise statement describing the absent content.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not use generic text such as Nothing here.",
+            "Name the missing resource or current result condition."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Explanation of why the state exists and what it means.",
+          "required": true,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not blame the user.",
+            "Do not expose internal query or API details."
+          ]
+        },
+        {
+          "name": "details",
+          "description": "Optional supporting context or active-filter summary.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "MetadataList",
+            "FilterSummary",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Critical recovery information belongs in the description or actions."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Eligible next action or recovery action.",
+          "required": false,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "One dominant action at most.",
+            "Do not show creation actions the user cannot execute."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "firstUse | noResults | missingPrerequisite | archivedScope",
+          "required": false,
+          "default": "firstUse",
+          "description": "Semantic reason for the absence of content.",
+          "semantic": true,
+          "restrictions": [
+            "The variant must match the actual data condition."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Region scale of the empty state.",
+          "semantic": true,
+          "restrictions": [
+            "Do not use compact only to hide insufficient explanation."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Section",
+          "DataTable",
+          "Dashboard panel",
+          "Search results region",
+          "Feature route"
+        ],
+        "allowedChildren": [
+          "Text",
+          "Approved icon",
+          "Button",
+          "DropdownMenu",
+          "MetadataList"
+        ],
+        "prohibitedParents": [
+          "Inline field error",
+          "Button",
+          "Tooltip"
+        ],
+        "prohibitedChildren": [
+          "Complete form",
+          "DataTable",
+          "Large decorative hero"
+        ],
+        "spacingOwnership": [
+          "EmptyState owns spacing between icon, title, description, details, and actions.",
+          "The parent region owns spacing around the complete empty state."
+        ],
+        "surfaceOwnership": "EmptyState may render directly inside the parent or use one subtle surface; it must not introduce nested decorative cards.",
+        "rules": [
+          "Empty is distinct from loading, error, forbidden, and no-results.",
+          "The component must not reserve space for absent content outside the empty-state composition.",
+          "Action eligibility is supplied by the owning feature."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Stack",
+          "Button",
+          "DropdownMenu"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "recommended",
+          "notes": "Explain whether no activity exists or whether a filter removed all data."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results"
+          ],
+          "status": "required",
+          "notes": "First-use and no-results states must be distinct."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "allowed",
+          "notes": "Use for missing related records or optional sections."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent"
+          ],
+          "status": "recommended",
+          "notes": "Invitations, integrations, and roles need capability-aware actions."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "evidenceNavigator",
+            "evidenceViewer",
+            "proposalAndRecommendation"
+          ],
+          "status": "allowed",
+          "notes": "Missing evidence and missing recommendation must remain distinct."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct query execution.",
+          "Permission evaluation.",
+          "Automatic resource creation."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning query or feature determines why the content is absent."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Actions receive callbacks from the owning feature."
+        ]
+      },
+      "responsive": {
+        "strategy": "Remain centered or start-aligned according to the parent while preserving concise readable text and usable actions.",
+        "compact": "Use reduced padding, stack all actions, and avoid large illustrations.",
+        "medium": "Use constrained text width and wrapping actions.",
+        "wide": "Remain constrained inside the parent region rather than stretching across the route.",
+        "ultrawide": "Do not enlarge the illustration or text block to fill space.",
+        "overflowPolicy": "Text and actions wrap; no page-level horizontal overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain readable and actionable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "section or status region when the state changes dynamically",
+        "accessibleName": "Visible title.",
+        "keyboard": [
+          "All recovery and creation actions are keyboard operable.",
+          "The empty-state container itself is not focusable by default."
+        ],
+        "focus": [
+          "When a loaded collection becomes empty after an action, focus remains in a logical surrounding location.",
+          "Route-level navigation may move focus to the title according to application policy."
+        ],
+        "announcements": [
+          "Dynamic no-results or empty transitions may use polite status announcements.",
+          "Do not repeatedly announce unchanged empty states."
+        ],
+        "aria": [
+          "Avoid alert semantics for ordinary empty states.",
+          "Decorative icons are hidden from assistive technology."
+        ],
+        "colorIndependence": "The empty-state reason is communicated through text rather than visual tone alone.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "A specific title and explanation.",
+        "typical": "Title, explanation, optional context, and one eligible action.",
+        "maximum": "A concise task-oriented state; extensive onboarding belongs elsewhere.",
+        "wrapping": "Text and actions wrap naturally.",
+        "truncation": "Do not truncate the reason or recovery action.",
+        "localization": "Support expanded titles, descriptions, and action labels.",
+        "emptyBehavior": "An EmptyState without a title or explanation is invalid.",
+        "technicalContent": "Query keys, endpoint names, HTTP status codes, and raw filters are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/feedback/empty-state.stories.tsx",
+        "requiredStories": [
+          "FirstUse",
+          "NoResults",
+          "MissingPrerequisite",
+          "ArchivedScope",
+          "WithoutAction",
+          "LongLocalizedContent",
+          "CompactContainer",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/feedback/empty-state.test.tsx",
+        "requiredTests": [
+          "Visible title",
+          "Variant contract",
+          "Action eligibility composition",
+          "No automatic alert role"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Search with no results",
+          "First-use collection",
+          "Compact table region",
+          "390x844",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "SearchableListRoute",
+          "AdministrationRoute",
+          "DashboardPanel",
+          "EvidenceNavigator"
+        ]
+      },
+      "notes": []
+    },
+    "ErrorState": {
+      "id": "error-state",
+      "name": "ErrorState",
+      "level": "shared-composite",
+      "category": "feedback",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical recoverable or blocking error presentation that communicates operational impact without exposing unsafe implementation details.",
+      "capabilities": [
+        "Explain that a route, region, or operation failed.",
+        "Separate recoverable failure from unavailable service or blocked workflow.",
+        "Provide retry, return, support, or safe fallback actions.",
+        "Expose a safe correlation reference when operationally useful."
+      ],
+      "keywords": [
+        "error",
+        "failure",
+        "retry",
+        "unavailable",
+        "exception"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/feedback"
+      },
+      "implementation": "src/components/feedback/error-state.tsx",
+      "publicImport": "@/components/feedback/error-state",
+      "contract": "docs/frontend/design-system/components/error-state.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Stack, Button, InlineAlert, approved error-normalization contract",
+        "components": [
+          "Stack",
+          "Button",
+          "InlineAlert"
+        ],
+        "reason": "Error presentation requires safe normalized content, recovery hierarchy, correlation references, and scope-aware variants."
+      },
+      "tokens": [
+        "semantic.status.danger.background",
+        "semantic.status.danger.foreground",
+        "semantic.status.warning.background",
+        "semantic.status.warning.foreground",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "reference.space.4",
+        "reference.space.6"
+      ],
+      "variants": {
+        "region": {
+          "intent": "Communicate a recoverable failure limited to one region while preserving the rest of the screen.",
+          "default": true,
+          "allowedUse": [
+            "Dashboard panel failed.",
+            "Optional related-data query failed.",
+            "One document could not be loaded."
+          ],
+          "prohibitedUse": [
+            "Authentication failure affecting the route.",
+            "Tenant-context failure affecting all data."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "error"
+          ]
+        },
+        "route": {
+          "intent": "Communicate a failure that prevents the route from fulfilling its primary purpose.",
+          "allowedUse": [
+            "Primary entity query failed.",
+            "Route prerequisite could not be resolved.",
+            "Required screen configuration is unavailable."
+          ],
+          "prohibitedUse": [
+            "One optional widget failed."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "error"
+          ]
+        },
+        "unavailable": {
+          "intent": "Communicate that a required service or dependency is temporarily unavailable.",
+          "allowedUse": [
+            "Temporary upstream outage.",
+            "Planned service unavailability.",
+            "Dependency health prevents execution."
+          ],
+          "prohibitedUse": [
+            "Validation failure.",
+            "User lacks permission.",
+            "No records exist."
+          ],
+          "tokens": [
+            "semantic.status.warning.background",
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "unavailable"
+          ]
+        },
+        "blocked": {
+          "intent": "Communicate that a workflow cannot continue because a required condition failed.",
+          "allowedUse": [
+            "Required document processing failed.",
+            "Conflict prevents submission.",
+            "Mandatory dependency cannot be resolved."
+          ],
+          "prohibitedUse": [
+            "Ordinary field validation."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "error",
+            "unavailable"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Failure inside a bounded region.",
+          "allowedUse": [
+            "Panel.",
+            "Table region.",
+            "Contextual aside."
+          ],
+          "tokens": [
+            "reference.space.4"
+          ]
+        },
+        "default": {
+          "intent": "Major region or route failure.",
+          "default": true,
+          "allowedUse": [
+            "Route.",
+            "Primary screen region."
+          ],
+          "tokens": [
+            "reference.space.6"
+          ]
+        }
+      },
+      "states": [
+        "error",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Optional semantic failure icon.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "The icon must match the failure severity.",
+            "The icon is not the only source of meaning."
+          ]
+        },
+        {
+          "name": "title",
+          "description": "Clear statement of what could not be completed.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Name the failed task or unavailable content.",
+            "Do not use raw exception names."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Safe user-operational explanation and impact.",
+          "required": true,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not expose stack traces, SQL, internal hosts, secrets, or raw response bodies."
+          ]
+        },
+        {
+          "name": "reference",
+          "description": "Optional safe support or correlation reference.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "CorrelationReference",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not expose authentication tokens or database identifiers.",
+            "The reference must be safe to copy."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Retry, return, support, or fallback actions.",
+          "required": false,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "One dominant recovery action.",
+            "Do not offer retry when retry cannot change the outcome."
+          ]
+        },
+        {
+          "name": "details",
+          "description": "Optional authorized diagnostic disclosure.",
+          "required": false,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "Disclosure",
+            "DiagnosticSummary"
+          ],
+          "contentRestrictions": [
+            "Visible only to eligible support or administrative roles.",
+            "Raw stack traces remain prohibited."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "region | route | unavailable | blocked",
+          "required": false,
+          "default": "region",
+          "description": "Operational scope and meaning of the failure.",
+          "semantic": true,
+          "restrictions": [
+            "The variant must reflect the actual failure scope."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Presentation scale matching the failed region.",
+          "semantic": true,
+          "restrictions": [
+            "Do not use compact for route-blocking failures."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Route error boundary",
+          "Section",
+          "DataTable region",
+          "Dashboard panel",
+          "Dialog content",
+          "Feature component"
+        ],
+        "allowedChildren": [
+          "Text",
+          "Button",
+          "DropdownMenu",
+          "CorrelationReference",
+          "Disclosure"
+        ],
+        "prohibitedParents": [
+          "FormField for field validation",
+          "Tooltip",
+          "Button"
+        ],
+        "prohibitedChildren": [
+          "Raw Error object",
+          "Raw API response",
+          "Stack trace"
+        ],
+        "spacingOwnership": [
+          "ErrorState owns spacing between icon, title, description, reference, actions, and authorized details.",
+          "The parent region owns spacing around the complete state."
+        ],
+        "surfaceOwnership": "ErrorState may own a semantic danger or warning surface matching the failure scope.",
+        "rules": [
+          "Raw transport errors must be normalized before rendering.",
+          "Field validation belongs to FormField or FormErrorSummary.",
+          "Retry behavior is supplied by the owning query or feature."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Stack",
+          "Button",
+          "DropdownMenu",
+          "InlineAlert"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "primaryMetrics",
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "recommended",
+          "notes": "Keep unaffected regions usable."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results",
+            "contextualDetails"
+          ],
+          "status": "required",
+          "notes": "Do not replace the complete route when only contextual details fail."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside",
+            "auditDetails"
+          ],
+          "status": "recommended",
+          "notes": "Primary entity failure may become route-scoped."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formErrors"
+          ],
+          "status": "allowed",
+          "notes": "Cross-field and submission errors normally use FormErrorSummary; broader dependency failures may use ErrorState."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "securityFeedback",
+            "authenticationPanel"
+          ],
+          "status": "allowed",
+          "notes": "Authentication-specific errors require safe account-enumeration behavior."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Parsing arbitrary transport errors.",
+          "Retrying requests directly.",
+          "Reading authentication tokens.",
+          "Inspecting internal logs."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning error boundary, query, mutation, or feature supplies normalized content and recovery callbacks."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Retry, return, copy, and support actions are supplied by feature composition."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve the failure explanation and recovery action while constraining technical or supporting details.",
+        "compact": "Stack title, explanation, reference, and actions.",
+        "medium": "Use constrained text width and wrapping actions.",
+        "wide": "Remain aligned with the failed region rather than stretching across unrelated content.",
+        "ultrawide": "Do not increase content width merely to fill the viewport.",
+        "overflowPolicy": "References wrap or use safe copy controls; no page-level horizontal overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain readable and actionable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "alert for newly surfaced blocking errors or labeled section for persistent route errors",
+        "accessibleName": "Visible title.",
+        "keyboard": [
+          "All recovery actions are keyboard operable.",
+          "Authorized details disclosure is keyboard operable."
+        ],
+        "focus": [
+          "The owning workflow may move focus to a newly rendered blocking error.",
+          "Do not repeatedly steal focus during automatic retries."
+        ],
+        "announcements": [
+          "New blocking failures use assertive or appropriate alert semantics.",
+          "Persistent route errors are not repeatedly announced."
+        ],
+        "aria": [
+          "Use role=alert only when immediate announcement is justified.",
+          "Correlation references require meaningful labels."
+        ],
+        "colorIndependence": "Failure meaning is communicated through title, description, and icon in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "A specific failure title and safe explanation.",
+        "typical": "Title, impact explanation, one recovery action, and optional reference.",
+        "maximum": "A concise operational explanation with authorized progressive diagnostic disclosure.",
+        "wrapping": "All text and references wrap safely.",
+        "truncation": "Do not truncate the failure impact or required recovery steps.",
+        "localization": "Support expanded error and action text.",
+        "emptyBehavior": "An ErrorState without an explanation is invalid.",
+        "technicalContent": "Only safe correlation references and approved diagnostic summaries are allowed."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/feedback/error-state.stories.tsx",
+        "requiredStories": [
+          "Region",
+          "Route",
+          "Unavailable",
+          "Blocked",
+          "WithReference",
+          "WithoutRetry",
+          "AuthorizedDetails",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/feedback/error-state.test.tsx",
+        "requiredTests": [
+          "Variant semantics",
+          "Safe content rendering",
+          "Recovery action composition",
+          "Alert behavior",
+          "No raw Error rendering"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Dashboard panel failure",
+          "Route failure",
+          "Long localized error",
+          "390x844",
+          "Keyboard recovery"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "RouteErrorBoundary",
+          "DashboardPanel",
+          "DataTableRegion",
+          "EntityDetailRoute"
+        ]
+      },
+      "notes": []
+    },
+    "LoadingState": {
+      "id": "loading-state",
+      "name": "LoadingState",
+      "level": "shared-composite",
+      "category": "feedback",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical initial-loading and local-pending presentation that preserves expected geometry and communicates that content is being retrieved.",
+      "capabilities": [
+        "Represent initial loading for a route, region, or component.",
+        "Compose realistic skeleton structures.",
+        "Communicate pending status to assistive technology.",
+        "Distinguish initial loading from background refreshing and long-running processing."
+      ],
+      "keywords": [
+        "loading",
+        "skeleton",
+        "spinner",
+        "pending",
+        "fetching"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/feedback"
+      },
+      "implementation": "src/components/feedback/loading-state.tsx",
+      "publicImport": "@/components/feedback/loading-state",
+      "contract": "docs/frontend/design-system/components/loading-state.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Skeleton, native status semantics, approved progress indicator",
+        "components": [
+          "Skeleton"
+        ],
+        "reason": "Loading requires scope-aware geometry, announcement behavior, reduced-motion handling, and separation from background refresh."
+      },
+      "tokens": [
+        "semantic.background.surfaceSubtle",
+        "semantic.text.secondary",
+        "reference.space.3",
+        "reference.space.4",
+        "reference.space.6",
+        "reference.duration.normal"
+      ],
+      "variants": {
+        "skeleton": {
+          "intent": "Preserve the geometry of content that has not yet loaded.",
+          "default": true,
+          "allowedUse": [
+            "Initial route loading.",
+            "Initial table loading.",
+            "Initial metric or detail-region loading."
+          ],
+          "prohibitedUse": [
+            "Background refresh when usable data already exists.",
+            "Long-running domain process."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle"
+          ],
+          "states": [
+            "loading"
+          ]
+        },
+        "inline": {
+          "intent": "Communicate a small local pending state without replacing surrounding content.",
+          "allowedUse": [
+            "Loading additional options.",
+            "Local contextual content.",
+            "Small dependent region."
+          ],
+          "prohibitedUse": [
+            "Complete route loading.",
+            "Primary mutation submission when a button pending state is sufficient."
+          ],
+          "tokens": [
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "loading"
+          ]
+        },
+        "route": {
+          "intent": "Represent an unresolved route prerequisite or initial route payload.",
+          "allowedUse": [
+            "Authentication bootstrap.",
+            "Required organization context.",
+            "Primary route query."
+          ],
+          "prohibitedUse": [
+            "One optional region.",
+            "Background refresh."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle"
+          ],
+          "states": [
+            "loading"
+          ]
+        },
+        "refreshing": {
+          "intent": "Indicate background synchronization while preserving existing content.",
+          "allowedUse": [
+            "Background query refetch.",
+            "Manual refresh preserving current data."
+          ],
+          "prohibitedUse": [
+            "Replacing populated content with skeletons.",
+            "Blocking the complete route without necessity."
+          ],
+          "tokens": [
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "loading"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Local pending indicator or compact region skeleton.",
+          "allowedUse": [
+            "Small panel.",
+            "Control options.",
+            "Table cell dependency."
+          ],
+          "tokens": [
+            "reference.space.3"
+          ]
+        },
+        "default": {
+          "intent": "Major region or route loading composition.",
+          "default": true,
+          "allowedUse": [
+            "Route.",
+            "Table.",
+            "Dashboard region.",
+            "Detail content."
+          ],
+          "tokens": [
+            "reference.space.6"
+          ]
+        }
+      },
+      "states": [
+        "loading"
+      ],
+      "slots": [
+        {
+          "name": "indicator",
+          "description": "Skeleton composition or approved local loading indicator.",
+          "required": true,
+          "multiple": true,
+          "order": 1,
+          "allowedComponents": [
+            "Skeleton",
+            "Approved spinner",
+            "Route skeleton"
+          ],
+          "contentRestrictions": [
+            "The structure should approximate eventual content.",
+            "Do not use decorative animation without loading meaning."
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Optional visible loading description when useful.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use concise task-specific wording.",
+            "Do not promise a completion time without evidence."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "skeleton | inline | route | refreshing",
+          "required": false,
+          "default": "skeleton",
+          "description": "Loading scope and presentation strategy.",
+          "semantic": true,
+          "restrictions": [
+            "Use refreshing when existing data remains usable."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Scale matching the loading scope.",
+          "semantic": true,
+          "restrictions": [
+            "Do not use a route-size loading state inside a small panel."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Route",
+          "Section",
+          "DataTable",
+          "Dashboard panel",
+          "Entity detail region",
+          "Form initialization"
+        ],
+        "allowedChildren": [
+          "Skeleton",
+          "Approved spinner",
+          "Text"
+        ],
+        "prohibitedParents": [
+          "Button when Button loading is sufficient",
+          "Tooltip"
+        ],
+        "prohibitedChildren": [
+          "Interactive controls presented as usable",
+          "Final data values"
+        ],
+        "spacingOwnership": [
+          "LoadingState owns spacing between loading indicators and optional visible label.",
+          "The skeleton composition owns spacing among placeholder shapes."
+        ],
+        "surfaceOwnership": "LoadingState normally inherits the eventual content surface.",
+        "rules": [
+          "Initial loading, refreshing, and long-running processing are distinct.",
+          "Skeletons approximate final geometry.",
+          "Existing usable data remains visible during background refresh."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Skeleton",
+          "Stack"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "pageHeader",
+            "primaryMetrics",
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "required",
+          "notes": "Each region receives a realistic loading shape."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results"
+          ],
+          "status": "required",
+          "notes": "Initial table loading differs from background refetch."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader",
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "required",
+          "notes": "Primary entity orientation must not render incomplete placeholder values as final data."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "required",
+          "notes": "Edit forms initialize only after authoritative data is available."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "required",
+          "notes": "Protected application content must not flash before session resolution."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Inspecting query state directly.",
+          "Executing fetches.",
+          "Determining route prerequisites."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning query, route, or feature decides when the loading state renders."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Mirror the responsive structure of the eventual content and avoid introducing temporary overflow.",
+        "compact": "Use compact target geometry and reduced placeholder count.",
+        "medium": "Approximate the medium content structure.",
+        "wide": "Approximate the approved wide content structure.",
+        "ultrawide": "Do not create additional placeholders absent from the eventual layout.",
+        "overflowPolicy": "Skeletons and indicators must not create page-level horizontal overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Loading status remains perceivable with enlarged text and reduced motion."
+      },
+      "accessibility": {
+        "semanticElement": "status region or container using aria-busy",
+        "accessibleName": "Visible or visually hidden task-specific loading label.",
+        "keyboard": [
+          "LoadingState is not interactive.",
+          "Previously usable controls remain operable during non-blocking refresh where safe."
+        ],
+        "focus": [
+          "Initial loading must not move focus into decorative skeletons.",
+          "Background refresh must not reset focus."
+        ],
+        "announcements": [
+          "Initial pending state may be announced politely.",
+          "Do not repeatedly announce frequent background refreshes.",
+          "Completion is announced only when operationally useful."
+        ],
+        "aria": [
+          "Use aria-busy on the appropriate region.",
+          "Hide decorative skeleton shapes from assistive technology."
+        ],
+        "colorIndependence": "Loading meaning is communicated through status semantics or text, not animation or color alone.",
+        "contrastTarget": "WCAG 2.2 AA for visible labels and meaningful indicators"
+      },
+      "content": {
+        "minimum": "A task-specific accessible loading label.",
+        "typical": "A realistic skeleton composition and optional visible label.",
+        "maximum": "Only enough placeholders to preserve expected geometry.",
+        "wrapping": "Visible labels wrap normally.",
+        "truncation": "Do not truncate required loading context.",
+        "localization": "Loading labels support localized expansion.",
+        "emptyBehavior": "A LoadingState without an accessible pending indication is invalid.",
+        "technicalContent": "Query keys, endpoint names, and transport state labels are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/feedback/loading-state.stories.tsx",
+        "requiredStories": [
+          "Skeleton",
+          "Inline",
+          "Route",
+          "Refreshing",
+          "TableSkeleton",
+          "FormSkeleton",
+          "ReducedMotion",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/feedback/loading-state.test.tsx",
+        "requiredTests": [
+          "Accessible pending label",
+          "Busy semantics",
+          "Decorative skeleton hiding",
+          "Variant contract"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Initial dashboard load",
+          "Background list refresh",
+          "Form initialization",
+          "Reduced motion",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "DashboardRoute",
+          "DataTable",
+          "EntityDetailRoute",
+          "FormWorkflowRoute"
+        ]
+      },
+      "notes": []
+    },
+    "PermissionState": {
+      "id": "permission-state",
+      "name": "PermissionState",
+      "level": "shared-composite",
+      "category": "feedback",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical presentation for unavailable capabilities, restricted content, read-only access, and actions disabled by authorization policy.",
+      "capabilities": [
+        "Communicate that a capability or content region is unavailable to the current user.",
+        "Distinguish hidden, forbidden, read-only, and disabled-with-reason behaviors.",
+        "Explain valid next steps without disclosing protected information.",
+        "Preserve safe surrounding context when policy permits."
+      ],
+      "keywords": [
+        "permission",
+        "forbidden",
+        "read-only",
+        "restricted",
+        "capability"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/feedback"
+      },
+      "implementation": "src/components/feedback/permission-state.tsx",
+      "publicImport": "@/components/feedback/permission-state",
+      "contract": "docs/frontend/design-system/components/permission-state.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Stack, InlineAlert, Button, capability-presentation policy",
+        "components": [
+          "Stack",
+          "InlineAlert",
+          "Button"
+        ],
+        "reason": "Permission outcomes require consistent disclosure, safe messaging, action eligibility, and region- versus route-level behavior."
+      },
+      "tokens": [
+        "semantic.status.info.background",
+        "semantic.status.info.foreground",
+        "semantic.status.warning.background",
+        "semantic.status.warning.foreground",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "reference.space.4",
+        "reference.space.6"
+      ],
+      "variants": {
+        "forbidden": {
+          "intent": "Block access to a route or region while revealing only approved context.",
+          "default": true,
+          "allowedUse": [
+            "The user lacks a required capability.",
+            "The user cannot access the requested tenant or entity.",
+            "A protected administrative area is unavailable."
+          ],
+          "prohibitedUse": [
+            "Authentication is missing.",
+            "The feature is temporarily unavailable.",
+            "Data failed to load."
+          ],
+          "tokens": [
+            "semantic.status.warning.background",
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "unavailable"
+          ]
+        },
+        "readOnly": {
+          "intent": "Allow inspection while preventing modification.",
+          "allowedUse": [
+            "User may view but not edit.",
+            "Record is locked by workflow state.",
+            "Historical record is intentionally immutable."
+          ],
+          "prohibitedUse": [
+            "User cannot view the content at all.",
+            "Editable controls merely failed to load."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "read-only"
+          ]
+        },
+        "disabledWithReason": {
+          "intent": "Explain why a visible action or capability is currently ineligible.",
+          "allowedUse": [
+            "Prerequisite is incomplete.",
+            "Current workflow state blocks the action.",
+            "User capability exists but temporary eligibility does not."
+          ],
+          "prohibitedUse": [
+            "The user must not know the action exists.",
+            "The reason is a technical backend failure."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "disabled"
+          ]
+        },
+        "restrictedData": {
+          "intent": "Indicate that part of otherwise accessible content is intentionally withheld.",
+          "allowedUse": [
+            "Sensitive financial values.",
+            "Protected audit details.",
+            "Restricted personal information."
+          ],
+          "prohibitedUse": [
+            "Unknown or unavailable values.",
+            "Loading state."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "read-only",
+            "unavailable"
+          ]
+        }
+      },
+      "sizes": {
+        "inline": {
+          "intent": "Small explanation adjacent to a disabled or read-only capability.",
+          "allowedUse": [
+            "Action group.",
+            "Form section.",
+            "Contextual region."
+          ],
+          "tokens": [
+            "reference.space.3"
+          ]
+        },
+        "region": {
+          "intent": "Restricted section or major feature area.",
+          "default": true,
+          "allowedUse": [
+            "Administrative section.",
+            "Entity subsection.",
+            "Protected data region."
+          ],
+          "tokens": [
+            "reference.space.4"
+          ]
+        },
+        "route": {
+          "intent": "Complete route is forbidden.",
+          "allowedUse": [
+            "Protected administration route.",
+            "Tenant isolation failure.",
+            "Restricted entity route."
+          ],
+          "tokens": [
+            "reference.space.6"
+          ]
+        }
+      },
+      "states": [
+        "disabled",
+        "read-only",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "title",
+          "description": "Clear statement of the access or eligibility condition.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not disclose protected resource existence when policy forbids it."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Safe explanation of the current capability state.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not expose internal role names or permission implementation."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Approved return, request-access, or prerequisite action.",
+          "required": false,
+          "multiple": true,
+          "order": 3,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "Request-access actions require an actual supported workflow.",
+            "Do not offer privilege escalation as an immediate action."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "forbidden | readOnly | disabledWithReason | restrictedData",
+          "required": false,
+          "default": "forbidden",
+          "description": "Permission or eligibility presentation policy.",
+          "semantic": true,
+          "restrictions": [
+            "The variant must follow the approved disclosure policy."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "inline | region | route",
+          "required": false,
+          "default": "region",
+          "description": "Scope of the restricted capability.",
+          "semantic": true,
+          "restrictions": [
+            "Route-level restrictions must not use inline presentation."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Route",
+          "Section",
+          "Form section",
+          "Administration capability",
+          "Entity detail region",
+          "Action group"
+        ],
+        "allowedChildren": [
+          "Text",
+          "Button",
+          "InlineAlert"
+        ],
+        "prohibitedParents": [
+          "Tooltip as the only explanation",
+          "Badge as the complete permission message"
+        ],
+        "prohibitedChildren": [
+          "Raw role list",
+          "Raw permission object",
+          "Protected data"
+        ],
+        "spacingOwnership": [
+          "PermissionState owns spacing between title, description, and actions.",
+          "The owning region controls surrounding spacing."
+        ],
+        "surfaceOwnership": "PermissionState may own a subtle informational or warning surface according to scope.",
+        "rules": [
+          "Capability evaluation occurs outside the component.",
+          "The backend remains authoritative.",
+          "Hidden versus visible restricted behavior follows an explicit disclosure policy."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Stack",
+          "InlineAlert",
+          "Button"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "bulkActions",
+            "results",
+            "contextualDetails"
+          ],
+          "status": "allowed",
+          "notes": "Row actions may be hidden or disabled according to disclosure policy."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityActions",
+            "primaryContent",
+            "auditDetails"
+          ],
+          "status": "recommended",
+          "notes": "View and edit capabilities remain distinct."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections",
+            "formActions"
+          ],
+          "status": "recommended",
+          "notes": "Read-only presentation should not misuse disabled inputs."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationNavigation",
+            "administrationContent",
+            "sensitiveActions",
+            "auditAndDiagnostics"
+          ],
+          "status": "required",
+          "notes": "Administration uses capability-oriented checks rather than visible role-name comparisons."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm",
+            "decisionActions",
+            "auditContext"
+          ],
+          "status": "recommended",
+          "notes": "Review may remain read-only when decision capability is absent."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Reading user roles directly.",
+          "Evaluating capabilities.",
+          "Fetching protected data.",
+          "Requesting elevated privileges."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning feature supplies the resolved permission outcome and safe user-facing content."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Return or access-request callbacks are supplied externally."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve the access explanation and safe next action without occupying excessive route space.",
+        "compact": "Stack explanation and actions.",
+        "medium": "Use constrained readable content.",
+        "wide": "Remain aligned to the restricted region.",
+        "ultrawide": "Do not stretch across unrelated route content.",
+        "overflowPolicy": "Text and actions wrap safely.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain understandable and actionable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "section, note, or status region according to scope",
+        "accessibleName": "Visible title.",
+        "keyboard": [
+          "Available return or request actions are keyboard operable.",
+          "Restricted controls must not remain accidentally focusable."
+        ],
+        "focus": [
+          "Route-level forbidden states may receive route-entry focus according to application policy.",
+          "Read-only regions preserve logical reading order."
+        ],
+        "announcements": [
+          "A newly changed eligibility state may be announced politely.",
+          "Do not announce hidden capabilities."
+        ],
+        "aria": [
+          "Disabled controls use native disabled semantics when appropriate.",
+          "Read-only controls and read-only content remain semantically distinct."
+        ],
+        "colorIndependence": "Restriction, read-only, and disabled meaning are communicated through text and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "A safe title and explanation.",
+        "typical": "Access condition, impact, and optional valid next action.",
+        "maximum": "A concise explanation; complete authorization policy belongs in documentation.",
+        "wrapping": "All content wraps naturally.",
+        "truncation": "Do not truncate the restriction reason.",
+        "localization": "Support expanded permission explanations.",
+        "emptyBehavior": "PermissionState without a clear access condition is invalid.",
+        "technicalContent": "Internal role codes, policy object keys, capability IDs, and authorization implementation are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/feedback/permission-state.stories.tsx",
+        "requiredStories": [
+          "Forbidden",
+          "ReadOnly",
+          "DisabledWithReason",
+          "RestrictedData",
+          "Inline",
+          "Route",
+          "LongContent",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/feedback/permission-state.test.tsx",
+        "requiredTests": [
+          "Variant semantics",
+          "No raw role rendering",
+          "Restricted-control focus behavior",
+          "Safe action composition"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Forbidden administration route",
+          "Read-only form",
+          "Restricted audit region",
+          "390x844",
+          "Keyboard navigation"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "AdministrationRoute",
+          "EntityDetailRoute",
+          "FormWorkflowRoute",
+          "ReviewWorkspace"
+        ]
+      },
+      "notes": []
+    },
+    "InlineAlert": {
+      "id": "inline-alert",
+      "name": "InlineAlert",
+      "level": "shared-composite",
+      "category": "feedback",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical inline semantic message for informational, success, warning, and danger feedback within the current workflow context.",
+      "capabilities": [
+        "Communicate contextual information, success, warning, or error.",
+        "Provide concise supporting actions.",
+        "Render static or dynamically announced feedback.",
+        "Preserve semantic hierarchy without opening a modal."
+      ],
+      "keywords": [
+        "alert",
+        "warning",
+        "info",
+        "success",
+        "danger"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/feedback"
+      },
+      "implementation": "src/components/feedback/inline-alert.tsx",
+      "publicImport": "@/components/feedback/inline-alert",
+      "contract": "docs/frontend/design-system/components/inline-alert.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Native status and alert semantics, Stack, Button",
+        "components": [
+          "Stack",
+          "Button"
+        ],
+        "reason": "Inline feedback requires semantic tone, announcement policy, action hierarchy, and consistent anatomy."
+      },
+      "tokens": [
+        "semantic.status.info.background",
+        "semantic.status.info.foreground",
+        "semantic.status.success.background",
+        "semantic.status.success.foreground",
+        "semantic.status.warning.background",
+        "semantic.status.warning.foreground",
+        "semantic.status.danger.background",
+        "semantic.status.danger.foreground",
+        "semantic.border.default",
+        "reference.space.3",
+        "reference.space.4"
+      ],
+      "variants": {
+        "info": {
+          "intent": "Communicate neutral operational information or guidance.",
+          "default": true,
+          "allowedUse": [
+            "Workflow context.",
+            "Noncritical prerequisite.",
+            "Explanation of system behavior."
+          ],
+          "prohibitedUse": [
+            "Successful completion.",
+            "Blocking error."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "success": {
+          "intent": "Communicate a completed or healthy outcome.",
+          "allowedUse": [
+            "Successful save.",
+            "Completed integration check.",
+            "Confirmed human decision."
+          ],
+          "prohibitedUse": [
+            "Machine recommendation awaiting human review.",
+            "Long-lived generic decoration."
+          ],
+          "tokens": [
+            "semantic.status.success.background",
+            "semantic.status.success.foreground"
+          ],
+          "states": [
+            "success"
+          ]
+        },
+        "warning": {
+          "intent": "Communicate attention, risk, incomplete state, or non-blocking conflict.",
+          "allowedUse": [
+            "Incomplete configuration.",
+            "Near deadline.",
+            "Potentially stale supporting data.",
+            "Non-blocking limitation."
+          ],
+          "prohibitedUse": [
+            "Neutral help.",
+            "Blocking failure that prevents continuation."
+          ],
+          "tokens": [
+            "semantic.status.warning.background",
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "warning"
+          ]
+        },
+        "danger": {
+          "intent": "Communicate an error, blocking risk, destructive impact, or failed state.",
+          "allowedUse": [
+            "Submission failure.",
+            "Conflict requiring resolution.",
+            "Destructive-action consequence.",
+            "Security-sensitive error."
+          ],
+          "prohibitedUse": [
+            "Decorative emphasis.",
+            "Ordinary field hint."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "error"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Concise message inside a local component or field group.",
+          "allowedUse": [
+            "Dialog.",
+            "Form section.",
+            "Contextual panel."
+          ],
+          "tokens": [
+            "reference.space.3"
+          ]
+        },
+        "default": {
+          "intent": "Major contextual message.",
+          "default": true,
+          "allowedUse": [
+            "Route section.",
+            "Workflow warning.",
+            "Administrative risk."
+          ],
+          "tokens": [
+            "reference.space.4"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "success",
+        "warning",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Optional semantic icon.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "Icon tone must match the selected variant.",
+            "Decorative icons are hidden from assistive technology."
+          ]
+        },
+        {
+          "name": "title",
+          "description": "Optional concise message heading.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required when the description is complex or the state is critical."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Primary message content.",
+          "required": true,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not expose raw server or security details."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Optional local recovery or contextual actions.",
+          "required": false,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "One dominant action at most.",
+            "Avoid several unrelated actions."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "info | success | warning | danger",
+          "required": false,
+          "default": "info",
+          "description": "Semantic message tone.",
+          "semantic": true,
+          "restrictions": [
+            "Do not select based only on preferred color."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Message density matching the containing region.",
+          "semantic": true,
+          "restrictions": [
+            "Compact messages still require complete meaning."
+          ]
+        },
+        {
+          "name": "announcement",
+          "type": "none | polite | assertive",
+          "required": false,
+          "default": "none",
+          "description": "Announcement policy for dynamically inserted feedback.",
+          "semantic": true,
+          "restrictions": [
+            "Static informational content normally uses none.",
+            "Assertive announcements are reserved for urgent blocking changes."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Section",
+          "Form",
+          "DialogContent",
+          "Dashboard panel",
+          "Feature component",
+          "Administration capability"
+        ],
+        "allowedChildren": [
+          "Text",
+          "Approved icon",
+          "Button"
+        ],
+        "prohibitedParents": [
+          "Tooltip",
+          "Button"
+        ],
+        "prohibitedChildren": [
+          "Complete form",
+          "Raw Error object",
+          "Unbounded technical details"
+        ],
+        "spacingOwnership": [
+          "InlineAlert owns spacing among icon, title, description, and actions.",
+          "The parent owns spacing around the alert."
+        ],
+        "surfaceOwnership": "InlineAlert owns its semantic message surface.",
+        "rules": [
+          "Static and dynamically announced alerts use different announcement policies.",
+          "Do not use toasts as a replacement for persistent actionable errors.",
+          "The variant communicates meaning rather than decoration."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Stack",
+          "Button"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "criticalAttention",
+            "analyticalContent"
+          ],
+          "status": "recommended",
+          "notes": "Critical attention uses warning or danger semantics."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSummary",
+            "formErrors",
+            "formSections"
+          ],
+          "status": "required",
+          "notes": "Form-level failure and field errors remain distinct."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "scopeSummary",
+            "administrationContent",
+            "sensitiveActions",
+            "auditAndDiagnostics"
+          ],
+          "status": "recommended",
+          "notes": "Danger alerts accompany sensitive-action impact."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "securityFeedback"
+          ],
+          "status": "required",
+          "notes": "Messages must follow account-enumeration policy."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "criticalReviewContext",
+            "proposalAndRecommendation",
+            "decisionForm"
+          ],
+          "status": "required",
+          "notes": "Recommendation limitations and blocking conflicts remain explicit."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Parsing transport errors.",
+          "Executing retry.",
+          "Determining message severity from raw HTTP status."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning workflow selects the semantic variant and announcement policy."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Actions are supplied externally."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve message meaning and action visibility while stacking internal regions when space decreases.",
+        "compact": "Icon, text, and actions stack or align at the start.",
+        "medium": "Text and actions may wrap.",
+        "wide": "Actions may align beside concise content.",
+        "ultrawide": "Message width remains constrained by its parent.",
+        "overflowPolicy": "Long messages and actions wrap; no horizontal overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain readable and actionable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "status, alert, or neutral section according to announcement policy",
+        "accessibleName": "Visible title when present, otherwise message text.",
+        "keyboard": [
+          "All actions are keyboard operable.",
+          "The alert container is not focusable unless focus is explicitly required."
+        ],
+        "focus": [
+          "Blocking form errors may receive focus through the owning workflow.",
+          "Informational alerts do not steal focus."
+        ],
+        "announcements": [
+          "Polite messages use status semantics.",
+          "Urgent blocking messages may use alert semantics.",
+          "Static content uses no live announcement by default."
+        ],
+        "aria": [
+          "Do not combine redundant role=alert and assertive live-region behavior.",
+          "Use one announcement policy."
+        ],
+        "colorIndependence": "Message type is communicated through text, icon, and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One clear message.",
+        "typical": "Optional title, concise explanation, and one contextual action.",
+        "maximum": "A focused operational message; extensive documentation belongs elsewhere.",
+        "wrapping": "All content wraps naturally.",
+        "truncation": "Do not truncate warnings, errors, or required actions.",
+        "localization": "Support expanded labels and message text.",
+        "emptyBehavior": "An InlineAlert without message content is invalid.",
+        "technicalContent": "Raw errors, stack traces, query keys, tokens, and internal response bodies are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/feedback/inline-alert.stories.tsx",
+        "requiredStories": [
+          "Info",
+          "Success",
+          "Warning",
+          "Danger",
+          "WithTitle",
+          "WithAction",
+          "LongContent",
+          "Compact",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/feedback/inline-alert.test.tsx",
+        "requiredTests": [
+          "Variant contract",
+          "Announcement policy",
+          "Action composition",
+          "No unnecessary alert role"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Form error",
+          "Administration warning",
+          "Compact dialog",
+          "Long localized message",
+          "Keyboard action"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormErrorSummary",
+          "PermissionState",
+          "ErrorState",
+          "ConfirmationDialog",
+          "StaleDataNotice"
+        ]
+      },
+      "notes": []
+    },
+    "ConfirmationDialog": {
+      "id": "confirmation-dialog",
+      "name": "ConfirmationDialog",
+      "level": "shared-composite",
+      "category": "overlay",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical modal confirmation for consequential actions, including impact explanation, semantic action hierarchy, pending state, and optional elevated verification.",
+      "capabilities": [
+        "Require explicit confirmation before a consequential action.",
+        "Explain scope, impact, reversibility, and affected object.",
+        "Separate ordinary, destructive, and sensitive confirmations.",
+        "Prevent duplicate execution while confirmation is pending."
+      ],
+      "keywords": [
+        "confirmation",
+        "dialog",
+        "destructive",
+        "sensitive",
+        "approve"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/feedback"
+      },
+      "implementation": "src/components/feedback/confirmation-dialog.tsx",
+      "publicImport": "@/components/feedback/confirmation-dialog",
+      "contract": "docs/frontend/design-system/components/confirmation-dialog.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Dialog, Button, InlineAlert, FormField",
+        "components": [
+          "Dialog",
+          "Button",
+          "InlineAlert",
+          "FormField"
+        ],
+        "reason": "Consequential confirmations require consistent impact wording, button semantics, focus behavior, pending orchestration, and optional reauthentication or typed confirmation."
+      },
+      "tokens": [
+        "semantic.background.surfaceElevated",
+        "semantic.status.warning.background",
+        "semantic.status.warning.foreground",
+        "semantic.status.danger.background",
+        "semantic.status.danger.foreground",
+        "reference.space.4",
+        "reference.space.6",
+        "reference.zIndex.modal"
+      ],
+      "variants": {
+        "ordinary": {
+          "intent": "Confirm a consequential but reversible or non-destructive action.",
+          "default": true,
+          "allowedUse": [
+            "Discard unsaved changes.",
+            "Restart processing.",
+            "Apply a significant configuration change."
+          ],
+          "prohibitedUse": [
+            "Deletion.",
+            "Access revocation.",
+            "Irreversible action."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "expanded",
+            "collapsed",
+            "loading"
+          ]
+        },
+        "destructive": {
+          "intent": "Confirm deletion, revocation, disabling, or another materially destructive action.",
+          "allowedUse": [
+            "Delete record.",
+            "Revoke access.",
+            "Disable tenant.",
+            "Remove integration."
+          ],
+          "prohibitedUse": [
+            "Ordinary save.",
+            "Non-destructive rejection."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "expanded",
+            "collapsed",
+            "loading",
+            "error"
+          ]
+        },
+        "sensitive": {
+          "intent": "Confirm an action requiring elevated awareness, reauthentication, or additional verification.",
+          "allowedUse": [
+            "Rotate credential.",
+            "Change critical security policy.",
+            "Approve high-impact operation.",
+            "Access protected export."
+          ],
+          "prohibitedUse": [
+            "Routine low-risk action."
+          ],
+          "tokens": [
+            "semantic.status.warning.background",
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "expanded",
+            "collapsed",
+            "loading",
+            "error"
+          ]
+        }
+      },
+      "sizes": {
+        "sm": {
+          "intent": "Short ordinary confirmation.",
+          "allowedUse": [
+            "Discard changes.",
+            "Simple reversible action."
+          ],
+          "tokens": []
+        },
+        "md": {
+          "intent": "Default confirmation with impact explanation.",
+          "default": true,
+          "allowedUse": [
+            "Destructive action.",
+            "Sensitive configuration action."
+          ],
+          "tokens": []
+        },
+        "lg": {
+          "intent": "Complex impact summary or required confirmation input.",
+          "allowedUse": [
+            "Multi-entity impact.",
+            "Typed confirmation.",
+            "Reauthentication composition."
+          ],
+          "tokens": []
+        }
+      },
+      "states": [
+        "expanded",
+        "collapsed",
+        "loading",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "title",
+          "description": "Question naming the action and affected object.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "DialogTitle"
+          ],
+          "contentRestrictions": [
+            "Use explicit action and object names.",
+            "Avoid generic Are you sure wording as the complete title."
+          ]
+        },
+        {
+          "name": "impact",
+          "description": "Explanation of scope, consequence, and reversibility.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "DialogDescription",
+            "InlineAlert",
+            "DefinitionList"
+          ],
+          "contentRestrictions": [
+            "State whether the action is reversible.",
+            "Do not hide critical impact in a tooltip."
+          ]
+        },
+        {
+          "name": "affectedObject",
+          "description": "Optional identity summary of the affected record, account, tenant, or resource.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "EntitySummary",
+            "DefinitionList"
+          ],
+          "contentRestrictions": [
+            "Avoid ambiguous references such as this item when identity matters."
+          ]
+        },
+        {
+          "name": "verification",
+          "description": "Optional typed confirmation, acknowledgement, rationale, or reauthentication step.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "FormField",
+            "Checkbox",
+            "ReauthenticationForm"
+          ],
+          "contentRestrictions": [
+            "Use only when justified by risk policy.",
+            "Do not create friction merely for visual seriousness."
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Normalized mutation or verification failure.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "InlineAlert"
+          ],
+          "contentRestrictions": [
+            "Preserve the dialog and entered verification values after recoverable failure."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Cancel and semantic confirmation actions.",
+          "required": true,
+          "multiple": true,
+          "order": 6,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "One confirmation action and one cancel action.",
+            "Destructive confirmation uses the danger variant."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "ordinary | destructive | sensitive",
+          "required": false,
+          "default": "ordinary",
+          "description": "Semantic consequence level of the confirmation.",
+          "semantic": true,
+          "restrictions": [
+            "Variant must follow actual action impact."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "sm | md | lg",
+          "required": false,
+          "default": "md",
+          "description": "Dialog size based on impact and verification complexity.",
+          "semantic": true,
+          "restrictions": [
+            "Do not use lg merely to create visual importance."
+          ]
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true,
+          "description": "Controlled modal visibility.",
+          "semantic": true,
+          "restrictions": [
+            "The owning feature controls visibility."
+          ]
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": true,
+          "description": "Controlled visibility callback.",
+          "semantic": true,
+          "restrictions": [
+            "Pending behavior may prevent accidental dismissal according to policy."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that final confirmation is being processed.",
+          "semantic": true,
+          "restrictions": [
+            "Must prevent duplicate confirmation."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Feature component",
+          "Screen",
+          "Sensitive action workflow",
+          "Form action workflow"
+        ],
+        "allowedChildren": [
+          "Dialog",
+          "InlineAlert",
+          "DefinitionList",
+          "FormField",
+          "Button"
+        ],
+        "prohibitedParents": [
+          "Tooltip",
+          "Another modal dialog without explicit nested-flow approval"
+        ],
+        "prohibitedChildren": [
+          "Complete route workflow",
+          "Raw API error",
+          "Unrelated actions"
+        ],
+        "spacingOwnership": [
+          "ConfirmationDialog owns spacing between title, impact, object summary, verification, error, and actions.",
+          "Dialog foundation owns overlay and modal positioning."
+        ],
+        "surfaceOwnership": "ConfirmationDialog owns the elevated modal surface and semantic impact treatment.",
+        "rules": [
+          "The affected object and consequence are explicit.",
+          "Destructive confirmation never uses the ordinary primary button variant.",
+          "Mutation execution remains owned by the feature."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Dialog",
+          "Button",
+          "InlineAlert",
+          "FormField"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formActions"
+          ],
+          "status": "recommended",
+          "notes": "Use for discard, conflict, or consequential save confirmation."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityActions"
+          ],
+          "status": "recommended",
+          "notes": "Deletion and irreversible entity actions require explicit impact."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "sensitiveActions"
+          ],
+          "status": "required",
+          "notes": "May include reauthentication or typed confirmation."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionActions"
+          ],
+          "status": "allowed",
+          "notes": "Use only when decision policy requires final confirmation."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Executing mutations.",
+          "Fetching the affected entity.",
+          "Evaluating permission.",
+          "Reauthenticating directly."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Visibility and pending state are controlled by the owning feature.",
+          "Verification form state may be owned by an approved nested form composition."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Dialog foundation traps focus and locks background scroll.",
+          "The confirmation callback owns the mutation."
+        ]
+      },
+      "responsive": {
+        "strategy": "Constrain modal width and preserve impact, verification, errors, and actions within the viewport.",
+        "compact": "Use near-full-width presentation, stacked actions, and internal scrolling only when required.",
+        "medium": "Centered constrained dialog with wrapping action footer.",
+        "wide": "Centered semantic size variant.",
+        "ultrawide": "Remain constrained and do not enlarge with the viewport.",
+        "overflowPolicy": "Long impact content scrolls inside the modal while title and actions remain accessible.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain operable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "modal dialog",
+        "accessibleName": "Confirmation title.",
+        "keyboard": [
+          "Tab and Shift+Tab remain inside the dialog.",
+          "Escape closes only when policy allows dismissal.",
+          "Confirmation and cancellation are keyboard operable."
+        ],
+        "focus": [
+          "Initial focus normally targets the safest non-destructive action or first required verification control.",
+          "Focus returns to the trigger after close.",
+          "Recoverable errors preserve focus context."
+        ],
+        "announcements": [
+          "Title and impact description are announced on open.",
+          "Mutation failure and pending state are perceivable."
+        ],
+        "aria": [
+          "Use Dialog-provided modal semantics.",
+          "Destructive meaning is not communicated through aria labels alone."
+        ],
+        "colorIndependence": "Consequence is communicated through explicit text, action label, and icon in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "Explicit action, affected object or scope, impact, cancel action, and confirmation action.",
+        "typical": "Title, consequence explanation, affected-object summary, optional verification, and two actions.",
+        "maximum": "A bounded impact and verification workflow; complete configuration belongs on a route.",
+        "wrapping": "All impact, labels, and actions wrap safely.",
+        "truncation": "Do not truncate affected identity or consequence.",
+        "localization": "Support expanded titles, impact statements, and actions.",
+        "emptyBehavior": "A confirmation without impact explanation is invalid.",
+        "technicalContent": "Raw mutation errors, API routes, permission keys, and internal identifiers are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/feedback/confirmation-dialog.stories.tsx",
+        "requiredStories": [
+          "Ordinary",
+          "Destructive",
+          "Sensitive",
+          "WithAffectedObject",
+          "TypedConfirmation",
+          "Reauthentication",
+          "Pending",
+          "MutationError",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/feedback/confirmation-dialog.test.tsx",
+        "requiredTests": [
+          "Accessible title",
+          "Focus trap and restoration",
+          "Semantic action variants",
+          "Pending duplicate prevention",
+          "Recoverable error preservation",
+          "Controlled visibility"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Delete entity",
+          "Disable tenant",
+          "Discard changes",
+          "390x844",
+          "Virtual keyboard",
+          "Keyboard-only confirmation"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "DeleteEntityDialog",
+          "UnsavedChangesDialog",
+          "TenantDisableDialog",
+          "ReviewDecisionConfirmation"
+        ]
+      },
+      "notes": []
+    },
+    "ProcessingState": {
+      "id": "processing-state",
+      "name": "ProcessingState",
+      "level": "shared-composite",
+      "category": "feedback",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical state for long-running domain operations that continue beyond a single request and may expose progress, stages, cancellation, retry, or background continuation.",
+      "capabilities": [
+        "Communicate that a domain operation is still running.",
+        "Present determinate or indeterminate progress without inventing precision.",
+        "Expose current stage, elapsed context, and safe next actions.",
+        "Distinguish queued, running, delayed, completed, failed, and unavailable conditions."
+      ],
+      "keywords": [
+        "processing",
+        "progress",
+        "queued",
+        "running",
+        "background-job"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/feedback"
+      },
+      "implementation": "src/components/feedback/processing-state.tsx",
+      "publicImport": "@/components/feedback/processing-state",
+      "contract": "docs/frontend/design-system/components/processing-state.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Native progress semantics, Stack, Button, InlineAlert",
+        "components": [
+          "Stack",
+          "Button",
+          "InlineAlert"
+        ],
+        "reason": "Long-running operations require explicit progress truthfulness, stage semantics, background behavior, and recovery states."
+      },
+      "tokens": [
+        "semantic.status.info.background",
+        "semantic.status.info.foreground",
+        "semantic.status.success.background",
+        "semantic.status.success.foreground",
+        "semantic.status.warning.background",
+        "semantic.status.warning.foreground",
+        "semantic.status.danger.background",
+        "semantic.status.danger.foreground",
+        "reference.space.3",
+        "reference.space.4",
+        "reference.space.6"
+      ],
+      "variants": {
+        "queued": {
+          "intent": "Communicate that an operation has been accepted but has not begun execution.",
+          "allowedUse": [
+            "Document processing queue.",
+            "Export queue.",
+            "Background analysis queue."
+          ],
+          "prohibitedUse": [
+            "Active execution.",
+            "Initial data fetching."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "processing"
+          ]
+        },
+        "indeterminate": {
+          "intent": "Communicate active processing when reliable percentage progress is unavailable.",
+          "default": true,
+          "allowedUse": [
+            "AI analysis without measurable progress.",
+            "External processing with stage-only updates.",
+            "Document conversion."
+          ],
+          "prohibitedUse": [
+            "A reliable progress percentage exists.",
+            "Ordinary short mutation pending state."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "processing"
+          ]
+        },
+        "determinate": {
+          "intent": "Communicate measurable progress from an authoritative source.",
+          "allowedUse": [
+            "File upload.",
+            "Batch import.",
+            "Document processing with authoritative percentage."
+          ],
+          "prohibitedUse": [
+            "Estimated or invented progress.",
+            "Progress based only on elapsed animation."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "processing"
+          ]
+        },
+        "delayed": {
+          "intent": "Communicate that processing continues but is taking longer than expected.",
+          "allowedUse": [
+            "Known queue delay.",
+            "External dependency delay.",
+            "Long-running analysis."
+          ],
+          "prohibitedUse": [
+            "Operation failed.",
+            "No expected-duration policy exists."
+          ],
+          "tokens": [
+            "semantic.status.warning.background",
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "processing",
+            "warning"
+          ]
+        },
+        "failed": {
+          "intent": "Communicate that a background operation ended unsuccessfully.",
+          "allowedUse": [
+            "Document processing failed.",
+            "Import failed.",
+            "Analysis job failed."
+          ],
+          "prohibitedUse": [
+            "Operation is merely delayed.",
+            "Initial query failed before a process existed."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "error"
+          ]
+        },
+        "completed": {
+          "intent": "Communicate verified completion and expose the resulting next action.",
+          "allowedUse": [
+            "Processing result is authoritative and available.",
+            "Export is ready.",
+            "Import completed."
+          ],
+          "prohibitedUse": [
+            "Machine recommendation is awaiting human review.",
+            "Completion has not been confirmed by the backend."
+          ],
+          "tokens": [
+            "semantic.status.success.background",
+            "semantic.status.success.foreground"
+          ],
+          "states": [
+            "success"
+          ]
+        }
+      },
+      "sizes": {
+        "inline": {
+          "intent": "Compact processing context embedded near an affected item.",
+          "allowedUse": [
+            "Document row.",
+            "Upload item.",
+            "Small panel."
+          ],
+          "tokens": [
+            "reference.space.3"
+          ]
+        },
+        "panel": {
+          "intent": "Major region-level process state.",
+          "default": true,
+          "allowedUse": [
+            "Document viewer.",
+            "Analysis panel.",
+            "Import region."
+          ],
+          "tokens": [
+            "reference.space.4"
+          ]
+        },
+        "route": {
+          "intent": "Primary route represents the running process.",
+          "allowedUse": [
+            "Dedicated import or export workflow.",
+            "Dedicated processing result route."
+          ],
+          "tokens": [
+            "reference.space.6"
+          ]
+        }
+      },
+      "states": [
+        "processing",
+        "warning",
+        "error",
+        "success",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "status",
+          "description": "Visible current process state.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "StatusBadge",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use user-facing process terminology.",
+            "Do not expose internal queue codes."
+          ]
+        },
+        {
+          "name": "title",
+          "description": "Task-oriented process description.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Describe what is being processed."
+          ]
+        },
+        {
+          "name": "progress",
+          "description": "Authoritative percentage or indeterminate progress indicator.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "NativeProgress",
+            "Approved progress indicator"
+          ],
+          "contentRestrictions": [
+            "Do not display a percentage unless it is authoritative.",
+            "Do not animate fabricated progress."
+          ]
+        },
+        {
+          "name": "stage",
+          "description": "Optional current stage or processing explanation.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "Text",
+            "MetadataList"
+          ],
+          "contentRestrictions": [
+            "Translate internal stage keys into user-facing language."
+          ]
+        },
+        {
+          "name": "message",
+          "description": "Optional delay, failure, completion, or background-continuation message.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "InlineAlert",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not guarantee completion time without an authoritative estimate."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Cancel, retry, continue in background, view result, or return actions.",
+          "required": false,
+          "multiple": true,
+          "order": 6,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "Actions must be supported by the process contract.",
+            "Cancellation must explain whether work already completed is reversible."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "queued | indeterminate | determinate | delayed | failed | completed",
+          "required": false,
+          "default": "indeterminate",
+          "description": "Authoritative lifecycle state of the process.",
+          "semantic": true,
+          "restrictions": [
+            "Do not infer completed from local timer or animation."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "inline | panel | route",
+          "required": false,
+          "default": "panel",
+          "description": "Process-state presentation scope.",
+          "semantic": true,
+          "restrictions": [
+            "The size must match the affected workflow region."
+          ]
+        },
+        {
+          "name": "progress",
+          "type": "number | null",
+          "required": false,
+          "default": null,
+          "description": "Authoritative progress percentage from 0 to 100 or null when indeterminate.",
+          "semantic": true,
+          "restrictions": [
+            "Required for determinate variant.",
+            "Must not be estimated by presentation code."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Document panel",
+          "Import workflow",
+          "Export workflow",
+          "Review workspace",
+          "DataTable row",
+          "Route"
+        ],
+        "allowedChildren": [
+          "StatusBadge",
+          "NativeProgress",
+          "InlineAlert",
+          "Button",
+          "DropdownMenu",
+          "MetadataList"
+        ],
+        "prohibitedParents": [
+          "Button when local loading is sufficient",
+          "Tooltip"
+        ],
+        "prohibitedChildren": [
+          "Fabricated progress timer",
+          "Raw background-job payload",
+          "Complete application logs"
+        ],
+        "spacingOwnership": [
+          "ProcessingState owns spacing among status, title, progress, stage, message, and actions.",
+          "The parent region owns surrounding layout."
+        ],
+        "surfaceOwnership": "ProcessingState may own a contextual process surface matching its scope.",
+        "rules": [
+          "Loading data and processing a domain operation are distinct.",
+          "Determinate progress requires an authoritative value.",
+          "Completed status requires backend-confirmed completion."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Stack",
+          "Button",
+          "DropdownMenu",
+          "InlineAlert"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results"
+          ],
+          "status": "allowed",
+          "notes": "Rows may expose processing status without replacing the collection."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "recommended",
+          "notes": "Documents and imports may continue asynchronously."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formActions",
+            "formSummary"
+          ],
+          "status": "allowed",
+          "notes": "Ordinary submission pending normally remains inside FormActionBar."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "evidenceViewer",
+            "proposalAndRecommendation",
+            "criticalReviewContext"
+          ],
+          "status": "required",
+          "notes": "Pending analysis must not be presented as final recommendation."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "auditAndDiagnostics"
+          ],
+          "status": "allowed",
+          "notes": "Integration checks, imports, and key rotation may be asynchronous."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Polling process state.",
+          "Executing cancellation.",
+          "Retrying jobs.",
+          "Estimating progress."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning feature or query supplies the authoritative process lifecycle and callbacks."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Cancel, retry, and view-result actions are supplied externally."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve process identity, current state, and next action while stacking supporting metadata.",
+        "compact": "Stack progress, stage, messages, and actions.",
+        "medium": "Use constrained process content and wrapping actions.",
+        "wide": "Status and primary metadata may align horizontally.",
+        "ultrawide": "Do not enlarge progress visuals merely to fill space.",
+        "overflowPolicy": "Stage and message content wrap; long identifiers remain hidden or safely copyable through approved metadata components.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain understandable and operable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "status region with native progress semantics when determinate",
+        "accessibleName": "Visible process title.",
+        "keyboard": [
+          "All cancel, retry, background, and result actions are keyboard operable."
+        ],
+        "focus": [
+          "Status updates do not repeatedly steal focus.",
+          "Failure recovery may move focus according to the owning workflow."
+        ],
+        "announcements": [
+          "Meaningful stage changes may be announced politely.",
+          "Failure and completion are announced once when operationally useful.",
+          "Frequent percentage updates should not produce excessive announcements."
+        ],
+        "aria": [
+          "Use native progress element when appropriate.",
+          "Expose indeterminate progress without fabricated aria-valuenow."
+        ],
+        "colorIndependence": "Queued, running, delayed, failed, and completed states use text and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "Process title and current lifecycle state.",
+        "typical": "Title, status, progress or stage, supporting message, and optional actions.",
+        "maximum": "A concise process summary; detailed logs belong in authorized diagnostics.",
+        "wrapping": "All status text and actions wrap.",
+        "truncation": "Do not truncate failure or cancellation consequences.",
+        "localization": "Support expanded process and stage labels.",
+        "emptyBehavior": "ProcessingState without an authoritative lifecycle state is invalid.",
+        "technicalContent": "Raw queue names, job payloads, worker IDs, stack traces, and internal stage codes are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/feedback/processing-state.stories.tsx",
+        "requiredStories": [
+          "Queued",
+          "Indeterminate",
+          "Determinate",
+          "Delayed",
+          "Failed",
+          "Completed",
+          "Inline",
+          "Panel",
+          "LongStageLabel",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/feedback/processing-state.test.tsx",
+        "requiredTests": [
+          "Variant semantics",
+          "Determinate progress requirements",
+          "No fabricated percentage",
+          "Accessible progress",
+          "Action composition"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Document processing",
+          "Batch import",
+          "AI analysis pending",
+          "390x844",
+          "Reduced motion",
+          "Keyboard recovery"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "DocumentProcessingPanel",
+          "ImportWorkflow",
+          "ExportWorkflow",
+          "RecommendationPanel"
+        ]
+      },
+      "notes": []
+    },
+    "StaleDataNotice": {
+      "id": "stale-data-notice",
+      "name": "StaleDataNotice",
+      "level": "shared-composite",
+      "category": "feedback",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical feedback for outdated, superseded, or conflicting data that may require refresh, comparison, or reconciliation before continuing.",
+      "capabilities": [
+        "Communicate that visible data may no longer be authoritative.",
+        "Distinguish non-blocking staleness from blocking conflict.",
+        "Provide refresh, compare, reload, or preserve-local-changes actions.",
+        "Prevent silent submission against outdated evidence or configuration."
+      ],
+      "keywords": [
+        "stale",
+        "outdated",
+        "conflict",
+        "refresh",
+        "version"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/feedback"
+      },
+      "implementation": "src/components/feedback/stale-data-notice.tsx",
+      "publicImport": "@/components/feedback/stale-data-notice",
+      "contract": "docs/frontend/design-system/components/stale-data-notice.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "InlineAlert, Button, FreshnessIndicator, ConflictSummary",
+        "components": [
+          "InlineAlert",
+          "Button",
+          "FreshnessIndicator"
+        ],
+        "reason": "Stale-data handling requires explicit blocking policy, freshness context, conflict messaging, and controlled recovery actions."
+      },
+      "tokens": [
+        "semantic.status.warning.background",
+        "semantic.status.warning.foreground",
+        "semantic.status.danger.background",
+        "semantic.status.danger.foreground",
+        "semantic.text.secondary",
+        "reference.space.3",
+        "reference.space.4"
+      ],
+      "variants": {
+        "nonBlocking": {
+          "intent": "Warn that data is older than preferred but remains usable.",
+          "default": true,
+          "allowedUse": [
+            "Dashboard data passed its freshness threshold.",
+            "Cached reference data remains usable.",
+            "Background refresh failed while existing data remains valid enough."
+          ],
+          "prohibitedUse": [
+            "Submission would overwrite newer data.",
+            "Evidence changed materially."
+          ],
+          "tokens": [
+            "semantic.status.warning.background",
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "stale",
+            "warning"
+          ]
+        },
+        "blocking": {
+          "intent": "Block an action until the user reloads or reviews newer authoritative data.",
+          "allowedUse": [
+            "Edit version no longer matches the server.",
+            "Review evidence changed.",
+            "Configuration changed while the user was editing."
+          ],
+          "prohibitedUse": [
+            "Minor dashboard freshness delay.",
+            "No actual version conflict exists."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "stale",
+            "error"
+          ]
+        },
+        "conflict": {
+          "intent": "Communicate that local changes and newer server values require explicit reconciliation.",
+          "allowedUse": [
+            "Dirty form conflicts with updated server record.",
+            "Concurrent administration edit.",
+            "Decision draft conflicts with changed evidence."
+          ],
+          "prohibitedUse": [
+            "Automatic safe refresh without local changes.",
+            "Ordinary validation failure."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "stale",
+            "error"
+          ]
+        },
+        "superseded": {
+          "intent": "Communicate that the current record, recommendation, or version was replaced by a newer authoritative version.",
+          "allowedUse": [
+            "Recommendation regenerated.",
+            "Document version replaced.",
+            "Historical configuration no longer current."
+          ],
+          "prohibitedUse": [
+            "Current version is merely old but still authoritative."
+          ],
+          "tokens": [
+            "semantic.status.warning.background",
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "stale",
+            "warning"
+          ]
+        }
+      },
+      "sizes": {
+        "inline": {
+          "intent": "Compact notice near an affected value or panel.",
+          "allowedUse": [
+            "Dashboard freshness.",
+            "Contextual panel.",
+            "Metadata region."
+          ],
+          "tokens": [
+            "reference.space.3"
+          ]
+        },
+        "region": {
+          "intent": "Major warning affecting a workflow region.",
+          "default": true,
+          "allowedUse": [
+            "Form.",
+            "Review workspace.",
+            "Administration section."
+          ],
+          "tokens": [
+            "reference.space.4"
+          ]
+        }
+      },
+      "states": [
+        "stale",
+        "warning",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "title",
+          "description": "Clear statement that the visible data is outdated, changed, or superseded.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "State whether the user may safely continue."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Impact and required reconciliation explanation.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not expose raw version tokens."
+          ]
+        },
+        {
+          "name": "freshness",
+          "description": "Optional current-data timestamp or freshness context.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "FreshnessIndicator",
+            "MetadataList"
+          ],
+          "contentRestrictions": [
+            "Dates follow the project localization and time-zone policy."
+          ]
+        },
+        {
+          "name": "comparison",
+          "description": "Optional concise summary or entry point for comparing local and current values.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "ConflictSummary",
+            "ChangeDiff",
+            "Button"
+          ],
+          "contentRestrictions": [
+            "Do not hide material changes behind an unlabeled icon."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Refresh, reload, compare, preserve, discard, or retry actions.",
+          "required": true,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "One dominant resolution action.",
+            "Actions must explain the effect on unsaved work."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "nonBlocking | blocking | conflict | superseded",
+          "required": false,
+          "default": "nonBlocking",
+          "description": "Operational impact of the stale state.",
+          "semantic": true,
+          "restrictions": [
+            "Blocking variants require enforced action eligibility outside the component."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "inline | region",
+          "required": false,
+          "default": "region",
+          "description": "Scope of the stale-data condition.",
+          "semantic": true,
+          "restrictions": [
+            "Conflict affecting submission normally uses region size."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Dashboard panel",
+          "Form workflow",
+          "Review workspace",
+          "Administration section",
+          "Entity detail region"
+        ],
+        "allowedChildren": [
+          "InlineAlert",
+          "FreshnessIndicator",
+          "ConflictSummary",
+          "ChangeDiff",
+          "Button",
+          "DropdownMenu"
+        ],
+        "prohibitedParents": [
+          "Tooltip as the only stale-data explanation",
+          "Badge as the complete conflict state"
+        ],
+        "prohibitedChildren": [
+          "Raw ETag",
+          "Raw version hash",
+          "Automatic destructive reload"
+        ],
+        "spacingOwnership": [
+          "StaleDataNotice owns spacing between title, description, freshness, comparison, and actions.",
+          "The parent owns spacing around the notice."
+        ],
+        "surfaceOwnership": "StaleDataNotice owns a warning or danger semantic surface matching the impact.",
+        "rules": [
+          "The notice does not enforce version checks; the owning feature does.",
+          "Blocking stale state must also disable or reject unsafe submission.",
+          "Unsaved values are preserved until the user explicitly chooses a resolution."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "InlineAlert",
+          "Button",
+          "DropdownMenu",
+          "FreshnessIndicator"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "pageHeader",
+            "primaryMetrics",
+            "analyticalContent"
+          ],
+          "status": "recommended",
+          "notes": "Dashboard staleness is normally non-blocking and includes freshness context."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "resultsSummary",
+            "results",
+            "contextualDetails"
+          ],
+          "status": "allowed",
+          "notes": "Preserve visible data during failed background refresh."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader",
+            "primaryContent"
+          ],
+          "status": "recommended",
+          "notes": "Editing conflicts require explicit reconciliation."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formErrors",
+            "formSummary",
+            "formActions"
+          ],
+          "status": "required",
+          "notes": "Dirty values must not be silently reset."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "criticalReviewContext",
+            "decisionForm",
+            "decisionActions"
+          ],
+          "status": "required",
+          "notes": "Changed evidence blocks final decision until reviewed again."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Comparing server versions.",
+          "Executing reload.",
+          "Discarding local changes.",
+          "Submitting conflict resolution."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning feature supplies the resolved stale condition, impact, freshness, and actions."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Refresh, compare, reload, and conflict actions are supplied externally."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve conflict impact and resolution actions while stacking freshness and comparison context.",
+        "compact": "Stack explanation, freshness, comparison, and actions.",
+        "medium": "Use constrained text and wrapping actions.",
+        "wide": "Freshness may align beside concise explanation.",
+        "ultrawide": "Remain aligned to the affected workflow region.",
+        "overflowPolicy": "Dates, labels, and actions wrap; raw version identifiers are not displayed.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain understandable and actionable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "alert for newly surfaced blocking conflict or status region for non-blocking staleness",
+        "accessibleName": "Visible title.",
+        "keyboard": [
+          "All resolution actions are keyboard operable.",
+          "Comparison disclosure or dialog is keyboard operable."
+        ],
+        "focus": [
+          "A newly blocking conflict may receive focus through the owning workflow.",
+          "Non-blocking freshness updates do not steal focus."
+        ],
+        "announcements": [
+          "Blocking conflict is announced assertively or appropriately.",
+          "Background freshness changes use polite or no announcement according to operational importance."
+        ],
+        "aria": [
+          "Use one live-region strategy.",
+          "Do not expose raw version data through accessible labels."
+        ],
+        "colorIndependence": "Stale, blocking, conflict, and superseded states use text, icon, and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "A stale-data statement, impact explanation, and valid resolution action.",
+        "typical": "Title, explanation, freshness context, and refresh or compare action.",
+        "maximum": "A concise conflict summary; complete differences belong in a dedicated comparison component.",
+        "wrapping": "All content wraps naturally.",
+        "truncation": "Do not truncate conflict impact or resolution consequences.",
+        "localization": "Support expanded conflict and action text.",
+        "emptyBehavior": "StaleDataNotice without an explicit stale condition is invalid.",
+        "technicalContent": "ETags, hashes, revision IDs, database timestamps, and raw concurrency errors are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/feedback/stale-data-notice.stories.tsx",
+        "requiredStories": [
+          "NonBlocking",
+          "Blocking",
+          "Conflict",
+          "Superseded",
+          "WithFreshness",
+          "WithComparison",
+          "LongContent",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/feedback/stale-data-notice.test.tsx",
+        "requiredTests": [
+          "Variant semantics",
+          "Blocking announcement",
+          "Action composition",
+          "No raw version rendering",
+          "Conflict content preservation"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Dirty form conflict",
+          "Changed review evidence",
+          "Stale dashboard",
+          "390x844",
+          "Keyboard comparison"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormWorkflowRoute",
+          "ReviewWorkspace",
+          "DashboardRoute",
+          "EntityDetailRoute"
+        ]
+      },
+      "notes": []
+    }
+  },
+  "validation": {
+    "schema": "~/.agents/skills/frontend-product-builder/assets/schemas/component-catalog.schema.json",
+    "checks": [
+      {
+        "id": "FEED-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The feedback component catalog must validate against the component catalog schema.",
+        "command": "node scripts/validate-component-catalog.mjs ~/.agents/skills/frontend-product-builder/assets/catalog/feedback-components.json",
+        "remediation": "Correct invalid or missing feedback component fields."
+      },
+      {
+        "id": "FEED-002",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Feedback components must not duplicate canonical IDs, names, implementations, public imports, or semantic responsibilities.",
+        "command": "node scripts/audit-component-catalog-collisions.mjs",
+        "remediation": "Resolve duplicate feedback ownership or merge overlapping contracts."
+      },
+      {
+        "id": "FEED-003",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Shared feedback components must not parse transport errors, execute queries, invoke mutations, or evaluate permissions.",
+        "command": "node scripts/audit-component-dependencies.mjs",
+        "remediation": "Move state interpretation and side effects to the owning feature, query, mutation, or permission layer."
+      },
+      {
+        "id": "FEED-004",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Dynamic feedback must use an explicit announcement strategy and must not create duplicate or excessive live-region output.",
+        "command": "npm run test:components -- feedback",
+        "remediation": "Correct role, aria-live, focus, or announcement behavior."
+      },
+      {
+        "id": "FEED-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Empty, loading, error, unavailable, forbidden, stale, processing, and success states must remain semantically distinct.",
+        "remediation": "Correct the state mapping and select the canonical component matching the actual condition."
+      },
+      {
+        "id": "FEED-006",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Raw errors, stack traces, tokens, hashes, internal role names, query keys, and unsafe implementation details must not appear in ordinary feedback.",
+        "remediation": "Normalize technical information through the approved frontend error, permission, and diagnostic layers."
+      },
+      {
+        "id": "FEED-007",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Feedback components must remain readable, actionable, and free from horizontal overflow at approved compact, desktop, and zoom scenarios.",
+        "command": "npm run test:e2e:feedback",
+        "remediation": "Correct wrapping, action stacking, modal dimensions, or container behavior."
+      },
+      {
+        "id": "FEED-008",
+        "severity": "warning",
+        "method": "script",
+        "blocking": false,
+        "description": "Page-local alert, error, empty, loading, permission, processing, and confirmation implementations similar to canonical components require review.",
+        "command": "node scripts/audit-component-duplicates.mjs",
+        "remediation": "Reuse the canonical feedback component or document why the local composition is semantically distinct."
+      }
+    ]
+  },
+  "deprecations": []
+}

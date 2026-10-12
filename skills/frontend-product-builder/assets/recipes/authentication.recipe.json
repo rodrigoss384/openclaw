@@ -1,0 +1,885 @@
+{
+  "$schema": "../schemas/layout-recipe.schema.json",
+  "meta": {
+    "id": "authentication",
+    "name": "Authentication and Account Recovery",
+    "version": "1.1.0",
+    "status": "stable",
+    "category": "authentication",
+    "description": "Focused authentication, verification, activation, and account-recovery layout with limited distraction and explicit security feedback.",
+    "owner": "frontend-product-builder",
+    "source": "assets/recipes/authentication.recipe.json",
+    "tags": [
+      "login",
+      "authentication",
+      "mfa",
+      "recovery",
+      "activation"
+    ]
+  },
+  "purpose": "Enable users to establish or recover an authenticated session with minimal distraction, strong field clarity, safe error handling, and no exposure of implementation-specific security details.",
+  "useWhen": [
+    "The route performs login, multifactor verification, account activation, password recovery, session recovery, or identity confirmation.",
+    "The user must complete a focused security-sensitive task.",
+    "The application shell is intentionally unavailable or suppressed."
+  ],
+  "doNotUseWhen": [
+    "The screen is a marketing landing page.",
+    "The user is editing profile settings while authenticated.",
+    "The route presents general product documentation.",
+    "Security architecture details are being shown as product benefits."
+  ],
+  "requiredInputs": [
+    "Approved authentication architecture",
+    "Session and token policy",
+    "MFA requirements",
+    "Recovery behavior",
+    "Rate-limit and lockout behavior",
+    "Error normalization policy",
+    "Brand assets",
+    "Accessibility and localization requirements"
+  ],
+  "screenContract": {
+    "requiredFields": [
+      "purpose",
+      "primaryUser",
+      "primaryTask",
+      "route",
+      "dataDependencies",
+      "primaryAction",
+      "secondaryActions",
+      "permissions",
+      "states",
+      "responsiveTransformations",
+      "accessibilityRequirements",
+      "acceptanceCriteria"
+    ],
+    "selectionQuestions": [
+      "Which authentication stage is active?",
+      "Which identifiers or credentials are requested?",
+      "What feedback may be disclosed without revealing account existence?",
+      "How are rate limits, lockouts, and expired links represented?",
+      "Is MFA required, optional, or conditional?",
+      "What is the recovery path after session expiration?",
+      "Which branding content is useful without distracting from authentication?"
+    ]
+  },
+  "regions": [
+    {
+      "id": "brandContext",
+      "name": "Brand Context",
+      "role": "Provide restrained product identity and approved trust context without competing with the authentication task.",
+      "required": true,
+      "order": 1,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "ProductLogo",
+        "ProductName",
+        "BrandIllustration",
+        "EnvironmentIndicator"
+      ],
+      "prohibitedComponents": [
+        "Technical security architecture",
+        "JWT explanation",
+        "Password-hashing algorithm",
+        "API status dashboard",
+        "Large marketing carousel"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "header",
+      "labelRequirement": "not-required",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible, with reduced content on compact layouts.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Above the authentication panel.",
+          "layout": "Compact logo and product name.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Hide nonessential illustration before reducing form clarity."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Above or beside the authentication panel.",
+          "layout": "Compact brand identity with optional concise supporting text.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Do not create large empty decorative space."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Left side of a split layout or above a centered panel.",
+          "layout": "Brand identity with restrained illustration or trust context.",
+          "width": "40%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "The authentication panel remains the primary focus."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Left side of a constrained split layout.",
+          "layout": "Brand identity with restrained approved visual.",
+          "width": "42%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Do not scale illustration indefinitely."
+        }
+      },
+      "rules": [
+        "Brand identity remains consistent with the application.",
+        "Security implementation details are not user-facing promotional content.",
+        "Environment indication appears only when users may access non-production environments.",
+        "Images must not lower text contrast or distract from the form."
+      ]
+    },
+    {
+      "id": "authenticationPanel",
+      "name": "Authentication Panel",
+      "role": "Contain route orientation, fields, errors, primary submission, and approved recovery links.",
+      "required": true,
+      "order": 2,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "AuthenticationPanel",
+        "Form",
+        "FormField",
+        "Input",
+        "PasswordInput",
+        "OneTimeCodeInput",
+        "Checkbox",
+        "Button",
+        "InlineAlert",
+        "RecoveryLink"
+      ],
+      "prohibitedComponents": [
+        "Duplicate login button outside the panel",
+        "Unlabeled fields",
+        "Raw HTTP errors",
+        "Technical authentication configuration"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "main",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "document",
+        "axis": "vertical",
+        "notes": "The complete authentication page uses one ordinary vertical scroll owner."
+      },
+      "visibilityCondition": "Always visible.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Primary page content.",
+          "layout": "Single-column full-width panel with safe horizontal margins.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Controls use full available panel width."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Centered below or beside brand context.",
+          "layout": "Constrained single-column panel.",
+          "width": "min(100%, 440px)",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Maintain readable form width."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Right side of split layout or centered.",
+          "layout": "Constrained single-column panel.",
+          "width": "440px",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "The panel does not stretch with the viewport."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Right side of constrained split layout.",
+          "layout": "Constrained single-column panel.",
+          "width": "440px",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Preserve form density."
+        }
+      },
+      "rules": [
+        "One visible heading identifies the active authentication task.",
+        "Fields have visible labels.",
+        "The primary action is unambiguous.",
+        "Recovery links remain discoverable but visually secondary.",
+        "Errors do not disclose whether an account exists unless approved."
+      ]
+    },
+    {
+      "id": "securityFeedback",
+      "name": "Security Feedback",
+      "role": "Communicate invalid credentials, expired links, lockout, rate limit, verification, and session states safely.",
+      "required": false,
+      "order": 3,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "critical",
+      "allowedComponents": [
+        "InlineAlert",
+        "AuthenticationError",
+        "RateLimitMessage",
+        "SessionExpiredMessage",
+        "VerificationStatus"
+      ],
+      "prohibitedComponents": [
+        "Stack trace",
+        "Raw authentication provider response",
+        "Account-existence disclosure without approval",
+        "Password policy implementation detail"
+      ],
+      "ownsSpacing": true,
+      "surface": "critical",
+      "landmark": "section",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when security-relevant feedback exists.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Inside the authentication panel before affected fields.",
+          "layout": "Single-column feedback.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Use concise recovery actions."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Inside the authentication panel.",
+          "layout": "Constrained feedback.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Preserve field focus."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Inside the authentication panel.",
+          "layout": "Constrained feedback.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Do not use global toast as the only feedback."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Inside the authentication panel.",
+          "layout": "Constrained feedback.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Remain connected to the form."
+        }
+      },
+      "rules": [
+        "Messages are safe against account enumeration.",
+        "Rate-limit and lockout feedback follows the approved disclosure policy.",
+        "Expired session and expired link states provide a clear recovery action.",
+        "Technical details remain in logs."
+      ]
+    },
+    {
+      "id": "alternativeAuthentication",
+      "name": "Alternative Authentication",
+      "role": "Provide approved identity-provider, passkey, recovery-code, or alternative authentication methods.",
+      "required": false,
+      "order": 4,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "IdentityProviderButton",
+        "PasskeyButton",
+        "Divider",
+        "RecoveryCodeLink",
+        "AlternativeMethodMenu"
+      ],
+      "prohibitedComponents": [
+        "Unapproved third-party identity provider",
+        "Several equal primary actions",
+        "Provider secrets or configuration"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "section",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only when alternative methods are configured and eligible.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Inside the authentication panel after the primary method.",
+          "layout": "Stacked alternative actions.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "wrap",
+          "notes": "Preserve clear method hierarchy."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Inside the authentication panel.",
+          "layout": "Stacked or compact alternative actions.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "wrap",
+          "notes": "Do not create visual competition."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Inside the authentication panel.",
+          "layout": "Stacked alternative actions.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "One approved provider button per configured method."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Inside the authentication panel.",
+          "layout": "Stacked alternative actions.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Remain constrained."
+        }
+      },
+      "rules": [
+        "Alternative methods are clearly labeled.",
+        "The active recommended method remains identifiable.",
+        "External provider navigation explains context when necessary."
+      ]
+    },
+    {
+      "id": "legalAndSupport",
+      "name": "Legal and Support",
+      "role": "Provide required policy, privacy, accessibility, and support access without distracting from authentication.",
+      "required": false,
+      "order": 5,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "contextual",
+      "allowedComponents": [
+        "LegalLinks",
+        "PrivacyLink",
+        "TermsLink",
+        "SupportLink",
+        "AccessibilityLink"
+      ],
+      "prohibitedComponents": [
+        "Large navigation menu",
+        "Marketing call to action",
+        "Unrelated social links"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "footer",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when legally or operationally required.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Below the authentication panel.",
+          "layout": "Wrapping compact link group.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "wrap",
+          "notes": "Maintain usable targets."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Below the authentication panel.",
+          "layout": "Horizontal wrapping links.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "wrap",
+          "notes": "Remain visually secondary."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Bottom of the constrained authentication layout.",
+          "layout": "Horizontal link group.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Do not create a full application footer."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Bottom of the constrained authentication layout.",
+          "layout": "Horizontal link group.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Remain constrained."
+        }
+      },
+      "rules": [
+        "Required legal links remain available.",
+        "Support paths do not reveal account existence.",
+        "Links have clear destinations and focus behavior."
+      ]
+    }
+  ],
+  "composition": {
+    "layoutModel": "split",
+    "widthPolicy": "constrained",
+    "container": {
+      "component": "AuthenticationLayout",
+      "maxWidthToken": "layout.container.authentication",
+      "paddingToken": "layout.page.padding"
+    },
+    "columnPolicy": "Single authentication column on compact and medium layouts; optional constrained brand and authentication split on wide layouts.",
+    "verticalRhythmToken": "reference.space.6",
+    "regionGapToken": "reference.space.6",
+    "spacingOwnership": [
+      "The layout owns spacing between brand context, authentication panel, and legal links.",
+      "AuthenticationPanel owns spacing between heading, fields, feedback, alternatives, and primary action.",
+      "FormField owns label, control, help, and error spacing."
+    ],
+    "surfacePolicy": [
+      "The authentication panel uses one clear surface.",
+      "Brand context may render directly on the canvas.",
+      "Do not mix unrelated light and dark component themes.",
+      "Feedback uses semantic warning or danger treatment."
+    ],
+    "scrollOwner": "browser document",
+    "rules": [
+      "Authentication remains the dominant task.",
+      "The panel remains constrained.",
+      "Brand content remains secondary.",
+      "Security implementation details remain hidden."
+    ],
+    "prohibited": [
+      "Redundant login action in both global header and form.",
+      "JWT, RLS, hashing, token, API, or cryptography details shown as user-facing content.",
+      "Unlabeled credential fields.",
+      "Account enumeration through error messages.",
+      "Large decorative empty regions.",
+      "Background image that reduces form contrast."
+    ]
+  },
+  "actions": {
+    "primaryPlacement": "Inside the authentication panel after the active credentials or verification controls.",
+    "secondaryPlacement": "Recovery links, alternative authentication methods, or return navigation.",
+    "destructivePlacement": "Not normally applicable.",
+    "bulkPlacement": "Not applicable.",
+    "contextualPlacement": "Near the relevant authentication stage.",
+    "overflowPolicy": "Rare alternative methods may move to an accessible alternative-method menu.",
+    "maxDominantActionsPerRegion": 1,
+    "compactBehavior": "Primary authentication action becomes full width; alternative methods stack.",
+    "rules": [
+      "One primary authentication action is dominant.",
+      "Recovery remains secondary but discoverable.",
+      "Pending state prevents duplicate authentication attempts.",
+      "Button labels describe the current authentication stage."
+    ]
+  },
+  "content": {
+    "density": "comfortable",
+    "headingPolicy": "One h1 identifies the authentication task; supporting explanations use ordinary body text.",
+    "longContentPolicy": "Error, recovery, and legal text support localization expansion without widening the panel.",
+    "truncationPolicy": "Do not truncate authentication instructions, errors, or recovery actions.",
+    "emptyStatePlacement": "Not normally applicable; missing or expired authentication context becomes a dedicated recovery state.",
+    "loadingStrategy": "Use a concise authentication bootstrap or pending state without exposing protected application content.",
+    "errorScope": "Credential, verification, rate-limit, and recovery errors remain inside the authentication panel; application bootstrap errors use a dedicated safe state.",
+    "rules": [
+      "Messages use clear user language.",
+      "Credential errors avoid unnecessary disclosure.",
+      "Security state is explained without implementation jargon.",
+      "The product name and identity remain consistent."
+    ]
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "minimumViewport": "320 CSS pixels.",
+    "primaryViewport": "Desktop and mobile authentication environments.",
+    "zoomExpectation": "Authentication must remain usable at 200% zoom where practical and at minimum 125% browser zoom.",
+    "pageOverflowPolicy": "No page-level horizontal overflow.",
+    "internalOverflowPolicy": "The document may scroll vertically; the authentication panel must not create nested ordinary scrolling.",
+    "transformations": [
+      {
+        "from": "ultrawide",
+        "to": "wide",
+        "change": "Keep the split layout constrained and avoid enlarging decorative brand content.",
+        "reason": "Authentication clarity does not improve through excessive visual scale."
+      },
+      {
+        "from": "wide",
+        "to": "medium",
+        "change": "Move brand context above the authentication panel or reduce it to a compact identity block.",
+        "reason": "The form requires a predictable centered width."
+      },
+      {
+        "from": "medium",
+        "to": "compact",
+        "change": "Use a single-column layout, compact brand identity, full-width controls, and stacked alternative methods.",
+        "reason": "Compact viewports require direct task focus and usable touch targets."
+      }
+    ]
+  },
+  "states": [
+    {
+      "id": "initial-loading",
+      "scope": "route",
+      "required": true,
+      "rendering": "Resolve authentication bootstrap or verification context without briefly rendering protected application content.",
+      "userAction": "Wait."
+    },
+    {
+      "id": "data",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render the active authentication, verification, activation, or recovery stage.",
+      "userAction": "Complete the security task."
+    },
+    {
+      "id": "warning",
+      "scope": "region",
+      "required": false,
+      "rendering": "Communicate expiring session, remaining recovery limitation, or non-blocking security attention.",
+      "userAction": "Continue or take the recommended recovery action."
+    },
+    {
+      "id": "error",
+      "scope": "region",
+      "required": true,
+      "rendering": "Render safe authentication feedback without exposing technical provider responses or account existence.",
+      "userAction": "Correct input, retry, or recover."
+    },
+    {
+      "id": "unauthorized",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render the relevant sign-in or session-recovery stage.",
+      "userAction": "Authenticate."
+    },
+    {
+      "id": "unavailable",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render a safe authentication-service unavailable state.",
+      "userAction": "Retry later or contact support."
+    },
+    {
+      "id": "processing",
+      "scope": "region",
+      "required": true,
+      "rendering": "Show pending sign-in, code verification, recovery request, or activation state and prevent duplicate submission.",
+      "userAction": "Wait."
+    },
+    {
+      "id": "stale",
+      "scope": "region",
+      "required": false,
+      "rendering": "Explain that a link, code, or session context expired and present the approved restart action.",
+      "userAction": "Request a new link, code, or session."
+    }
+  ],
+  "accessibility": {
+    "landmarkMap": [
+      "The authentication panel uses the primary main landmark.",
+      "Brand identity uses a header region when appropriate.",
+      "Legal and support links use a footer landmark.",
+      "Authentication feedback uses alert or status semantics."
+    ],
+    "headingStructure": [
+      "One h1 identifies the active authentication stage.",
+      "Supporting content does not introduce unnecessary heading levels."
+    ],
+    "focusOrder": [
+      "Product identity when relevant.",
+      "Authentication heading and instructions.",
+      "Authentication feedback.",
+      "Credential or verification fields.",
+      "Primary action.",
+      "Recovery and alternative methods.",
+      "Legal and support links."
+    ],
+    "keyboard": [
+      "All fields, code inputs, links, and provider actions are keyboard operable.",
+      "Submission works through expected keyboard interaction.",
+      "Focus returns appropriately after recoverable errors.",
+      "Password visibility controls have accessible names."
+    ],
+    "announcements": [
+      "Authentication errors are associated with the panel or field.",
+      "Pending state and successful stage transition are perceivable.",
+      "Expired session or link state is announced."
+    ],
+    "minimumTargetToken": "reference.control.target.minimum",
+    "contrastTarget": "WCAG 2.2 AA",
+    "colorIndependence": "Error, pending, verification, expired, and disabled states do not depend only on color.",
+    "rules": [
+      "Credential fields have visible labels.",
+      "One-time-code inputs expose an understandable accessible model.",
+      "Autofill and password-manager behavior must not be unnecessarily blocked.",
+      "Focus indicators remain visible on every interactive element."
+    ]
+  },
+  "constraints": {
+    "requiredComponents": [
+      "AuthenticationLayout",
+      "AuthenticationPanel",
+      "FormField",
+      "PasswordInput",
+      "Button",
+      "AuthenticationError"
+    ],
+    "prohibitedPatterns": [
+      "Technical authentication architecture shown to users.",
+      "Raw provider errors.",
+      "Account enumeration.",
+      "Placeholder-only fields.",
+      "Duplicate login controls.",
+      "Low-contrast decorative background behind the form.",
+      "Credentials stored or logged by presentation components."
+    ],
+    "dataMagnitude": [
+      "Names, email addresses, recovery messages, and legal links may expand through localization.",
+      "Verification codes may vary in length according to the approved authentication provider."
+    ],
+    "performance": [
+      "Authentication routes should load minimal required code.",
+      "Do not load the complete authenticated application before session success.",
+      "Prevent duplicate submissions.",
+      "Avoid unnecessary third-party scripts on security-sensitive routes."
+    ],
+    "implementation": [
+      "Follow the approved backend authentication architecture.",
+      "Do not expose authentication tokens to visual components.",
+      "Use the canonical form and error layers.",
+      "Normalize provider errors before presentation.",
+      "Preserve safe return-navigation behavior after authentication.",
+      "Machine presence conditions come from presenceDefaults; visibilityCondition prose is explanatory only."
+    ]
+  },
+  "craftDefaults": {
+    "spatialComposition": {
+      "maxVisualNestingDepth": 2,
+      "regionAssignments": [
+        {
+          "regionId": "brandContext",
+          "widthStrategy": "constrained",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "authenticationPanel",
+          "widthStrategy": "constrained",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": true
+        },
+        {
+          "regionId": "securityFeedback",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "alternativeAuthentication",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "legalAndSupport",
+          "widthStrategy": "constrained",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        }
+      ]
+    },
+    "perceptualHierarchy": {
+      "surfaceAssignments": [
+        {
+          "regionId": "brandContext",
+          "role": "canvas"
+        },
+        {
+          "regionId": "authenticationPanel",
+          "role": "surface"
+        },
+        {
+          "regionId": "securityFeedback",
+          "role": "surface-elevated"
+        },
+        {
+          "regionId": "alternativeAuthentication",
+          "role": "canvas"
+        },
+        {
+          "regionId": "legalAndSupport",
+          "role": "canvas"
+        }
+      ]
+    }
+  },
+  "presenceDefaults": [
+    {
+      "targetType": "region",
+      "targetId": "brandContext",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Authentication routes retain restrained product identity even when compact layouts reduce decorative brand content."
+    },
+    {
+      "targetType": "region",
+      "targetId": "authenticationPanel",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The active authentication or recovery task always requires the primary authentication panel."
+    },
+    {
+      "targetType": "region",
+      "targetId": "securityFeedback",
+      "policy": "conditional",
+      "condition": {
+        "signal": "authentication.feedback.present",
+        "operator": "truthy"
+      },
+      "rationale": "Security feedback occupies space only when a security-relevant message or recovery state exists."
+    },
+    {
+      "targetType": "region",
+      "targetId": "alternativeAuthentication",
+      "policy": "conditional",
+      "condition": {
+        "signal": "authentication.alternativeMethodsAvailable",
+        "operator": "truthy"
+      },
+      "rationale": "Alternative methods appear only when configured and eligible for the active authentication stage."
+    },
+    {
+      "targetType": "region",
+      "targetId": "legalAndSupport",
+      "policy": "conditional",
+      "condition": {
+        "signal": "authentication.legalOrSupportRequired",
+        "operator": "truthy"
+      },
+      "rationale": "Legal and support links appear only when required by policy or the active recovery flow."
+    }
+  ],
+  "validation": {
+    "schema": "assets/schemas/layout-recipe.schema.json",
+    "checks": [
+      {
+        "id": "AUTH-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The authentication recipe must validate against the layout recipe schema.",
+        "remediation": "Correct invalid or missing recipe fields."
+      },
+      {
+        "id": "AUTH-002",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Credential fields, recovery links, errors, and primary submission must be keyboard accessible and properly labeled.",
+        "remediation": "Correct form semantics, labels, and focus behavior."
+      },
+      {
+        "id": "AUTH-003",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Authentication feedback must not disclose unsafe account, provider, token, or implementation details.",
+        "remediation": "Normalize messages through the approved security error policy."
+      },
+      {
+        "id": "AUTH-004",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "The authentication panel must remain usable without horizontal overflow across approved compact and wide viewports.",
+        "remediation": "Correct panel width, split transformation, or content wrapping."
+      },
+      {
+        "id": "AUTH-005",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Pending authentication must prevent duplicate submission and protected content must not render before session resolution.",
+        "remediation": "Correct bootstrap and submission-state handling."
+      },
+      {
+        "id": "AUTH-006",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Authentication optional regions must render only from typed security-feedback, alternative-method, and legal/support presence signals.",
+        "remediation": "Correct craftDefaults/presenceDefaults and keep conditional regions required=false with cardinality.minimum=0."
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "Email and password login",
+      "description": "Product identity, labeled credential fields, safe errors, primary login action, password recovery, and legal links."
+    },
+    {
+      "name": "Multifactor verification",
+      "description": "Verification orientation, code input, resend behavior, expiration feedback, recovery method, and safe pending state."
+    }
+  ]
+}

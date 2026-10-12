@@ -1,0 +1,6 @@
+{
+  "schemaVersion": "1.0.0",
+  "provider": "local",
+  "entrypoint": "integrations/governance/workflow-entry.mjs",
+  "deliveryCheck": "local-cli"
+}

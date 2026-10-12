@@ -1,0 +1,20 @@
+{
+  "$schema": "../schemas/behavioral-ux-contract.schema.json",
+  "id": "BUX-<SURFACE>-001",
+  "surface": "<onboarding | pricing | upgrade | renewal | cancellation | ...>",
+  "userGoal": "<what the user is trying to accomplish here>",
+  "productGoal": "<activation | conversion | retention | ...>",
+  "principle": "reversible-choice-assistance",
+  "hypothesis": "<falsifiable behavioral hypothesis, not a command>",
+  "evidenceGrade": "B",
+  "userBenefit": "<this helps the user by ___ — must be completable honestly>",
+  "businessBenefit": "<the product goal this also serves>",
+  "truthful": true,
+  "reversible": true,
+  "userControl": "preserved",
+  "manipulationRisk": "low",
+  "experimentRequired": true,
+  "primaryMetric": "<the metric this intervention is meant to move>",
+  "guardrails": ["<metric that must not silently degrade>"],
+  "notes": null
+}

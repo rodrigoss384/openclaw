@@ -1,0 +1,96 @@
+{
+  "$schema": "./backend-representative-scorecard.schema.json",
+  "schemaVersion": "1.0.0",
+  "feature": "FEATURE_SLUG",
+  "dimensions": [
+    {
+      "id": "contract-traceability",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "boundaries",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "invariants-validation",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "data-integrity",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "security-tenancy",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "concurrency-ordering",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "resilience-recovery",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "observability-sensitive-data",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "migration-compatibility",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "performance-slo",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "documentation-drift",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    },
+    {
+      "id": "speculative-complexity",
+      "status": "not-run",
+      "rationale": "",
+      "evidencePaths": [],
+      "findings": []
+    }
+  ],
+  "criticalFindings": [],
+  "acceptedRisks": [],
+  "decision": "awaiting-review",
+  "reviewer": "",
+  "timestamp": ""
+}

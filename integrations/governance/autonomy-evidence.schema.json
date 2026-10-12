@@ -1,0 +1,354 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./autonomy-evidence.schema.json",
+  "title": "Autonomy Decision Evidence Contract",
+  "description": "Derived evidence contract for autonomy-controller outcomes. 11-evidence.md remains the human-readable Delivery Evidence owner; this contract stores only machine-readable decision/provenance evidence and never grants decision authority.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/record"
+    },
+    {
+      "$ref": "#/$defs/ledger"
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nullableString": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "repositoryRef": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "decisionId": {
+      "type": "string",
+      "pattern": "^DEC-[A-F0-9]{16}$"
+    },
+    "decisionClass": {
+      "enum": [
+        "reversible-internal",
+        "reversible-contract-bounded",
+        "equivalent-variant",
+        "design-authority-bounded",
+        "product-consequential",
+        "security-consequential",
+        "data-consequential",
+        "cost-consequential",
+        "legal-consequential",
+        "brand-consequential",
+        "behavioral-high-risk",
+        "external-destructive",
+        "unknown-consequential"
+      ]
+    },
+    "disposition": {
+      "enum": [
+        "SAFE_AUTONOMOUS",
+        "AUTONOMOUS_WITH_AUDIT",
+        "HUMAN_REQUIRED",
+        "BLOCKED"
+      ]
+    },
+    "stage": {
+      "enum": [
+        "discovery",
+        "specification",
+        "acceptance",
+        "design-readiness",
+        "implementation",
+        "backend-representative",
+        "frontend-representative",
+        "adversarial",
+        "evidence-release",
+        "session-closure"
+      ]
+    },
+    "reasonCodes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_]*$"
+      }
+    },
+    "stringRefs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/repositoryRef"
+      }
+    },
+    "sourceProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/repositoryRef"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "alternative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "reasonCodes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]*$"
+        },
+        "reasonCodes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          }
+        }
+      }
+    },
+    "policyRefs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "autonomyPolicy",
+        "effectivePolicy"
+      ],
+      "properties": {
+        "autonomyPolicy": {
+          "$ref": "#/$defs/repositoryRef"
+        },
+        "effectivePolicy": {
+          "$ref": "#/$defs/repositoryRef"
+        }
+      }
+    },
+    "policyHashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "autonomyPolicy",
+        "effectivePolicy"
+      ],
+      "properties": {
+        "autonomyPolicy": {
+          "$ref": "#/$defs/sha256"
+        },
+        "effectivePolicy": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "$schema",
+        "schemaVersion",
+        "artifactKind",
+        "decisionId",
+        "feature",
+        "task",
+        "stage",
+        "decisionClass",
+        "disposition",
+        "consumeAction",
+        "selectedOption",
+        "alternatives",
+        "authority",
+        "reasonCodes",
+        "evidenceRefs",
+        "rulesApplied",
+        "policyRefs",
+        "policyHashes",
+        "decisionProvenance",
+        "directiveProvenance",
+        "reversible",
+        "durability",
+        "recordedAt",
+        "ownerEvidenceRef"
+      ],
+      "properties": {
+        "$schema": {
+          "const": "integrations/governance/autonomy-evidence.schema.json"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "artifactKind": {
+          "const": "autonomy-decision-evidence-record"
+        },
+        "decisionId": {
+          "$ref": "#/$defs/decisionId"
+        },
+        "feature": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "task": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "stage": {
+          "$ref": "#/$defs/stage"
+        },
+        "decisionClass": {
+          "$ref": "#/$defs/decisionClass"
+        },
+        "disposition": {
+          "$ref": "#/$defs/disposition"
+        },
+        "consumeAction": {
+          "enum": [
+            "execute",
+            "record-and-execute",
+            "request-human-decision",
+            "report-blocker",
+            "report-blocker-and-request-human"
+          ]
+        },
+        "selectedOption": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9._-]*$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "alternatives": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/alternative"
+          }
+        },
+        "authority": {
+          "enum": [
+            "agent",
+            "human"
+          ]
+        },
+        "reasonCodes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]*$"
+          }
+        },
+        "evidenceRefs": {
+          "$ref": "#/$defs/stringRefs"
+        },
+        "rulesApplied": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^RULE-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$"
+          }
+        },
+        "policyRefs": {
+          "$ref": "#/$defs/policyRefs"
+        },
+        "policyHashes": {
+          "$ref": "#/$defs/policyHashes"
+        },
+        "decisionProvenance": {
+          "$ref": "#/$defs/sourceProvenance"
+        },
+        "directiveProvenance": {
+          "$ref": "#/$defs/sourceProvenance"
+        },
+        "reversible": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "durability": {
+          "enum": [
+            "ephemeral",
+            "durable"
+          ]
+        },
+        "recordedAt": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{3})?Z$"
+        },
+        "ownerEvidenceRef": {
+          "$ref": "#/$defs/repositoryRef"
+        }
+      }
+    },
+    "ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "$schema",
+        "schemaVersion",
+        "artifactKind",
+        "canonical",
+        "feature",
+        "ownerEvidenceRef",
+        "records"
+      ],
+      "properties": {
+        "$schema": {
+          "const": "integrations/governance/autonomy-evidence.schema.json"
+        },
+        "schemaVersion": {
+          "const": "1.0.0"
+        },
+        "artifactKind": {
+          "const": "autonomy-decision-evidence-ledger"
+        },
+        "canonical": {
+          "const": false
+        },
+        "feature": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "ownerEvidenceRef": {
+          "$ref": "#/$defs/repositoryRef"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/record"
+          }
+        }
+      }
+    }
+  }
+}

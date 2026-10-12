@@ -1,0 +1,558 @@
+{
+  "$schema": "../../integrations/impeccable/frontend-craft-policy.schema.json",
+  "provider": {
+    "id": "impeccable",
+    "package": "impeccable",
+    "version": "3.5.0",
+    "authority": "bounded-advisory",
+    "canonicalContext": "spec-driven",
+    "contextMode": "derived-projection"
+  },
+  "authority": {
+    "productBehavior": "spec-driven-engineering",
+    "frontendArchitecture": "frontend-product-builder",
+    "visualCraft": "impeccable",
+    "browserEvidence": "playwright-skill",
+    "behavioralInfluence": "behavioral-ux-contract",
+    "implementationIdioms": [
+      "react-best-practices",
+      "react-composition-patterns",
+      "tailwind-patterns"
+    ],
+    "rule": "one-concern-one-authority-other-skills-may-advise-never-compete",
+    "precedence": [
+      "product-requirements-and-acceptance-contracts",
+      "security-behavioral-ux-and-interface-contracts",
+      "frontend-product-context",
+      "approved-design-direction",
+      "design-system",
+      "styling-authority",
+      "screen-specification",
+      "composition-proof",
+      "impeccable-selected-craft-direction",
+      "impeccable-detector-and-critique-findings",
+      "implementation"
+    ]
+  },
+  "contextBridge": {
+    "direction": "canonical-to-provider-only",
+    "environmentVariable": "IMPECCABLE_CONTEXT_DIR",
+    "baseDirectory": "${TMPDIR:-/tmp}/spec-driven-impeccable",
+    "productProjection": "PRODUCT.md",
+    "designProjection": "DESIGN.md",
+    "provenanceArtifact": "frontend-craft-provenance.json",
+    "includeSourceSha256": true,
+    "providerArtifactsAreCanonical": false
+  },
+  "craftContract": {
+    "mode": "derived",
+    "schema": "integrations/impeccable/craft-contract.schema.json",
+    "artifact": "craft-contract.json",
+    "canonical": false,
+    "persistence": "temporary-until-evidence",
+    "visualFamilyDerivation": "visitor-mode-plus-recipe",
+    "unresolvedPolicy": "explicit-never-infer-from-prompt",
+    "contractSetIdentity": "sha256-of-ordered-source-identities",
+    "componentCatalogDependencyMode": "screen-component-map",
+    "perceptualPolicyPointer": "design-system.json#visualGrammar.perceptualPolicy"
+  },
+  "detector": {
+    "required": true,
+    "hook": "preferred-when-supported",
+    "fallback": "manual-detector",
+    "hookAbsenceBlocks": false
+  },
+  "visualDirection": {
+    "command": "shape",
+    "mode": "primary",
+    "requiredWhen": "readiness-controller-provider-open",
+    "writesProductionCode": false,
+    "selectedOutputRole": "approved-visual-reference-not-implementation-contract"
+  },
+  "readiness": {
+    "controller": "integrations/impeccable/frontend-control.mjs",
+    "reportSchema": "integrations/impeccable/frontend-readiness.schema.json",
+    "relationshipMode": "resolved-unresolved-blocked",
+    "shapeInvocation": "unresolved-provider-eligible-only",
+    "canonicalAdoptionRequired": true,
+    "rederiveAfterAdoption": true,
+    "unchangedAfterAdoption": "block-contract-model-do-not-repeat-shape",
+    "dimensionRoutes": {
+      "spatialComposition": {
+        "owner": "frontend-product-builder",
+        "providerEligible": false,
+        "canonicalTargets": [
+          "recipe",
+          "screen-specification"
+        ],
+        "requiredSourceRoles": [
+          "screen-spec",
+          "recipe"
+        ]
+      },
+      "perceptualHierarchy": {
+        "owner": "impeccable",
+        "providerEligible": true,
+        "canonicalTargets": [
+          "design-direction",
+          "design-system",
+          "screen-specification"
+        ],
+        "requiredSourceRoles": [
+          "screen-spec",
+          "recipe",
+          "visual-direction",
+          "design-system"
+        ]
+      },
+      "semanticPresentation": {
+        "owner": "frontend-product-builder",
+        "providerEligible": false,
+        "canonicalTargets": [
+          "design-system",
+          "component-catalog",
+          "screen-specification"
+        ],
+        "requiredSourceRoles": [
+          "screen-spec",
+          "design-system",
+          "component-catalog"
+        ]
+      },
+      "interactionClarity": {
+        "owner": "frontend-product-builder",
+        "providerEligible": false,
+        "canonicalTargets": [
+          "product-context",
+          "recipe",
+          "screen-specification"
+        ],
+        "requiredSourceRoles": [
+          "screen-spec",
+          "recipe"
+        ]
+      },
+      "decisionSupport": {
+        "owner": "spec-driven-engineering",
+        "providerEligible": false,
+        "canonicalTargets": [
+          "product-context",
+          "screen-specification"
+        ],
+        "requiredSourceRoles": [
+          "screen-spec"
+        ]
+      },
+      "typographyCoherence": {
+        "owner": "impeccable",
+        "providerEligible": true,
+        "canonicalTargets": [
+          "design-direction",
+          "design-system",
+          "screen-specification"
+        ],
+        "requiredSourceRoles": [
+          "screen-spec",
+          "visual-direction",
+          "design-system"
+        ]
+      }
+    }
+  },
+  "findingRouter": {
+    "schema": "integrations/impeccable/finding-route.schema.json",
+    "classification": "explicit-taxonomy-no-free-text-inference",
+    "returnStageByDefectKind": {
+      "implementation": "PATCH",
+      "contract": "DESIGN_READINESS"
+    },
+    "repairStrategyByDefectKind": {
+      "implementation": "targeted-implementation-repair",
+      "contract": "canonical-contract-repair"
+    },
+    "classes": {
+      "spatial-density": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "recipe",
+          "screen-specification",
+          "composition-proof"
+        ],
+        "providerCommand": "layout",
+        "revalidationSet": [
+          "craft-contract",
+          "composition-proof",
+          "browser-evidence",
+          "impeccable-detector"
+        ]
+      },
+      "surface-layering": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "design-system",
+          "recipe",
+          "screen-specification",
+          "composition-proof"
+        ],
+        "providerCommand": "layout",
+        "revalidationSet": [
+          "craft-contract",
+          "design-system",
+          "composition-proof",
+          "browser-evidence",
+          "impeccable-detector"
+        ]
+      },
+      "surface-economy": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "design-system",
+          "recipe",
+          "screen-specification",
+          "composition-proof"
+        ],
+        "providerCommand": "distill",
+        "revalidationSet": [
+          "craft-contract",
+          "design-system",
+          "composition-proof",
+          "browser-evidence",
+          "impeccable-detector"
+        ]
+      },
+      "accent-overuse": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "design-system",
+          "screen-specification"
+        ],
+        "providerCommand": "quieter",
+        "revalidationSet": [
+          "craft-contract",
+          "design-system",
+          "browser-evidence",
+          "impeccable-detector"
+        ]
+      },
+      "semantic-color": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "design-system",
+          "screen-specification"
+        ],
+        "providerCommand": "colorize",
+        "revalidationSet": [
+          "craft-contract",
+          "design-system",
+          "browser-evidence",
+          "impeccable-detector"
+        ]
+      },
+      "semantic-presentation": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "design-system",
+          "screen-specification",
+          "component-catalog"
+        ],
+        "providerCommand": null,
+        "revalidationSet": [
+          "craft-contract",
+          "screen-specification",
+          "component-catalog",
+          "design-system",
+          "browser-evidence"
+        ]
+      },
+      "text-hierarchy": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "design-system",
+          "screen-specification"
+        ],
+        "providerCommand": "typeset",
+        "revalidationSet": [
+          "craft-contract",
+          "screen-specification",
+          "design-system",
+          "browser-evidence"
+        ]
+      },
+      "interaction-affordance": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "screen-specification",
+          "component-catalog"
+        ],
+        "providerCommand": null,
+        "revalidationSet": [
+          "screen-specification",
+          "component-catalog",
+          "browser-evidence",
+          "impeccable-detector"
+        ]
+      },
+      "system-status-visibility": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "spec-driven-engineering",
+        "affectedContracts": [
+          "product-context",
+          "screen-specification",
+          "component-catalog"
+        ],
+        "providerCommand": null,
+        "revalidationSet": [
+          "screen-specification",
+          "component-catalog",
+          "browser-evidence",
+          "impeccable-detector"
+        ]
+      },
+      "control-presence": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "recipe",
+          "screen-specification"
+        ],
+        "providerCommand": null,
+        "revalidationSet": [
+          "craft-contract",
+          "screen-specification",
+          "browser-evidence"
+        ]
+      },
+      "empty-recovery": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "spec-driven-engineering",
+        "affectedContracts": [
+          "product-context",
+          "screen-specification",
+          "component-catalog"
+        ],
+        "providerCommand": null,
+        "revalidationSet": [
+          "screen-specification",
+          "component-catalog",
+          "browser-evidence"
+        ]
+      },
+      "wayfinding": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "recipe",
+          "screen-specification"
+        ],
+        "providerCommand": null,
+        "revalidationSet": [
+          "craft-contract",
+          "screen-specification",
+          "browser-evidence"
+        ]
+      },
+      "information-scent": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "spec-driven-engineering",
+        "affectedContracts": [
+          "product-context",
+          "screen-specification"
+        ],
+        "providerCommand": null,
+        "revalidationSet": [
+          "screen-specification",
+          "browser-evidence"
+        ]
+      },
+      "reference-utility": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "spec-driven-engineering",
+        "affectedContracts": [
+          "product-context",
+          "screen-specification",
+          "component-catalog"
+        ],
+        "providerCommand": null,
+        "revalidationSet": [
+          "screen-specification",
+          "component-catalog",
+          "browser-evidence"
+        ]
+      },
+      "responsive-composition": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "frontend-product-builder",
+        "affectedContracts": [
+          "screen-specification",
+          "composition-proof"
+        ],
+        "providerCommand": "adapt",
+        "revalidationSet": [
+          "screen-specification",
+          "composition-proof",
+          "browser-evidence",
+          "impeccable-detector"
+        ]
+      },
+      "content-clarity": {
+        "implementationOwner": "frontend-product-builder",
+        "contractOwner": "spec-driven-engineering",
+        "affectedContracts": [
+          "product-context",
+          "screen-specification"
+        ],
+        "providerCommand": "clarify",
+        "revalidationSet": [
+          "screen-specification",
+          "browser-evidence",
+          "impeccable-critique"
+        ]
+      }
+    }
+  },
+  "representativeReview": {
+    "command": "critique",
+    "mode": "primary",
+    "requiredFor": "substantial-frontend",
+    "requiresBrowserEvidence": true,
+    "requiresCompositionEvidence": true,
+    "mayApproveGate": false
+  },
+  "finalAudit": {
+    "command": "audit",
+    "requiredFor": "critical-ui",
+    "optionalFor": "standard-substantial-ui",
+    "mayReplaceExistingObjectiveValidators": false
+  },
+  "polish": {
+    "maxVisualInspectionRounds": 2,
+    "maxPolishRounds": 1
+  },
+  "commands": {
+    "managed": [
+      "shape",
+      "critique",
+      "layout",
+      "typeset",
+      "adapt",
+      "clarify",
+      "polish"
+    ],
+    "findingDriven": [
+      "harden",
+      "optimize",
+      "distill",
+      "colorize"
+    ],
+    "explicitApproval": [
+      "bolder",
+      "quieter",
+      "animate",
+      "delight",
+      "live"
+    ],
+    "strongExplicitApproval": [
+      "overdrive"
+    ],
+    "notCanonicalInManagedWorkflow": [
+      "init",
+      "document"
+    ],
+    "designSystemMaintenanceOnly": [
+      "extract"
+    ]
+  },
+  "visitorModes": {
+    "application-shell": "operate",
+    "dashboard": "operate",
+    "searchable-list": "operate",
+    "entity-detail": "operate",
+    "form-workflow": "operate",
+    "administration": "operate",
+    "authentication": "operate",
+    "review-approval": "operate",
+    "landing": "persuade",
+    "marketing": "persuade",
+    "documentation": "read",
+    "guide": "read",
+    "portfolio": "experience",
+    "gallery": "experience"
+  },
+  "guardrails": {
+    "impeccableMay": [
+      "critique",
+      "propose",
+      "detect",
+      "refine"
+    ],
+    "impeccableMayNotSilentlyRedefine": [
+      "approved-product-behavior",
+      "visual-authority",
+      "design-system-ownership",
+      "behavioral-ux-policy",
+      "screen-contracts",
+      "release-gates",
+      "authentication-contracts",
+      "data-and-api-contracts"
+    ],
+    "behavioralUxPrecedes": [
+      "onboarding-persuasion",
+      "pricing-persuasion",
+      "upgrade-persuasion",
+      "retention-persuasion"
+    ],
+    "hardenIsAdvisoryTo": [
+      "data-and-forms-contract",
+      "screen-state-matrix",
+      "api-integration-contract",
+      "authentication-contract"
+    ],
+    "projectWideDetectorIgnoreRequiresHumanApproval": true,
+    "narrowIgnoreRequiresDecisionOrDesignSystemRuleId": true
+  },
+  "rollout": {
+    "phase": "primary",
+    "frontendDesign": "legacy-fallback-explicit-only",
+    "impeccable": "primary-visual-craft-authority",
+    "cutoverRequires": [
+      "representative-slices-reviewed",
+      "false-positive-review",
+      "no-authority-conflicts",
+      "adapter-and-lock-validation"
+    ]
+  },
+  "repairLoop": {
+    "controller": "integrations/impeccable/frontend-control.mjs",
+    "reportSchema": "integrations/impeccable/frontend-representative-loop.schema.json",
+    "normalizedFindingBatchSchema": "integrations/impeccable/normalized-finding-batch.schema.json",
+    "classification": "explicit-taxonomy-no-free-text-inference",
+    "sequence": [
+      "evidence",
+      "objective-audit",
+      "critique",
+      "normalize",
+      "route",
+      "repair",
+      "rerender",
+      "reaudit",
+      "recritique"
+    ],
+    "maxCraftRounds": 2,
+    "maxPolishRounds": 1,
+    "noMaterialFindingTransition": "human-gate",
+    "contractFindingTransition": "design-readiness",
+    "implementationFindingTransition": "patch",
+    "rerenderAfterRepair": true,
+    "reauditAfterRepair": true,
+    "recritiqueAfterRepair": true,
+    "polishMode": "explicit-request-only"
+  }
+}

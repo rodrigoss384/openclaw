@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/effective-policy.schema.json",
+  "title": "Spec-Driven Effective Governance Policy",
+  "description": "Derived, non-canonical stage-scoped governance policy resolved from the canonical governance registry and frozen applicability contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "artifactKind",
+    "canonical",
+    "stage",
+    "feature",
+    "task",
+    "applicability",
+    "hardRules",
+    "defaults",
+    "advisories",
+    "escalations",
+    "requiredEnforcements",
+    "sources"
+  ],
+  "properties": {
+    "$schema": { "const": "integrations/governance/effective-policy.schema.json" },
+    "schemaVersion": { "const": "1.0.0" },
+    "artifactKind": { "const": "derived-effective-policy" },
+    "canonical": { "const": false },
+    "stage": {
+      "enum": [
+        "discovery",
+        "specification",
+        "acceptance",
+        "design-readiness",
+        "implementation",
+        "backend-representative",
+        "frontend-representative",
+        "adversarial",
+        "evidence-release",
+        "session-closure"
+      ]
+    },
+    "feature": { "$ref": "#/$defs/nonEmptyString" },
+    "task": {
+      "oneOf": [
+        { "$ref": "#/$defs/nonEmptyString" },
+        { "type": "null" }
+      ]
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frontend", "backend", "behavioralUx"],
+      "properties": {
+        "frontend": { "enum": ["not-applicable", "lightweight", "substantial"] },
+        "backend": { "enum": ["not-applicable", "lightweight", "substantial"] },
+        "behavioralUx": { "enum": ["not-applicable", "applicable"] }
+      }
+    },
+    "hardRules": { "$ref": "#/$defs/ruleIds" },
+    "defaults": { "$ref": "#/$defs/ruleIds" },
+    "advisories": { "$ref": "#/$defs/ruleIds" },
+    "escalations": { "$ref": "#/$defs/ruleIds" },
+    "requiredEnforcements": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/capabilityId" }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["governancePolicy", "capabilityRegistry", "applicability"],
+      "properties": {
+        "governancePolicy": { "$ref": "#/$defs/source" },
+        "capabilityRegistry": { "$ref": "#/$defs/source" },
+        "applicability": { "$ref": "#/$defs/source" }
+      }
+    },
+    "bootstrap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "primaryScope", "manifest", "rulesSource", "rulesContentLoading", "rulesResolution", "rulesAdmission", "humanGates"],
+      "properties": {
+        "mode": { "enum": ["shadow", "primary"] },
+        "primaryScope": { "const": "registered-rules-only" },
+        "manifest": { "$ref": "#/$defs/source" },
+        "rulesSource": { "$ref": "#/$defs/source" },
+        "rulesContentLoading": { "enum": ["full", "rationale-and-admitted-legacy-only"] },
+        "rulesResolution": { "enum": ["preserved-full-read", "policy-primary-registered-rules-rationale-fallback"] },
+        "rulesAdmission": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "legacyBaselineOperational", "unregisteredAdditions", "rationaleOnlyOperational", "latestAdmissionKind", "latestRulesFileGitBlobSha"],
+          "properties": {
+            "mode": { "const": "registry-first" },
+            "legacyBaselineOperational": { "const": true },
+            "unregisteredAdditions": { "const": "non-operative" },
+            "rationaleOnlyOperational": { "const": false },
+            "latestAdmissionKind": { "enum": ["legacy-baseline", "registered-governance", "rationale-only"] },
+            "latestRulesFileGitBlobSha": { "type": "string", "pattern": "^[a-f0-9]{40}$" }
+          }
+        },
+        "humanGates": { "const": "unchanged" }
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "ruleId": { "type": "string", "pattern": "^RULE-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$" },
+    "capabilityId": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "ruleIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/ruleId" }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "sha256"],
+      "properties": {
+        "ref": { "$ref": "#/$defs/nonEmptyString" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    }
+  }
+}

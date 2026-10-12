@@ -1,0 +1,826 @@
+{
+  "$schema": "../schemas/screen-specification.schema.json",
+  "meta": {
+    "id": "<screen-id>-specification",
+    "name": "<Screen Name> Specification",
+    "version": "1.0.0",
+    "status": "draft",
+    "owner": "<feature-or-team>",
+    "source": "docs/frontend/screens/<screen-id>/screen-spec.json",
+    "generated": false,
+    "description": "Executable planning contract for <screen-name>.",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  "screen": {
+    "id": "<screen-id>",
+    "name": "<Screen Name>",
+    "route": "/<route>",
+    "surface": "route",
+    "category": "<application-shell|dashboard|searchable-list|entity-detail|form|administration|authentication|review-approval|custom>",
+    "feature": "<feature-name>",
+    "primaryTask": "<Primary user task>",
+    "secondaryTasks": [
+      "<Secondary task>"
+    ],
+    "actors": [
+      "<User or role>"
+    ],
+    "entryPoints": [
+      "<Entry point>"
+    ],
+    "exitPoints": [
+      "<Exit point>"
+    ],
+    "prerequisites": [
+      "<Prerequisite>"
+    ],
+    "successDefinition": [
+      "<Observable successful outcome>"
+    ]
+  },
+  "productContext": {
+    "source": "docs/frontend/product-context.md",
+    "journey": "<Journey supported by this screen>",
+    "jobs": [
+      "<Job to be done>"
+    ],
+    "terminology": [
+      {
+        "term": "<Approved term>",
+        "meaning": "<User-facing meaning>",
+        "prohibitedAlternatives": [
+          "<Prohibited alternative>"
+        ]
+      }
+    ],
+    "permissions": [
+      {
+        "capability": "<Product capability>",
+        "userMeaning": "<What this capability allows the user to do>",
+        "frontendTreatment": "allowed",
+        "backendAuthoritative": true
+      }
+    ],
+    "scope": {
+      "type": "<global|tenant|organization|workspace|project|entity|session|none|other>",
+      "source": "<Authoritative scope source>",
+      "switchingBehavior": "<Behavior when scope changes>"
+    },
+    "assumptions": [
+      "<Explicit temporary assumption>"
+    ],
+    "openQuestions": [
+      "<Unresolved product question>"
+    ]
+  },
+  "visualDirection": {
+    "source": "docs/frontend/design-direction.md",
+    "archetype": "<Selected visual archetype>",
+    "density": "<compact|balanced|comfortable|mixed>",
+    "adjectives": [
+      "<Visual adjective>"
+    ],
+    "enforcedRules": [
+      "<Visual rule translated into implementation behavior>"
+    ],
+    "prohibitedRules": [
+      "<Visual tendency that must not appear>"
+    ]
+  },
+  "visualHierarchy": {
+    "applicability": "full",
+    "baseProfile": "productive",
+    "dominantTask": "<Dominant task this composition must support>",
+    "focalPointByState": [
+      {
+        "stateId": "data",
+        "elementId": "primary-heading",
+        "priority": "primary",
+        "rationale": "<Why the eye should land here first>"
+      }
+    ],
+    "semanticOutline": [
+      {
+        "id": "primary-heading",
+        "level": 1,
+        "text": "<Semantic page heading>",
+        "regionId": "<screenRegionId>",
+        "purpose": "Document orientation; semantic level is independent from visual size."
+      }
+    ],
+    "visualPriorityLadder": [
+      {
+        "id": "primary-visual-priority",
+        "elementId": "primary-heading",
+        "priority": "primary",
+        "visualRole": "pageTitle",
+        "signals": [
+          "semantic text style pageTitle",
+          "position in reading path",
+          "spacing separates it from supporting metadata"
+        ]
+      },
+      {
+        "id": "supporting-visual-priority",
+        "elementId": "supporting-summary",
+        "priority": "supporting",
+        "visualRole": "body",
+        "signals": [
+          "semantic text style body",
+          "grouped near the primary heading"
+        ]
+      }
+    ],
+    "readingPath": [
+      {
+        "order": 1,
+        "elementId": "primary-heading",
+        "expectedAttention": "primary"
+      },
+      {
+        "order": 2,
+        "elementId": "supporting-summary",
+        "expectedAttention": "supporting"
+      }
+    ],
+    "textRoleAssignments": [
+      {
+        "elementId": "primary-heading",
+        "semanticElement": "h1",
+        "textRole": "pageTitle",
+        "tokenSource": "docs/frontend/design-system/design-system.json#visualGrammar.semanticTextStyles.pageTitle"
+      },
+      {
+        "elementId": "supporting-summary",
+        "semanticElement": "p",
+        "textRole": "body",
+        "tokenSource": "docs/frontend/design-system/design-system.json#visualGrammar.semanticTextStyles.body"
+      }
+    ],
+    "alignmentAnchors": [
+      {
+        "id": "main-content-left-keyline",
+        "axis": "x",
+        "owner": "<layout-region>",
+        "elements": [
+          "primary-heading",
+          "supporting-summary"
+        ],
+        "tolerancePx": 1
+      }
+    ],
+    "proximityGroups": [
+      {
+        "id": "heading-and-summary",
+        "elements": [
+          "primary-heading",
+          "supporting-summary"
+        ],
+        "relationship": "The summary explains the heading.",
+        "closerThan": [
+          "primary-action-group",
+          "secondary-region"
+        ]
+      }
+    ],
+    "whitespaceZones": [
+      {
+        "id": "region-separation",
+        "owner": "<parent-layout>",
+        "purpose": "Separate the primary task region from supporting regions.",
+        "token": "tokens.semantic.space.region"
+      }
+    ],
+    "repetitionRules": [
+      "Repeated item rows share the same text roles, gaps, and key lines."
+    ],
+    "balanceStrategy": [
+      "One dominant focal point per state; supporting regions remain visually subordinate."
+    ],
+    "emphasisBudget": {
+      "maxDominantFocalPointsPerState": 1,
+      "maxPrimaryActionsPerState": 1,
+      "colorOnlyHierarchyAllowed": false,
+      "notes": "Use typography, position, spacing, and component treatment before color."
+    },
+    "responsivePriority": [
+      {
+        "viewport": "compact",
+        "preservedPriorities": [
+          "primary-heading",
+          "primary-action-group"
+        ],
+        "transformations": [
+          "Preserve reading order and action priority before moving contextual metadata."
+        ]
+      }
+    ],
+    "exceptions": []
+  },
+  "architecture": {
+    "source": "docs/frontend/frontend-architecture.md",
+    "featureBoundary": "<Feature boundary>",
+    "routeOwnership": "<Route ownership>",
+    "serverStateOwnership": "<TanStack Query or approved server-state ownership>",
+    "clientStateOwnership": "<Local or feature-state ownership>",
+    "formStateOwnership": "<React Hook Form or not applicable>",
+    "urlStateOwnership": "<URL-state ownership and serialization>",
+    "dataBoundary": "<DTO to frontend-model boundary>",
+    "errorStrategy": "<Error normalization and presentation strategy>",
+    "performanceStrategy": [
+      "<Performance decision>"
+    ],
+    "integrationContracts": [
+      "docs/frontend/integrations/<feature-name>.md"
+    ],
+    "architectureDecisions": [
+      "<Applicable decision>"
+    ]
+  },
+  "recipe": {
+    "id": "<recipe-id>",
+    "source": "~/.agents/skills/frontend-product-builder/assets/recipes/<recipe-id>.recipe.json",
+    "selectionStatus": "selected",
+    "selectionRationale": "<Why this recipe matches the dominant task>",
+    "rejectedAlternatives": [
+      {
+        "id": "<rejected-recipe-id>",
+        "reason": "<Why it is less appropriate>"
+      }
+    ],
+    "extensionReason": null,
+    "regions": [
+      {
+        "recipeRegionId": "<recipeRegionId>",
+        "screenRegionId": "<screenRegionId>",
+        "status": "required",
+        "priority": 1,
+        "purpose": "<Product responsibility of the region>",
+        "content": [
+          "<Content placed in the region>"
+        ],
+        "scrollOwnership": "none",
+        "stickyBehavior": "none",
+        "exceptionReason": null
+      }
+    ]
+  },
+  "layout": {
+    "shell": "<Application shell or standalone surface>",
+    "contentWidth": "<Width constraint and rationale>",
+    "primaryScrollOwner": "<Primary vertical scroll owner>",
+    "localScrollRegions": [
+      "<Local overflow region or none>"
+    ],
+    "stickyElements": [
+      "<Sticky element or none>"
+    ],
+    "surfaceStrategy": [
+      "<Surface rule>"
+    ],
+    "spacingStrategy": [
+      "<Spacing rule>"
+    ],
+    "overflowPolicy": [
+      "<Overflow rule>"
+    ]
+  },
+  "componentMap": [
+    {
+      "id": "<component-usage-id>",
+      "regionId": "<screenRegionId>",
+      "component": "<Canonical component name>",
+      "catalogSource": "~/.agents/skills/frontend-product-builder/assets/catalog/<catalog-file>.json",
+      "responsibility": "<Responsibility in this screen>",
+      "reuseStatus": "canonical",
+      "variant": "<variant-or-null>",
+      "size": "<size-or-null>",
+      "stateOwner": "<stateless|local|controlled|form-owned|query-owned|url-owned|feature-owned|route-owned>",
+      "dataOwner": "<Data owner>",
+      "interactionOwner": "<Interaction owner>",
+      "states": [
+        "<Required component state>"
+      ],
+      "fallback": "<Fallback when this component cannot render its ordinary data state>",
+      "extensionContract": null,
+      "proposedComponentContract": null
+    }
+  ],
+  "semanticPresentation": {
+    "mode": "registry",
+    "assignments": [
+      {
+        "componentUsageId": "<component-usage-id>",
+        "semanticRole": "<semantic-role>"
+      }
+    ],
+    "rationale": "<Why this semantic data role uses the Design System presentation family>"
+  },
+  "dataDependencies": [
+    {
+      "id": "<dependency-id>",
+      "type": "<query|mutation|route|url|form|context|feature|static>",
+      "purpose": "<Purpose of the dependency>",
+      "owner": "<Owning module or hook>",
+      "authoritativeSource": "<Authoritative source>",
+      "contract": "<Integration or type contract>",
+      "mapping": "<DTO to frontend-model and view-model mapping>",
+      "loadingBehavior": "<Initial and background loading behavior>",
+      "emptyBehavior": "<Empty behavior>",
+      "errorBehavior": "<Normalized error behavior>",
+      "staleBehavior": "<Stale behavior>",
+      "permissionBehavior": "<Permission behavior>",
+      "cachePolicy": "<Cache and freshness policy>",
+      "retryPolicy": "<Retry policy>",
+      "cancellationPolicy": null,
+      "invalidationPolicy": null,
+      "fixtureSource": "<Representative fixture source or null>"
+    }
+  ],
+  "states": [
+    {
+      "id": "initial-loading",
+      "category": "initial-loading",
+      "trigger": "<Trigger>",
+      "userUnderstanding": "<What the user understands>",
+      "authoritativeData": "<What data is currently authoritative>",
+      "visibleRegions": [
+        "<Visible region>"
+      ],
+      "hiddenRegions": [
+        "<Hidden region>"
+      ],
+      "componentStates": [
+        {
+          "componentUsageId": "<component-usage-id>",
+          "state": "loading",
+          "notes": null
+        }
+      ],
+      "enabledActions": [
+        "<Enabled action or none>"
+      ],
+      "disabledActions": [
+        {
+          "actionId": "<action-id>",
+          "reason": "<Visible reason>"
+        }
+      ],
+      "focusBehavior": "<Focus behavior>",
+      "announcementBehavior": "<Announcement behavior>",
+      "recovery": [
+        "<Recovery behavior>"
+      ],
+      "screenshotRequired": true
+    },
+    {
+      "id": "data",
+      "category": "data",
+      "trigger": "<Trigger>",
+      "userUnderstanding": "<What the user understands>",
+      "authoritativeData": "<What data is authoritative>",
+      "visibleRegions": [
+        "<Visible region>"
+      ],
+      "hiddenRegions": [],
+      "componentStates": [
+        {
+          "componentUsageId": "<component-usage-id>",
+          "state": "default",
+          "notes": null
+        }
+      ],
+      "enabledActions": [
+        "<Enabled action>"
+      ],
+      "disabledActions": [],
+      "focusBehavior": "<Focus behavior>",
+      "announcementBehavior": "<Announcement behavior>",
+      "recovery": [],
+      "screenshotRequired": true
+    }
+  ],
+  "actions": [
+    {
+      "id": "<action-id>",
+      "label": "<User-facing action label>",
+      "kind": "<primary|secondary|destructive|navigation|mutation|local|recovery>",
+      "regionId": "<screenRegionId>",
+      "owner": "<Owning feature or workflow>",
+      "permission": "<Required product capability>",
+      "eligibility": "<Complete eligibility rule>",
+      "confirmation": "<Confirmation policy or none>",
+      "pendingBehavior": "<Pending behavior>",
+      "successBehavior": "<Authoritative success behavior>",
+      "errorBehavior": "<Normalized error behavior>",
+      "duplicatePrevention": "<Duplicate prevention policy>",
+      "idempotency": null,
+      "optimisticBehavior": null,
+      "navigationAfterSuccess": null
+    }
+  ],
+  "responsive": {
+    "strategy": "<Responsive strategy>",
+    "ranges": [
+      {
+        "id": "compact",
+        "condition": "<Container or viewport condition>",
+        "layout": "<Compact layout>",
+        "regionTransformations": [
+          "<Region transformation>"
+        ],
+        "actionBehavior": [
+          "<Action transformation>"
+        ],
+        "collectionBehavior": [
+          "<Table or collection transformation>"
+        ],
+        "scrollBehavior": [
+          "<Scroll behavior>"
+        ],
+        "stickyBehavior": [
+          "<Sticky behavior>"
+        ]
+      },
+      {
+        "id": "wide",
+        "condition": "<Container or viewport condition>",
+        "layout": "<Wide layout>",
+        "regionTransformations": [
+          "<Region transformation>"
+        ],
+        "actionBehavior": [
+          "<Action behavior>"
+        ],
+        "collectionBehavior": [
+          "<Collection behavior>"
+        ],
+        "scrollBehavior": [
+          "<Scroll behavior>"
+        ],
+        "stickyBehavior": [
+          "<Sticky behavior>"
+        ]
+      }
+    ],
+    "verificationViewports": [
+      {
+        "width": 390,
+        "height": 844,
+        "purpose": "Compact mobile verification"
+      },
+      {
+        "width": 1024,
+        "height": 768,
+        "purpose": "Constrained desktop or tablet verification"
+      },
+      {
+        "width": 1440,
+        "height": 900,
+        "purpose": "Primary desktop verification"
+      }
+    ],
+    "zoomRequirements": [
+      "Validate at 125% browser zoom.",
+      "Validate critical reflow at 200% text scaling."
+    ],
+    "contentPriority": [
+      "<Highest-priority content>",
+      "<Secondary content>"
+    ]
+  },
+  "accessibility": {
+    "landmarks": [
+      "<Landmark contract>"
+    ],
+    "headingHierarchy": [
+      "<Heading contract>"
+    ],
+    "accessibleNames": [
+      "<Accessible-name contract>"
+    ],
+    "keyboardModel": [
+      "<Keyboard behavior>"
+    ],
+    "focusModel": [
+      "<Focus behavior>"
+    ],
+    "errorNavigation": [
+      "<Error-navigation behavior>"
+    ],
+    "announcements": [
+      "<Announcement behavior>"
+    ],
+    "reducedMotion": [
+      "<Reduced-motion behavior>"
+    ],
+    "zoomAndReflow": [
+      "<Zoom and reflow requirement>"
+    ]
+  },
+  "content": {
+    "screenTitle": "<Screen title>",
+    "titlePattern": "<Title pattern>",
+    "terminologyRules": [
+      "<Terminology rule>"
+    ],
+    "formattingRules": [
+      "<Date, number, currency, identifier, and enum formatting rule>"
+    ],
+    "localizationRules": [
+      "<Localization rule>"
+    ],
+    "wrappingRules": [
+      "<Wrapping rule>"
+    ],
+    "truncationRules": [
+      "<Truncation rule>"
+    ],
+    "emptyStateCopy": [
+      "<Empty-state copy requirement>"
+    ],
+    "errorCopy": [
+      "<Error-copy requirement>"
+    ],
+    "prohibitedContent": [
+      "<Raw technical content that must not be displayed>"
+    ]
+  },
+  "implementation": {
+    "mode": "<new-build|integration|migration|extension|repair>",
+    "representativeSlice": "<Small architecturally real implementation slice>",
+    "files": [
+      {
+        "path": "src/features/<feature>/<file>.tsx",
+        "purpose": "<File purpose>",
+        "action": "create"
+      }
+    ],
+    "sequence": [
+      {
+        "order": 1,
+        "id": "<step-id>",
+        "description": "<Implementation step>",
+        "dependencies": [
+          "<Dependency or none>"
+        ],
+        "completionEvidence": [
+          "<Observable completion evidence>"
+        ]
+      }
+    ],
+    "fixtures": [
+      "<Representative fixture>"
+    ],
+    "stories": [
+      "<Required story>"
+    ],
+    "tests": [
+      "<Required test>"
+    ],
+    "browserScenarios": [
+      "<Required browser scenario>"
+    ],
+    "migrations": [
+      "<Migration or none>"
+    ],
+    "blockers": [
+      "<Blocking issue or none>"
+    ],
+    "outOfScope": [
+      "<Explicitly excluded work>"
+    ]
+  },
+  "representativeGate": {
+    "enabled": true,
+    "representative": true,
+    "rationale": "<Why this screen exercises the system credibly>",
+    "slice": "<Representative implementation slice>",
+    "status": "blocked",
+    "requiredChecks": [
+      {
+        "id": "GATE-001",
+        "description": "The primary task and dominant screen category are explicit.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-002",
+        "description": "The selected recipe and all required recipe regions are mapped.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-003",
+        "description": "The state matrix covers applicable success and non-success states.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-004",
+        "description": "The component map contains no unresolved canonical responsibility or unapproved shared-component proposal.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-005",
+        "description": "Data, form, URL, route, feature, permission, and interaction ownership are explicit.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-006",
+        "description": "Representative fixtures are realistic, safe, and cover meaningful adverse states.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-007",
+        "description": "The representative slice uses production route, architecture, tokens, components, and state boundaries.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-008",
+        "description": "Compact, constrained, and wide responsive behavior is implemented and browser validated.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-009",
+        "description": "Keyboard, focus, announcements, reduced motion, zoom, and reflow are validated.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-010",
+        "description": "Required screenshots, composition audit, design-system, component, responsive, and accessibility audits are complete.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-011",
+        "description": "Blocking defects are patched and the affected scenarios are revalidated.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      },
+      {
+        "id": "GATE-012",
+        "description": "No unresolved product, architecture, permission, safety, data, integration, or implementation blocker remains.",
+        "status": "pending",
+        "evidence": [],
+        "blocking": true
+      }
+    ],
+    "approval": {
+      "approvedBy": null,
+      "approvedAt": null,
+      "notes": []
+    }
+  },
+  "validation": {
+    "schema": "~/.agents/skills/frontend-product-builder/assets/schemas/screen-specification.schema.json",
+    "checks": [
+      {
+        "id": "SCREEN-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The screen specification must validate against the screen specification schema.",
+        "command": "node scripts/validate-screen-specification.mjs docs/frontend/screens/<screen-id>/screen-spec.json",
+        "remediation": "Correct missing, invalid, or unsupported screen-specification fields."
+      },
+      {
+        "id": "SCREEN-002",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "The screen must declare one dominant user task, one dominant category, and one selected or explicitly extended layout recipe.",
+        "command": null,
+        "remediation": "Clarify the user task, classify the screen, and select the closest approved recipe."
+      },
+      {
+        "id": "SCREEN-003",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Every visible region must map to canonical, extended, feature-specific, or explicitly proposed components.",
+        "command": null,
+        "remediation": "Complete the component map and resolve unsupported component invention."
+      },
+      {
+        "id": "SCREEN-004",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Initial loading, data, empty, partial, error, permission, processing, and stale states must be evaluated and included when relevant.",
+        "command": null,
+        "remediation": "Complete the screen state matrix and document why any standard state is not applicable."
+      },
+      {
+        "id": "SCREEN-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Data, form, URL, route, feature, and interaction ownership must be explicit.",
+        "command": null,
+        "remediation": "Assign authoritative state and interaction ownership before implementation."
+      },
+      {
+        "id": "SCREEN-006",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Responsive behavior, scroll ownership, sticky behavior, focus behavior, and action transformation must be specified before implementation.",
+        "command": null,
+        "remediation": "Define compact, constrained, and wide behavior in the screen specification."
+      },
+      {
+        "id": "SCREEN-007",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Substantial frontend work must define semantic outline, visual priority, reading path, typography roles, alignment, proximity, whitespace, emphasis budget, and responsive priority.",
+        "command": "node scripts/validate-visual-composition-contract.mjs docs/frontend/screens/<screen-id>/screen-spec.json docs/frontend/design-system/design-system.json docs/frontend/screens/<screen-id>/composition-proof.json",
+        "remediation": "Complete the visualHierarchy contract and composition proof before broad implementation."
+      },
+      {
+        "id": "SCREEN-009",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Mutation actions must define permission, eligibility, confirmation, pending, success, failure, duplicate prevention, and idempotency behavior.",
+        "command": null,
+        "remediation": "Complete each mutation-action contract."
+      },
+      {
+        "id": "SCREEN-008",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "The representative slice must use production architecture and must be extendable into the final screen.",
+        "command": null,
+        "remediation": "Replace throwaway mockup code with the real route, feature, component, token, state, and fixture boundaries."
+      },
+      {
+        "id": "SCREEN-010",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Actions must have complete state coverage, mutation policies, duplicate prevention, authoritative success, and explicit recovery behavior.",
+        "command": "node scripts/audit-screen-action-state-coverage.mjs docs/frontend/screens/<screen-id>/screen-spec.json",
+        "remediation": "Correct action visibility, eligibility, pending behavior, state coverage, idempotency, confirmation, success authority, or recovery."
+      },
+      {
+        "id": "SCREEN-011",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Data dependencies and state ownership must preserve architecture, transport, mapping, mutation, cache, permission, and invalidation boundaries.",
+        "command": "node scripts/audit-screen-data-ownership.mjs docs/frontend/screens/<screen-id>/screen-spec.json",
+        "remediation": "Assign explicit owners and move transport, mapping, permission, mutation, cache, or invalidation behavior to the correct layer."
+      },
+      {
+        "id": "SCREEN-012",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "The representative gate must contain complete checks, evidence, planning artifacts, approval consistency, and no unresolved blockers.",
+        "command": "node scripts/audit-representative-gate.mjs docs/frontend/screens/<screen-id>/screen-spec.json",
+        "remediation": "Complete gate checks and evidence, resolve blockers, align planning artifacts, and correct approval state."
+      },
+      {
+        "id": "SCREEN-013",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "The consolidated readiness report must release the next workflow stage before implementation expands.",
+        "command": "node scripts/report-screen-readiness.mjs docs/frontend/screens/<screen-id>/screen-spec.json",
+        "remediation": "Resolve the blocking audit issues and regenerate readiness-report.json."
+      }
+    ]
+  },
+  "decisionSupport": {
+    "mode": "not-applicable",
+    "decisionQuestion": null,
+    "signals": [],
+    "rationale": "Change to required when the primary task depends on explicit identity/state/urgency/relevance/comparison/context signals."
+  },
+  "wayfinding": {
+    "mode": "not-applicable",
+    "parentRoute": null,
+    "rationale": "Change when this screen is a drill-down or needs active-navigation orientation."
+  }
+}

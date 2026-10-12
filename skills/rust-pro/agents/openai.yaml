@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rust + Axum Backend Engineer"
+  short_description: "Implement and review production Rust/Axum backends"
+  default_prompt: "Use $rust-pro with the current backend technology manifest and frozen feature contracts."

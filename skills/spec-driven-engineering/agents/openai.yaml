@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec-Driven Engineering"
+  short_description: "Workflow SDD, ATDD, BDD e TDD com evidências"
+  default_prompt: "Use $spec-driven-engineering para planejar e executar esta feature com rastreabilidade, gates e handoff."

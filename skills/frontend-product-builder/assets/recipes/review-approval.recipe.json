@@ -1,0 +1,1040 @@
+{
+  "$schema": "../schemas/layout-recipe.schema.json",
+  "meta": {
+    "id": "review-approval",
+    "name": "Review and Approval Workspace",
+    "version": "1.1.0",
+    "status": "stable",
+    "category": "review-approval",
+    "description": "Focused review layout for evaluating evidence and a machine-generated or third-party proposal, then capturing an explicit, justified, auditable human decision.",
+    "owner": "frontend-product-builder",
+    "source": "assets/recipes/review-approval.recipe.json",
+    "tags": [
+      "review",
+      "approval",
+      "decision",
+      "evidence",
+      "audit",
+      "recommendation"
+    ]
+  },
+  "purpose": "Let an eligible reviewer inspect the original evidence, understand a proposed recommendation with its provenance and confidence, and record a deliberate, justified, auditable decision without ever presenting the recommendation itself as an already-made decision.",
+  "useWhen": [
+    "A machine-generated, third-party, or delegated proposal requires human review before it takes effect.",
+    "The action being reviewed is a decision, approval, rejection, or conflict resolution with durable consequences.",
+    "The evidence behind the proposal must remain inspectable and separate from the proposal's conclusion.",
+    "The decision must be recorded with actor, timestamp, and justification for later audit."
+  ],
+  "doNotUseWhen": [
+    "The screen only displays a read-only record with no pending decision.",
+    "The action is a routine, low-consequence toggle that does not require justification or audit.",
+    "No evidence or recommendation exists yet to review — use the entity-detail recipe instead.",
+    "The route performs authentication, verification, or account recovery — use the authentication recipe."
+  ],
+  "requiredInputs": [
+    "Approved evidence-rendering components for the domain's document/source types",
+    "Recommendation provenance and confidence policy",
+    "Decision authority and eligibility rules",
+    "Justification requirements for approval, rejection, and conflict resolution",
+    "Audit trail and correlation-id policy",
+    "Guard/eligibility checklist for the reviewed action",
+    "Accessibility and localization requirements"
+  ],
+  "screenContract": {
+    "requiredFields": [
+      "purpose",
+      "primaryUser",
+      "primaryTask",
+      "route",
+      "dataDependencies",
+      "primaryAction",
+      "secondaryActions",
+      "permissions",
+      "states",
+      "responsiveTransformations",
+      "accessibilityRequirements",
+      "acceptanceCriteria"
+    ],
+    "selectionQuestions": [
+      "What is the exact object/version being reviewed, and does the evidence shown resolve to that exact object?",
+      "Who produced the proposal (machine, third party, delegate) and what is its confidence/provenance?",
+      "What guard checks must pass before the primary decision action is eligible?",
+      "What must the reviewer record when approving, rejecting, or resolving a conflict (actor, justification, alternative preserved)?",
+      "What happens to the evidence and proposal if either becomes stale before the decision is submitted?",
+      "Is the reviewer's role eligible to decide, or only to view?"
+    ]
+  },
+  "regions": [
+    {
+      "id": "reviewHeader",
+      "name": "Review Header",
+      "role": "Identify the exact object under review, its current status, the dominant pending decision, and the eligible reviewer context.",
+      "required": true,
+      "order": 1,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "PageHeader",
+        "StateBadge",
+        "AttentionBadge",
+        "Breadcrumbs",
+        "SyntheticDataBadge"
+      ],
+      "prohibitedComponents": [
+        "Primary decision action placed only here without also appearing in decisionForm",
+        "Ambiguous status text without a structured state"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "header",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Top of the page.",
+          "layout": "Stacked identity, status, and breadcrumb.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "wrap",
+          "notes": "Status must remain legible; never truncate the pending-decision label."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Top of the page.",
+          "layout": "Identity and status on one line, breadcrumb above.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "wrap",
+          "notes": "Preserve full status text."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Top of the page.",
+          "layout": "Identity, status, and context in one row.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Do not compress the status indicator into an icon-only badge."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Top of the page.",
+          "layout": "Identity, status, and context in one row.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Keep the header height stable regardless of viewport width."
+        }
+      },
+      "rules": [
+        "The reviewed object's exact identifier and version are always visible.",
+        "Status uses a structured state, never a free-text-only label.",
+        "Status shown here must match the status shown in any list view of the same object (single canonical source)."
+      ]
+    },
+    {
+      "id": "evidenceViewer",
+      "name": "Evidence Viewer",
+      "role": "Render the original, immutable source evidence (document, excerpt, message, or record) that the proposal is based on.",
+      "required": true,
+      "order": 2,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "critical",
+      "allowedComponents": [
+        "EvidenceLink",
+        "DocumentViewer",
+        "ExcerptHighlight",
+        "SyntheticDataBadge"
+      ],
+      "prohibitedComponents": [
+        "Editable evidence content",
+        "Evidence rendered from a broader/consolidated aggregate instead of the exact cited record"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "main",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "region",
+        "axis": "vertical",
+        "notes": "Long evidence scrolls independently without capturing the page's primary vertical scroll."
+      },
+      "visibilityCondition": "Always visible when evidence exists; a structured empty/unavailable state otherwise.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Below the review header.",
+          "layout": "Full-width evidence panel, collapsible if long.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "scroll-y",
+          "notes": "Never require horizontal scroll to read evidence text."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Below the review header, above the proposal.",
+          "layout": "Full-width evidence panel.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "scroll-y",
+          "notes": "Preserve independent vertical scroll."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Left column of a two-column review layout.",
+          "layout": "Constrained evidence panel beside the proposal and decision form.",
+          "width": "55%",
+          "order": 2,
+          "overflow": "scroll-y",
+          "notes": "Evidence and decisionForm never share one scroll container."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Left column of a two-column review layout.",
+          "layout": "Constrained evidence panel.",
+          "width": "50%",
+          "order": 2,
+          "overflow": "scroll-y",
+          "notes": "Do not stretch evidence width beyond a readable measure."
+        }
+      },
+      "rules": [
+        "Evidence renders exactly the cited record/excerpt, resolved via one canonical resolver, never a guessed or partial match.",
+        "The evidence source remains visually and structurally separate from the proposal's interpretation of it.",
+        "The original evidence is never mutated by review actions; corrections are captured as new linked records."
+      ]
+    },
+    {
+      "id": "evidenceNavigator",
+      "name": "Evidence Navigator",
+      "role": "Move between multiple cited evidence items or excerpts belonging to the same review without leaving the page.",
+      "required": false,
+      "order": 3,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "EvidenceLink",
+        "Tabs",
+        "List"
+      ],
+      "prohibitedComponents": [
+        "Navigation entries with no resolvable target",
+        "Dead '#' links standing in for an unbuilt route"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "nav",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only when more than one evidence item is cited.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Above the evidence viewer.",
+          "layout": "Horizontal scrollable tab list.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "scroll-x",
+          "notes": "Keep touch targets at the approved minimum size."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Above the evidence viewer.",
+          "layout": "Horizontal tab list.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Wrap rather than truncate evidence labels."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Above the evidence viewer.",
+          "layout": "Horizontal tab list.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Keep the active evidence item clearly indicated."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Above the evidence viewer.",
+          "layout": "Horizontal tab list.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Do not add more than the cited evidence items."
+        }
+      },
+      "rules": [
+        "Every navigator entry resolves to a real evidence item; an entity referenced without a built route opens a resolver-backed overlay, never a dead link.",
+        "The active evidence item is programmatically indicated, not color-only."
+      ]
+    },
+    {
+      "id": "criticalReviewContext",
+      "name": "Critical Review Context",
+      "role": "Surface guard checks, blocking dependencies, missing data, and eligibility state that determine whether the primary decision action is currently available.",
+      "required": true,
+      "order": 4,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "critical",
+      "allowedComponents": [
+        "BlockingCallout",
+        "GuardChecklist",
+        "AttentionBadge",
+        "StateBadge"
+      ],
+      "prohibitedComponents": [
+        "Conflating a normal dependency with a business blocker",
+        "Confidence-qualifier prefixes on a confirmed operational state"
+      ],
+      "ownsSpacing": true,
+      "surface": "critical",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible; shows a clear 'no blocking condition' state when every guard passes.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Below the evidence viewer.",
+          "layout": "Stacked guard checklist.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "wrap",
+          "notes": "Every guard item remains individually readable."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Below the evidence viewer.",
+          "layout": "Stacked guard checklist.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "wrap",
+          "notes": "Do not collapse guard items into a single summary line."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Right column, above the proposal.",
+          "layout": "Constrained guard checklist.",
+          "width": "45%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Each guard item shows its own pass/fail state."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Right column, above the proposal.",
+          "layout": "Constrained guard checklist.",
+          "width": "50%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Preserve one guard item per line."
+        }
+      },
+      "rules": [
+        "Each guard/eligibility item is classified as exactly one of: execution status, human-pending, dependency, business blocker, permission, or technical error — never a combined free-text label.",
+        "A dependency that the primary decision action itself will resolve is never classified as a business blocker of that same action.",
+        "The primary decision action is disabled, with a visible reason, whenever any blocking guard fails."
+      ]
+    },
+    {
+      "id": "proposalAndRecommendation",
+      "name": "Proposal and Recommendation",
+      "role": "Present the machine-generated, third-party, or delegated recommendation with its confidence and provenance, clearly separated from the evidence and from the final decision.",
+      "required": true,
+      "order": 5,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "AgentOutputCard",
+        "ConfidenceMeter",
+        "AutomationLevelBadge",
+        "EvidenceLink"
+      ],
+      "prohibitedComponents": [
+        "Presenting the recommendation as an already-made decision",
+        "Confidence rendered as 0 when no canonical value exists",
+        "Recommendation source hidden or unattributed"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible when a recommendation exists; a structured empty state otherwise.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Below the critical review context.",
+          "layout": "Stacked recommendation summary with confidence and provenance.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "wrap",
+          "notes": "Confidence and provenance remain visible, not hidden behind a tooltip."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Below the critical review context.",
+          "layout": "Stacked recommendation summary.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "wrap",
+          "notes": "Preserve provenance citation text."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Right column, below the critical review context.",
+          "layout": "Constrained recommendation panel.",
+          "width": "45%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Keep recommendation visually distinct from the decision form below it."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Right column, below the critical review context.",
+          "layout": "Constrained recommendation panel.",
+          "width": "50%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Do not widen beyond a readable measure."
+        }
+      },
+      "rules": [
+        "Confidence is a number or explicitly null; null means no canonical value exists and is never rendered as zero.",
+        "Every claim traces to a resolvable source reference in the evidence viewer.",
+        "The recommendation never carries an approval or rejection control of its own; only the decision form does."
+      ]
+    },
+    {
+      "id": "decisionForm",
+      "name": "Decision Form",
+      "role": "Capture the reviewer's explicit decision, required justification, and, for a conflict, the preserved rejected alternative.",
+      "required": true,
+      "order": 6,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "critical",
+      "allowedComponents": [
+        "JustificationDialog",
+        "Form",
+        "FormField",
+        "Textarea",
+        "Button",
+        "RadioGroup"
+      ],
+      "prohibitedComponents": [
+        "Submitting without a required justification when the recipe's decision policy requires one",
+        "A decision control duplicated outside this region",
+        "Silent discard of a rejected alternative during conflict resolution"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "form",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible; disabled with a visible reason when a guard in criticalReviewContext fails or eligibility is absent.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Below the proposal and recommendation.",
+          "layout": "Full-width stacked decision controls.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "wrap",
+          "notes": "The primary decision action remains full width and reachable without scrolling past unrelated content."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Below the proposal and recommendation.",
+          "layout": "Full-width decision panel.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "wrap",
+          "notes": "Preserve justification field size."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Right column, below the proposal.",
+          "layout": "Constrained decision panel.",
+          "width": "45%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Keep the decision panel fixed relative to evidence scrolling on tall pages."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Right column, below the proposal.",
+          "layout": "Constrained decision panel.",
+          "width": "50%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Do not widen the justification field beyond a readable measure."
+        }
+      },
+      "rules": [
+        "Every decision records actor, timestamp, justification, and result before it takes effect.",
+        "A conflict resolution preserves the rejected alternative in the audit trail; it is never silently discarded.",
+        "The decision action re-validates every guard immediately before applying, never trusting a UI-computed eligibility flag alone.",
+        "A pending submission disables the decision action to prevent duplicate decisions."
+      ]
+    },
+    {
+      "id": "auditContext",
+      "name": "Audit Context",
+      "role": "Show the history of prior decisions, guard evaluations, and state transitions for this object, each with a correlation id linking related changes.",
+      "required": false,
+      "order": 7,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "audit",
+      "allowedComponents": [
+        "Timeline",
+        "BeforeAfterDiff",
+        "SyntheticDataBadge"
+      ],
+      "prohibitedComponents": [
+        "Editable history entries",
+        "History entries without actor and timestamp"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "region",
+        "axis": "vertical",
+        "notes": "A long history scrolls independently of the main review flow."
+      },
+      "visibilityCondition": "Visible when at least one prior decision or transition exists.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Below the decision form, collapsible.",
+          "layout": "Stacked timeline entries.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "scroll-y",
+          "notes": "Collapse by default to keep the decision form reachable first."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Below the decision form.",
+          "layout": "Stacked timeline entries.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "scroll-y",
+          "notes": "Preserve before/after text without truncation."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Full width below the two-column review area.",
+          "layout": "Stacked timeline entries.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "scroll-y",
+          "notes": "Independent scroll region, never the page's only scroll owner."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Full width below the two-column review area.",
+          "layout": "Stacked timeline entries.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "scroll-y",
+          "notes": "Keep entries in strict chronological order."
+        }
+      },
+      "rules": [
+        "Every entry links related objects through the same correlation id used by the decision that produced it.",
+        "A rejected alternative from a conflict resolution remains visible here, never removed."
+      ]
+    }
+  ],
+  "composition": {
+    "layoutModel": "split",
+    "widthPolicy": "hybrid",
+    "container": {
+      "component": "ReviewLayout",
+      "maxWidthToken": "layout.container.review",
+      "paddingToken": "layout.page.padding"
+    },
+    "columnPolicy": "Single stacked column on compact and medium layouts; two-column split (evidence left, guard/proposal/decision right) on wide and ultrawide layouts.",
+    "verticalRhythmToken": "reference.space.6",
+    "regionGapToken": "reference.space.6",
+    "spacingOwnership": [
+      "The layout owns spacing between the header, evidence column, and decision column.",
+      "The evidence viewer owns spacing between the source content and its own scroll edges.",
+      "The decision form owns spacing between fields, justification, and the primary action."
+    ],
+    "surfacePolicy": [
+      "The evidence viewer uses one clear surface, distinct from the proposal panel.",
+      "Critical review context uses the critical surface treatment.",
+      "The proposal panel never reuses the decision form's surface, so recommendation and decision remain visually distinguishable."
+    ],
+    "scrollOwner": "browser document, with the evidence viewer and audit context as independent region-scoped scroll containers",
+    "rules": [
+      "Evidence, recommendation, and decision remain three visually distinct regions at every breakpoint.",
+      "The primary decision action is reachable without requiring the reviewer to scroll past the full audit history.",
+      "No nested application shell duplicates chrome already provided by the page shell."
+    ],
+    "prohibited": [
+      "Merging evidence and recommendation into a single unstructured block.",
+      "A decision control rendered outside decisionForm.",
+      "Two independent full-height vertical scroll containers competing for the same viewport.",
+      "Color as the only distinguishing signal between guard-pass and guard-fail states."
+    ]
+  },
+  "actions": {
+    "primaryPlacement": "Inside the decision form, after justification and any required conflict-resolution input.",
+    "secondaryPlacement": "Request more evidence, defer, or delegate — placed beside the primary action with lower visual weight.",
+    "destructivePlacement": "Rejection uses a distinct, explicitly confirmed control inside the decision form; it is not merged with approval.",
+    "bulkPlacement": "Not applicable — this recipe reviews one object at a time.",
+    "contextualPlacement": "Guard-specific resolution actions (e.g. resolve a missing dependency) appear inside criticalReviewContext, next to the guard they resolve.",
+    "overflowPolicy": "Rare secondary actions may move to an accessible overflow menu; the primary decision action never moves there.",
+    "maxDominantActionsPerRegion": 1,
+    "compactBehavior": "The primary decision action becomes full width and remains pinned above the fold once all guards pass.",
+    "rules": [
+      "Exactly one primary decision action is dominant per state.",
+      "Approval, rejection, and conflict resolution are distinct controls, never one control with a mode switch.",
+      "The primary action stays disabled, with a visible reason, until every blocking guard passes.",
+      "A pending decision prevents duplicate submission."
+    ]
+  },
+  "content": {
+    "density": "comfortable",
+    "headingPolicy": "One h1 identifies the object under review; evidence, proposal, and decision each use their own subsection heading at a consistent level.",
+    "longContentPolicy": "Evidence excerpts, justification text, and audit entries expand within their own scroll region without widening the page.",
+    "truncationPolicy": "Never truncate evidence text, guard reasons, justification, or audit before/after values.",
+    "emptyStatePlacement": "A missing recommendation or absent evidence renders a dedicated, honest empty state in its own region, never a silently blank panel.",
+    "loadingStrategy": "Evidence, proposal, and audit context each show their own skeleton; the decision form remains disabled until its dependencies resolve.",
+    "errorScope": "A failure loading evidence or the proposal is scoped to its own region; it does not collapse the whole review page.",
+    "rules": [
+      "Status, severity, and guard labels use the same vocabulary and computation as any list view of the same object.",
+      "Confidence-qualifier language (e.g. a 'candidate' prefix) is used only for genuinely unconfirmed inference, never for a confirmed operational state.",
+      "Messages describing the current state and next available action; no leftover internal planning language."
+    ]
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "minimumViewport": "320 CSS pixels.",
+    "primaryViewport": "Desktop review workstations and tablet-class review on the go.",
+    "zoomExpectation": "The review flow must remain usable at 200% zoom where practical and at minimum 125% browser zoom.",
+    "pageOverflowPolicy": "No page-level horizontal overflow.",
+    "internalOverflowPolicy": "The evidence viewer and audit context scroll independently; the page itself scrolls vertically as the sole document-level scroll owner.",
+    "transformations": [
+      {
+        "from": "ultrawide",
+        "to": "wide",
+        "change": "Keep the two-column split but narrow both columns proportionally.",
+        "reason": "Evidence and decision remain readable without unnecessary whitespace."
+      },
+      {
+        "from": "wide",
+        "to": "medium",
+        "change": "Collapse the two-column split into a single stacked column: evidence, guard context, proposal, decision, audit.",
+        "reason": "A narrower viewport cannot sustain a readable two-column review."
+      },
+      {
+        "from": "medium",
+        "to": "compact",
+        "change": "Stack every region full width; collapse audit context by default; keep the primary decision action reachable without excessive scrolling.",
+        "reason": "Compact viewports require a single clear path from evidence to decision."
+      }
+    ]
+  },
+  "states": [
+    {
+      "id": "initial-loading",
+      "scope": "route",
+      "required": true,
+      "rendering": "Show skeletons for header, evidence, proposal, and decision form without a premature guard result.",
+      "userAction": "Wait."
+    },
+    {
+      "id": "data",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render evidence, guard context, proposal, and an eligible or ineligible decision form.",
+      "userAction": "Review the evidence and proposal, then decide."
+    },
+    {
+      "id": "partial",
+      "scope": "region",
+      "required": true,
+      "rendering": "Render whichever of evidence, proposal, or audit context is available; the missing part shows its own honest empty state and, if it blocks the decision, appears in criticalReviewContext.",
+      "userAction": "Continue with what is available or wait for the missing part."
+    },
+    {
+      "id": "warning",
+      "scope": "region",
+      "required": false,
+      "rendering": "Communicate a non-blocking concern (e.g. evidence updated since last view) without disabling the decision.",
+      "userAction": "Acknowledge and continue, or refresh evidence first."
+    },
+    {
+      "id": "error",
+      "scope": "region",
+      "required": true,
+      "rendering": "Render a safe, region-scoped error for evidence, proposal, or submission failure; never a raw transport error.",
+      "userAction": "Retry the affected region."
+    },
+    {
+      "id": "forbidden",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render evidence and proposal as read-only when the current role is not eligible to decide, with a visible reason.",
+      "userAction": "Request delegation or escalate to an eligible reviewer."
+    },
+    {
+      "id": "processing",
+      "scope": "region",
+      "required": true,
+      "rendering": "Disable the decision form and show a pending indicator while the decision is being recorded.",
+      "userAction": "Wait."
+    },
+    {
+      "id": "stale",
+      "scope": "region",
+      "required": true,
+      "rendering": "Explain that the evidence or proposal changed since it was loaded and require a refresh before the decision action re-enables.",
+      "userAction": "Refresh evidence and proposal before deciding."
+    }
+  ],
+  "accessibility": {
+    "landmarkMap": [
+      "The evidence viewer and decision form use distinct landmarks so a screen-reader user can jump directly between them.",
+      "Critical review context uses section semantics with an accessible name describing its guard-checklist role.",
+      "Audit context uses a section landmark distinct from the main review flow."
+    ],
+    "headingStructure": [
+      "One h1 identifies the object under review.",
+      "Evidence, proposal, decision, and audit each introduce their own heading at a consistent sublevel."
+    ],
+    "focusOrder": [
+      "Review header.",
+      "Evidence viewer and navigator.",
+      "Critical review context.",
+      "Proposal and recommendation.",
+      "Decision form.",
+      "Audit context."
+    ],
+    "keyboard": [
+      "Evidence navigation, guard-resolution actions, and the decision form are fully keyboard operable.",
+      "An overlay opened from an unresolved-route citation returns focus to its exact triggering element on close.",
+      "Focus moves to the first invalid field or the error summary after a rejected submission."
+    ],
+    "announcements": [
+      "A guard becoming eligible or blocking is perceivable, not only a color change.",
+      "Successful decision submission and its result are announced.",
+      "The stale state is announced when evidence or proposal changes after load."
+    ],
+    "minimumTargetToken": "reference.control.target.minimum",
+    "contrastTarget": "WCAG 2.2 AA",
+    "colorIndependence": "Guard pass/fail, confidence, and decision result never depend on color alone.",
+    "rules": [
+      "Every guard item has an accessible name describing what it checks and its current result.",
+      "The primary decision action's disabled reason is exposed to assistive technology, not only shown visually."
+    ]
+  },
+  "constraints": {
+    "requiredComponents": [
+      "ReviewLayout",
+      "GuardChecklist",
+      "AgentOutputCard",
+      "JustificationDialog",
+      "Timeline"
+    ],
+    "prohibitedPatterns": [
+      "Presenting a recommendation as a final decision.",
+      "Submitting a decision against evidence known to be stale.",
+      "A dependency the action itself resolves classified as a blocker of that action.",
+      "Silently discarding a rejected alternative during conflict resolution.",
+      "A citation to an entity without a built route rendered as a dead link instead of a resolver-backed overlay."
+    ],
+    "dataMagnitude": [
+      "Evidence excerpts and justification text may expand substantially through localization or verbose source content.",
+      "Audit history may grow unbounded over the object's lifetime and must remain independently scrollable."
+    ],
+    "performance": [
+      "Do not block rendering of evidence and proposal on the full audit history loading.",
+      "Guard re-validation before submission must complete before the decision action's pending state resolves.",
+      "Avoid recomputing guard eligibility independently in more than one place; reuse one shared guard function."
+    ],
+    "implementation": [
+      "Guard checks are itemized and evaluated by one shared, pure function reused by every consumer (list row, this page, the submission handler).",
+      "The decision handler re-runs every guard immediately before mutating, never trusting a UI-computed flag alone.",
+      "Every decision produces a durable audit entry with actor, timestamp, justification, result, and a correlation id linking every touched object.",
+      "The original evidence record is never mutated; corrections are captured as new linked records.",
+      "Machine presence conditions come from presenceDefaults; visibilityCondition prose is explanatory only."
+    ]
+  },
+  "craftDefaults": {
+    "spatialComposition": {
+      "maxVisualNestingDepth": 2,
+      "regionAssignments": [
+        {
+          "regionId": "reviewHeader",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "evidenceViewer",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "fill-available",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": true
+        },
+        {
+          "regionId": "evidenceNavigator",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "criticalReviewContext",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "proposalAndRecommendation",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "decisionForm",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "auditContext",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        }
+      ]
+    },
+    "perceptualHierarchy": {
+      "surfaceAssignments": [
+        {
+          "regionId": "reviewHeader",
+          "role": "canvas"
+        },
+        {
+          "regionId": "evidenceViewer",
+          "role": "surface"
+        },
+        {
+          "regionId": "evidenceNavigator",
+          "role": "canvas"
+        },
+        {
+          "regionId": "criticalReviewContext",
+          "role": "surface-elevated"
+        },
+        {
+          "regionId": "proposalAndRecommendation",
+          "role": "surface-subtle"
+        },
+        {
+          "regionId": "decisionForm",
+          "role": "surface"
+        },
+        {
+          "regionId": "auditContext",
+          "role": "surface-subtle"
+        }
+      ]
+    }
+  },
+  "presenceDefaults": [
+    {
+      "targetType": "region",
+      "targetId": "reviewHeader",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Every review requires exact object/version orientation and current decision context."
+    },
+    {
+      "targetType": "region",
+      "targetId": "evidenceViewer",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The evidence region remains structural even when evidence is unavailable so the absence is rendered honestly instead of silently collapsing."
+    },
+    {
+      "targetType": "region",
+      "targetId": "evidenceNavigator",
+      "policy": "conditional",
+      "condition": {
+        "signal": "evidence.items.count",
+        "operator": "gt",
+        "value": 1
+      },
+      "rationale": "Navigation exists only when the reviewer can actually choose between multiple cited evidence items."
+    },
+    {
+      "targetType": "region",
+      "targetId": "criticalReviewContext",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Guard context always renders, including the explicit no-blocking-condition state when every guard passes."
+    },
+    {
+      "targetType": "region",
+      "targetId": "proposalAndRecommendation",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The proposal region remains structural so a missing or unavailable recommendation is represented by an explicit state rather than disappearing."
+    },
+    {
+      "targetType": "region",
+      "targetId": "decisionForm",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The decision region remains visible even when ineligible; guard or permission state disables it with a visible reason."
+    },
+    {
+      "targetType": "region",
+      "targetId": "auditContext",
+      "policy": "conditional",
+      "condition": {
+        "signal": "audit.entries.count",
+        "operator": "gt",
+        "value": 0
+      },
+      "rationale": "Prior-decision history appears only when at least one auditable transition exists."
+    }
+  ],
+  "validation": {
+    "schema": "assets/schemas/layout-recipe.schema.json",
+    "checks": [
+      {
+        "id": "REVIEW-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The review-approval recipe must validate against the layout recipe schema.",
+        "remediation": "Correct invalid or missing recipe fields."
+      },
+      {
+        "id": "REVIEW-002",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "The decision form's primary action must remain disabled, with a visible and accessible reason, whenever a guard in criticalReviewContext fails.",
+        "remediation": "Correct guard evaluation wiring between criticalReviewContext and decisionForm."
+      },
+      {
+        "id": "REVIEW-003",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "The recommendation in proposalAndRecommendation must never be presented as an already-made decision, and confidence must render as null (not zero) when no canonical value exists.",
+        "remediation": "Correct recommendation copy and confidence rendering."
+      },
+      {
+        "id": "REVIEW-004",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Every submitted decision must produce an audit entry with actor, timestamp, justification, result, and correlation id before the action's success state renders.",
+        "remediation": "Correct the decision handler's audit-trail write path."
+      },
+      {
+        "id": "REVIEW-005",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "The two-column evidence/decision split must collapse to a single stacked column without horizontal overflow at compact and medium viewports.",
+        "remediation": "Correct responsive transformation and container width."
+      },
+      {
+        "id": "REVIEW-006",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Review evidence, recommendation, decision, navigator, and audit regions must follow typed recipe presence semantics while honest missing-data states remain structurally visible.",
+        "remediation": "Correct craftDefaults/presenceDefaults and keep conditional regions required=false with cardinality.minimum=0."
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "Approve a machine-generated deadline recommendation",
+      "description": "Evidence document, deadline calculation with confidence and trace, guard checklist confirming role eligibility, and a decision form requiring justification before confirming the deadline."
+    },
+    {
+      "name": "Resolve a scheduling conflict between two candidate dates",
+      "description": "Two candidate evidence sources side by side via the evidence navigator, a recommendation favoring one, and a decision form that records the choice and preserves the rejected alternative in the audit trail."
+    }
+  ]
+}

@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./frontend-autonomy.schema.json",
+  "title": "Frontend Autonomy Routing Request",
+  "description": "Typed input contract for routing frontend implementation choices into the canonical Autonomy Controller without granting authority over product, design-system, screen, Behavioral UX, security or release contracts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "artifactKind",
+    "choiceKind",
+    "stage",
+    "feature",
+    "task",
+    "effectivePolicyRef",
+    "frontendCraftPolicyRef",
+    "humanGateRequired",
+    "intendedEffects",
+    "candidates",
+    "evidence"
+  ],
+  "properties": {
+    "$schema": { "const": "integrations/governance/frontend-autonomy.schema.json" },
+    "schemaVersion": { "const": "1.0.0" },
+    "artifactKind": { "const": "frontend-autonomy-request" },
+    "choiceKind": { "$ref": "#/$defs/choiceKind" },
+    "stage": { "const": "implementation" },
+    "feature": { "$ref": "#/$defs/nonEmptyString" },
+    "task": { "$ref": "#/$defs/nullableString" },
+    "effectivePolicyRef": { "$ref": "#/$defs/repositoryRef" },
+    "frontendCraftPolicyRef": { "const": "prompts/spec-driven/frontend-craft-policy.json" },
+    "humanGateRequired": { "type": "boolean" },
+    "intendedEffects": { "$ref": "#/$defs/intendedEffects" },
+    "candidates": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": { "$ref": "#/$defs/frontendCandidate" }
+    },
+    "evidence": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/evidence" }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "nullableString": {
+      "oneOf": [
+        { "$ref": "#/$defs/nonEmptyString" },
+        { "type": "null" }
+      ]
+    },
+    "repositoryRef": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "stringRefs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/repositoryRef" }
+    },
+    "choiceKind": {
+      "enum": [
+        "component-variant",
+        "responsive-layout-within-recipe",
+        "existing-spacing-token",
+        "craft-implementation-repair",
+        "allowed-provider-command",
+        "reversible-refactor",
+        "product-navigation-semantics",
+        "new-capability",
+        "commercial-capability",
+        "brand-material",
+        "legal",
+        "behavioral-high-risk",
+        "authentication-security-tenancy",
+        "public-contract"
+      ]
+    },
+    "sourceId": {
+      "enum": [
+        "canonical-contracts",
+        "effective-policy",
+        "repository-precedent",
+        "approved-design-system",
+        "approved-product-context",
+        "task-contract",
+        "test-evidence",
+        "runtime-evidence",
+        "provider-contract",
+        "risk-assessment",
+        "human-direction"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "ref"],
+      "properties": {
+        "source": { "$ref": "#/$defs/sourceId" },
+        "ref": { "$ref": "#/$defs/repositoryRef" }
+      }
+    },
+    "intendedEffects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementationOnly", "canonicalContractWrites", "externalEffects"],
+      "properties": {
+        "implementationOnly": { "type": "boolean" },
+        "canonicalContractWrites": { "$ref": "#/$defs/stringRefs" },
+        "externalEffects": { "type": "boolean" }
+      }
+    },
+    "genericBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "authorityRef"],
+      "properties": {
+        "kind": { "const": "consequential" },
+        "authorityRef": { "$ref": "#/$defs/repositoryRef" }
+      }
+    },
+    "componentVariantBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "componentCatalogRef", "componentId", "variantId"],
+      "properties": {
+        "kind": { "const": "component-variant" },
+        "componentCatalogRef": { "$ref": "#/$defs/repositoryRef" },
+        "componentId": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "variantId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "responsiveBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "recipeRef", "screenSpecRef"],
+      "properties": {
+        "kind": { "const": "responsive-layout-within-recipe" },
+        "recipeRef": { "$ref": "#/$defs/repositoryRef" },
+        "screenSpecRef": { "$ref": "#/$defs/repositoryRef" }
+      }
+    },
+    "spacingTokenBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "designSystemRef", "tokenPointer"],
+      "properties": {
+        "kind": { "const": "existing-spacing-token" },
+        "designSystemRef": { "$ref": "#/$defs/repositoryRef" },
+        "tokenPointer": { "type": "string", "pattern": "^/" }
+      }
+    },
+    "findingRepairBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "findingRouteRef"],
+      "properties": {
+        "kind": { "const": "craft-implementation-repair" },
+        "findingRouteRef": { "$ref": "#/$defs/repositoryRef" }
+      }
+    },
+    "providerCommandBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "findingRouteRef", "command"],
+      "properties": {
+        "kind": { "const": "allowed-provider-command" },
+        "findingRouteRef": { "$ref": "#/$defs/repositoryRef" },
+        "command": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }
+      }
+    },
+    "refactorBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "implementationRef"],
+      "properties": {
+        "kind": { "const": "reversible-refactor" },
+        "implementationRef": { "$ref": "#/$defs/repositoryRef" }
+      }
+    },
+    "binding": {
+      "oneOf": [
+        { "$ref": "#/$defs/componentVariantBinding" },
+        { "$ref": "#/$defs/responsiveBinding" },
+        { "$ref": "#/$defs/spacingTokenBinding" },
+        { "$ref": "#/$defs/findingRepairBinding" },
+        { "$ref": "#/$defs/providerCommandBinding" },
+        { "$ref": "#/$defs/refactorBinding" },
+        { "$ref": "#/$defs/genericBinding" }
+      ]
+    },
+    "frontendCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "canonicalContractMatch",
+        "contractRefs",
+        "precedentMatch",
+        "precedentRefs",
+        "changeSize",
+        "complexity",
+        "riskSurface",
+        "objectiveScore",
+        "reversible",
+        "evidenceRefs",
+        "equivalenceEvidenceRefs",
+        "binding"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "description": { "$ref": "#/$defs/nonEmptyString" },
+        "canonicalContractMatch": { "type": "boolean" },
+        "contractRefs": { "$ref": "#/$defs/stringRefs" },
+        "precedentMatch": { "type": "boolean" },
+        "precedentRefs": { "$ref": "#/$defs/stringRefs" },
+        "changeSize": { "type": "integer", "minimum": 0 },
+        "complexity": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "riskSurface": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "objectiveScore": { "type": "number", "minimum": 0, "maximum": 100 },
+        "reversible": { "type": "boolean" },
+        "evidenceRefs": { "$ref": "#/$defs/stringRefs" },
+        "equivalenceEvidenceRefs": { "$ref": "#/$defs/stringRefs" },
+        "binding": { "$ref": "#/$defs/binding" }
+      }
+    }
+  }
+}

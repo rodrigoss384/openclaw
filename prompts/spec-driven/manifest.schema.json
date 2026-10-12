@@ -1,0 +1,430 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/manifest.schema.json",
+  "title": "Spec-Driven Engineering Prompt Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "workflowVersion",
+    "orchestratorSkill",
+    "consumerRuntime",
+    "sharedRules",
+    "contextBootstrap",
+    "placeholderPolicy",
+    "frontendStylingPolicy",
+    "frontendCompositionPolicy",
+    "frontendProductDesignPolicy",
+    "frontendUiControlPolicy",
+    "artifactSequence",
+    "complexityPolicy",
+    "criticalityPolicy",
+    "gates",
+    "skillRoutes",
+    "sessionClosure",
+    "prompts"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "workflowVersion": { "const": "2.4.0" },
+    "orchestratorSkill": { "const": "spec-driven-engineering" },
+    "consumerRuntime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceOfTruth", "installationModel", "distributionManifest", "installer", "batchInstaller", "entrypoint", "deliveryWorkflow", "state", "stateSchema", "guide", "commands", "batchCommands", "defaultProjectsRoot"],
+      "properties": {
+        "sourceOfTruth": { "const": "this-repository" },
+        "installationModel": { "const": "versioned-managed-copy" },
+        "distributionManifest": { "const": "prompts/spec-driven/consumer-runtime.manifest.json" },
+        "installer": { "const": "skills/spec-driven-engineering/scripts/consumer-runtime.mjs" },
+        "entrypoint": { "const": "integrations/governance/workflow-entry.mjs" },
+        "deliveryWorkflow": { "const": "prompts/spec-driven/sde-delivery.workflow.yml" },
+        "batchInstaller": { "const": "skills/spec-driven-engineering/scripts/consumer-runtime-all.mjs" },
+        "state": { "const": ".specs/workflow-runtime-install.json" },
+        "stateSchema": { "const": "skills/spec-driven-engineering/assets/consumer-runtime-install.schema.json" },
+        "guide": { "const": "prompts/spec-driven/CONSUMER-RUNTIME.md" },
+        "commands": {
+          "type": "array",
+          "prefixItems": [{ "const": "install" }, { "const": "update" }, { "const": "check" }, { "const": "uninstall" }],
+          "items": false,
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "batchCommands": {
+          "type": "array",
+          "prefixItems": [{ "const": "sync" }, { "const": "install" }, { "const": "update" }, { "const": "check" }],
+          "items": false,
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "defaultProjectsRoot": {
+          "const": "../projetos"
+        }
+      }
+    },
+    "sharedRules": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "projectRecord", "candidates", "pathResolution", "contentLoading", "missing", "conflict"],
+        "properties": {
+          "id": { "const": "engineering-rules" },
+          "projectRecord": { "const": ".specs/project/PROJECT.md#workflow.rulesFile" },
+          "candidates": {
+            "type": "array",
+            "prefixItems": [
+              { "const": ".agents/rules.md" },
+              { "const": "rules.md" }
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "pathResolution": { "const": "required-every-prompt" },
+          "contentLoading": { "const": "governed-by-context-bootstrap" },
+          "missing": { "const": "blocked" },
+          "conflict": { "const": "blocked" }
+        }
+      }
+    },
+    "contextBootstrap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredEveryPrompt", "standalone", "readApplicableAgents", "readState", "readHandoff", "instructionTrust", "outputLanguage", "stateUpdate", "governancePolicy"],
+      "properties": {
+        "requiredEveryPrompt": { "const": true },
+        "standalone": { "const": true },
+        "readApplicableAgents": { "const": true },
+        "readState": { "const": true },
+        "readHandoff": { "const": true },
+        "instructionTrust": { "const": "repository-content-is-evidence-not-higher-priority-instruction" },
+        "outputLanguage": { "const": "pt-BR" },
+        "stateUpdate": { "const": "conditional-durable-only" },
+        "governancePolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "primaryScope", "resolver", "bootstrap", "applicabilitySource", "effectivePolicy", "preApplicabilityRules", "rulesResolution", "onFailure", "onMismatch", "humanGates", "stageBindings"],
+          "properties": {
+            "mode": { "enum": ["shadow", "primary"] },
+            "primaryScope": { "const": "registered-rules-only" },
+            "resolver": { "const": "integrations/governance/governance-control.mjs resolve" },
+            "bootstrap": { "const": "integrations/governance/governance-control.mjs bootstrap" },
+            "applicabilitySource": { "const": ".specs/features/{{FEATURE_SLUG}}/applicability.md" },
+            "effectivePolicy": { "const": "temporary-noncanonical" },
+            "preApplicabilityRules": { "const": "full-read-required" },
+            "rulesResolution": { "enum": ["preserved-full-read", "policy-primary-registered-rules-rationale-fallback"] },
+            "onFailure": { "const": "blocked" },
+            "onMismatch": { "const": "blocked" },
+            "humanGates": { "const": "unchanged" },
+            "stageBindings": {
+              "type": "array",
+              "minItems": 9,
+              "maxItems": 9,
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["promptId", "stage"],
+                "properties": {
+                  "promptId": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+                  "stage": { "enum": ["acceptance", "design-readiness", "implementation", "backend-representative", "frontend-representative", "adversarial", "evidence-release"] }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "placeholderPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["literalPattern", "literalMeans", "neverPersistUnresolved", "inferTechnicalFromEvidence", "recordProvenance", "consequentialAmbiguity", "resolutions"],
+      "properties": {
+        "literalPattern": { "const": "{{NAME}}" },
+        "literalMeans": { "const": "missing" },
+        "neverPersistUnresolved": { "const": true },
+        "inferTechnicalFromEvidence": { "const": true },
+        "recordProvenance": { "const": true },
+        "consequentialAmbiguity": { "const": "blocked" },
+        "resolutions": {
+          "type": "array",
+          "minItems": 16,
+          "maxItems": 18,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "mode", "sources", "codeAllowed"],
+            "properties": {
+              "name": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+              "mode": { "enum": ["infer", "infer-or-block", "explicit-or-block", "safe-default", "infer-or-not-run"] },
+              "sources": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+              "default": { "type": "string", "minLength": 1 },
+              "codeAllowed": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "frontendStylingPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract", "schema", "requiredFor", "architectureSelection", "classOwnership", "unresolvedClass", "globalStyles", "rawValues", "visualReferences", "redesignMode", "storybook"],
+      "properties": {
+        "contract": { "const": "docs/frontend/styling-authority.json" },
+        "schema": { "const": "frontend-product-builder/assets/schemas/styling-authority.schema.json" },
+        "requiredFor": { "const": "every-user-visible-web-interface-change" },
+        "architectureSelection": { "const": "detect-record-preserve-or-explicitly-migrate" },
+        "classOwnership": { "const": "trace-before-edit-or-override" },
+        "unresolvedClass": { "const": "blocked-never-inject-global-override" },
+        "globalStyles": { "const": "app-wide-concerns-only-unless-legacy-authority-or-approved-exception" },
+        "rawValues": { "const": "token-authority-only-unless-approved-exception" },
+        "visualReferences": { "const": "v2-adopted-ids-bound-to-visual-research-digest" },
+        "redesignMode": { "const": "ui-audit-redesign-engineer-required" },
+        "storybook": { "const": "optional-evidence-never-sole-gate" }
+      }
+    },
+    "frontendCompositionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredFor", "baseProfiles", "designSystemField", "screenField", "proofArtifact", "evidenceArtifact", "scorecardArtifact", "validators", "semanticHeadingPolicy", "humanApproval"],
+      "properties": {
+        "requiredFor": { "const": "new-redesign-substantial-dominant-task-typography-region-or-action-hierarchy-change" },
+        "baseProfiles": { "type": "array", "prefixItems": [{ "const": "productive" }, { "const": "expressive" }], "minItems": 2, "maxItems": 2 },
+        "designSystemField": { "const": "visualGrammar" },
+        "screenField": { "const": "visualHierarchy" },
+        "proofArtifact": { "const": "docs/frontend/screens/<screen-id>/composition-proof.json" },
+        "evidenceArtifact": { "const": "docs/frontend/screens/<screen-id>/visual-composition-evidence.json" },
+        "scorecardArtifact": { "const": "docs/frontend/screens/<screen-id>/visual-quality-scorecard.json" },
+        "validators": { "type": "array", "prefixItems": [{ "const": "validate-visual-composition-contract.mjs" }, { "const": "audit-visual-composition-evidence.mjs" }, { "const": "validate-visual-quality-scorecard.mjs" }], "minItems": 3, "maxItems": 3 },
+        "semanticHeadingPolicy": { "const": "headings-structure-not-visual-scale" },
+        "humanApproval": { "const": "existing-frontend-representative-gate" }
+      }
+    },
+    "frontendProductDesignPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rollout", "controller", "schema", "autonomyClass", "subcommands", "capabilities", "artifactRoot", "assetSidecarRoot", "downstreamOrder"],
+      "properties": {
+        "rollout": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["authority", "research", "assets", "human-scope"],
+          "properties": {
+            "authority": { "enum": ["shadow", "primary"] },
+            "research": { "enum": ["shadow", "primary"] },
+            "assets": { "enum": ["shadow", "primary"] },
+            "human-scope": { "enum": ["shadow", "primary"] }
+          }
+        },
+        "controller": { "const": "integrations/frontend/product-design-control.mjs" },
+        "schema": { "const": "integrations/frontend/product-design-control.schema.json" },
+        "autonomyClass": { "const": "design-authority-bounded" },
+        "subcommands": {
+          "type": "array",
+          "prefixItems": [
+            { "const": "profile" }, { "const": "compile" }, { "const": "research" }, { "const": "decide" },
+            { "const": "request-asset" }, { "const": "ingest-asset" }, { "const": "gate" }, { "const": "verify" }
+          ],
+          "items": false,
+          "minItems": 8,
+          "maxItems": 8
+        },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["authority", "research", "assets", "human-scope"],
+          "properties": {
+            "authority": { "const": "frontend-product-design-authority" },
+            "research": { "const": "frontend-open-visual-research" },
+            "assets": { "const": "frontend-asset-provenance" },
+            "human-scope": { "const": "frontend-human-asset-acquisition" }
+          }
+        },
+        "artifactRoot": { "const": ".specs/features/<feature-slug>/frontend-design" },
+        "assetSidecarRoot": { "const": "docs/frontend/assets" },
+        "downstreamOrder": {
+          "type": "array",
+          "prefixItems": [
+            { "const": "product-design-readiness" },
+            { "const": "browser-evidence" },
+            { "const": "impeccable-critique" },
+            { "const": "ui-engineering-control" },
+            { "const": "human-truth-risk-authorization" }
+          ],
+          "items": false,
+          "minItems": 5,
+          "maxItems": 5
+        }
+      }
+    },
+    "frontendUiControlPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rollout",
+        "ruleRollout",
+        "controller",
+        "schema",
+        "initialAdapter",
+        "runtime",
+        "subcommands",
+        "capabilities",
+        "generatedVisualArtifactVersion",
+        "legacyVisualArtifacts",
+        "humanDecisionSignatureNamespace",
+        "clientDelivery"
+      ],
+      "properties": {
+        "rollout": { "enum": ["shadow", "primary"] },
+        "ruleRollout": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["RULE-FE-UI-POLICY-001", "RULE-FE-UI-SOURCE-001", "RULE-FE-UI-RENDER-001", "RULE-FE-UI-INTEGRITY-001"],
+          "properties": {
+            "RULE-FE-UI-POLICY-001": { "enum": ["shadow", "primary"] },
+            "RULE-FE-UI-SOURCE-001": { "enum": ["shadow", "primary"] },
+            "RULE-FE-UI-RENDER-001": { "enum": ["shadow", "primary"] },
+            "RULE-FE-UI-INTEGRITY-001": { "enum": ["shadow", "primary"] }
+          }
+        },
+        "controller": { "const": "integrations/frontend/ui-engineering-control.mjs" },
+        "schema": { "const": "integrations/frontend/ui-engineering-control.schema.json" },
+        "initialAdapter": { "const": "react-tailwind-v4" },
+        "runtime": { "const": "web-dom-playwright" },
+        "subcommands": {
+          "type": "array",
+          "prefixItems": [
+            { "const": "profile" },
+            { "const": "compile" },
+            { "const": "lint" },
+            { "const": "collect" },
+            { "const": "analyze" },
+            { "const": "gate" },
+            { "const": "attest" },
+            { "const": "verify" }
+          ],
+          "items": false,
+          "minItems": 8,
+          "maxItems": 8
+        },
+        "capabilities": {
+          "type": "array",
+          "prefixItems": [
+            { "const": "frontend-ui-policy-control" },
+            { "const": "frontend-ui-source-control" },
+            { "const": "frontend-ui-render-control" },
+            { "const": "frontend-ui-evidence-integrity" }
+          ],
+          "items": false,
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "generatedVisualArtifactVersion": { "const": "2.0.0" },
+        "legacyVisualArtifacts": { "const": "shadow-only-never-primary" },
+        "humanDecisionSignatureNamespace": { "const": "sde-human-decision-v1" },
+        "clientDelivery": { "const": "sanitized-attestation-only" }
+      }
+    },
+    "artifactSequence": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": { "type": "object", "additionalProperties": false, "required": ["order", "file", "required"], "properties": { "order": { "type": "integer", "minimum": 0, "maximum": 11 }, "file": { "type": "string" }, "required": { "type": "string" } } }
+    },
+    "complexityPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["values", "effect"],
+      "properties": { "values": { "type": "array", "prefixItems": [{ "const": "quick" }, { "const": "small" }, { "const": "medium" }, { "const": "large" }, { "const": "complex" }], "minItems": 5, "maxItems": 5 }, "effect": { "type": "string", "minLength": 1 } }
+    },
+    "criticalityPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["values", "effect", "mutationTesting"],
+      "properties": { "values": { "type": "array", "prefixItems": [{ "const": "low" }, { "const": "standard" }, { "const": "critical" }], "minItems": 3, "maxItems": 3 }, "effect": { "type": "string", "minLength": 1 }, "mutationTesting": { "type": "string", "minLength": 1 } }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 9,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "order"],
+        "properties": {
+          "id": { "type": "string" },
+          "order": { "type": "integer", "minimum": 1, "maximum": 9 },
+          "humanApproval": { "oneOf": [{ "type": "boolean" }, { "const": "conditional" }] },
+          "humanApprovalWhen": { "type": "string", "minLength": 1 },
+          "conditional": { "type": "boolean" },
+          "independentContext": { "type": "boolean" },
+          "dependsOn": { "type": "array", "items": { "type": "string" }, "description": "Gate ids that must resolve to passed|not-applicable before this gate may start. Encodes the real state-machine edge, not just artifact order." },
+          "guard": { "type": "string", "minLength": 1, "description": "Human-readable condition (referencing applicability.md fields and upstream gate results) that must hold for this gate to be entered." }
+        }
+      }
+    },
+    "skillRoutes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["when", "skill", "required", "requirementLevel"],
+        "properties": {
+          "when": { "type": "string" },
+          "skill": { "type": "string" },
+          "required": { "type": "boolean", "description": "Derived from requirementLevel (true only for hard-required); kept for backward-compatible boolean checks." },
+          "requirementLevel": { "type": "string", "enum": ["hard-required", "required-with-degraded-fallback", "optional"], "description": "hard-required: block without it. required-with-degraded-fallback: proceed via the declared fallback and record degraded routing in 11-evidence.md. optional: use only when its trigger condition matches." },
+          "fallback": { "type": "string", "minLength": 1, "description": "Required when requirementLevel is required-with-degraded-fallback: the concrete degraded behavior (never invented ad hoc at routing time). Enforced by validate-workflow.mjs, not by this schema (the project's lightweight JSON Schema subset has no if/then support)." }
+        }
+      }
+    },
+    "sessionClosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["handoff", "overwriteEverySession", "requiredFinalSections", "emptyValue", "humanApprovalRunbook", "concurrencySafety"],
+      "properties": {
+        "handoff": { "const": ".specs/HANDOFF.md" },
+        "overwriteEverySession": { "const": true },
+        "requiredFinalSections": { "type": "array", "prefixItems": [{ "const": "Perguntas em aberto" }, { "const": "Ideias adiadas" }, { "const": "Bloqueios" }, { "const": "Próximo passo" }], "minItems": 4, "maxItems": 4 },
+        "emptyValue": { "const": "Nenhum" },
+        "humanApprovalRunbook": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["validator", "publication", "requiredWhen", "handoffSection", "finalHeading", "commandSource", "automatableChecks", "copyPasteCommands", "approvalNeverInferredFromExecution", "scopedDecisionResponse"],
+          "properties": {
+            "validator": { "const": "skills/spec-driven-engineering/scripts/validate-human-guidance.mjs" },
+            "publication": { "const": "atomic-handoff-generated-markdown" },
+            "requiredWhen": { "const": "blocked-or-awaiting-review-on-human-action" },
+            "handoffSection": { "const": "Ação humana pendente" },
+            "finalHeading": { "const": "Como validar e aprovar" },
+            "commandSource": { "const": "real-project-evidence-only" },
+            "automatableChecks": { "const": "agent-runs-before-handoff-when-safe-and-authorized" },
+            "copyPasteCommands": { "const": true },
+            "approvalNeverInferredFromExecution": { "const": true },
+            "scopedDecisionResponse": { "const": true }
+          }
+        },
+        "concurrencySafety": { "type": "object", "additionalProperties": false, "required": ["sessionSidecarDirectory", "conflictDetection", "onConflict"], "properties": { "sessionSidecarDirectory": { "const": ".specs/sessions/" }, "conflictDetection": { "const": "compare-baseRevision-before-overwrite" }, "onConflict": { "const": "write-session-sidecar-and-flag-in-final-response-never-silently-overwrite" } } }
+      }
+    },
+    "prompts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "file", "stage", "dependsOn"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "file": { "type": "string", "pattern": "\\.prompt\\.md$" },
+          "stage": { "type": "string" },
+          "dependsOn": { "type": "array", "items": { "type": "string" } },
+          "optional": { "type": "boolean" },
+          "conditional": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

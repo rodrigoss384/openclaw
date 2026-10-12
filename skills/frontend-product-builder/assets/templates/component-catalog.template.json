@@ -1,0 +1,317 @@
+{
+  "$schema": "../../../~/.agents/skills/frontend-product-builder/assets/schemas/component-catalog.schema.json",
+  "meta": {
+    "id": "<catalog-id>",
+    "name": "<PROJECT_NAME> Component Catalog",
+    "version": "0.1.0",
+    "status": "draft",
+    "owner": "<OWNER_OR_TEAM>",
+    "category": "assembled",
+    "source": "docs/frontend/design-system/component-catalog.json",
+    "designSystem": "docs/frontend/design-system/design-system.json",
+    "generated": false,
+    "generatedFrom": [
+      "../catalog/foundational-components.json",
+      "../catalog/layout-components.json",
+      "../catalog/feedback-components.json",
+      "../catalog/data-display-collection-components.json",
+      "../catalog/data-display-analytical-components.json",
+      "../catalog/form-field-foundation-components.json",
+      "../catalog/form-field-control-components.json",
+      "../catalog/form-workflow-components.json"
+    ],
+    "createdAt": "<YYYY-MM-DD>",
+    "updatedAt": "<YYYY-MM-DD>",
+    "description": "Canonical detailed catalog of project frontend components."
+  },
+  "components": {
+    "<ComponentName>": {
+      "id": "<component-id>",
+      "name": "<ComponentName>",
+      "level": "<primitive | shared-composite | entity | feature | screen>",
+      "category": "<action | input | selection | overlay | surface | layout | navigation | feedback | data-display | form | media | utility | domain | screen>",
+      "status": "experimental",
+      "version": "0.1.0",
+      "description": "<Semantic responsibility of the component.>",
+      "capabilities": [
+        "<Capability expressed without visual implementation terminology.>"
+      ],
+      "keywords": [
+        "<search keyword>"
+      ],
+      "owner": {
+        "layer": "<shared | entity | feature | route | application>",
+        "team": "<OWNER_OR_TEAM>",
+        "directory": "<SOURCE_DIRECTORY>"
+      },
+      "implementation": "<IMPLEMENTATION_PATH>",
+      "publicImport": "<PUBLIC_IMPORT_PATH>",
+      "contract": "docs/frontend/design-system/components/<component-id>.md",
+      "foundation": {
+        "type": "<native-html | radix | shadcn | headless-library | shared-component | custom>",
+        "source": "<FOUNDATION_SOURCE>",
+        "components": [],
+        "reason": "<Why this foundation is appropriate.>"
+      },
+      "tokens": [
+        "<token>"
+      ],
+      "variants": {
+        "<variant>": {
+          "intent": "<Semantic intent>",
+          "default": true,
+          "allowedUse": [
+            "<Allowed use>"
+          ],
+          "prohibitedUse": [
+            "<Prohibited use>"
+          ],
+          "tokens": [
+            "<token>"
+          ],
+          "states": [
+            "default",
+            "hover",
+            "focus-visible"
+          ]
+        }
+      },
+      "sizes": {
+        "<size>": {
+          "intent": "<Size intent>",
+          "default": true,
+          "allowedUse": [
+            "<Allowed context>"
+          ],
+          "tokens": [
+            "<token>"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "focus-visible"
+      ],
+      "slots": [
+        {
+          "name": "<slotName>",
+          "description": "<Slot purpose>",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "<Component>"
+          ],
+          "contentRestrictions": [
+            "<Restriction>"
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "<propName>",
+          "type": "<TypeScript type>",
+          "required": false,
+          "default": "<default>",
+          "description": "<Semantic purpose>",
+          "semantic": true,
+          "restrictions": [
+            "<Restriction>"
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "<Parent component or category>"
+        ],
+        "allowedChildren": [
+          "<Child component or category>"
+        ],
+        "prohibitedParents": [
+          "<Prohibited parent>"
+        ],
+        "prohibitedChildren": [
+          "<Prohibited child>"
+        ],
+        "spacingOwnership": [
+          "<Spacing rule>"
+        ],
+        "surfaceOwnership": "<Surface behavior>",
+        "rules": [
+          "<Composition rule>"
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "<recipe-id>",
+          "regions": [
+            "<regionId>"
+          ],
+          "status": "<required | recommended | allowed | prohibited>",
+          "notes": "<Compatibility notes>"
+        }
+      ],
+      "dataAccess": {
+        "policy": "<none | generic-context-only | entity-owned | feature-owned | route-coordinated>",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct HTTP transport access."
+        ]
+      },
+      "stateOwnership": {
+        "model": "<stateless | local | controlled | uncontrolled | controlled-or-uncontrolled | form-owned | query-owned | url-owned | feature-owned | route-owned>",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "<State ownership note>"
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "<Side-effect note>"
+        ]
+      },
+      "responsive": {
+        "strategy": "<Internal responsive strategy>",
+        "compact": "<Compact behavior>",
+        "medium": "<Medium behavior>",
+        "wide": "<Wide behavior>",
+        "ultrawide": "<Ultrawide behavior>",
+        "overflowPolicy": "<Overflow behavior>",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain usable at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "<Native element or role>",
+        "accessibleName": "<Accessible-name source>",
+        "keyboard": [
+          "<Keyboard behavior>"
+        ],
+        "focus": [
+          "<Focus behavior>"
+        ],
+        "announcements": [
+          "<Announcement behavior>"
+        ],
+        "aria": [
+          "<ARIA requirement>"
+        ],
+        "colorIndependence": "Meaning must not depend only on color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "<Minimum content>",
+        "typical": "<Typical content>",
+        "maximum": "<Maximum realistic content>",
+        "wrapping": "<Wrapping policy>",
+        "truncation": "<Truncation policy>",
+        "localization": "<Localization-expansion behavior>",
+        "emptyBehavior": "<Empty-content behavior>",
+        "technicalContent": "<Whether technical content is allowed>"
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "<STORY_FILE>",
+        "requiredStories": [
+          "Default",
+          "LongContent",
+          "DarkTheme",
+          "NarrowContainer"
+        ],
+        "testsRequired": true,
+        "testFile": "<TEST_FILE>",
+        "requiredTests": [
+          "Semantic role",
+          "Accessible name",
+          "Keyboard behavior"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Compact viewport",
+          "Wide viewport",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "introducedAt": "<YYYY-MM-DD>",
+        "representativeConsumers": [
+          "<CONSUMER_PATH>"
+        ]
+      },
+      "notes": []
+    }
+  },
+  "validation": {
+    "schema": "~/.agents/skills/frontend-product-builder/assets/schemas/component-catalog.schema.json",
+    "checks": [
+      {
+        "id": "CAT-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The component catalog must validate against the component catalog schema.",
+        "command": "node scripts/validate-component-catalog.mjs",
+        "remediation": "Correct invalid or missing catalog fields."
+      },
+      {
+        "id": "CAT-002",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Component IDs, canonical names, implementations, and public imports must be unique.",
+        "command": "node scripts/audit-component-catalog-collisions.mjs",
+        "remediation": "Resolve duplicate canonical ownership or conflicting catalog entries."
+      },
+      {
+        "id": "CAT-003",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Component dependencies must follow the approved hierarchy and remain acyclic.",
+        "command": "node scripts/audit-component-dependencies.mjs",
+        "remediation": "Correct reverse dependencies, cross-layer imports, or component cycles."
+      },
+      {
+        "id": "CAT-004",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Stable components must have contracts, implementations, and required tests.",
+        "command": "node scripts/audit-component-quality.mjs",
+        "remediation": "Create or correct the missing contract, implementation, stories, or tests."
+      },
+      {
+        "id": "CAT-005",
+        "severity": "warning",
+        "method": "script",
+        "blocking": false,
+        "description": "Potential component duplicates and suspicious versioned names require review.",
+        "command": "node scripts/audit-component-duplicates.mjs",
+        "remediation": "Reuse, merge, rename, or document why the component is semantically distinct."
+      }
+    ]
+  },
+  "deprecations": []
+}

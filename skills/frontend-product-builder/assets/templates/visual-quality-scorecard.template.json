@@ -1,0 +1,30 @@
+{
+  "$schema": "../schemas/visual-quality-scorecard.schema.json",
+  "meta": {
+    "screenId": "<screen-id>",
+    "version": "1.1.0",
+    "reviewedAt": "<ISO-8601 timestamp>",
+    "reviewer": "<agent-or-human>"
+  },
+  "criteria": [
+    { "id": "semantic-outline", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "visual-priority", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "reading-path", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "typographic-distinction", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "proximity", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "alignment", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "whitespace", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "emphasis-budget", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "responsive-priority", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "non-success-state", "result": "not-run", "evidence": "<evidence>", "blocking": true },
+    { "id": "aesthetic-critique", "result": "not-run", "evidence": "Human visual critique is pending; scripts cannot auto-approve aesthetics.", "blocking": true }
+  ],
+  "decision": {
+    "status": "awaiting-review",
+    "humanApprovalRequired": true,
+    "approvedBy": null,
+    "approvedAt": null,
+    "notes": "",
+    "risk": null
+  }
+}

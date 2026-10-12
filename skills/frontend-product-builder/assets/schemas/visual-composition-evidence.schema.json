@@ -1,0 +1,736 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.frontend-product-builder.local/visual-composition-evidence.schema.json",
+  "title": "Frontend Visual Composition Evidence",
+  "description": "Theme-aware browser evidence for composition, perceptual hierarchy, spatial fit, operational presence, interaction affordance and decision support.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "meta",
+    "contractHashes",
+    "theme",
+    "viewports",
+    "regions",
+    "elements",
+    "presenceSignals",
+    "interactions",
+    "wayfinding",
+    "decisionSignals",
+    "relations"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "screenId",
+        "stateId",
+        "capturedAt",
+        "runner"
+      ],
+      "properties": {
+        "screenId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stateId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capturedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "runner": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "contractHashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "screenSpecSha256",
+        "designSystemSha256",
+        "compositionProofSha256",
+        "craftContractSha256",
+        "contractSetSha256"
+      ],
+      "properties": {
+        "screenSpecSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "designSystemSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "compositionProofSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "craftContractSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "contractSetSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "scheme",
+        "separationModelObserved",
+        "contextValidated"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scheme": {
+          "enum": [
+            "light",
+            "dark",
+            "custom"
+          ]
+        },
+        "separationModelObserved": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contextValidated": {
+          "type": "boolean"
+        }
+      }
+    },
+    "viewports": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "width",
+          "height"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "regions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/regionEvidence"
+      }
+    },
+    "elements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/elementEvidence"
+      }
+    },
+    "presenceSignals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/presenceSignal"
+      }
+    },
+    "interactions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/interactionEvidence"
+      }
+    },
+    "wayfinding": {
+      "$ref": "#/$defs/wayfindingEvidence"
+    },
+    "decisionSignals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/decisionSignalEvidence"
+      }
+    },
+    "relations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "readingOrder",
+        "alignment",
+        "proximity",
+        "contrast"
+      ],
+      "properties": {
+        "readingOrder": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "alignment": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/check"
+          }
+        },
+        "proximity": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/check"
+          }
+        },
+        "contrast": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/check"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "box": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number",
+          "minimum": 0
+        },
+        "height": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "nullableString": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "regionEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "viewport",
+        "parentRegionId",
+        "surfaceRole",
+        "surfaceLevel",
+        "accentRole",
+        "borderRole",
+        "borderPurpose",
+        "containerBox",
+        "contentBox",
+        "contentOccupancy",
+        "nestingDepth",
+        "heightStrategyObserved",
+        "rendered",
+        "presenceSignal"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "viewport": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parentRegionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "surfaceRole": {
+          "type": "string",
+          "minLength": 1
+        },
+        "surfaceLevel": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "accentRole": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "borderRole": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "borderPurpose": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "containerBox": {
+          "$ref": "#/$defs/box"
+        },
+        "contentBox": {
+          "$ref": "#/$defs/box"
+        },
+        "contentOccupancy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "nestingDepth": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "heightStrategyObserved": {
+          "enum": [
+            "content-driven",
+            "natural",
+            "fill-available",
+            "reserved"
+          ]
+        },
+        "rendered": {
+          "type": "boolean"
+        },
+        "presenceSignal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "elementEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "viewport",
+        "regionId",
+        "componentUsageId",
+        "semanticElement",
+        "textRole",
+        "priority",
+        "semanticDataRole",
+        "presentationFamily",
+        "contrastRole",
+        "contrastRatio",
+        "semanticColorRole",
+        "colorSource",
+        "accentRole",
+        "box",
+        "containerBox",
+        "contentBox",
+        "computedStyle",
+        "tokens",
+        "rendered",
+        "presenceSignal"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "viewport": {
+          "type": "string",
+          "minLength": 1
+        },
+        "regionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "componentUsageId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "semanticElement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "textRole": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "enum": [
+            "critical",
+            "primary",
+            "supporting",
+            "contextual",
+            "audit"
+          ]
+        },
+        "semanticDataRole": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "presentationFamily": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contrastRole": {
+          "enum": [
+            "primary",
+            "secondary",
+            "muted",
+            "disabled"
+          ]
+        },
+        "contrastRatio": {
+          "type": "number",
+          "minimum": 0
+        },
+        "semanticColorRole": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "colorSource": {
+          "enum": [
+            "semantic-token",
+            "neutral-token",
+            "brand-accent",
+            "computed-only"
+          ]
+        },
+        "accentRole": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "box": {
+          "$ref": "#/$defs/box"
+        },
+        "containerBox": {
+          "$ref": "#/$defs/box"
+        },
+        "contentBox": {
+          "$ref": "#/$defs/box"
+        },
+        "computedStyle": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "fontSize",
+            "fontWeight",
+            "lineHeight",
+            "letterSpacing",
+            "color"
+          ],
+          "properties": {
+            "fontSize": {
+              "type": "string"
+            },
+            "fontWeight": {
+              "type": "string"
+            },
+            "lineHeight": {
+              "type": "string"
+            },
+            "letterSpacing": {
+              "type": "string"
+            },
+            "color": {
+              "type": "string"
+            }
+          }
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rendered": {
+          "type": "boolean"
+        },
+        "presenceSignal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "presenceSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signal",
+        "value"
+      ],
+      "properties": {
+        "signal": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9]*(?:\\.[a-zA-Z][a-zA-Z0-9]*)*$"
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    "interactionEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "viewport",
+        "targetType",
+        "targetId",
+        "actionId",
+        "componentUsageId",
+        "purpose",
+        "semanticElement",
+        "accessibleRole",
+        "accessibleName",
+        "states",
+        "rendered",
+        "box",
+        "presenceSignal"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "viewport": {
+          "type": "string",
+          "minLength": 1
+        },
+        "targetType": {
+          "enum": [
+            "action",
+            "component",
+            "element",
+            "region"
+          ]
+        },
+        "targetId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "componentUsageId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "purpose": {
+          "enum": [
+            "action",
+            "control",
+            "wayfinding",
+            "reference-utility"
+          ]
+        },
+        "semanticElement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "accessibleRole": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "accessibleName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "states": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "default",
+              "hover",
+              "active",
+              "focus-visible",
+              "disabled",
+              "selected",
+              "checked",
+              "expanded",
+              "collapsed"
+            ]
+          }
+        },
+        "rendered": {
+          "type": "boolean"
+        },
+        "box": {
+          "$ref": "#/$defs/box"
+        },
+        "presenceSignal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "wayfindingEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "rendered",
+        "targetId",
+        "parentRoute"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "breadcrumb",
+            "back-link",
+            "active-navigation",
+            "not-applicable"
+          ]
+        },
+        "rendered": {
+          "type": "boolean"
+        },
+        "targetId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "parentRoute": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "decisionSignalEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "viewport",
+        "targetType",
+        "targetId",
+        "rendered"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "viewport": {
+          "type": "string",
+          "minLength": 1
+        },
+        "targetType": {
+          "enum": [
+            "region",
+            "component",
+            "element"
+          ]
+        },
+        "targetId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rendered": {
+          "type": "boolean"
+        }
+      }
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "partial",
+            "not-run"
+          ]
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "$schema": "./backend-change-manifest.schema.json",
+  "schemaVersion": "1.3.0",
+  "feature": "FEATURE_SLUG",
+  "mode": "new-build",
+  "complexity": "medium",
+  "criticality": "standard",
+  "technology": {
+    "runtimeContext": "new-production-runtime",
+    "selection": "rust-axum-default",
+    "language": "rust",
+    "httpFramework": "axum",
+    "decisionRef": ".specs/features/FEATURE_SLUG/07-design.md#technology-selection",
+    "exception": {
+      "applicable": false,
+      "reasonClass": "not-applicable",
+      "alternative": "",
+      "justification": "",
+      "evidenceRefs": []
+    }
+  },
+  "gate": {
+    "required": true,
+    "reasons": ["New service or subsystem requires representative proof"],
+    "conditions": {
+      "newServiceOrSubsystem": true,
+      "publicContract": false,
+      "persistenceOrMigration": false,
+      "securityOrTenancy": false,
+      "materialOperationalCost": false,
+      "criticalRisk": false,
+      "largeOrComplex": false
+    },
+    "humanApprovalRequired": false,
+    "status": "not-started"
+  },
+  "interfaces": [
+    {
+      "id": "operation-or-message-id",
+      "kind": "http",
+      "contractType": "openapi",
+      "authorityMode": "design-first",
+      "exposure": "internal",
+      "changeType": "new",
+      "contractPath": "openapi/openapi.yaml",
+      "scenarioMatrixPath": "docs/backend/backend-interface-scenario-matrix.md",
+      "validatorCommand": "replace-with-real-contract-validator-command",
+      "validatorEvidencePath": "docs/backend/evidence/operation-or-message-id.contract-validator.json",
+      "validatorResult": "not-run",
+      "compatibility": "Describe compatibility and deprecation impact",
+      "deprecated": false
+    }
+  ],
+  "architecture": {
+    "introducedMechanisms": []
+  },
+  "model": {
+    "applicable": true,
+    "evidencePath": "docs/backend/backend-readiness.md",
+    "notApplicableReason": ""
+  },
+  "data": {
+    "applicable": false,
+    "evidencePath": "",
+    "notApplicableReason": "No persistence change",
+    "materialChange": false,
+    "migrationStrategy": "none",
+    "verificationCommand": "",
+    "rollbackOrRecovery": "No data change; application rollback follows the existing deployment procedure"
+  },
+  "security": {
+    "applicable": true,
+    "evidencePath": "docs/backend/backend-readiness.md",
+    "notApplicableReason": "",
+    "materialChange": false,
+    "asvsVersion": "5.0.0",
+    "authentication": "Describe or reference the existing mechanism",
+    "authorization": "Describe deny-by-default resource authorization",
+    "tenancy": "Describe tenant isolation or justify single-tenant behavior",
+    "sensitiveData": "Describe classification, minimization, and redaction",
+    "boundaries": [
+      {
+        "trustBoundary": "request-to-resource-access",
+        "resource": "replace-with-protected-resource",
+        "identitySource": "replace-with-authenticated-identity-source",
+        "tenantBinding": "replace-with-tenant-binding-or-explicit-single-tenant-proof",
+        "authorizationPoint": "replace-with-resource-authorization-enforcement-point",
+        "negativeTestIds": ["replace-with-negative-authorization-test-id"]
+      }
+    ]
+  },
+  "reliability": {
+    "applicable": true,
+    "evidencePath": "docs/backend/backend-readiness.md",
+    "notApplicableReason": "",
+    "slos": [],
+    "timeouts": "Summarize timeout policy; structured dependency entries below are authoritative for external calls",
+    "retries": "Summarize retry policy; structured dependency entries below are authoritative for external calls",
+    "idempotency": "Summarize idempotency behavior",
+    "concurrency": "Describe concurrency control or why none applies",
+    "recovery": "Describe partial-failure recovery",
+    "externalDependencies": []
+  },
+  "observability": {
+    "applicable": true,
+    "evidencePath": "docs/backend/backend-readiness.md",
+    "notApplicableReason": "",
+    "logs": "Structured diagnostic events with correlation",
+    "metrics": "Relevant technical and domain signals",
+    "traces": "Existing trace behavior or justified N/A",
+    "audit": "Applicable audit events or justified N/A",
+    "sensitiveDataPolicy": "No secrets or disallowed PII in telemetry"
+  },
+  "testIntegrity": {
+    "testPaths": ["tests"],
+    "contractualCoverage": "preserved",
+    "assertionPolicy": "no-net-assertion-removal",
+    "disablePolicy": "no-new-disabled-tests",
+    "skipPolicy": "no-new-skipped-tests",
+    "evidencePaths": ["docs/backend/backend-readiness.md"]
+  },
+  "repairTrace": {
+    "applicable": false,
+    "finding": "",
+    "systemicCause": "",
+    "canonicalAuthorityRef": "",
+    "repairEvidencePaths": [],
+    "regressionTestIds": [],
+    "notApplicableReason": "This manifest is not in repair mode"
+  },
+  "slice": {
+    "scope": "Describe the smallest representative vertical behavior",
+    "testCommands": ["replace-with-real-focused-test-command"],
+    "evidencePaths": ["docs/backend/backend-readiness.md"],
+    "scorecardPath": "docs/backend/backend-representative-scorecard.json",
+    "status": "not-started"
+  },
+  "decision": {
+    "state": "awaiting-review",
+    "approver": "",
+    "timestamp": ""
+  }
+}

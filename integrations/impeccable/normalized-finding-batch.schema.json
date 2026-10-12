@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/normalized-finding-batch.schema.json",
+  "title": "Normalized Frontend Craft Finding Batch",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "generated", "generatedAt", "screenId", "source", "provider", "command", "sourceArtifact", "findings"],
+  "properties": {
+    "$schema": { "const": "normalized-finding-batch.schema.json" },
+    "schemaVersion": { "const": "1.0.0" },
+    "generated": { "const": true },
+    "generatedAt": { "type": "string", "minLength": 1 },
+    "screenId": { "type": "string", "minLength": 1 },
+    "source": { "enum": ["impeccable-critique", "objective-audit", "manual-review", "impeccable-detector"] },
+    "provider": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "command": { "type": ["string", "null"] },
+    "sourceArtifact": { "type": ["string", "null"] },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "class", "defectKind", "summary", "source", "severity", "material", "target", "sourceArtifact", "evidenceRefs", "fingerprint"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "class": { "enum": ["spatial-density", "surface-layering", "surface-economy", "accent-overuse", "semantic-color", "semantic-presentation", "text-hierarchy", "interaction-affordance", "system-status-visibility", "control-presence", "empty-recovery", "wayfinding", "information-scent", "reference-utility", "responsive-composition", "content-clarity"] },
+          "defectKind": { "enum": ["implementation", "contract"] },
+          "summary": { "type": "string", "minLength": 1 },
+          "source": { "enum": ["impeccable-critique", "objective-audit", "manual-review", "impeccable-detector"] },
+          "severity": { "enum": ["p0", "p1", "p2", "p3", "info"] },
+          "material": { "type": "boolean" },
+          "target": { "type": ["string", "null"] },
+          "sourceArtifact": { "type": ["string", "null"] },
+          "evidenceRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+          "fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    }
+  }
+}

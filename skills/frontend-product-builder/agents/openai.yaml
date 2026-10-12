@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Product Builder"
+  short_description: "Constrói frontends de produto com gates visuais"
+  default_prompt: "Use $frontend-product-builder para construir ou evoluir esta interface com contratos de produto, styling authority, small slice e evidência no browser."

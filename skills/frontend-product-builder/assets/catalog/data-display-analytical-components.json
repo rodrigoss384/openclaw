@@ -1,0 +1,3346 @@
+{
+  "$schema": "../schemas/component-catalog.schema.json",
+  "meta": {
+    "id": "frontend-product-builder-data-display-analytical-components",
+    "name": "Frontend Product Builder Analytical Data Components",
+    "version": "1.0.0",
+    "status": "approved",
+    "owner": "frontend-product-builder",
+    "category": "data-display",
+    "source": "./data-display-analytical-components.json",
+    "designSystem": "docs/frontend/design-system/design-system.json",
+    "generated": false,
+    "description": "Canonical components for metric hierarchy, normalized statuses, temporal history, and data-freshness communication."
+  },
+  "components": {
+    "MetricCard": {
+      "id": "metric-card",
+      "name": "MetricCard",
+      "level": "shared-composite",
+      "category": "data-display",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical presentation for one decision-relevant metric, including value, unit, comparison, trend meaning, status, freshness, and an optional contextual action.",
+      "capabilities": [
+        "Present one metric with explicit semantic priority.",
+        "Separate the current value from comparison, trend, status, and freshness context.",
+        "Communicate zero, unavailable, partial, stale, loading, and error states.",
+        "Distinguish numerical movement from whether that movement is favorable or unfavorable.",
+        "Expose a low-frequency contextual action without turning the complete card into an ambiguous control."
+      ],
+      "keywords": [
+        "metric",
+        "kpi",
+        "value",
+        "trend",
+        "comparison",
+        "dashboard",
+        "statistic"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/data-display"
+      },
+      "implementation": "src/components/data-display/metric-card.tsx",
+      "publicImport": "@/components/data-display/metric-card",
+      "contract": "docs/frontend/design-system/components/metric-card.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Section, Stack, MetadataList, StatusBadge, FreshnessIndicator",
+        "components": [
+          "Section",
+          "Stack",
+          "MetadataList",
+          "StatusBadge",
+          "FreshnessIndicator",
+          "Button",
+          "Tooltip"
+        ],
+        "reason": "Metric presentation requires strict semantic hierarchy, state distinction, trend interpretation, freshness context, responsive behavior, and consistent content anatomy beyond a generic card."
+      },
+      "tokens": [
+        "component.metric.radius",
+        "component.metric.padding.compact",
+        "component.metric.padding.default",
+        "component.metric.padding.large",
+        "component.metric.value.fontSize.compact",
+        "component.metric.value.fontSize.default",
+        "component.metric.value.fontSize.primary",
+        "semantic.background.surface",
+        "semantic.background.surfaceSubtle",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.border.default",
+        "semantic.status.info.foreground",
+        "semantic.status.success.foreground",
+        "semantic.status.warning.foreground",
+        "semantic.status.danger.foreground",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.space.4",
+        "reference.space.6"
+      ],
+      "variants": {
+        "primary": {
+          "intent": "Present a dominant metric directly connected to the principal decision or operational objective of the current screen.",
+          "default": true,
+          "allowedUse": [
+            "One or two highest-priority dashboard metrics.",
+            "Primary operational count.",
+            "Dominant financial or risk indicator.",
+            "Metric that determines immediate user attention."
+          ],
+          "prohibitedUse": [
+            "Every dashboard metric.",
+            "Decorative summary value.",
+            "Low-frequency metadata.",
+            "Metric with no clear user decision attached."
+          ],
+          "tokens": [
+            "component.metric.value.fontSize.primary",
+            "component.metric.padding.large",
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "error",
+            "warning",
+            "stale",
+            "unavailable"
+          ]
+        },
+        "supporting": {
+          "intent": "Present a secondary metric that helps explain or qualify a primary metric.",
+          "allowedUse": [
+            "Supporting operational count.",
+            "Secondary breakdown.",
+            "Contextual comparison.",
+            "Metric used to explain a dominant result."
+          ],
+          "prohibitedUse": [
+            "Critical risk requiring immediate attention.",
+            "Primary metric disguised as lower priority."
+          ],
+          "tokens": [
+            "component.metric.value.fontSize.default",
+            "component.metric.padding.default",
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "error",
+            "warning",
+            "stale",
+            "unavailable"
+          ]
+        },
+        "attention": {
+          "intent": "Present a metric whose current state requires operational attention.",
+          "allowedUse": [
+            "Overdue count.",
+            "Failed processing count.",
+            "Critical risk total.",
+            "Unresolved review count."
+          ],
+          "prohibitedUse": [
+            "Ordinary decorative emphasis.",
+            "Metrics that are healthy or neutral.",
+            "Using danger tone only to make a card more visible."
+          ],
+          "tokens": [
+            "component.metric.value.fontSize.default",
+            "semantic.status.warning.foreground",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "warning",
+            "error",
+            "stale",
+            "unavailable"
+          ]
+        },
+        "progress": {
+          "intent": "Present progress toward a defined target using authoritative current and target values.",
+          "allowedUse": [
+            "Completed review percentage.",
+            "Migration progress.",
+            "Configured accounts against target.",
+            "Resolved items against total."
+          ],
+          "prohibitedUse": [
+            "Progress without a meaningful target.",
+            "Invented completion percentage.",
+            "Long-running operation status better represented by ProcessingState."
+          ],
+          "tokens": [
+            "component.metric.value.fontSize.default",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "default",
+            "processing",
+            "success",
+            "warning",
+            "error",
+            "unavailable"
+          ]
+        },
+        "comparison": {
+          "intent": "Present a current metric whose primary purpose is comparison with another period, segment, target, or baseline.",
+          "allowedUse": [
+            "Current versus previous period.",
+            "Actual versus target.",
+            "Current organization versus approved benchmark.",
+            "Before-and-after operational comparison."
+          ],
+          "prohibitedUse": [
+            "Comparison without a named baseline.",
+            "Misleading percentage change from a zero or unavailable baseline."
+          ],
+          "tokens": [
+            "component.metric.value.fontSize.default",
+            "semantic.background.surfaceSubtle"
+          ],
+          "states": [
+            "default",
+            "warning",
+            "success",
+            "error",
+            "unavailable",
+            "stale"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense metric inside a constrained panel or supporting dashboard region.",
+          "allowedUse": [
+            "Contextual aside.",
+            "Compact metric group.",
+            "Supporting operational summary."
+          ],
+          "tokens": [
+            "component.metric.padding.compact",
+            "component.metric.value.fontSize.compact"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary dashboard or section metric.",
+          "default": true,
+          "allowedUse": [
+            "Dashboard metric group.",
+            "Operational summary.",
+            "Entity analytical section."
+          ],
+          "tokens": [
+            "component.metric.padding.default",
+            "component.metric.value.fontSize.default"
+          ]
+        },
+        "large": {
+          "intent": "Dominant decision metric with additional supporting context.",
+          "allowedUse": [
+            "One primary dashboard metric.",
+            "Critical operational overview."
+          ],
+          "tokens": [
+            "component.metric.padding.large",
+            "component.metric.value.fontSize.primary"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "loading",
+        "error",
+        "warning",
+        "success",
+        "processing",
+        "unavailable",
+        "stale"
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Concise user-facing name of the metric.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use user-oriented terminology rather than raw field names.",
+            "The label must make the metric understandable without relying only on an icon."
+          ]
+        },
+        {
+          "name": "context",
+          "description": "Optional scope, period, segment, or qualification of the metric.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text",
+            "MetadataList"
+          ],
+          "contentRestrictions": [
+            "Name the period, scope, or population when ambiguity is possible.",
+            "Do not hide the baseline only in a tooltip."
+          ]
+        },
+        {
+          "name": "value",
+          "description": "Primary formatted metric value.",
+          "required": true,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "The value must already follow approved locale and domain formatting.",
+            "Zero, unavailable, and not calculated must remain distinct.",
+            "Do not render raw floating-point precision."
+          ]
+        },
+        {
+          "name": "unit",
+          "description": "Optional unit, currency, percentage, duration, or count qualifier.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "The unit must not contradict the formatted value.",
+            "Currency and percentage formatting follow project locale policy."
+          ]
+        },
+        {
+          "name": "comparison",
+          "description": "Optional named baseline, target, previous period, or benchmark.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "MetricComparison",
+            "Text",
+            "MetadataList"
+          ],
+          "contentRestrictions": [
+            "The comparison baseline must be named.",
+            "Do not show percentage change when the baseline makes the calculation misleading."
+          ]
+        },
+        {
+          "name": "trend",
+          "description": "Optional movement direction and semantic interpretation.",
+          "required": false,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "MetricTrend"
+          ],
+          "contentRestrictions": [
+            "Direction and favorability are separate concepts.",
+            "An upward trend must not automatically use success semantics.",
+            "Trend requires a defined comparison interval."
+          ]
+        },
+        {
+          "name": "status",
+          "description": "Optional normalized operational status.",
+          "required": false,
+          "multiple": false,
+          "order": 7,
+          "allowedComponents": [
+            "StatusBadge",
+            "InlineAlert"
+          ],
+          "contentRestrictions": [
+            "Status must not duplicate the same meaning already communicated through the label and value.",
+            "Critical explanatory content requires InlineAlert rather than a badge alone."
+          ]
+        },
+        {
+          "name": "supporting",
+          "description": "Optional concise explanation, target, numerator, denominator, or data-quality context.",
+          "required": false,
+          "multiple": false,
+          "order": 8,
+          "allowedComponents": [
+            "Text",
+            "MetadataList"
+          ],
+          "contentRestrictions": [
+            "Keep the content concise.",
+            "Detailed analysis belongs in the analytical region below."
+          ]
+        },
+        {
+          "name": "freshness",
+          "description": "Optional indication of when the metric was last calculated or synchronized.",
+          "required": false,
+          "multiple": false,
+          "order": 9,
+          "allowedComponents": [
+            "FreshnessIndicator"
+          ],
+          "contentRestrictions": [
+            "Required when the metric is not real-time and decision quality depends on recency."
+          ]
+        },
+        {
+          "name": "action",
+          "description": "Optional low-frequency action such as opening the underlying collection or explanation.",
+          "required": false,
+          "multiple": false,
+          "order": 10,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "Do not make the entire card clickable when the interaction would be ambiguous.",
+            "The action label must explain its destination or result."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "primary | supporting | attention | progress | comparison",
+          "required": false,
+          "default": "primary",
+          "description": "Semantic role of the metric in the current information hierarchy.",
+          "semantic": true,
+          "restrictions": [
+            "Variant selection must follow the screen contract and metric hierarchy.",
+            "Do not use primary for every metric."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default | large",
+          "required": false,
+          "default": "default",
+          "description": "Metric density and visual scale.",
+          "semantic": true,
+          "restrictions": [
+            "Large is reserved for dominant metrics."
+          ]
+        },
+        {
+          "name": "trendDirection",
+          "type": "up | down | flat | unknown",
+          "required": false,
+          "default": "unknown",
+          "description": "Numerical movement relative to an explicitly named baseline.",
+          "semantic": true,
+          "restrictions": [
+            "Direction does not determine whether the movement is good or bad."
+          ]
+        },
+        {
+          "name": "trendMeaning",
+          "type": "positive | negative | neutral | unknown",
+          "required": false,
+          "default": "unknown",
+          "description": "Domain interpretation of the current movement.",
+          "semantic": true,
+          "restrictions": [
+            "The owning feature resolves the domain meaning.",
+            "The shared component does not infer meaning from direction."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates initial metric loading when no authoritative value exists.",
+          "semantic": true,
+          "restrictions": [
+            "Background refresh preserves the current value."
+          ]
+        },
+        {
+          "name": "refreshing",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates non-blocking synchronization while the current metric remains visible.",
+          "semantic": true,
+          "restrictions": [
+            "Refreshing must not replace the value with a skeleton."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "MetricGroup",
+          "Dashboard primary metrics region",
+          "Analytical section",
+          "Entity-detail summary",
+          "Administration scope summary"
+        ],
+        "allowedChildren": [
+          "Text",
+          "MetadataList",
+          "MetricTrend",
+          "MetricComparison",
+          "StatusBadge",
+          "FreshnessIndicator",
+          "Button",
+          "DropdownMenu"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Tooltip",
+          "Button",
+          "Another MetricCard"
+        ],
+        "prohibitedChildren": [
+          "Large chart",
+          "Complete table",
+          "Form",
+          "Long analytical report"
+        ],
+        "spacingOwnership": [
+          "MetricCard owns spacing among label, context, value, unit, comparison, trend, status, supporting content, freshness, and action.",
+          "MetricGroup owns spacing among peer MetricCard instances.",
+          "The containing section owns spacing around the metric group."
+        ],
+        "surfaceOwnership": "MetricCard owns one metric surface. It must not add decorative nested cards around comparison, trend, or freshness content.",
+        "rules": [
+          "One card represents one coherent metric.",
+          "Metric priority is explicit.",
+          "Zero is not treated as unavailable.",
+          "Trend direction and trend meaning remain separate.",
+          "A card is not automatically interactive.",
+          "Metric state is supplied by the owning feature or query."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Section",
+          "Stack",
+          "MetadataList",
+          "StatusBadge",
+          "FreshnessIndicator",
+          "Button",
+          "DropdownMenu",
+          "Tooltip"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "primaryMetrics",
+            "criticalAttention",
+            "analyticalContent"
+          ],
+          "status": "required",
+          "notes": "Primary, supporting, and attention metrics require explicit hierarchy."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "allowed",
+          "notes": "Use only for decision-relevant entity metrics, not ordinary attributes."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "scopeSummary",
+            "auditAndDiagnostics"
+          ],
+          "status": "allowed",
+          "notes": "Use for operational health or configured-resource summaries."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "criticalReviewContext",
+            "proposalAndRecommendation",
+            "auditContext"
+          ],
+          "status": "allowed",
+          "notes": "Confidence, evidence count, or risk metrics require clear provenance and must not replace human judgment."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "resultsSummary"
+          ],
+          "status": "allowed",
+          "notes": "Use sparingly for collection-level summary metrics."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching metric values.",
+          "Calculating domain metrics.",
+          "Interpreting raw DTO fields.",
+          "Inferring trend meaning.",
+          "Evaluating permissions."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning feature supplies formatted values, normalized states, comparison context, trend meaning, and callbacks."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Optional actions receive explicit callbacks from the owning feature."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve label, value, operational meaning, and freshness while moving low-priority context below the value.",
+        "compact": "Use compact padding, wrap the label, keep the value readable, and stack comparison, status, freshness, and action.",
+        "medium": "Use default metric composition with wrapping supporting context.",
+        "wide": "Allow horizontal alignment of comparison, trend, freshness, and low-frequency action when readable.",
+        "ultrawide": "The card does not expand its typography or add low-value content merely to fill width.",
+        "overflowPolicy": "Values, labels, and metadata wrap or use approved numeric formatting. No page-level horizontal overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Supporting regions stack before the primary value or action becomes unreadable at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "article or section when the metric is independently meaningful; otherwise a grouped neutral container",
+        "accessibleName": "Visible metric label.",
+        "keyboard": [
+          "Static metric content is not focusable.",
+          "Optional actions and disclosures are keyboard operable."
+        ],
+        "focus": [
+          "Interactive metric actions follow the complete readable metric content.",
+          "Background refresh does not reset focus."
+        ],
+        "announcements": [
+          "Initial loading and error are announced through canonical feedback behavior.",
+          "Routine metric refreshes are not repeatedly announced.",
+          "Material status changes may be announced by StatusBadge or the owning workflow."
+        ],
+        "aria": [
+          "Do not use meter or progress semantics unless the metric actually represents a bounded target.",
+          "Trend icons are decorative when the textual trend meaning is already present.",
+          "Icon-only actions require explicit accessible names."
+        ],
+        "colorIndependence": "Trend meaning, attention state, progress, stale state, and status use text, semantics, icons, or labels in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "A user-facing label and one authoritative value or canonical unavailable state.",
+        "typical": "Label, scope, value, unit, comparison or trend, and freshness.",
+        "maximum": "One metric with concise supporting context; detailed analysis belongs in another region.",
+        "wrapping": "Labels, comparison, trend explanation, freshness, and actions wrap naturally.",
+        "truncation": "Primary metric labels and values must not be truncated into ambiguity.",
+        "localization": "Support localized numbers, currencies, percentages, durations, dates, and expanded labels.",
+        "emptyBehavior": "A metric without an authoritative value uses a deliberate unavailable, not calculated, restricted, loading, or error state.",
+        "technicalContent": "Raw query names, database aggregations, internal metric keys, and unformatted floating-point values are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/data-display/metric-card.stories.tsx",
+        "requiredStories": [
+          "Primary",
+          "Supporting",
+          "Attention",
+          "Progress",
+          "Comparison",
+          "PositiveUpTrend",
+          "NegativeUpTrend",
+          "ZeroValue",
+          "Unavailable",
+          "Loading",
+          "Refreshing",
+          "Stale",
+          "Error",
+          "LongLocalizedLabel",
+          "CompactContainer",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/data-display/metric-card.test.tsx",
+        "requiredTests": [
+          "Accessible metric label",
+          "Variant contract",
+          "Zero versus unavailable",
+          "Direction versus meaning separation",
+          "Loading versus refreshing",
+          "Freshness composition",
+          "Non-interactive default behavior",
+          "Optional action accessibility"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Primary dashboard metric",
+          "Supporting metric grid",
+          "Critical attention metric",
+          "390x844 compact layout",
+          "1024x768 wrapping",
+          "125% browser zoom",
+          "Long currency value",
+          "Long localized label"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "MetricGroup",
+          "DashboardRoute",
+          "EntityAnalyticalSection",
+          "AdministrationHealthSummary"
+        ]
+      },
+      "notes": [
+        "A feature-level metric adapter may calculate and format domain values but must compose the canonical MetricCard.",
+        "MetricCard does not replace charts, tables, or detailed analytical explanations."
+      ]
+    },
+    "MetricGroup": {
+      "id": "metric-group",
+      "name": "MetricGroup",
+      "level": "shared-composite",
+      "category": "data-display",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical metric composition that establishes hierarchy, grouping, comparison relationships, responsive layout, and state ownership across several MetricCard instances.",
+      "capabilities": [
+        "Arrange several related metrics according to explicit semantic priority.",
+        "Separate dominant metrics from supporting metrics.",
+        "Define whether metrics are hierarchical, balanced, comparative, or compact.",
+        "Prevent indiscriminate equal-card dashboards.",
+        "Transform metric layouts according to content and available width.",
+        "Represent group-level loading, failure, emptiness, permission, and freshness context."
+      ],
+      "keywords": [
+        "metric-group",
+        "kpi-grid",
+        "dashboard-summary",
+        "metrics",
+        "hierarchy"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/data-display"
+      },
+      "implementation": "src/components/data-display/metric-group.tsx",
+      "publicImport": "@/components/data-display/metric-group",
+      "contract": "docs/frontend/design-system/components/metric-group.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "ContentGrid, Stack, Section, MetricCard",
+        "components": [
+          "ContentGrid",
+          "Stack",
+          "Section",
+          "MetricCard",
+          "LoadingState",
+          "ErrorState",
+          "PermissionState",
+          "FreshnessIndicator"
+        ],
+        "reason": "Metric collections require semantic hierarchy, bounded density, responsive transformation, state composition, and comparison rules beyond a generic grid."
+      },
+      "tokens": [
+        "layout.metricGroup.gap.compact",
+        "layout.metricGroup.gap.default",
+        "layout.metricGroup.primaryMinimumWidth",
+        "layout.metricGroup.supportingMinimumWidth",
+        "reference.space.4",
+        "reference.space.6",
+        "reference.space.8"
+      ],
+      "variants": {
+        "hierarchical": {
+          "intent": "Present one or two dominant metrics followed by supporting metrics with lower visual weight.",
+          "default": true,
+          "allowedUse": [
+            "Operational dashboard.",
+            "Risk overview.",
+            "Management summary.",
+            "Entity analytical summary."
+          ],
+          "prohibitedUse": [
+            "Metrics that are genuinely peers.",
+            "Direct side-by-side comparison requiring equal visual weight."
+          ],
+          "tokens": [
+            "layout.metricGroup.primaryMinimumWidth",
+            "layout.metricGroup.supportingMinimumWidth",
+            "layout.metricGroup.gap.default"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "error",
+            "stale"
+          ]
+        },
+        "balanced": {
+          "intent": "Present a small set of genuinely peer metrics with equal informational importance.",
+          "allowedUse": [
+            "Three or four equivalent operational dimensions.",
+            "Small health summary.",
+            "Bounded peer comparison."
+          ],
+          "prohibitedUse": [
+            "Large collection of unrelated KPIs.",
+            "A group containing one clearly dominant metric.",
+            "Using equal cards only for visual symmetry."
+          ],
+          "tokens": [
+            "layout.metricGroup.supportingMinimumWidth",
+            "layout.metricGroup.gap.default"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "error",
+            "stale"
+          ]
+        },
+        "comparison": {
+          "intent": "Present metrics whose primary relationship is direct comparison across segments, periods, states, or scenarios.",
+          "allowedUse": [
+            "Current versus previous period.",
+            "Actual versus target.",
+            "Before versus after.",
+            "Segment A versus segment B."
+          ],
+          "prohibitedUse": [
+            "Metrics without a shared unit or meaningful comparison contract.",
+            "Unrelated metrics forced into one group."
+          ],
+          "tokens": [
+            "layout.metricGroup.gap.default"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "error",
+            "stale"
+          ]
+        },
+        "compact": {
+          "intent": "Present a bounded set of short supporting metrics in a constrained region.",
+          "allowedUse": [
+            "Contextual aside.",
+            "Compact entity summary.",
+            "Dashboard supporting panel."
+          ],
+          "prohibitedUse": [
+            "Primary dashboard summary.",
+            "Metrics requiring long explanation.",
+            "More metrics than can be scanned clearly."
+          ],
+          "tokens": [
+            "layout.metricGroup.gap.compact",
+            "layout.metricGroup.supportingMinimumWidth"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "error",
+            "stale"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Reduced metric-group spacing inside a constrained region.",
+          "allowedUse": [
+            "Contextual aside.",
+            "Compact analytical panel."
+          ],
+          "tokens": [
+            "layout.metricGroup.gap.compact",
+            "reference.space.4"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary dashboard and analytical metric grouping.",
+          "default": true,
+          "allowedUse": [
+            "Dashboard primary metrics.",
+            "Entity analytical summary."
+          ],
+          "tokens": [
+            "layout.metricGroup.gap.default",
+            "reference.space.6"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "loading",
+        "error",
+        "empty",
+        "unavailable",
+        "stale"
+      ],
+      "slots": [
+        {
+          "name": "heading",
+          "description": "Optional heading naming the coherent metric group.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text",
+            "Section heading"
+          ],
+          "contentRestrictions": [
+            "Use when the group is not already named by the containing section.",
+            "Do not repeat the route title."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Optional concise explanation of scope, period, or decision purpose.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Name the reporting period or scope when needed.",
+            "Do not place lengthy analytical interpretation here."
+          ]
+        },
+        {
+          "name": "primaryMetrics",
+          "description": "Dominant metrics requiring the highest information priority.",
+          "required": false,
+          "multiple": true,
+          "order": 3,
+          "allowedComponents": [
+            "MetricCard"
+          ],
+          "contentRestrictions": [
+            "Hierarchical mode normally permits one or two primary metrics.",
+            "Primary metrics must support the main decision or task."
+          ]
+        },
+        {
+          "name": "supportingMetrics",
+          "description": "Secondary metrics that explain, qualify, or supplement the primary metrics.",
+          "required": true,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "MetricCard"
+          ],
+          "contentRestrictions": [
+            "Supporting metrics must belong to the same analytical question.",
+            "Do not include unrelated KPIs merely to fill the grid."
+          ]
+        },
+        {
+          "name": "context",
+          "description": "Optional shared scope, comparison baseline, freshness, or data-quality context.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "MetadataList",
+            "FreshnessIndicator",
+            "InlineAlert"
+          ],
+          "contentRestrictions": [
+            "Shared context should not be repeated identically inside every MetricCard."
+          ]
+        },
+        {
+          "name": "state",
+          "description": "Group-level loading, error, empty, permission, unavailable, or stale state.",
+          "required": false,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "LoadingState",
+            "ErrorState",
+            "EmptyState",
+            "PermissionState",
+            "StaleDataNotice"
+          ],
+          "contentRestrictions": [
+            "Render the state at the smallest truthful scope.",
+            "One failed supporting metric should not automatically replace the complete group."
+          ]
+        },
+        {
+          "name": "action",
+          "description": "Optional group-level action such as opening the full analytical route.",
+          "required": false,
+          "multiple": false,
+          "order": 7,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "Do not duplicate actions already present in each metric.",
+            "The action remains secondary to the metric content."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "hierarchical | balanced | comparison | compact",
+          "required": false,
+          "default": "hierarchical",
+          "description": "Semantic relationship among the metrics.",
+          "semantic": true,
+          "restrictions": [
+            "Do not select balanced merely to obtain equal card widths.",
+            "Comparison mode requires a shared comparison contract."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Approved group density.",
+          "semantic": true,
+          "restrictions": [
+            "Compact does not justify overcrowding."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that no authoritative group metrics are yet available.",
+          "semantic": true,
+          "restrictions": [
+            "When some metrics are available, render partial state at the metric level when possible."
+          ]
+        },
+        {
+          "name": "refreshing",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates background synchronization while current metrics remain visible.",
+          "semantic": true,
+          "restrictions": [
+            "Refreshing does not replace populated metrics with skeletons."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Dashboard primary metrics region",
+          "Dashboard analytical section",
+          "Entity-detail analytical section",
+          "Administration scope summary",
+          "Search results summary"
+        ],
+        "allowedChildren": [
+          "MetricCard",
+          "MetadataList",
+          "FreshnessIndicator",
+          "InlineAlert",
+          "LoadingState",
+          "ErrorState",
+          "EmptyState",
+          "PermissionState",
+          "StaleDataNotice",
+          "Button",
+          "DropdownMenu"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Tooltip",
+          "Button",
+          "MetricCard"
+        ],
+        "prohibitedChildren": [
+          "Unrelated cards",
+          "Complete table",
+          "Large chart without analytical section",
+          "Editable form"
+        ],
+        "spacingOwnership": [
+          "MetricGroup owns gaps and responsive placement among primary and supporting metrics.",
+          "Each MetricCard owns its internal spacing.",
+          "The containing section owns spacing around the complete metric group."
+        ],
+        "surfaceOwnership": "MetricGroup owns no additional outer card by default. MetricCard instances own their own metric surfaces.",
+        "rules": [
+          "Metrics require a coherent analytical relationship.",
+          "Primary and supporting metrics remain explicitly separated.",
+          "The number of metrics is bounded by scanability and decision relevance.",
+          "MetricGroup is not a generic card grid.",
+          "Group-level states render only when they truthfully affect the group."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "ContentGrid",
+          "Stack",
+          "Section",
+          "MetricCard",
+          "MetadataList",
+          "FreshnessIndicator",
+          "InlineAlert",
+          "LoadingState",
+          "ErrorState",
+          "EmptyState",
+          "PermissionState",
+          "StaleDataNotice",
+          "Button",
+          "DropdownMenu"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "primaryMetrics",
+            "criticalAttention",
+            "analyticalContent"
+          ],
+          "status": "required",
+          "notes": "The dashboard contract must define which metrics are primary, supporting, and attention-oriented."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "allowed",
+          "notes": "Use only when several decision-relevant entity metrics form a coherent group."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "scopeSummary",
+            "auditAndDiagnostics"
+          ],
+          "status": "allowed",
+          "notes": "Use for bounded operational-health and configuration summaries."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "resultsSummary"
+          ],
+          "status": "allowed",
+          "notes": "Use a compact bounded group rather than a full dashboard."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "criticalReviewContext",
+            "proposalAndRecommendation"
+          ],
+          "status": "allowed",
+          "notes": "Metrics must not imply automated decision authority."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching metrics.",
+          "Calculating metric priority.",
+          "Inferring metric relationships.",
+          "Evaluating permissions.",
+          "Direct URL-state access."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The screen or feature supplies metric hierarchy, data states, shared context, and actions."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Optional group-level actions are supplied externally."
+        ]
+      },
+      "responsive": {
+        "strategy": "Collapse hierarchy into a readable vertical sequence while preserving primary metrics before supporting metrics.",
+        "compact": "Primary metrics render first and full width. Supporting metrics follow in one column or an approved compact two-column arrangement.",
+        "medium": "Primary metrics retain dominant width; supporting metrics use one or two columns according to minimum readable width.",
+        "wide": "Use the selected hierarchical, balanced, comparison, or compact layout.",
+        "ultrawide": "Do not increase metric count or typography merely because more width exists.",
+        "overflowPolicy": "Metrics wrap into additional rows. Horizontal page overflow is prohibited.",
+        "containerQueries": true,
+        "zoomExpectation": "The group collapses columns before metric labels, values, or actions become unreadable at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "section or grouped list of independently labeled metric articles",
+        "accessibleName": "Visible group heading or accessible label supplied by the containing section.",
+        "keyboard": [
+          "Static metrics are not focusable.",
+          "Metric and group actions remain keyboard operable."
+        ],
+        "focus": [
+          "DOM order follows primary metrics before supporting metrics.",
+          "Responsive layout must not reorder metric meaning through CSS alone."
+        ],
+        "announcements": [
+          "Group-level loading and errors use canonical feedback announcements.",
+          "Routine metric refreshes do not produce repeated live announcements."
+        ],
+        "aria": [
+          "Use semantic grouping rather than ARIA grid.",
+          "Each independently meaningful metric retains an accessible label."
+        ],
+        "colorIndependence": "Metric hierarchy is conveyed through structure, typography, labels, and order rather than color alone.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One primary or supporting MetricCard inside a named analytical context.",
+        "typical": "One or two primary metrics and two to six supporting metrics.",
+        "maximum": "A bounded set that remains scannable and decision-relevant; large metric inventories require prioritization or another route.",
+        "wrapping": "Cards wrap by semantic group and minimum readable width.",
+        "truncation": "Metric labels and values must not be truncated into ambiguity.",
+        "localization": "Support expanded labels, values, comparison text, dates, and actions.",
+        "emptyBehavior": "An empty group does not render unless it presents an explicit EmptyState.",
+        "technicalContent": "Raw metric keys, database aggregation names, model feature names, and internal calculation identifiers are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/data-display/metric-group.stories.tsx",
+        "requiredStories": [
+          "Hierarchical",
+          "Balanced",
+          "Comparison",
+          "Compact",
+          "OnePrimary",
+          "TwoPrimary",
+          "SupportingOnly",
+          "PartialMetricFailure",
+          "GroupLoading",
+          "GroupError",
+          "Stale",
+          "LongLocalizedContent",
+          "CompactViewport",
+          "Ultrawide",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/data-display/metric-group.test.tsx",
+        "requiredTests": [
+          "Primary before supporting DOM order",
+          "Variant contract",
+          "Metric-count constraints",
+          "Group state composition",
+          "No unnecessary outer surface",
+          "Responsive order preservation"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "1440x900 dashboard metric hierarchy",
+          "1366x768 long values",
+          "1024x768 column collapse",
+          "390x844 primary-first sequence",
+          "125% browser zoom",
+          "Partial metric failure",
+          "Long localized labels"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "DashboardRoute",
+          "EntityAnalyticalSection",
+          "AdministrationHealthSummary",
+          "SearchResultsSummary"
+        ]
+      },
+      "notes": [
+        "MetricGroup does not choose metrics or priorities. These decisions belong to product and screen contracts.",
+        "Equal visual treatment requires genuine informational equivalence."
+      ]
+    },
+    "StatusBadge": {
+      "id": "status-badge",
+      "name": "StatusBadge",
+      "level": "shared-composite",
+      "category": "data-display",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical normalized status presentation that maps an approved semantic state into a concise label, icon, tone, and accessible meaning.",
+      "capabilities": [
+        "Present a concise normalized status.",
+        "Communicate neutral, informational, successful, warning, dangerous, processing, stale, and unavailable states.",
+        "Separate domain status mapping from visual tone.",
+        "Provide accessible text and optional supporting context.",
+        "Prevent each feature from inventing independent status colors and labels."
+      ],
+      "keywords": [
+        "status",
+        "badge",
+        "state",
+        "processing",
+        "warning",
+        "success",
+        "stale"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/data-display"
+      },
+      "implementation": "src/components/data-display/status-badge.tsx",
+      "publicImport": "@/components/data-display/status-badge",
+      "contract": "docs/frontend/design-system/components/status-badge.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Badge and approved icon system",
+        "components": [
+          "Badge",
+          "Tooltip"
+        ],
+        "reason": "StatusBadge constrains domain adapters to normalized semantic states while centralizing labels, icons, accessible meaning, tone, and compact presentation."
+      },
+      "tokens": [
+        "semantic.status.neutral.background",
+        "semantic.status.neutral.foreground",
+        "semantic.status.info.background",
+        "semantic.status.info.foreground",
+        "semantic.status.success.background",
+        "semantic.status.success.foreground",
+        "semantic.status.warning.background",
+        "semantic.status.warning.foreground",
+        "semantic.status.danger.background",
+        "semantic.status.danger.foreground",
+        "semantic.status.processing.background",
+        "semantic.status.processing.foreground",
+        "semantic.status.stale.background",
+        "semantic.status.stale.foreground",
+        "reference.icon.size.sm"
+      ],
+      "variants": {
+        "neutral": {
+          "intent": "Communicate an ordinary, inactive, draft, unknown-neutral, or categorically neutral state.",
+          "default": true,
+          "allowedUse": [
+            "Draft.",
+            "Inactive without risk.",
+            "Neutral category.",
+            "Not started."
+          ],
+          "prohibitedUse": [
+            "Completed success.",
+            "Failure.",
+            "Attention-required state."
+          ],
+          "tokens": [
+            "semantic.status.neutral.background",
+            "semantic.status.neutral.foreground"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "info": {
+          "intent": "Communicate an informational state without positive or negative outcome.",
+          "allowedUse": [
+            "Scheduled.",
+            "Awaiting external event.",
+            "Informational classification."
+          ],
+          "prohibitedUse": [
+            "Confirmed success.",
+            "Warning or failure."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "success": {
+          "intent": "Communicate backend-confirmed completion, health, activation, or successful outcome.",
+          "allowedUse": [
+            "Completed.",
+            "Active.",
+            "Approved by an authoritative human or policy.",
+            "Healthy."
+          ],
+          "prohibitedUse": [
+            "AI recommendation awaiting review.",
+            "Optimistic assumption not confirmed by the backend.",
+            "Queued or processing operation."
+          ],
+          "tokens": [
+            "semantic.status.success.background",
+            "semantic.status.success.foreground"
+          ],
+          "states": [
+            "success"
+          ]
+        },
+        "warning": {
+          "intent": "Communicate a state requiring attention or caution without confirmed failure.",
+          "allowedUse": [
+            "Near deadline.",
+            "Incomplete.",
+            "Review required.",
+            "Partially configured.",
+            "Delayed."
+          ],
+          "prohibitedUse": [
+            "Ordinary neutral information.",
+            "Confirmed failure."
+          ],
+          "tokens": [
+            "semantic.status.warning.background",
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "warning"
+          ]
+        },
+        "danger": {
+          "intent": "Communicate failure, blocking state, expiration, critical risk, or rejected outcome.",
+          "allowedUse": [
+            "Failed.",
+            "Blocked.",
+            "Expired.",
+            "Critical.",
+            "Rejected."
+          ],
+          "prohibitedUse": [
+            "Decorative emphasis.",
+            "Non-blocking warning."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "error"
+          ]
+        },
+        "processing": {
+          "intent": "Communicate an operation that is queued, running, synchronizing, or awaiting completion.",
+          "allowedUse": [
+            "Processing.",
+            "Synchronizing.",
+            "Queued.",
+            "Uploading.",
+            "Analyzing."
+          ],
+          "prohibitedUse": [
+            "Completed state.",
+            "Unknown state.",
+            "Initial data loading without a domain operation."
+          ],
+          "tokens": [
+            "semantic.status.processing.background",
+            "semantic.status.processing.foreground"
+          ],
+          "states": [
+            "processing"
+          ]
+        },
+        "stale": {
+          "intent": "Communicate that the represented information or result is outdated, superseded, or requires refresh.",
+          "allowedUse": [
+            "Data outside freshness threshold.",
+            "Superseded recommendation.",
+            "Outdated configuration snapshot."
+          ],
+          "prohibitedUse": [
+            "Unknown value.",
+            "Current healthy data.",
+            "Blocking conflict that needs a full StaleDataNotice."
+          ],
+          "tokens": [
+            "semantic.status.stale.background",
+            "semantic.status.stale.foreground"
+          ],
+          "states": [
+            "stale"
+          ]
+        },
+        "unavailable": {
+          "intent": "Communicate that a status cannot currently be determined or presented.",
+          "allowedUse": [
+            "Status source unavailable.",
+            "Calculation not completed.",
+            "Dependency unavailable."
+          ],
+          "prohibitedUse": [
+            "Neutral or not-started state.",
+            "Permission-restricted status whose existence must not be disclosed."
+          ],
+          "tokens": [
+            "semantic.status.neutral.background",
+            "semantic.status.neutral.foreground"
+          ],
+          "states": [
+            "unavailable"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense status label for tables, metadata, and compact headers.",
+          "default": true,
+          "allowedUse": [
+            "DataTable cell.",
+            "MetadataList.",
+            "Timeline event.",
+            "Compact entity header."
+          ],
+          "tokens": [
+            "reference.icon.size.sm"
+          ]
+        },
+        "default": {
+          "intent": "Prominent status in entity orientation, review, and analytical summaries.",
+          "allowedUse": [
+            "EntityHeader.",
+            "Review status.",
+            "MetricCard.",
+            "Processing summary."
+          ],
+          "tokens": [
+            "reference.icon.size.sm"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "success",
+        "warning",
+        "error",
+        "processing",
+        "stale",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Optional icon matching the normalized semantic state.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "The icon must match the semantic tone.",
+            "The icon must not be the only source of meaning.",
+            "Motion must respect reduced-motion preferences."
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Concise localized status label.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use user-facing terminology.",
+            "Do not display raw backend enum keys.",
+            "Avoid ambiguous labels such as OK when a precise state exists."
+          ]
+        },
+        {
+          "name": "context",
+          "description": "Optional accessible or visible context distinguishing similar states.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Text",
+            "Tooltip"
+          ],
+          "contentRestrictions": [
+            "Critical context must remain visible rather than tooltip-only.",
+            "Tooltip context is supplementary."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "tone",
+          "type": "neutral | info | success | warning | danger | processing | stale | unavailable",
+          "required": false,
+          "default": "neutral",
+          "description": "Normalized semantic presentation tone.",
+          "semantic": true,
+          "restrictions": [
+            "The owning domain adapter maps raw status values into this normalized tone.",
+            "Do not select a tone only to obtain a desired color."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "compact",
+          "description": "Approved status-label scale.",
+          "semantic": true,
+          "restrictions": [
+            "Large custom status pills are prohibited."
+          ]
+        },
+        {
+          "name": "animated",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Allows approved subtle motion for an active processing state.",
+          "semantic": true,
+          "restrictions": [
+            "Allowed only for processing.",
+            "Must respect reduced-motion preferences.",
+            "Motion must not be the only evidence that processing continues."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "EntityHeader",
+          "MetricCard",
+          "DataTable",
+          "DefinitionList",
+          "MetadataList",
+          "Timeline",
+          "ProcessingState",
+          "Review workspace",
+          "Feature component"
+        ],
+        "allowedChildren": [
+          "Badge",
+          "Text",
+          "Approved icon",
+          "Tooltip"
+        ],
+        "prohibitedParents": [
+          "Button when the status is only decorative",
+          "Tooltip as the only status label"
+        ],
+        "prohibitedChildren": [
+          "Interactive controls",
+          "Long explanatory paragraph",
+          "Raw domain object"
+        ],
+        "spacingOwnership": [
+          "StatusBadge owns spacing between icon, label, and optional context.",
+          "The containing component owns spacing around the complete badge."
+        ],
+        "surfaceOwnership": "StatusBadge owns one compact semantic status surface.",
+        "rules": [
+          "Raw domain status mapping occurs outside the shared component.",
+          "Status labels are localized and user-facing.",
+          "Success requires authoritative confirmation.",
+          "Complex blocking states require a larger feedback component.",
+          "The component is non-interactive by default."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Badge",
+          "Tooltip"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "criticalAttention",
+            "primaryMetrics",
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "recommended",
+          "notes": "Use normalized status labels rather than feature-specific colors."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results",
+            "contextualDetails"
+          ],
+          "status": "required",
+          "notes": "Table status columns should use a domain adapter and canonical StatusBadge."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader",
+            "primaryContent",
+            "contextualAside",
+            "auditDetails"
+          ],
+          "status": "required",
+          "notes": "Current status and historical event outcomes remain distinct."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "scopeSummary",
+            "administrationContent",
+            "auditAndDiagnostics"
+          ],
+          "status": "required",
+          "notes": "Raw integration, tenant, and account status codes must be normalized."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "reviewHeader",
+            "proposalAndRecommendation",
+            "decisionForm",
+            "auditContext"
+          ],
+          "status": "required",
+          "notes": "Recommendation, review, and final decision statuses must not be conflated."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Reading raw domain statuses.",
+          "Mapping backend enums.",
+          "Fetching status.",
+          "Evaluating permissions.",
+          "Inferring success from optimistic local state."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning entity or feature supplies a normalized tone, localized label, and optional context."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Remain compact while allowing localized labels to wrap only when necessary.",
+        "compact": "Use compact size and controlled wrapping. The badge must not force a table or header to overflow.",
+        "medium": "Use content width.",
+        "wide": "Use content width.",
+        "ultrawide": "Do not scale with available viewport width.",
+        "overflowPolicy": "Labels may wrap to a second line when required. Long explanations use another component.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain legible at 200% text scaling without relying on color or animation."
+      },
+      "accessibility": {
+        "semanticElement": "span or appropriate static status text; dynamic changes may be wrapped by a status region",
+        "accessibleName": "Visible status label with optional additional context.",
+        "keyboard": [
+          "Static status badges are not focusable.",
+          "Supplementary tooltip triggers are keyboard accessible only when actual supplementary context exists."
+        ],
+        "focus": [
+          "StatusBadge does not alter focus order."
+        ],
+        "announcements": [
+          "Material dynamic status changes may be announced by the owning workflow.",
+          "Frequent processing updates should not produce excessive announcements.",
+          "Static statuses are not live regions by default."
+        ],
+        "aria": [
+          "Avoid unnecessary status or alert roles for static labels.",
+          "Decorative icons are hidden from assistive technology.",
+          "Animated processing icons expose equivalent textual status."
+        ],
+        "colorIndependence": "Every status includes a visible textual label and may include a semantic icon in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One clear localized status label.",
+        "typical": "A concise one-to-three-word status with an optional icon.",
+        "maximum": "A short phrase. Detailed consequences or recovery instructions require InlineAlert, ErrorState, PermissionState, ProcessingState, or StaleDataNotice.",
+        "wrapping": "Prefer one line; allow controlled wrapping for localization.",
+        "truncation": "Do not truncate when the remaining label becomes ambiguous.",
+        "localization": "All labels and supplementary context support localization.",
+        "emptyBehavior": "A status without a label does not render.",
+        "technicalContent": "Raw enum keys, status integers, machine-state codes, and internal workflow IDs are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/data-display/status-badge.stories.tsx",
+        "requiredStories": [
+          "Neutral",
+          "Info",
+          "Success",
+          "Warning",
+          "Danger",
+          "Processing",
+          "Stale",
+          "Unavailable",
+          "Compact",
+          "DefaultSize",
+          "WithIcon",
+          "WithContext",
+          "ReducedMotion",
+          "LongLocalizedLabel",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/data-display/status-badge.test.tsx",
+        "requiredTests": [
+          "Tone contract",
+          "Visible label",
+          "No raw enum mapping",
+          "Non-interactive semantics",
+          "Processing reduced-motion behavior",
+          "Color-independent meaning"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "DataTable status column",
+          "Entity header",
+          "Metric card",
+          "Timeline event",
+          "390x844 wrapping",
+          "125% browser zoom",
+          "Reduced motion"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "DataTable",
+          "EntityHeader",
+          "MetricCard",
+          "Timeline",
+          "ProcessingState"
+        ]
+      },
+      "notes": [
+        "Each domain should define an adapter from its raw status model into the canonical StatusBadge contract.",
+        "Feature adapters must not introduce additional arbitrary visual tones."
+      ]
+    },
+    "Timeline": {
+      "id": "timeline",
+      "name": "Timeline",
+      "level": "shared-composite",
+      "category": "data-display",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical chronological or reverse-chronological history for activity, workflow transitions, audit events, decisions, and domain milestones.",
+      "capabilities": [
+        "Present ordered events with actor, time, status, description, and supporting metadata.",
+        "Distinguish ordinary activity, workflow transition, decision history, and audit history.",
+        "Group or progressively disclose bounded event details.",
+        "Communicate event ordering, source, and current state accessibly.",
+        "Support loading, empty, error, restricted, and paginated history states."
+      ],
+      "keywords": [
+        "timeline",
+        "history",
+        "activity",
+        "audit",
+        "events",
+        "workflow",
+        "chronology"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/data-display"
+      },
+      "implementation": "src/components/data-display/timeline.tsx",
+      "publicImport": "@/components/data-display/timeline",
+      "contract": "docs/frontend/design-system/components/timeline.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Native ordered-list semantics, Stack, MetadataList, StatusBadge, DefinitionList, disclosure foundation",
+        "components": [
+          "Stack",
+          "MetadataList",
+          "StatusBadge",
+          "DefinitionList",
+          "Button",
+          "DropdownMenu",
+          "EmptyState",
+          "LoadingState",
+          "ErrorState",
+          "PermissionState"
+        ],
+        "reason": "Temporal history requires explicit event anatomy, ordering, disclosure, status mapping, accessible timestamps, bounded detail, and scope-aware states."
+      },
+      "tokens": [
+        "component.timeline.marker.size",
+        "component.timeline.line.width",
+        "component.timeline.event.gap.compact",
+        "component.timeline.event.gap.default",
+        "semantic.border.default",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.background.surface",
+        "semantic.background.surfaceSubtle",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.space.4",
+        "reference.space.6"
+      ],
+      "variants": {
+        "activity": {
+          "intent": "Present user-relevant activity and domain events.",
+          "default": true,
+          "allowedUse": [
+            "Entity activity.",
+            "Document events.",
+            "Case or customer interaction history.",
+            "Operational notes."
+          ],
+          "prohibitedUse": [
+            "Security-sensitive raw audit log.",
+            "Complex state machine without explicit transition labels."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "empty",
+            "error"
+          ]
+        },
+        "workflow": {
+          "intent": "Present meaningful state transitions and milestones in a user workflow.",
+          "allowedUse": [
+            "Review lifecycle.",
+            "Approval lifecycle.",
+            "Processing stages.",
+            "Configuration or migration milestones."
+          ],
+          "prohibitedUse": [
+            "Every low-level background event.",
+            "Raw state-machine identifiers."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "processing",
+            "success",
+            "warning",
+            "error"
+          ]
+        },
+        "decision": {
+          "intent": "Present human or policy decisions with actor, rationale, evidence context, and resulting status.",
+          "allowedUse": [
+            "Approval decision history.",
+            "Human review decisions.",
+            "Policy exception decisions.",
+            "Rejection or revocation rationale."
+          ],
+          "prohibitedUse": [
+            "Machine recommendation presented as a final human decision.",
+            "Decision event without actor or authoritative source."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "success",
+            "warning",
+            "error",
+            "stale"
+          ]
+        },
+        "audit": {
+          "intent": "Present authorized audit events with stable identity, actor, timestamp, action, scope, and safe diagnostic context.",
+          "allowedUse": [
+            "Administrative audit trail.",
+            "Security-relevant event history.",
+            "Configuration change history.",
+            "Access or permission changes."
+          ],
+          "prohibitedUse": [
+            "Ordinary users without audit capability.",
+            "Raw infrastructure logs.",
+            "Secrets, tokens, or unsafe payloads."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "error",
+            "warning",
+            "unavailable"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense history with concise event content.",
+          "allowedUse": [
+            "Contextual aside.",
+            "Administrative compact audit list.",
+            "Short entity activity summary."
+          ],
+          "tokens": [
+            "component.timeline.event.gap.compact",
+            "reference.space.3"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary event history with supporting metadata and optional details.",
+          "default": true,
+          "allowedUse": [
+            "Entity history.",
+            "Workflow history.",
+            "Review decision history.",
+            "Audit section."
+          ],
+          "tokens": [
+            "component.timeline.event.gap.default",
+            "reference.space.4"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "loading",
+        "empty",
+        "error",
+        "warning",
+        "success",
+        "processing",
+        "unavailable",
+        "stale",
+        "expanded",
+        "collapsed"
+      ],
+      "slots": [
+        {
+          "name": "heading",
+          "description": "Optional visible history heading.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text",
+            "Section heading"
+          ],
+          "contentRestrictions": [
+            "Use when the containing section does not already identify the history."
+          ]
+        },
+        {
+          "name": "summary",
+          "description": "Optional event-count, active-filter, scope, or freshness summary.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "MetadataList",
+            "FreshnessIndicator",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not duplicate the complete event list.",
+            "Unknown totals remain unknown."
+          ]
+        },
+        {
+          "name": "event",
+          "description": "One ordered historical event.",
+          "required": true,
+          "multiple": true,
+          "order": 3,
+          "allowedComponents": [
+            "TimelineEvent"
+          ],
+          "contentRestrictions": [
+            "Every event requires stable identity and authoritative timestamp.",
+            "The event must describe a user-meaningful action or transition."
+          ]
+        },
+        {
+          "name": "marker",
+          "description": "Visual marker representing event type or status.",
+          "required": true,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "Approved icon",
+            "Status marker"
+          ],
+          "contentRestrictions": [
+            "Marker meaning must also be present in text or status.",
+            "Decorative timeline lines are hidden from assistive technology."
+          ]
+        },
+        {
+          "name": "title",
+          "description": "Concise event action or transition label.",
+          "required": true,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use active user-facing language.",
+            "Do not display raw event codes."
+          ]
+        },
+        {
+          "name": "timestamp",
+          "description": "Authoritative localized event date and time.",
+          "required": true,
+          "multiple": true,
+          "order": 6,
+          "allowedComponents": [
+            "Time",
+            "FreshnessIndicator"
+          ],
+          "contentRestrictions": [
+            "Include timezone context according to project policy.",
+            "Relative time alone is insufficient for audit events."
+          ]
+        },
+        {
+          "name": "actor",
+          "description": "Optional human, system, integration, or policy actor.",
+          "required": false,
+          "multiple": true,
+          "order": 7,
+          "allowedComponents": [
+            "Text",
+            "MetadataList",
+            "Avatar"
+          ],
+          "contentRestrictions": [
+            "Distinguish human, system, integration, and automated-policy actors.",
+            "Do not invent a human actor for automated events."
+          ]
+        },
+        {
+          "name": "status",
+          "description": "Optional resulting or current event status.",
+          "required": false,
+          "multiple": true,
+          "order": 8,
+          "allowedComponents": [
+            "StatusBadge"
+          ],
+          "contentRestrictions": [
+            "Status refers to the event or resulting transition, not necessarily the current entity state."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Optional concise explanation, rationale, or outcome.",
+          "required": false,
+          "multiple": true,
+          "order": 9,
+          "allowedComponents": [
+            "Text",
+            "InlineAlert"
+          ],
+          "contentRestrictions": [
+            "Decision rationale must not be truncated into ambiguity.",
+            "Raw logs and transport messages are prohibited."
+          ]
+        },
+        {
+          "name": "metadata",
+          "description": "Optional supporting source, scope, version, correlation, or related-entity context.",
+          "required": false,
+          "multiple": true,
+          "order": 10,
+          "allowedComponents": [
+            "MetadataList",
+            "DefinitionList"
+          ],
+          "contentRestrictions": [
+            "Technical metadata is restricted to approved administrative or audit use.",
+            "Secrets and tokens are prohibited."
+          ]
+        },
+        {
+          "name": "details",
+          "description": "Optional progressively disclosed bounded event details.",
+          "required": false,
+          "multiple": true,
+          "order": 11,
+          "allowedComponents": [
+            "DefinitionList",
+            "ChangeDiff",
+            "InlineAlert",
+            "Feature component"
+          ],
+          "contentRestrictions": [
+            "Details remain bounded.",
+            "Do not render complete raw event payloads.",
+            "Material decision rationale should not be hidden by default."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Optional event-specific actions such as opening the source, comparing changes, or copying an approved reference.",
+          "required": false,
+          "multiple": true,
+          "order": 12,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "Actions remain low frequency and event-specific.",
+            "Do not place destructive entity actions inside historical events."
+          ]
+        },
+        {
+          "name": "state",
+          "description": "Loading, empty, error, permission, or unavailable history state.",
+          "required": false,
+          "multiple": false,
+          "order": 13,
+          "allowedComponents": [
+            "LoadingState",
+            "EmptyState",
+            "ErrorState",
+            "PermissionState"
+          ],
+          "contentRestrictions": [
+            "Use the smallest truthful scope.",
+            "Existing events remain visible during background refresh."
+          ]
+        },
+        {
+          "name": "pagination",
+          "description": "Optional bounded history pagination or load-more navigation.",
+          "required": false,
+          "multiple": false,
+          "order": 14,
+          "allowedComponents": [
+            "Pagination",
+            "Button"
+          ],
+          "contentRestrictions": [
+            "The pagination model must match the backend history contract.",
+            "Do not append unbounded history indefinitely without virtualization or pagination policy."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "activity | workflow | decision | audit",
+          "required": false,
+          "default": "activity",
+          "description": "Semantic event-history type.",
+          "semantic": true,
+          "restrictions": [
+            "Audit variant requires explicit capability and safe diagnostic policy.",
+            "Decision variant requires an authoritative decision source."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Approved history density.",
+          "semantic": true,
+          "restrictions": [
+            "Compact must not remove required event context."
+          ]
+        },
+        {
+          "name": "order",
+          "type": "ascending | descending",
+          "required": false,
+          "default": "descending",
+          "description": "Visible event order.",
+          "semantic": true,
+          "restrictions": [
+            "The order must be stated or visually clear.",
+            "Audit and activity histories normally show newest first unless workflow progression requires ascending order."
+          ]
+        },
+        {
+          "name": "expandedItems",
+          "type": "string[]",
+          "required": false,
+          "description": "Controlled identifiers of events whose optional details are expanded.",
+          "semantic": true,
+          "restrictions": [
+            "Only events with bounded optional details may expand."
+          ]
+        },
+        {
+          "name": "onExpandedItemsChange",
+          "type": "(ids: string[]) => void",
+          "required": false,
+          "description": "Controlled disclosure-state callback.",
+          "semantic": true,
+          "restrictions": [
+            "The component does not fetch event details automatically unless an approved feature adapter owns that behavior."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates initial history loading.",
+          "semantic": true,
+          "restrictions": [
+            "Background refresh preserves existing events."
+          ]
+        },
+        {
+          "name": "refreshing",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates background history synchronization.",
+          "semantic": true,
+          "restrictions": [
+            "Refreshing must not reset expansion or focus."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Entity-detail audit region",
+          "Entity-detail primary content",
+          "Review audit context",
+          "Administration audit and diagnostics",
+          "Workflow history section",
+          "Contextual aside"
+        ],
+        "allowedChildren": [
+          "TimelineEvent",
+          "Text",
+          "MetadataList",
+          "DefinitionList",
+          "StatusBadge",
+          "FreshnessIndicator",
+          "InlineAlert",
+          "Button",
+          "DropdownMenu",
+          "Pagination",
+          "LoadingState",
+          "EmptyState",
+          "ErrorState",
+          "PermissionState"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Tooltip",
+          "Button",
+          "MetricCard"
+        ],
+        "prohibitedChildren": [
+          "Raw log stream",
+          "Complete application route",
+          "Unbounded nested table",
+          "Raw event JSON",
+          "Secrets or tokens"
+        ],
+        "spacingOwnership": [
+          "Timeline owns spacing and connective structure among events.",
+          "TimelineEvent owns spacing among title, timestamp, actor, status, description, metadata, details, and actions.",
+          "The containing section owns spacing around the complete timeline."
+        ],
+        "surfaceOwnership": "Timeline owns no required outer card. Individual event surfaces remain subtle and are used only when the variant requires stronger grouping.",
+        "rules": [
+          "Events are ordered by authoritative timestamps.",
+          "Historical event status is distinct from current entity status.",
+          "Relative time is supplemented by absolute time where auditability matters.",
+          "Raw event payloads are never rendered directly.",
+          "Expansion and pagination remain bounded.",
+          "System, integration, policy, and human actors remain distinguishable."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Stack",
+          "MetadataList",
+          "DefinitionList",
+          "StatusBadge",
+          "FreshnessIndicator",
+          "InlineAlert",
+          "Button",
+          "DropdownMenu",
+          "Pagination",
+          "EmptyState",
+          "LoadingState",
+          "ErrorState",
+          "PermissionState"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside",
+            "auditDetails"
+          ],
+          "status": "required",
+          "notes": "Use for activity, workflow, and audit history."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "auditAndDiagnostics"
+          ],
+          "status": "required",
+          "notes": "Audit history requires explicit capability and safe content mapping."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "auditContext",
+            "criticalReviewContext"
+          ],
+          "status": "required",
+          "notes": "Use decision variant for prior human decisions and audit variant for system events."
+        },
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "actionQueue",
+            "analyticalContent"
+          ],
+          "status": "allowed",
+          "notes": "Use only for a bounded recent-activity summary, with navigation to full history."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "contextualDetails"
+          ],
+          "status": "allowed",
+          "notes": "Use for selected-record preview history."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching events.",
+          "Parsing audit payloads.",
+          "Mapping event codes.",
+          "Evaluating audit capability.",
+          "Loading event details directly."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled-or-uncontrolled",
+        "controlled": true,
+        "uncontrolled": true,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Event data, pagination, filtering, and permission state remain outside the component.",
+          "Optional event-detail expansion may be controlled by the owning feature."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Timeline manages disclosure focus behavior.",
+          "Navigation, copy, comparison, and event-source actions are supplied externally."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve event order, title, timestamp, actor, and status while stacking optional metadata and details.",
+        "compact": "Use compact marker spacing, stack event header content, and move low-frequency actions to overflow.",
+        "medium": "Allow title, actor, status, and timestamp to wrap across two rows.",
+        "wide": "Use the approved event anatomy with metadata and optional details aligned clearly.",
+        "ultrawide": "Constrain event reading width rather than stretching descriptions across the route.",
+        "overflowPolicy": "Event text and metadata wrap. Technical references use approved safe copy or truncation behavior.",
+        "containerQueries": true,
+        "zoomExpectation": "Event headers stack before actor, status, timestamp, or actions become difficult to associate at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "ordered list containing independently structured event list items",
+        "accessibleName": "Visible history heading or accessible label provided by the containing section.",
+        "keyboard": [
+          "Disclosure controls are keyboard operable.",
+          "Event actions and pagination are keyboard operable.",
+          "Static event content is not unnecessarily focusable."
+        ],
+        "focus": [
+          "DOM order follows visible chronological order.",
+          "Collapsed details restore focus to their disclosure trigger.",
+          "Background refresh preserves focus and expanded state."
+        ],
+        "announcements": [
+          "Newly loaded event batches may be announced politely when user initiated.",
+          "Routine background refresh does not announce every new event.",
+          "Dynamic workflow status changes use the owning status or feedback policy."
+        ],
+        "aria": [
+          "Use semantic ordered-list markup.",
+          "Use time elements with machine-readable datetime values.",
+          "Disclosure controls use aria-expanded and appropriate relationships.",
+          "Decorative timeline lines and markers are hidden from assistive technology."
+        ],
+        "colorIndependence": "Event status, actor type, current milestone, changes, and failures use text, semantics, icons, or shape in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One event with title and authoritative timestamp.",
+        "typical": "Event title, timestamp, actor, status, concise description, and supporting metadata.",
+        "maximum": "A bounded paginated history. Raw logs and unlimited events require another authorized diagnostic system.",
+        "wrapping": "Titles, descriptions, actor names, statuses, metadata, and actions wrap naturally.",
+        "truncation": "Decision rationale and material outcomes must not be truncated into ambiguity. Secondary identifiers may truncate with full-value access.",
+        "localization": "Support localized dates, times, actor labels, statuses, actions, and event descriptions.",
+        "emptyBehavior": "No historical events use an explicit EmptyState rather than a blank region.",
+        "technicalContent": "Safe technical references are allowed only in authorized audit contexts. Raw payloads, tokens, secrets, stack traces, and internal event codes are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/data-display/timeline.stories.tsx",
+        "requiredStories": [
+          "Activity",
+          "Workflow",
+          "Decision",
+          "Audit",
+          "Ascending",
+          "Descending",
+          "Compact",
+          "WithStatus",
+          "WithDetails",
+          "WithActions",
+          "Loading",
+          "Refreshing",
+          "Empty",
+          "Error",
+          "PermissionRestricted",
+          "LongDecisionRationale",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/data-display/timeline.test.tsx",
+        "requiredTests": [
+          "Ordered-list semantics",
+          "Stable event identity",
+          "Chronological order",
+          "Absolute timestamp semantics",
+          "Actor-type distinction",
+          "Disclosure accessibility",
+          "Loading versus refreshing",
+          "Permission-state composition",
+          "No raw event payload rendering",
+          "Controlled expansion"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Entity activity history",
+          "Review decision history",
+          "Administration audit history",
+          "390x844 stacked event header",
+          "1024x768 long actor names",
+          "125% browser zoom",
+          "Keyboard disclosure",
+          "Paginated history",
+          "Long localized rationale"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "EntityActivitySection",
+          "WorkflowHistory",
+          "ReviewDecisionHistory",
+          "AdministrationAuditTrail"
+        ]
+      },
+      "notes": [
+        "Feature-level event adapters map raw domain and audit events into the canonical TimelineEvent contract.",
+        "Timeline is not a log viewer."
+      ]
+    },
+    "FreshnessIndicator": {
+      "id": "freshness-indicator",
+      "name": "FreshnessIndicator",
+      "level": "shared-composite",
+      "category": "data-display",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical presentation of when data was calculated, synchronized, observed, or refreshed, including normalized freshness state and absolute time context.",
+      "capabilities": [
+        "Communicate when data was last updated or calculated.",
+        "Distinguish fresh, aging, stale, and unknown freshness states.",
+        "Present relative and absolute time without hiding timezone context.",
+        "Expose an optional refresh action or data-source explanation.",
+        "Prevent stale data from appearing indistinguishable from current data."
+      ],
+      "keywords": [
+        "freshness",
+        "updated-at",
+        "last-refresh",
+        "stale",
+        "timestamp",
+        "recency"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/data-display"
+      },
+      "implementation": "src/components/data-display/freshness-indicator.tsx",
+      "publicImport": "@/components/data-display/freshness-indicator",
+      "contract": "docs/frontend/design-system/components/freshness-indicator.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "HTML time element, MetadataList, StatusBadge, Tooltip, Button",
+        "components": [
+          "MetadataList",
+          "StatusBadge",
+          "Tooltip",
+          "Button"
+        ],
+        "reason": "Freshness communication requires localized relative and absolute time, explicit status normalization, timezone policy, stale distinction, and controlled refresh behavior."
+      },
+      "tokens": [
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.status.info.foreground",
+        "semantic.status.warning.foreground",
+        "semantic.status.danger.foreground",
+        "semantic.status.stale.background",
+        "semantic.status.stale.foreground",
+        "reference.font.size.xs",
+        "reference.font.size.sm",
+        "reference.space.1",
+        "reference.space.2",
+        "reference.icon.size.sm"
+      ],
+      "variants": {
+        "fresh": {
+          "intent": "Communicate that the data is within the approved freshness threshold.",
+          "default": true,
+          "allowedUse": [
+            "Recently synchronized data.",
+            "Current metric calculation.",
+            "Recently loaded authoritative entity state."
+          ],
+          "prohibitedUse": [
+            "No timestamp is available.",
+            "The freshness threshold has been exceeded."
+          ],
+          "tokens": [
+            "semantic.text.secondary",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "aging": {
+          "intent": "Communicate that the data remains usable but is approaching its freshness threshold.",
+          "allowedUse": [
+            "Dashboard data approaching its recency target.",
+            "Cached data still valid but no longer recent.",
+            "Supporting reference data nearing expiration."
+          ],
+          "prohibitedUse": [
+            "Data is already outside the allowed threshold.",
+            "No freshness policy exists."
+          ],
+          "tokens": [
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "warning"
+          ]
+        },
+        "stale": {
+          "intent": "Communicate that the data is outside the approved freshness threshold or has been superseded.",
+          "allowedUse": [
+            "Dashboard data outside the recency threshold.",
+            "Outdated metric.",
+            "Superseded analytical snapshot."
+          ],
+          "prohibitedUse": [
+            "Blocking edit conflict requiring StaleDataNotice.",
+            "Unknown timestamp."
+          ],
+          "tokens": [
+            "semantic.status.stale.background",
+            "semantic.status.stale.foreground"
+          ],
+          "states": [
+            "stale"
+          ]
+        },
+        "unknown": {
+          "intent": "Communicate that the data timestamp or freshness state is not available.",
+          "allowedUse": [
+            "Legacy source provides no timestamp.",
+            "Freshness calculation failed.",
+            "Source recency cannot be determined."
+          ],
+          "prohibitedUse": [
+            "Treating missing timestamp as fresh.",
+            "Treating unknown as zero age."
+          ],
+          "tokens": [
+            "semantic.text.muted"
+          ],
+          "states": [
+            "unavailable"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Short freshness context inside metadata, metrics, and table footers.",
+          "default": true,
+          "allowedUse": [
+            "MetricCard.",
+            "MetadataList.",
+            "DataTable footer.",
+            "PageHeader."
+          ],
+          "tokens": [
+            "reference.font.size.xs",
+            "reference.space.1"
+          ]
+        },
+        "default": {
+          "intent": "Prominent freshness context inside an analytical or stale-data region.",
+          "allowedUse": [
+            "Dashboard header.",
+            "StaleDataNotice.",
+            "Review context.",
+            "Data-source summary."
+          ],
+          "tokens": [
+            "reference.font.size.sm",
+            "reference.space.2"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "warning",
+        "stale",
+        "unavailable",
+        "loading"
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Optional semantic freshness or synchronization icon.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "The icon is not the only source of meaning.",
+            "Rotation or animation is reserved for active refreshing and respects reduced motion."
+          ]
+        },
+        {
+          "name": "relativeTime",
+          "description": "Concise localized relative freshness label.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text",
+            "Time"
+          ],
+          "contentRestrictions": [
+            "Examples include Atualizado há 5 minutos or Calculado há 2 horas.",
+            "Relative time must not be the only timestamp in audit-sensitive contexts."
+          ]
+        },
+        {
+          "name": "absoluteTime",
+          "description": "Localized absolute timestamp including approved timezone context.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Time",
+            "Tooltip",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required for audit-sensitive and review-sensitive contexts.",
+            "The machine-readable datetime value must use an unambiguous format."
+          ]
+        },
+        {
+          "name": "status",
+          "description": "Optional explicit freshness-state label.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "StatusBadge",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required when aging, stale, or unknown state would not otherwise be clear."
+          ]
+        },
+        {
+          "name": "source",
+          "description": "Optional concise data-source or calculation-source context.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "MetadataList",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use user-facing source names.",
+            "Do not expose endpoint names or internal service identifiers."
+          ]
+        },
+        {
+          "name": "action",
+          "description": "Optional refresh, retry, or source-details action.",
+          "required": false,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "Refresh is shown only when the user can initiate it.",
+            "The action must not imply guaranteed freshness before completion."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "status",
+          "type": "fresh | aging | stale | unknown",
+          "required": false,
+          "default": "fresh",
+          "description": "Normalized freshness state resolved by the owning data policy.",
+          "semantic": true,
+          "restrictions": [
+            "The component does not calculate product freshness thresholds.",
+            "The owning feature or data layer resolves this state."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "compact",
+          "description": "Approved freshness presentation scale.",
+          "semantic": true,
+          "restrictions": [
+            "Compact must not omit required stale or unknown meaning."
+          ]
+        },
+        {
+          "name": "dateTime",
+          "type": "string",
+          "required": false,
+          "description": "Machine-readable authoritative timestamp.",
+          "semantic": true,
+          "restrictions": [
+            "Use an unambiguous ISO-compatible value.",
+            "Missing timestamp requires unknown state."
+          ]
+        },
+        {
+          "name": "relativeLabel",
+          "type": "string",
+          "required": false,
+          "description": "Localized relative-time label supplied by an approved date-time formatter.",
+          "semantic": true,
+          "restrictions": [
+            "Must not expose raw ISO strings.",
+            "Must remain consistent with dateTime."
+          ]
+        },
+        {
+          "name": "absoluteLabel",
+          "type": "string",
+          "required": false,
+          "description": "Localized absolute date-time label including approved timezone context.",
+          "semantic": true,
+          "restrictions": [
+            "Required when precise time affects review, audit, or decision quality."
+          ]
+        },
+        {
+          "name": "refreshing",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that a manual or automatic refresh is currently running.",
+          "semantic": true,
+          "restrictions": [
+            "Refreshing does not automatically change status to fresh.",
+            "Fresh status is applied only after authoritative completion."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "PageHeader",
+          "EntityHeader",
+          "MetricCard",
+          "MetricGroup",
+          "DataTable footer",
+          "MetadataList",
+          "DefinitionList",
+          "Timeline",
+          "StaleDataNotice",
+          "Review context"
+        ],
+        "allowedChildren": [
+          "Time",
+          "Text",
+          "StatusBadge",
+          "MetadataList",
+          "Tooltip",
+          "Button",
+          "DropdownMenu",
+          "Approved icon"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Button when freshness is only decorative"
+        ],
+        "prohibitedChildren": [
+          "Raw timestamp object",
+          "Endpoint name",
+          "Internal cache key",
+          "Complete diagnostic payload"
+        ],
+        "spacingOwnership": [
+          "FreshnessIndicator owns spacing among icon, relative time, absolute time, state, source, and action.",
+          "The containing component owns spacing around the complete indicator."
+        ],
+        "surfaceOwnership": "FreshnessIndicator owns no surface in compact mode. Stale treatment may use a compact semantic surface when required.",
+        "rules": [
+          "Freshness state is resolved outside the component.",
+          "Unknown freshness is never treated as fresh.",
+          "Relative labels are supplemented by precise time when decisions or audit require it.",
+          "Refreshing and fresh are distinct.",
+          "Blocking conflicts use StaleDataNotice rather than FreshnessIndicator alone."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "MetadataList",
+          "StatusBadge",
+          "Tooltip",
+          "Button",
+          "DropdownMenu"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "pageHeader",
+            "primaryMetrics",
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "required",
+          "notes": "Dashboard scope and metrics must communicate data recency when not real-time."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "resultsSummary",
+            "results"
+          ],
+          "status": "allowed",
+          "notes": "Use for collection synchronization context and background-refresh status."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader",
+            "primaryContent",
+            "contextualAside",
+            "auditDetails"
+          ],
+          "status": "recommended",
+          "notes": "Use when entity or related data may lag behind the authoritative source."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "scopeSummary",
+            "administrationContent",
+            "auditAndDiagnostics"
+          ],
+          "status": "recommended",
+          "notes": "Integration, synchronization, and diagnostic states require precise timestamp context."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "reviewHeader",
+            "criticalReviewContext",
+            "evidenceViewer",
+            "proposalAndRecommendation",
+            "auditContext"
+          ],
+          "status": "required",
+          "notes": "Evidence, recommendation, and decision freshness materially affect review validity."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching data.",
+          "Executing refresh.",
+          "Calculating product-specific freshness thresholds.",
+          "Reading query cache timestamps directly.",
+          "Determining data-source health."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning feature supplies authoritative timestamps, normalized freshness state, localized labels, source context, and optional actions."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Refresh, retry, and source-detail actions are supplied externally."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve freshness state and precise time context while wrapping source and action content.",
+        "compact": "Show concise relative time and explicit stale or unknown state. Precise time may remain in an accessible tooltip when the context is not audit-sensitive.",
+        "medium": "Show relative time, optional absolute time, and source context.",
+        "wide": "Allow inline relative time, absolute time, source, and refresh action.",
+        "ultrawide": "Remain compact and aligned to the owning component.",
+        "overflowPolicy": "Date, timezone, source, and actions wrap. Raw timestamps are not displayed.",
+        "containerQueries": true,
+        "zoomExpectation": "The indicator wraps before freshness meaning or actions become unreadable at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "time element combined with static status text; active refresh may use a status region",
+        "accessibleName": "Visible freshness label and precise time context.",
+        "keyboard": [
+          "Static freshness content is not focusable.",
+          "Tooltip, refresh, retry, and source actions are keyboard operable."
+        ],
+        "focus": [
+          "Background refresh does not move or reset focus.",
+          "Optional tooltip and actions follow logical DOM order."
+        ],
+        "announcements": [
+          "User-initiated refresh completion may be announced politely.",
+          "Routine automatic freshness updates are not repeatedly announced.",
+          "New stale or unknown state may be announced when it materially changes user decisions."
+        ],
+        "aria": [
+          "Use a machine-readable datetime value on time elements.",
+          "Decorative icons are hidden from assistive technology.",
+          "Active refresh must not rely only on icon animation."
+        ],
+        "colorIndependence": "Fresh, aging, stale, unknown, and refreshing states use text, precise time, semantics, or icons in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One freshness state and a timestamp or explicit unknown-freshness label.",
+        "typical": "Relative time, precise timestamp, normalized state, and optional data source.",
+        "maximum": "Concise recency context. Full synchronization diagnostics belong in an authorized diagnostic region.",
+        "wrapping": "Relative time, absolute time, source, state, and actions wrap naturally.",
+        "truncation": "Do not truncate stale or unknown meaning. Long source names may truncate only when full value remains accessible.",
+        "localization": "Support locale-specific date, time, timezone, pluralization, and relative-time formatting.",
+        "emptyBehavior": "Missing timestamp requires an explicit unknown state rather than an empty indicator.",
+        "technicalContent": "Raw ISO timestamps, cache keys, query timestamps, endpoint names, and synchronization payloads are prohibited in ordinary presentation."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/data-display/freshness-indicator.stories.tsx",
+        "requiredStories": [
+          "Fresh",
+          "Aging",
+          "Stale",
+          "Unknown",
+          "Compact",
+          "DefaultSize",
+          "WithAbsoluteTime",
+          "WithSource",
+          "WithRefreshAction",
+          "Refreshing",
+          "AuditSensitive",
+          "LongLocalizedDate",
+          "ReducedMotion",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/data-display/freshness-indicator.test.tsx",
+        "requiredTests": [
+          "Machine-readable time",
+          "Freshness-state contract",
+          "Unknown timestamp behavior",
+          "Relative and absolute consistency",
+          "Refreshing versus fresh",
+          "Optional refresh accessibility",
+          "No raw timestamp presentation"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Dashboard header freshness",
+          "Metric card freshness",
+          "Review evidence timestamp",
+          "DataTable refresh footer",
+          "390x844 wrapping",
+          "125% browser zoom",
+          "Long localized timezone",
+          "Reduced motion"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "PageHeader",
+          "MetricCard",
+          "MetricGroup",
+          "DataTable",
+          "Timeline",
+          "StaleDataNotice",
+          "ReviewWorkspace"
+        ]
+      },
+      "notes": [
+        "The product data policy determines freshness thresholds.",
+        "An approved date-time utility formats relative and absolute labels before they reach the component."
+      ]
+    }
+  },
+  "validation": {
+    "schema": "~/.agents/skills/frontend-product-builder/assets/schemas/component-catalog.schema.json",
+    "checks": [
+      {
+        "id": "ANALYTICAL-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The analytical data-display catalog must validate against the component catalog schema.",
+        "command": "node scripts/validate-component-catalog.mjs ~/.agents/skills/frontend-product-builder/assets/catalog/data-display-analytical-components.json",
+        "remediation": "Correct invalid or missing component catalog fields."
+      },
+      {
+        "id": "ANALYTICAL-002",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Analytical component IDs, names, implementations, public imports, and canonical responsibilities must remain unique.",
+        "command": "node scripts/audit-component-catalog-collisions.mjs",
+        "remediation": "Resolve duplicate ownership or merge overlapping analytical components."
+      },
+      {
+        "id": "ANALYTICAL-003",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Shared analytical components must not execute queries, calculate domain metrics, map raw statuses, evaluate permissions, or apply product freshness thresholds.",
+        "command": "node scripts/audit-component-dependencies.mjs",
+        "remediation": "Move domain calculation, mapping, data access, capability evaluation, and freshness policy to the owning entity, feature, or route."
+      },
+      {
+        "id": "ANALYTICAL-004",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Metric hierarchy must identify dominant, supporting, attention, comparison, and progress roles rather than applying equal visual treatment by default.",
+        "remediation": "Correct the screen contract, MetricGroup variant, and MetricCard priority assignments."
+      },
+      {
+        "id": "ANALYTICAL-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Trend direction and trend meaning must remain separate, and movement must not be treated as success or failure without domain interpretation.",
+        "remediation": "Provide an explicit feature-owned trend interpretation."
+      },
+      {
+        "id": "ANALYTICAL-006",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Raw backend statuses, event codes, timestamps, metric keys, and freshness policy details must not be rendered directly.",
+        "remediation": "Map technical values through approved domain adapters, localization utilities, and canonical analytical components."
+      },
+      {
+        "id": "ANALYTICAL-007",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Status, metric, timeline, and freshness meaning must remain perceivable without depending only on color, animation, or iconography.",
+        "command": "npm run test:components -- analytical",
+        "remediation": "Correct labels, semantics, accessible names, reduced-motion behavior, or color-independent content."
+      },
+      {
+        "id": "ANALYTICAL-008",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Analytical components must preserve hierarchy, event ordering, status meaning, and freshness context without page-level horizontal overflow at approved viewports and zoom levels.",
+        "command": "npm run test:e2e:analytical",
+        "remediation": "Correct responsive hierarchy, wrapping, container width, event composition, or action placement."
+      },
+      {
+        "id": "ANALYTICAL-009",
+        "severity": "warning",
+        "method": "script",
+        "blocking": false,
+        "description": "Page-local KPI cards, metric grids, status pills, activity lists, audit timelines, and freshness labels similar to canonical components require review.",
+        "command": "node scripts/audit-component-duplicates.mjs",
+        "remediation": "Reuse the canonical analytical component or document why the local implementation is semantically distinct."
+      }
+    ]
+  },
+  "deprecations": []
+}

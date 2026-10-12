@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/craft-contract.schema.json",
+  "title": "Derived Frontend Craft Contract",
+  "description": "Machine-derived frontend craft decisions for one screen. This artifact is non-canonical and projects typed relationships between canonical product, design-system, recipe, component-catalog and screen contracts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "generated", "screenId", "visitorMode", "visualFamilyId", "generatedAt", "sources", "contractSetSha256", "dimensions", "unresolved"],
+  "properties": {
+    "$schema": { "const": "craft-contract.schema.json" },
+    "schemaVersion": { "const": "1.3.0" },
+    "generated": { "const": true },
+    "screenId": { "$ref": "#/$defs/kebabId" },
+    "visitorMode": { "enum": ["operate", "persuade", "read", "experience"] },
+    "visualFamilyId": { "type": "string", "pattern": "^(operate|persuade|read|experience)-[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "sources": { "type": "array", "minItems": 3, "items": { "$ref": "#/$defs/source" } },
+    "contractSetSha256": { "$ref": "#/$defs/sha256" },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spatialComposition", "perceptualHierarchy", "semanticPresentation", "interactionClarity", "decisionSupport", "typographyCoherence"],
+      "properties": {
+        "spatialComposition": { "$ref": "#/$defs/spatialCompositionDimension" },
+        "perceptualHierarchy": { "$ref": "#/$defs/perceptualHierarchyDimension" },
+        "semanticPresentation": { "$ref": "#/$defs/semanticPresentationDimension" },
+        "interactionClarity": { "$ref": "#/$defs/interactionClarityDimension" },
+        "decisionSupport": { "$ref": "#/$defs/decisionSupportDimension" },
+        "typographyCoherence": { "$ref": "#/$defs/typographyCoherenceDimension" }
+      }
+    },
+    "unresolved": { "type": "array", "items": { "$ref": "#/$defs/dimensionId" }, "uniqueItems": true }
+  },
+  "$defs": {
+    "kebabId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "dimensionId": { "enum": ["spatialComposition", "perceptualHierarchy", "semanticPresentation", "interactionClarity", "decisionSupport", "typographyCoherence"] },
+    "resolutionStatus": { "enum": ["resolved", "partial", "unresolved"] },
+    "resolvedBy": { "enum": ["screen-contract", "recipe-default", "design-direction", "design-system", "component-catalog", "craft-policy", "provider-shape", "human-decision", "derived-relationship", "unresolved"] },
+    "sourceRefs": { "type": "array", "items": { "$ref": "#/$defs/kebabId" }, "uniqueItems": true },
+    "presentationSignature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variantRole", "semanticColorRole", "shapeRole", "textRole"],
+      "properties": {
+        "variantRole": { "type": "string", "minLength": 1 },
+        "semanticColorRole": { "type": "string", "minLength": 1 },
+        "shapeRole": { "type": "string", "minLength": 1 },
+        "textRole": { "type": "string", "minLength": 1 }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "path", "sha256", "required"],
+      "properties": {
+        "id": { "$ref": "#/$defs/kebabId" },
+        "role": { "enum": ["screen-spec", "recipe", "visual-direction", "design-system", "styling-authority", "craft-policy", "component-catalog", "composition-proof"] },
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "required": { "type": "boolean" }
+      }
+    },
+    "spatialCompositionDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "resolvedBy", "sourceRefs", "densityMode", "maxVisualNestingDepth", "regionAssignments"],
+      "properties": {
+        "status": { "$ref": "#/$defs/resolutionStatus" },
+        "resolvedBy": { "$ref": "#/$defs/resolvedBy" },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" },
+        "rationale": { "type": "string" },
+        "densityMode": { "type": ["string", "null"], "enum": ["dense", "compact", "balanced", "comfortable-compact", "comfortable", "spacious", "mixed", null] },
+        "maxVisualNestingDepth": { "type": ["integer", "null"], "minimum": 0, "maximum": 4 },
+        "regionAssignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["regionId", "widthStrategy", "heightStrategy", "emptyBehavior", "allowNestedSurface"],
+            "properties": {
+              "regionId": { "type": "string", "minLength": 1 },
+              "widthStrategy": { "enum": ["content-width", "constrained", "fill-available"] },
+              "heightStrategy": { "enum": ["content-driven", "natural", "fill-available", "reserved"] },
+              "emptyBehavior": { "enum": ["collapse", "natural", "reserved"] },
+              "allowNestedSurface": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "perceptualHierarchyDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "resolvedBy", "sourceRefs", "policyPointer", "surfaceAssignments", "accentAssignments", "textContrastAssignments", "borderAssignments"],
+      "properties": {
+        "status": { "$ref": "#/$defs/resolutionStatus" },
+        "resolvedBy": { "$ref": "#/$defs/resolvedBy" },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" },
+        "rationale": { "type": "string" },
+        "policyPointer": { "type": ["string", "null"] },
+        "surfaceAssignments": { "type": "array", "items": { "$ref": "#/$defs/targetRoleAssignment" } },
+        "accentAssignments": { "type": "array", "items": { "$ref": "#/$defs/targetRoleAssignment" } },
+        "textContrastAssignments": { "type": "array", "items": { "$ref": "#/$defs/targetRoleAssignment" } },
+        "borderAssignments": { "type": "array", "items": { "$ref": "#/$defs/targetRoleAssignment" } }
+      }
+    },
+    "semanticPresentationDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "resolvedBy", "sourceRefs", "assignments"],
+      "properties": {
+        "status": { "$ref": "#/$defs/resolutionStatus" },
+        "resolvedBy": { "$ref": "#/$defs/resolvedBy" },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" },
+        "rationale": { "type": "string" },
+        "assignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["targetType", "targetId", "semanticRole", "presentationFamily", "consistency"],
+            "properties": {
+              "targetType": { "enum": ["region", "component", "element"] },
+              "targetId": { "type": "string", "minLength": 1 },
+              "semanticRole": { "type": "string", "minLength": 1 },
+              "presentationFamily": { "type": "string", "minLength": 1 },
+              "consistency": { "enum": ["strict", "contextual"] },
+              "presentationSignature": { "$ref": "#/$defs/presentationSignature" }
+            }
+          }
+        }
+      }
+    },
+    "interactionClarityDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "resolvedBy", "sourceRefs", "actionAssignments", "presenceAssignments", "wayfinding"],
+      "properties": {
+        "status": { "$ref": "#/$defs/resolutionStatus" },
+        "resolvedBy": { "$ref": "#/$defs/resolvedBy" },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" },
+        "rationale": { "type": "string" },
+        "actionAssignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["actionId", "affordance", "requiredStates"],
+            "properties": {
+              "actionId": { "type": "string", "minLength": 1 },
+              "affordance": { "enum": ["whole-region", "whole-row", "explicit-control", "link", "button", "compound"] },
+              "requiredStates": { "type": "array", "items": { "enum": ["hover", "focus-visible", "active", "disabled"] }, "uniqueItems": true }
+            }
+          }
+        },
+        "presenceAssignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["targetType", "targetId", "policy", "condition"],
+            "properties": {
+              "targetType": { "enum": ["region", "component", "action"] },
+              "targetId": { "type": "string", "minLength": 1 },
+              "policy": { "enum": ["always", "never", "when-actionable", "disabled-with-reason", "hidden-when-unavailable", "conditional"] },
+              "condition": { "oneOf": [{ "$ref": "#/$defs/presenceCondition" }, { "type": "null" }] }
+            }
+          }
+        },
+        "wayfinding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "parentRoute", "rationale"],
+          "properties": {
+            "mode": { "enum": ["breadcrumb", "back-link", "active-navigation", "not-applicable", "unresolved"] },
+            "parentRoute": { "type": ["string", "null"] },
+            "rationale": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "presenceCondition": {
+      "oneOf": [
+        { "$ref": "#/$defs/presencePredicate" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["all"],
+          "properties": { "all": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/presenceCondition" } } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["any"],
+          "properties": { "any": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/presenceCondition" } } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["not"],
+          "properties": { "not": { "$ref": "#/$defs/presenceCondition" } }
+        }
+      ]
+    },
+    "presencePredicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signal", "operator"],
+      "properties": {
+        "signal": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9]*(?:\\.[a-zA-Z][a-zA-Z0-9]*)*$" },
+        "operator": { "enum": ["truthy", "falsy", "eq", "neq", "gt", "gte", "lt", "lte", "nonempty", "empty"] },
+        "value": { "type": ["string", "number", "boolean", "null"] }
+      }
+    },
+    "decisionSupportDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "resolvedBy", "sourceRefs", "decisionQuestion", "signals"],
+      "properties": {
+        "status": { "$ref": "#/$defs/resolutionStatus" },
+        "resolvedBy": { "$ref": "#/$defs/resolvedBy" },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" },
+        "rationale": { "type": "string" },
+        "decisionQuestion": { "type": ["string", "null"] },
+        "signals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "role", "renderTargetType", "renderTargetId"],
+            "properties": {
+              "id": { "$ref": "#/$defs/kebabId" },
+              "role": { "enum": ["identity", "state", "urgency", "relevance", "comparison", "context"] },
+              "renderTargetType": { "enum": ["region", "component", "element"] },
+              "renderTargetId": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "typographyCoherenceDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "resolvedBy", "sourceRefs", "assignments"],
+      "properties": {
+        "status": { "$ref": "#/$defs/resolutionStatus" },
+        "resolvedBy": { "$ref": "#/$defs/resolvedBy" },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" },
+        "rationale": { "type": "string" },
+        "assignments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["elementId", "familyRole", "textRole", "contrastRole"],
+            "properties": {
+              "elementId": { "type": "string", "minLength": 1 },
+              "familyRole": { "enum": ["editorial-display", "editorial-section", "interface", "metadata", "identifier", "numeric"] },
+              "textRole": { "type": "string", "minLength": 1 },
+              "contrastRole": { "enum": ["primary", "secondary", "muted", "disabled"] }
+            }
+          }
+        }
+      }
+    },
+    "targetRoleAssignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["targetType", "targetId", "role"],
+      "properties": {
+        "targetType": { "enum": ["region", "component", "action", "element"] },
+        "targetId": { "type": "string", "minLength": 1 },
+        "role": { "type": "string", "minLength": 1 },
+        "tokenRole": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

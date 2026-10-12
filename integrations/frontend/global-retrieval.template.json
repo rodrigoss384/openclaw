@@ -1,0 +1,54 @@
+{
+  "$schema": "../../integrations/frontend/global-retrieval.schema.json",
+  "schemaVersion": "1.0.0",
+  "artifactKind": "global-retrieval-applicability",
+  "status": "draft",
+  "owner": "<product-or-platform-owner>",
+  "productContextRef": "docs/frontend/product-context.md",
+  "applicationShellScreenRef": "docs/frontend/screens/application-shell/screen-spec.json",
+  "applicability": "optional",
+  "applicabilityBasis": {
+    "transversalRetrieval": true,
+    "multipleEntityTypes": true,
+    "recurringQuickFind": false,
+    "operationalHighFrequency": false
+  },
+  "reason": "<Why global retrieval is required, optional, or not applicable based on approved product evidence.>",
+  "searchableEntityTypes": [
+    {
+      "id": "<entity-type>",
+      "label": "<User-facing entity label>",
+      "sourceRef": "<approved product/domain source>",
+      "capabilityRef": "<application-shell product capability>",
+      "sensitivity": "ordinary"
+    }
+  ],
+  "invocation": {
+    "mode": "global-header",
+    "globalEntryRequired": true,
+    "accessibleTriggerRequired": true,
+    "focusManagementRequired": true
+  },
+  "shortcut": null,
+  "authorizationMode": "backend-authoritative-query-scope",
+  "resultContract": {
+    "requiredStates": ["loading", "empty", "error", "results"],
+    "requiredSemanticFields": ["entityType", "primaryLabel", "destination"],
+    "destinationResolution": "route",
+    "authorizationLeakageAllowed": false,
+    "resultAnnouncementRequired": true
+  },
+  "backendContractRef": "docs/backend/global-retrieval-contract.json",
+  "evidence": [
+    {
+      "signal": "transversal-retrieval",
+      "sourceRef": "docs/frontend/product-context.md",
+      "statement": "<Evidence-backed statement.>"
+    },
+    {
+      "signal": "multiple-entity-types",
+      "sourceRef": "docs/frontend/product-context.md",
+      "statement": "<Evidence-backed statement.>"
+    }
+  ]
+}

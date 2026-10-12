@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-driven-engineering.local/consumer-runtime-install.schema.json",
+  "title": "Consumer Runtime Install State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "runtimeVersion", "workflowVersion", "installedAt", "updatedAt", "sourceCommit", "manifestSha256", "distributionSha256", "lastBackup", "adoptedBackup", "adoptedFiles", "managedFiles"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "runtimeVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "workflowVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "installedAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "sourceCommit": { "type": ["string", "null"], "pattern": "^[a-f0-9]{40,64}$" },
+    "manifestSha256": { "$ref": "#/$defs/hash" },
+    "distributionSha256": { "$ref": "#/$defs/hash" },
+    "lastBackup": { "oneOf": [{ "$ref": "#/$defs/relativePath" }, { "type": "null" }] },
+    "adoptedBackup": { "oneOf": [{ "$ref": "#/$defs/relativePath" }, { "type": "null" }] },
+    "adoptedFiles": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/fileRecord" }
+    },
+    "targetSymlinks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/symlinkRecord" }
+    },
+    "managedFiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/fileRecord" }
+    }
+  },
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "fileRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "bytes"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relativePath" },
+        "sha256": { "$ref": "#/$defs/hash" },
+        "bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "symlinkRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "linkTarget", "resolvedPath", "targetType"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relativePath" },
+        "linkTarget": { "type": "string", "minLength": 1, "pattern": "^(?!/).+" },
+        "resolvedPath": { "$ref": "#/$defs/relativePath" },
+        "targetType": { "enum": ["file", "directory"] }
+      }
+    },
+    "relativePath": { "type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+" }
+  }
+}

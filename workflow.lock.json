@@ -1,0 +1,201 @@
+{
+  "generatedAt": "2026-10-04T18:27:42.045Z",
+  "workflowVersion": "2.4.0",
+  "unresolvedSkills": [
+    "impeccable"
+  ],
+  "skills": [
+    {
+      "name": "api-patterns",
+      "source": "skills/api-patterns",
+      "sha256": "965bf1aff0d1ae4aaa20622c93973f15d1e339129da985b88e73f3bec80a1268",
+      "files": 12
+    },
+    {
+      "name": "architecture",
+      "source": "skills/architecture",
+      "sha256": "7d4dcc0aeb072f3aa90db58c1f781a6853ea253a255946c75a27b1fb2142cd64",
+      "files": 6
+    },
+    {
+      "name": "backend-product-builder",
+      "source": "skills/backend-product-builder",
+      "sha256": "6cf9e617a7b76cf139861b5dc2809535ac972a181ed40835c98ad190d25fbe38",
+      "files": 32
+    },
+    {
+      "name": "code-review-checklist",
+      "source": "skills/code-review-checklist",
+      "sha256": "9396bc59effa0400917fc600ffcc372ac82eddf4546d81c46f1b4e1add861add",
+      "files": 1
+    },
+    {
+      "name": "codenavi",
+      "source": "skills/codenavi",
+      "sha256": "5d6ad56c8158196ce0e75be3530c16265a95c418d5f83f5676f9d4261faeb2f2",
+      "files": 3
+    },
+    {
+      "name": "coding-guidelines",
+      "source": "skills/coding-guidelines",
+      "sha256": "53157423e828b5a7a4b53e700d06a0a4cab7bb5bd838cb8db51a645e34f8f120",
+      "files": 1
+    },
+    {
+      "name": "context7-mcp",
+      "source": "skills/context7-mcp",
+      "sha256": "8167117e6bdfd3bcfd2df1e9ba5259b0a326eff8a774298dee6225379354da49",
+      "files": 1
+    },
+    {
+      "name": "database-design",
+      "source": "skills/database-design",
+      "sha256": "2c24b87c77a0982e2eca40c8ee684bf0e47111484daf9bb1f0f4ceb4275ef2da",
+      "files": 8
+    },
+    {
+      "name": "deployment-procedures",
+      "source": "skills/deployment-procedures",
+      "sha256": "b8fd53a121ed427e4a1deaae05c2da4dc9cc4d9acdb3f88cc24a739e42135cb8",
+      "files": 1
+    },
+    {
+      "name": "domain-driven-design",
+      "source": "skills/ddd-expert",
+      "sha256": "1bef2c33a8824ce66bed4322ac959ccaa6eaffd5e6cf791c43be973d512a76ba",
+      "files": 5
+    },
+    {
+      "name": "evolutionary-modular-architecture",
+      "source": "skills/evolutionary-modular-architecture",
+      "sha256": "1fd1a7c19e51062be8c773725e03d111049fbf39a58231772490632c0ea02f1c",
+      "files": 11
+    },
+    {
+      "name": "frontend-design",
+      "source": "skills/frontend-design",
+      "sha256": "665c585455decbcb02116bc928adf5148b9cd0f67b7eb4908c8c0d647c00f68a",
+      "files": 2
+    },
+    {
+      "name": "frontend-product-builder",
+      "source": "skills/frontend-product-builder",
+      "sha256": "0cf8de2c056ce69d7c29fce462f965afb3fdcac45b6231d620301446aa49a2ff",
+      "files": 116
+    },
+    {
+      "name": "i18n-localization",
+      "source": "skills/i18n-localization",
+      "sha256": "c08b4351dfc2da4cc533f78493d5a4402900e984a4bdfe6253666325a8cfcf6c",
+      "files": 2
+    },
+    {
+      "name": "lint-and-validate",
+      "source": "skills/lint-and-validate",
+      "sha256": "484760768bb20a341b55b8d590640c25293e39c32583c2391d15b431e149e21e",
+      "files": 3
+    },
+    {
+      "name": "performance-profiling",
+      "source": "skills/performance-profiling",
+      "sha256": "2c44cccb8beb995c6fcc8459a0939fbaf8d1b9331ce99f399b2e0e9f2e0dae51",
+      "files": 2
+    },
+    {
+      "name": "playwright-skill",
+      "source": "skills/playwright-skill",
+      "sha256": "617f65bf3c7efa8a7b42d677d6b4939c60203dc0da57ebadf8828fba47105dd9",
+      "files": 5
+    },
+    {
+      "name": "react-best-practices",
+      "source": "skills/nextjs-react-expert",
+      "sha256": "1607fa3f9e400c1fe53db4135ad824249e2943b287deb54ea355aec16330ee3f",
+      "files": 12
+    },
+    {
+      "name": "react-composition-patterns",
+      "source": "skills/react-composition-patterns",
+      "sha256": "b35a5f70ed6b41bfc117473a06d418591e5f787dffa3b6c1ac74f05765b58010",
+      "files": 13
+    },
+    {
+      "name": "rust-pro",
+      "source": "skills/rust-pro",
+      "sha256": "bffbadbc537ad7d5c814c9c88c27bcc302101819f6a63d57cd2cc792f740f9f9",
+      "files": 6
+    },
+    {
+      "name": "spec-driven-engineering",
+      "source": "skills/spec-driven-engineering",
+      "sha256": "03831deb1d77dcd46b1fee6afdea665adac2cdd5210b5f5d42390d78fa505421",
+      "files": 73
+    },
+    {
+      "name": "spec-driven-eval",
+      "source": "skills/spec-driven-eval",
+      "sha256": "df4af6ae20f4566a7c69170c995531c020dd78eb5aea8fd509d466b5bf203d82",
+      "files": 4
+    },
+    {
+      "name": "system-design",
+      "source": "skills/system-design",
+      "sha256": "14d2f244f059f4d91168bbabb189a308ffb7b6c519b60e40b3380ae0abc51a57",
+      "files": 5
+    },
+    {
+      "name": "systematic-debugging",
+      "source": "skills/systematic-debugging",
+      "sha256": "ce5ddbad529468f03119ec2caf4c21eb0d77a15575e19c642abb25045ad140b7",
+      "files": 1
+    },
+    {
+      "name": "tactical-ddd",
+      "source": "skills/tactical-ddd",
+      "sha256": "0cdd70dcc201372ef22e7a8a774e158ab967a1324c94ffa74878f3f5e2bdbd2c",
+      "files": 4
+    },
+    {
+      "name": "tailwind-patterns",
+      "source": "skills/tailwind-patterns",
+      "sha256": "d2fc906c4b2bd2e13ac21161131695868cffe65f7df6a67c45ee795143fb1a6f",
+      "files": 1
+    },
+    {
+      "name": "tdd-workflow",
+      "source": "skills/tdd-workflow",
+      "sha256": "1c9daeaa3304eb4498f79a2efab55ae08607a2ab77101cb06b04747896b79067",
+      "files": 1
+    },
+    {
+      "name": "testing-patterns",
+      "source": "skills/testing-patterns",
+      "sha256": "c5beb297f7ae5ae852caa54d37503f8e28fd1daa1d55212722d006c86aec5b67",
+      "files": 2
+    },
+    {
+      "name": "tlc-spec-driven",
+      "source": "skills/tlc-spec-driven",
+      "sha256": "fb8772a16aa4d25b2be59b8688b3b835c727107785fd0bb7648f07b0639e1e77",
+      "files": 18
+    },
+    {
+      "name": "ui-audit-redesign-engineer",
+      "source": "skills/ui-audit-redesign-engineer",
+      "sha256": "7b1296f0d3dafb7a08234f72e833f526a8605da78c9e4fdfd91d5932bb525489",
+      "files": 9
+    },
+    {
+      "name": "vulnerability-scanner",
+      "source": "skills/vulnerability-scanner",
+      "sha256": "f428bf645bc3e63ccf842e6b230bef440c343e003b6aa68c2ece861310700841",
+      "files": 3
+    },
+    {
+      "name": "web-design-guidelines",
+      "source": "skills/web-design-guidelines",
+      "sha256": "0dc3d9dfb82466715ba476ad050adfa90e024440483261b0c1577bdca1edbb62",
+      "files": 1
+    }
+  ]
+}

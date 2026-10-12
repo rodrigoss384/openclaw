@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.spec-driven.local/impeccable/perceptual-calibration-policy.schema.json",
+  "title": "Perceptual Calibration Enforcement Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "surface", "border", "themeColor", "density"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "maxChromaticToLightnessRatio", "chromaNoiseFractionOfPrimaryTextDistance", "maxDistanceFractionOfPrimaryTextDistance"],
+      "properties": {
+        "model": { "const": "oklab-lightness-dominant" },
+        "maxChromaticToLightnessRatio": { "type": "number", "minimum": 0 },
+        "chromaNoiseFractionOfPrimaryTextDistance": { "type": "number", "minimum": 0, "maximum": 1 },
+        "maxDistanceFractionOfPrimaryTextDistance": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "border": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["defaultMustBeQuieterThanMutedText", "defaultMustNotExceedStrong"],
+      "properties": {
+        "defaultMustBeQuieterThanMutedText": { "type": "boolean", "const": true },
+        "defaultMustNotExceedStrong": { "type": "boolean", "const": true }
+      }
+    },
+    "themeColor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric", "maxRelativeSalienceDrift", "exactReuseRequiresContextValidation"],
+      "properties": {
+        "metric": { "const": "oklab-relative-to-surface-and-primary-text" },
+        "maxRelativeSalienceDrift": { "type": "number", "minimum": 0, "maximum": 2 },
+        "exactReuseRequiresContextValidation": { "type": "boolean", "const": true }
+      }
+    },
+    "density": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contrastLoadTriggerRatio", "ordinaryMaxGeometryDeltaPx", "ordinaryMaxContentOccupancyDelta", "compensatedMaxGeometryDeltaPx", "compensatedMaxContentOccupancyDelta", "minimumOccupancyReduction"],
+      "properties": {
+        "contrastLoadTriggerRatio": { "type": "number", "minimum": 1 },
+        "ordinaryMaxGeometryDeltaPx": { "type": "number", "minimum": 0 },
+        "ordinaryMaxContentOccupancyDelta": { "type": "number", "minimum": 0, "maximum": 1 },
+        "compensatedMaxGeometryDeltaPx": { "type": "number", "minimum": 0 },
+        "compensatedMaxContentOccupancyDelta": { "type": "number", "minimum": 0, "maximum": 1 },
+        "minimumOccupancyReduction": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

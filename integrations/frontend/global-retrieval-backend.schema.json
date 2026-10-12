@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.spec-driven.local/global-retrieval-backend.schema.json",
+  "title": "Global Retrieval Backend Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "artifactKind",
+    "status",
+    "owner",
+    "sourceRef",
+    "authorizationMode",
+    "authentication",
+    "tenantIsolation",
+    "limits",
+    "ranking",
+    "timeoutMs",
+    "sensitiveDataHandling",
+    "evidenceRefs"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": "1.0.0" },
+    "artifactKind": { "const": "global-retrieval-backend-contract" },
+    "status": { "enum": ["draft", "ready", "approved", "implemented"] },
+    "owner": { "type": "string", "minLength": 1 },
+    "sourceRef": { "type": "string", "minLength": 1 },
+    "authorizationMode": {
+      "enum": ["backend-authoritative-query-scope", "backend-authoritative-per-result"]
+    },
+    "authentication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "mechanismRef"],
+      "properties": {
+        "required": { "const": true },
+        "mechanismRef": { "type": "string", "minLength": 1 }
+      }
+    },
+    "tenantIsolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "scopeKey", "enforcementPoint", "negativeTestRef"],
+      "properties": {
+        "required": { "const": true },
+        "scopeKey": { "type": "string", "minLength": 1 },
+        "enforcementPoint": { "type": "string", "minLength": 1 },
+        "negativeTestRef": { "type": "string", "minLength": 1 }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxQueryLength", "maxResults", "rateLimitRef"],
+      "properties": {
+        "maxQueryLength": { "type": "integer", "minimum": 1 },
+        "maxResults": { "type": "integer", "minimum": 1 },
+        "rateLimitRef": { "type": "string", "minLength": 1 }
+      }
+    },
+    "ranking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategyRef", "deterministicTieBreak"],
+      "properties": {
+        "strategyRef": { "type": "string", "minLength": 1 },
+        "deterministicTieBreak": { "type": "string", "minLength": 1 }
+      }
+    },
+    "timeoutMs": { "type": "integer", "minimum": 1 },
+    "sensitiveDataHandling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policyRef", "redactionMode", "forbiddenFields"],
+      "properties": {
+        "policyRef": { "type": "string", "minLength": 1 },
+        "redactionMode": { "enum": ["omit-unauthorized", "redact-authorized-summary"] },
+        "forbiddenFields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

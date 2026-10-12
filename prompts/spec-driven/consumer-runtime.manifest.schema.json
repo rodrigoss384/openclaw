@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-driven-engineering.local/consumer-runtime.manifest.schema.json",
+  "title": "Consumer Runtime Distribution Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "runtimeVersion", "workflowVersion", "stateFile", "lockFile", "fixedEntries", "lockedSkills", "excludedSegments"],
+  "properties": {
+    "$schema": { "const": "consumer-runtime.manifest.schema.json" },
+    "schemaVersion": { "const": "1.0.0" },
+    "runtimeVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "workflowVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "stateFile": { "$ref": "#/$defs/relativePath" },
+    "lockFile": { "$ref": "#/$defs/relativePath" },
+    "fixedEntries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "kind"],
+        "properties": {
+          "path": { "$ref": "#/$defs/relativePath" },
+          "kind": { "enum": ["file", "tree"] }
+        }
+      }
+    },
+    "lockedSkills": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "exclude"],
+      "properties": {
+        "enabled": { "const": true },
+        "exclude": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "excludedSegments": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+  },
+  "$defs": {
+    "relativePath": { "type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+" }
+  }
+}

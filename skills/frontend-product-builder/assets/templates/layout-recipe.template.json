@@ -1,0 +1,182 @@
+{
+  "$schema": "../schemas/layout-recipe.schema.json",
+  "meta": {
+    "id": "<recipe-id>",
+    "name": "<Recipe Name>",
+    "version": "0.1.0",
+    "status": "experimental",
+    "category": "<shell | dashboard | list | detail | form | administration | authentication | review-approval | wizard | custom>",
+    "description": "<Concise structural description of the recipe.>",
+    "owner": "<OWNER_OR_TEAM>",
+    "source": "assets/recipes/<recipe-id>.recipe.json",
+    "createdAt": "<YYYY-MM-DD>",
+    "updatedAt": "<YYYY-MM-DD>",
+    "tags": ["<tag>"]
+  },
+  "purpose": "<Describe the dominant user task and outcome supported by this recipe.>",
+  "useWhen": ["<Applicable condition>"],
+  "doNotUseWhen": ["<Non-applicable condition>"],
+  "requiredInputs": [
+    "Approved product context",
+    "Approved design direction",
+    "Approved design system",
+    "Screen contract",
+    "<Additional input>"
+  ],
+  "screenContract": {
+    "requiredFields": [
+      "purpose",
+      "primaryUser",
+      "primaryTask",
+      "route",
+      "dataDependencies",
+      "primaryAction",
+      "secondaryActions",
+      "permissions",
+      "states",
+      "responsiveTransformations",
+      "accessibilityRequirements",
+      "acceptanceCriteria"
+    ],
+    "selectionQuestions": ["<Question that must be answered before using the recipe>"]
+  },
+  "regions": [
+    {
+      "id": "<regionId>",
+      "name": "<Region name>",
+      "role": "<Structural and task role>",
+      "required": true,
+      "order": 1,
+      "cardinality": { "minimum": 1, "maximum": 1 },
+      "contentPriority": "primary",
+      "allowedComponents": ["<Component>"],
+      "prohibitedComponents": ["<Component or pattern>"],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": { "enabled": false },
+      "scroll": { "ownership": "none", "axis": "none" },
+      "visibilityCondition": "Human-readable explanation only; machine presence belongs in presenceDefaults.",
+      "responsive": {
+        "compact": { "display": "visible", "placement": "<placement>", "layout": "<layout>", "width": "100%", "order": 1, "overflow": "wrap", "notes": "<notes>" },
+        "medium": { "display": "visible", "placement": "<placement>", "layout": "<layout>", "width": "100%", "order": 1, "overflow": "visible", "notes": "<notes>" },
+        "wide": { "display": "visible", "placement": "<placement>", "layout": "<layout>", "width": "100%", "order": 1, "overflow": "visible", "notes": "<notes>" },
+        "ultrawide": { "display": "visible", "placement": "<placement>", "layout": "<layout>", "width": "100%", "order": 1, "overflow": "visible", "notes": "<notes>" }
+      },
+      "rules": ["<Region rule>"]
+    }
+  ],
+  "composition": {
+    "layoutModel": "<single-column | grid | split | master-detail | stack | shell | custom>",
+    "widthPolicy": "<constrained | fluid | hybrid | split | full-bleed>",
+    "container": { "component": "<PageContainer or other>", "maxWidthToken": "<token>", "paddingToken": "<token>" },
+    "columnPolicy": "<Column behavior>",
+    "verticalRhythmToken": "<token>",
+    "regionGapToken": "<token>",
+    "spacingOwnership": ["<Spacing rule>"],
+    "surfacePolicy": ["<Surface rule>"],
+    "scrollOwner": "<owner>",
+    "rules": ["<Composition rule>"],
+    "prohibited": ["<Prohibited composition>"]
+  },
+  "actions": {
+    "primaryPlacement": "<placement>",
+    "secondaryPlacement": "<placement>",
+    "destructivePlacement": "<placement>",
+    "bulkPlacement": "<placement or not applicable>",
+    "contextualPlacement": "<placement>",
+    "overflowPolicy": "<policy>",
+    "maxDominantActionsPerRegion": 1,
+    "compactBehavior": "<behavior>",
+    "rules": ["<Action rule>"]
+  },
+  "content": {
+    "density": "<spacious | comfortable | comfortable-compact | compact | dense>",
+    "headingPolicy": "<policy>",
+    "longContentPolicy": "<policy>",
+    "truncationPolicy": "<policy>",
+    "emptyStatePlacement": "<placement>",
+    "loadingStrategy": "<strategy>",
+    "errorScope": "<scope>",
+    "rules": ["<Content rule>"]
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "minimumViewport": "<minimum>",
+    "primaryViewport": "<primary>",
+    "zoomExpectation": "Must remain usable at 125% browser zoom.",
+    "pageOverflowPolicy": "No unexpected page-level horizontal overflow.",
+    "internalOverflowPolicy": "<policy>",
+    "transformations": [
+      { "from": "wide", "to": "medium", "change": "<structural change>", "reason": "<reason>" },
+      { "from": "medium", "to": "compact", "change": "<structural change>", "reason": "<reason>" }
+    ]
+  },
+  "states": [
+    { "id": "initial-loading", "scope": "route", "required": true, "rendering": "<rendering>", "userAction": "Wait", "notes": "<notes>" },
+    { "id": "data", "scope": "route", "required": true, "rendering": "<rendering>", "userAction": "<primary action>", "notes": "<notes>" },
+    { "id": "empty", "scope": "region", "required": true, "rendering": "<rendering>", "userAction": "<next action>", "notes": "<notes>" },
+    { "id": "error", "scope": "region", "required": true, "rendering": "<rendering>", "userAction": "Retry", "notes": "<notes>" }
+  ],
+  "accessibility": {
+    "landmarkMap": ["<landmark>"],
+    "headingStructure": ["Exactly one route-level h1.", "<Additional heading rule>"],
+    "focusOrder": ["<focus region>"],
+    "keyboard": ["<keyboard requirement>"],
+    "announcements": ["<announcement requirement>"],
+    "minimumTargetToken": "reference.control.target.minimum",
+    "contrastTarget": "WCAG 2.2 AA",
+    "colorIndependence": "Meaning must not depend only on color.",
+    "rules": ["<Accessibility rule>"]
+  },
+  "constraints": {
+    "requiredComponents": ["<component>"],
+    "prohibitedPatterns": ["<pattern>"],
+    "dataMagnitude": ["<data assumption>"],
+    "performance": ["<performance rule>"],
+    "implementation": ["<implementation rule>"]
+  },
+  "craftDefaults": {
+    "spatialComposition": {
+      "maxVisualNestingDepth": 2,
+      "regionAssignments": [
+        {
+          "regionId": "<regionId>",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        }
+      ]
+    },
+    "perceptualHierarchy": {
+      "surfaceAssignments": [
+        { "regionId": "<regionId>", "role": "surface" }
+      ]
+    }
+  },
+  "presenceDefaults": [
+    {
+      "targetType": "region",
+      "targetId": "<regionId>",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The template region is structurally required; conditional regions must instead use required=false, cardinality.minimum=0, policy=conditional, and a typed condition."
+    }
+  ],
+  "validation": {
+    "schema": "assets/schemas/layout-recipe.schema.json",
+    "checks": [
+      { "id": "LR-001", "severity": "error", "method": "schema", "blocking": true, "description": "The recipe must validate against the layout recipe schema.", "command": "<validation command>", "remediation": "Correct invalid or missing recipe fields." },
+      { "id": "LR-002", "severity": "error", "method": "browser", "blocking": true, "description": "The representative screen must not introduce unexpected horizontal page overflow.", "command": "<browser test>", "remediation": "Correct the owning region or responsive transformation." }
+    ]
+  },
+  "examples": [],
+  "deprecation": {
+    "replacement": "<replacement when deprecated>",
+    "reason": "<reason when deprecated>",
+    "migration": "<migration when deprecated>",
+    "removeAfterVersion": "1.0.0"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactKind": "open-research-adapter-fixture",
+  "adapterRuns": [
+    {
+      "adapter": "open-web",
+      "status": "passed",
+      "queryId": "Q-WEB",
+      "executedAt": "2026-08-26",
+      "query": "autenticação jurídica com confiança e baixa distração",
+      "results": [
+        {
+          "id": "WEB-1",
+          "url": "https://design.example.org/authentication-guidance",
+          "origin": "official-design-system",
+          "usage": "reference-only",
+          "category": "real-product",
+          "taskObserved": "orientar autenticação confiável sem distração promocional",
+          "usefulPatterns": ["progressive disclosure para recuperação"],
+          "antiPatterns": ["hero genérico desconectado da tarefa"],
+          "adoptedAspects": ["prioridade explícita para autenticação"],
+          "excludedAspects": ["branding e geometria literais"],
+          "templateRisk": "low",
+          "license": { "status": "reference-only", "retention": "metadata-only" },
+          "affectedScreens": ["sign-in"],
+          "affectedDecisionIds": ["DD-AUTH-1"]
+        },
+        {
+          "id": "WEB-2",
+          "url": "https://legal.example.net/access-patterns",
+          "origin": "domain-reference",
+          "usage": "reference-only",
+          "category": "domain-reference",
+          "taskObserved": "explicar acesso seguro a documentos regulados",
+          "usefulPatterns": ["linguagem factual próxima ao formulário"],
+          "antiPatterns": ["claims de segurança sem fonte"],
+          "adoptedAspects": ["contexto factual antes da ação"],
+          "excludedAspects": ["copy e layout literais"],
+          "templateRisk": "medium",
+          "license": { "status": "reference-only", "retention": "metadata-only" },
+          "affectedScreens": ["sign-in"],
+          "affectedDecisionIds": ["DD-AUTH-1"]
+        }
+      ]
+    },
+    {
+      "adapter": "openverse",
+      "status": "passed",
+      "queryId": "Q-ASSET",
+      "executedAt": "2026-08-26",
+      "request": {
+        "endpoint": "https://api.openverse.org/v1/images/",
+        "q": "organized legal documents"
+      },
+      "results": [
+        {
+          "id": "ov-image-1",
+          "title": "Organized archive",
+          "url": "https://media.example.edu/archive.jpg",
+          "thumbnail": "https://media.example.edu/archive-thumb.jpg",
+          "creator": "Fixture Creator",
+          "license": "by",
+          "license_version": "4.0",
+          "license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "source": "wikimedia",
+          "provider": "wikimedia",
+          "foreign_landing_url": "https://commons.example.edu/work/ov-image-1"
+        }
+      ],
+      "annotations": {
+        "ov-image-1": {
+          "usage": "production-candidate",
+          "category": "material-or-asset",
+          "taskObserved": "sustentar contexto documental sem competir com o formulário",
+          "usefulPatterns": ["focal point lateral e área segura para copy"],
+          "antiPatterns": ["stock genérico de aperto de mãos"],
+          "adoptedAspects": ["ritmo documental em camadas"],
+          "excludedAspects": ["conteúdo literal e identidade da referência"],
+          "templateRisk": "low",
+          "originLicenseVerifiedAt": "2026-08-26",
+          "retention": "metadata-only-until-ingest",
+          "affectedScreens": ["sign-in"],
+          "affectedDecisionIds": ["DD-AUTH-1"]
+        }
+      }
+    }
+  ]
+}

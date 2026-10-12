@@ -1,0 +1,554 @@
+{
+  "$schema": "../../integrations/governance/governance-policy.schema.json",
+  "schemaVersion": "1.2.0",
+  "status": "capability-registry",
+  "rulesFile": "rules.md",
+  "capabilityRegistry": "integrations/governance/enforcement-capabilities.json",
+  "admissionBoundary": {
+    "mode": "registry-first",
+    "legacyBaseline": {
+      "rulesFileGitBlobSha": "a38fbf3968aff1f81f41968013f7fe6826ee92e6",
+      "operational": true
+    },
+    "unregisteredAdditions": "non-operative",
+    "rationaleOnlyOperational": false,
+    "admissions": [
+      {
+        "id": "ADM-RULES-001",
+        "kind": "legacy-baseline",
+        "rulesFileGitBlobSha": "a38fbf3968aff1f81f41968013f7fe6826ee92e6",
+        "ruleIds": [],
+        "note": "Freezes the pre-8F legacy rules document. Existing legacy governance remains readable during progressive migration, but later unregistered additions do not become operational governance."
+      },
+      {
+        "id": "ADM-RULES-002",
+        "kind": "registered-governance",
+        "rulesFileGitBlobSha": "161c105c88d90e33fea0d5ed8c813ec11b21b6e7",
+        "ruleIds": ["RULE-BE-STACK-001"],
+        "note": "Admits the Rust/Axum backend default and its evidence-backed exception policy as operational governance for workflow 2.4.0."
+      },
+      {
+        "id": "ADM-RULES-003",
+        "kind": "registered-governance",
+        "rulesFileGitBlobSha": "e4260658d7e4b8b4e33345183071593fdd757a38",
+        "ruleIds": ["RULE-BE-LANG-001"],
+        "note": "Admits the pt-BR domain identifier layer for generated backend artifacts. Technical/protocol vocabulary and control-plane governance enums stay English by the same rule."
+      },
+      {
+        "id": "ADM-RULES-004",
+        "kind": "registered-governance",
+        "rulesFileGitBlobSha": "f2ef90bdf59541b9f627a4827e657b3e3641abee",
+        "ruleIds": ["RULE-SDE-OPEN-QUESTION-001"],
+        "note": "Admits the open-question closure convention: every Q- carries aberta/resolvida/adiada status and none may stay open past adversarial or evidence-release."
+      }
+    ]
+  },
+  "authorities": [
+    {
+      "id": "workflow",
+      "description": "Cross-cutting workflow control plane and CI enforcement."
+    },
+    {
+      "id": "spec-driven-engineering",
+      "description": "Canonical orchestration, acceptance, evidence, handoff and common engineering governance."
+    },
+    {
+      "id": "frontend-product-builder",
+      "description": "Canonical frontend architecture, screen contracts, design-system and objective frontend validation authority."
+    },
+    {
+      "id": "backend-product-builder",
+      "description": "Canonical backend contract, boundary, reliability, security and representative-slice authority."
+    },
+    {
+      "id": "impeccable",
+      "description": "Bounded frontend visual-craft authority under canonical product and design contracts."
+    },
+    {
+      "id": "human",
+      "description": "Authority reserved for consequential decisions and explicit approval gates."
+    }
+  ],
+  "rationaleSections": [
+    {
+      "anchor": "índice-de-aplicabilidade",
+      "destination": "rationale",
+      "reason": "Applicability index. It points at applicability.md and does not decide a gate."
+    },
+    {
+      "anchor": "contrato-do-spec-driven-engineering",
+      "destination": "rationale",
+      "reason": "Workflow contract constitution. Mechanical checks live on the registered rules that cite their own sections."
+    },
+    {
+      "anchor": "bootstrap-de-contexto-em-janela-limpa",
+      "destination": "rationale",
+      "reason": "Read order for a fresh context window. No file signal proves that an agent read it."
+    },
+    {
+      "anchor": "gates-canônicos",
+      "destination": "rationale",
+      "reason": "Stage-order constitution. The prompt and gate graphs are already checked by validate-workflow.mjs."
+    },
+    {
+      "anchor": "princípio-base",
+      "destination": "rationale",
+      "reason": "Design judgment. A linter would block legitimate code or trust a model again."
+    },
+    {
+      "anchor": "yagni",
+      "destination": "rationale",
+      "reason": "Design judgment. Forgetting it creates debt, not a false gate or an unsanitized release."
+    },
+    {
+      "anchor": "abstração-só-quando-a-dor-justificar",
+      "destination": "rationale",
+      "reason": "Design judgment. Same limit as YAGNI: no closed predicate over a diff."
+    },
+    {
+      "anchor": "ddd-estratégico-e-bounded-context",
+      "destination": "rationale",
+      "reason": "Bounded-context judgment. No honest file signal yet; it stays rationale until one exists."
+    },
+    {
+      "anchor": "responsabilidade-antes-de-camada",
+      "destination": "rationale",
+      "reason": "Design judgment about where a responsibility lives. No closed file predicate."
+    },
+    {
+      "anchor": "encapsulamento",
+      "destination": "rationale",
+      "reason": "Design judgment. No mechanical signal that does not also reject legitimate modules."
+    },
+    {
+      "anchor": "solid-pragmático",
+      "destination": "rationale",
+      "reason": "Design judgment. SOLID phrasing is not a closed predicate."
+    },
+    {
+      "anchor": "bugs-e-validação",
+      "destination": "rationale",
+      "reason": "Bug-handling judgment. The mechanical test gates live under Testes and Gates de Teste."
+    },
+    {
+      "anchor": "overengineering",
+      "destination": "rationale",
+      "reason": "Design judgment. Forgetting it creates debt, not a false gate or an unsanitized release."
+    },
+    {
+      "anchor": "sincronização-de-docs-do-projeto",
+      "destination": "rationale",
+      "reason": "Doc-sync judgment. Update-only-what-changed has no closed diff predicate here."
+    }
+  ],
+  "rules": [
+    {
+      "id": "RULE-SDE-ADMISSION-001",
+      "domain": "workflow",
+      "kind": "hard-invariant",
+      "authority": "spec-driven-engineering",
+      "summary": "A rules.md revision cannot introduce operational governance unless the revision is admitted through the canonical registry-first boundary.",
+      "applicability": { "mode": "always" },
+      "stageScopes": ["every-stage"],
+      "enforcement": { "capability": "governance-rule-admission-validation" },
+      "failure": { "severity": "blocking", "route": "BLOCKED" },
+      "rulesReference": "rules.md#institucionalização-de-quality-gates-em-ci"
+    },
+    {
+      "id": "RULE-SDE-PLACEHOLDER-001",
+      "domain": "workflow",
+      "kind": "hard-invariant",
+      "authority": "spec-driven-engineering",
+      "summary": "Unresolved workflow placeholders must never persist into feature artifacts.",
+      "applicability": { "mode": "always" },
+      "stageScopes": ["every-stage"],
+      "enforcement": { "capability": "feature-package-validation" },
+      "failure": { "severity": "blocking", "route": "BLOCKED" },
+      "rulesReference": "rules.md#resolução-de-placeholders"
+    },
+    {
+      "id": "RULE-SDE-LOCK-001",
+      "domain": "workflow",
+      "kind": "hard-invariant",
+      "authority": "spec-driven-engineering",
+      "summary": "Routed skill content must match the reviewed workflow lock before governed release execution.",
+      "applicability": { "mode": "always" },
+      "stageScopes": ["evidence-release"],
+      "enforcement": { "capability": "workflow-lock-validation" },
+      "failure": { "severity": "blocking", "route": "EVIDENCE_RELEASE" },
+      "rulesReference": "rules.md#lock-de-versão-das-skills"
+    },
+    {
+      "id": "RULE-BE-TEST-INTEGRITY-001",
+      "domain": "backend",
+      "kind": "hard-invariant",
+      "authority": "backend-product-builder",
+      "summary": "Backend test-file deletion, new skip/disable/focus markers, net assertion loss or disappeared contract IDs must be audited against an explicit Git baseline before release.",
+      "applicability": { "mode": "conditional", "backend": ["lightweight", "substantial"] },
+      "stageScopes": ["evidence-release"],
+      "enforcement": { "capability": "backend-test-integrity-audit" },
+      "failure": { "severity": "blocking", "route": "EVIDENCE_RELEASE" },
+      "rulesReference": "rules.md#testes"
+    },
+    {
+      "id": "RULE-FE-FAMILY-CONSISTENCY-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Cross-screen and cross-theme semantic presentation, perceptual calibration and product semantics must remain consistent across a frontend family before adversarial review and release.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["adversarial", "evidence-release"],
+      "enforcement": { "capability": "frontend-family-consistency-control" },
+      "failure": { "severity": "blocking", "route": "PATCH" },
+      "rulesReference": "rules.md#composição-visual-frontend"
+    },
+    {
+      "id": "RULE-SDE-AUTONOMY-EVIDENCE-001",
+      "domain": "workflow",
+      "kind": "hard-invariant",
+      "authority": "spec-driven-engineering",
+      "summary": "A durable autonomy decision ledger, when one exists, must pass schema, owner, duplicity, canonical-path and durability checks before release; its absence is only valid when no decision required durable recording.",
+      "applicability": { "mode": "always" },
+      "stageScopes": ["evidence-release"],
+      "enforcement": { "capability": "autonomy-decision-evidence-check" },
+      "failure": { "severity": "blocking", "route": "EVIDENCE_RELEASE" },
+      "rulesReference": "rules.md#decisão-e-escalação"
+    },
+    {
+      "id": "RULE-FE-STYLING-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Every user-visible frontend change must preserve a valid styling-authority contract.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "frontend-representative", "evidence-release"],
+      "enforcement": { "capability": "frontend-styling-authority-validation" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#autoridade-de-estilização-frontend"
+    },
+    {
+      "id": "RULE-FE-COMPOSITION-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Substantial frontend work requires a valid composition contract before implementation broadens.",
+      "applicability": { "mode": "conditional", "frontend": ["substantial"] },
+      "stageScopes": ["design-readiness", "frontend-representative"],
+      "enforcement": { "capability": "frontend-composition-contract-validation" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#composição-visual-frontend"
+    },
+    {
+      "id": "RULE-FE-SEMANTIC-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Semantic presentation, including cross-role differentiation, must derive from canonical screen and design-system contracts rather than prompt inference.",
+      "applicability": { "mode": "conditional", "frontend": ["substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "frontend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "frontend-craft-contract-control" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#composição-visual-frontend"
+    },
+    {
+      "id": "RULE-FE-UI-POLICY-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Every user-visible frontend surface must resolve a supported adapter and compile its Design System, recipes, responsibilities, semantic status/locale mappings and expected render coverage before implementation broadens.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "frontend-representative", "evidence-release"],
+      "enforcement": { "capability": "frontend-ui-policy-control" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#composição-visual-frontend"
+    },
+    {
+      "id": "RULE-FE-UI-SOURCE-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Frontend source must pass the resolved adapter control for semantic tokens, governed primitives, status/content mappings and semantic interaction affordances.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["implementation", "frontend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "frontend-ui-source-control" },
+      "failure": { "severity": "blocking", "route": "IMPLEMENTATION" },
+      "rulesReference": "rules.md#frontend-como-produto"
+    },
+    {
+      "id": "RULE-FE-UI-RENDER-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Representative and release UI gates must derive complete objective findings from deterministic browser facts and compiled expected coverage; perceptual critique cannot remove those findings.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["frontend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "frontend-ui-render-control" },
+      "failure": { "severity": "blocking", "route": "PATCH" },
+      "rulesReference": "rules.md#frontend-como-produto"
+    },
+    {
+      "id": "RULE-FE-UI-INTEGRITY-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "UI gate eligibility and delivery require current capability receipts, an objective gate from the same provenance, a separately signed human decision and a privacy-sanitized attestation when private evidence is excluded.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["frontend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "frontend-ui-evidence-integrity" },
+      "failure": { "severity": "blocking", "route": "EVIDENCE_RELEASE" },
+      "rulesReference": "rules.md#aprovação-humana-acionável"
+    },
+    {
+      "id": "RULE-FE-NAV-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Product navigation capability must come from the canonical contract with real source, roadmap, commercial and Behavioral UX provenance; an unavailable capability can never render as an active destination.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "frontend-representative", "evidence-release"],
+      "enforcement": { "capability": "frontend-navigation-capability-control" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#frontend-como-produto"
+    },
+    {
+      "id": "RULE-FE-RETRIEVAL-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Global retrieval applicability must be an explicit evidence-backed decision, with searchable entity provenance and backend guarantees for authorization, tenant isolation, limits, ranking, timeout and sensitive-data handling.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "frontend-representative", "evidence-release"],
+      "enforcement": { "capability": "frontend-global-retrieval-control" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#frontend-como-produto"
+    },
+    {
+      "id": "RULE-FE-SEMANTICS-EVIDENCE-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "When semantic differentiation, navigation capability or global retrieval apply to a capture, the Phase 5 evidence owner must carry a structural product-semantics companion; a screenshot alone is not proof.",
+      "applicability": { "mode": "conditional", "frontend": ["substantial"] },
+      "stageScopes": ["frontend-representative", "evidence-release"],
+      "enforcement": { "capability": "frontend-product-semantics-evidence-control" },
+      "failure": { "severity": "blocking", "route": "PATCH" },
+      "rulesReference": "rules.md#frontend-como-produto"
+    },
+    {
+      "id": "RULE-FE-BUX-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "A PERSUASIVE or HIGH-RISK behavioral intervention requires a valid Behavioral UX Contract; a prohibited pattern is a block, never a risk to accept.",
+      "applicability": { "mode": "conditional", "behavioralUx": ["applicable"] },
+      "stageScopes": ["design-readiness", "implementation", "frontend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "frontend-behavioral-ux-contract-validation" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#behavioral-ux"
+    },
+    {
+      "id": "RULE-FE-UI-SIGNATURE-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "The human decision that releases a UI gate must carry a valid OpenSSH signature from an allowed signer; approval text or an unsigned receipt never releases it.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["evidence-release"],
+      "enforcement": { "capability": "frontend-human-decision-verification" },
+      "failure": { "severity": "blocking", "route": "EVIDENCE_RELEASE" },
+      "rulesReference": "rules.md#aprovação-humana-acionável"
+    },
+    {
+      "id": "RULE-FE-SCREEN-READINESS-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Screen specification, references, component and action/state coverage, data ownership, representative-gate checks, composition evidence and the visual quality scorecard must all pass before a representative screen can be released.",
+      "applicability": { "mode": "conditional", "frontend": ["substantial"] },
+      "stageScopes": ["frontend-representative", "evidence-release"],
+      "enforcement": { "capability": "frontend-screen-readiness-audit" },
+      "failure": { "severity": "blocking", "route": "PATCH" },
+      "rulesReference": "rules.md#frontend-como-produto"
+    },
+    {
+      "id": "RULE-FE-SMALL-SLICE-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "The small slice must pass its manifest, file, scope and evidence audits and its styling authority, including the global-CSS audit that rejects an unregistered global stylesheet.",
+      "applicability": { "mode": "conditional", "frontend": ["substantial"] },
+      "stageScopes": ["frontend-representative"],
+      "enforcement": { "capability": "frontend-small-slice-gate-audit" },
+      "failure": { "severity": "blocking", "route": "PATCH" },
+      "rulesReference": "rules.md#autoridade-de-estilização-frontend"
+    },
+    {
+      "id": "RULE-FE-PROJECTION-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "The same entity projected on more than one screen must stay consistent in fields, labels and ownership across those screen contracts.",
+      "applicability": { "mode": "conditional", "frontend": ["substantial"] },
+      "stageScopes": ["frontend-representative", "evidence-release"],
+      "enforcement": { "capability": "frontend-entity-projection-consistency" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#composição-visual-frontend"
+    },
+    {
+      "id": "RULE-FE-PDA-AUTHORITY-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Product Design Authority compares bounded visual directions internally and records a thesis, signature element, weighted criteria, risks and adopted/excluded aspects instead of transferring aesthetic preference to a human.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "frontend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "frontend-product-design-authority" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#frontend-como-produto"
+    },
+    {
+      "id": "RULE-FE-PDA-RESEARCH-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Visual research measures task-oriented coverage, provenance, retention and source-level licensing before any production candidate is adopted.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "frontend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "frontend-open-visual-research" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#frontend-como-produto"
+    },
+    {
+      "id": "RULE-FE-PDA-ASSET-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Asset provenance validates production bytes, license, rights, composition, metadata and approved sidecars before downstream UI evidence.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["implementation", "frontend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "frontend-asset-provenance" },
+      "failure": { "severity": "blocking", "route": "PATCH" },
+      "rulesReference": "rules.md#frontend-como-produto"
+    },
+    {
+      "id": "RULE-FE-PDA-HUMAN-001",
+      "domain": "frontend",
+      "kind": "hard-invariant",
+      "authority": "frontend-product-builder",
+      "summary": "Human-scope control rejects generic aesthetic approval and limits human receipts to product truth, rights, consequential risk and broad build or release authorization.",
+      "applicability": { "mode": "conditional", "frontend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "frontend-representative", "evidence-release"],
+      "enforcement": { "capability": "frontend-human-asset-acquisition" },
+      "failure": { "severity": "blocking", "route": "PATCH" },
+      "rulesReference": "rules.md#aprovação-humana-acionável"
+    },
+    {
+      "id": "RULE-BE-LANG-001",
+      "domain": "backend",
+      "kind": "hard-invariant",
+      "authority": "backend-product-builder",
+      "summary": "Generated backend domain identifiers are pt-BR in ASCII snake_case; technical and protocol vocabulary stays English and control-plane governance enums are unchanged.",
+      "applicability": { "mode": "conditional", "backend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "backend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "backend-naming-language-audit" },
+      "failure": { "severity": "blocking", "route": "PATCH" },
+      "rulesReference": "rules.md#backend-como-produto"
+    },
+    {
+      "id": "RULE-BE-GATE-001",
+      "domain": "backend",
+      "kind": "hard-invariant",
+      "authority": "backend-product-builder",
+      "summary": "Backend representative-gate applicability and human approval must be represented by structured conditions.",
+      "applicability": { "mode": "conditional", "backend": ["lightweight", "substantial"] },
+      "stageScopes": ["backend-representative"],
+      "enforcement": { "capability": "backend-representative-gate-audit" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#backend-como-produto"
+    },
+    {
+      "id": "RULE-BE-ARCH-001",
+      "domain": "backend",
+      "kind": "hard-invariant",
+      "authority": "backend-product-builder",
+      "summary": "Introduced backend architecture mechanisms require justification, driver IDs and evidence paths.",
+      "applicability": { "mode": "conditional", "backend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "backend-representative", "adversarial"],
+      "enforcement": { "capability": "backend-change-manifest-contract" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#backend-como-produto"
+    },
+    {
+      "id": "RULE-BE-STACK-001",
+      "domain": "backend",
+      "kind": "hard-invariant",
+      "authority": "backend-product-builder",
+      "summary": "Every applicable backend change must record a coherent technology decision: Rust and Axum default for new production HTTP runtimes, preservation for existing runtimes, task-fit selection for disposable nonproduction work, or an evidence-backed approved exception.",
+      "applicability": { "mode": "conditional", "backend": ["lightweight", "substantial"] },
+      "stageScopes": ["design-readiness", "implementation", "backend-representative", "adversarial", "evidence-release"],
+      "enforcement": { "capability": "backend-technology-selection-validation" },
+      "failure": { "severity": "blocking", "route": "DESIGN_READINESS" },
+      "rulesReference": "rules.md#backend-como-produto"
+    },
+    {
+      "id": "RULE-SDE-HANDOFF-001",
+      "domain": "workflow",
+      "kind": "hard-invariant",
+      "authority": "spec-driven-engineering",
+      "summary": "Session handoff writes must use the atomic concurrency-safe handoff controller rather than direct overwrite.",
+      "applicability": { "mode": "always" },
+      "stageScopes": ["session-closure"],
+      "enforcement": { "capability": "session-handoff-control" },
+      "failure": { "severity": "blocking", "route": "SESSION_CLOSURE" },
+      "rulesReference": "rules.md#session-closure-gate"
+    },
+    {
+      "id": "RULE-SDE-GATE-STATUS-001",
+      "domain": "workflow",
+      "kind": "hard-invariant",
+      "authority": "spec-driven-engineering",
+      "summary": "A feature package cannot record an uncertain gate status, or not-run without a command or probe in the artifact.",
+      "applicability": { "mode": "always" },
+      "stageScopes": ["every-stage"],
+      "enforcement": { "capability": "feature-package-validation" },
+      "failure": { "severity": "blocking", "route": "BLOCKED" },
+      "rulesReference": "rules.md#gates-de-teste"
+    },
+    {
+      "id": "RULE-SDE-OPEN-QUESTION-001",
+      "domain": "workflow",
+      "kind": "hard-invariant",
+      "authority": "spec-driven-engineering",
+      "summary": "A feature cannot reach adversarial or evidence-release while a Q- question is open, has no status, or is closed without its decision, answer or DEF- reference.",
+      "applicability": { "mode": "always" },
+      "stageScopes": ["adversarial", "evidence-release"],
+      "enforcement": { "capability": "open-question-closure" },
+      "failure": { "severity": "blocking", "route": "BLOCKED" },
+      "rulesReference": "rules.md#perguntas-em-aberto"
+    },
+    {
+      "id": "RULE-SDE-P0-TRACE-001",
+      "domain": "testing",
+      "kind": "hard-invariant",
+      "authority": "spec-driven-engineering",
+      "summary": "Each requirement explicitly marked P0 needs an acceptance criterion and an executable test, or a non-automatable justification in the executable-test artifact.",
+      "applicability": { "mode": "always" },
+      "stageScopes": ["every-stage"],
+      "enforcement": { "capability": "feature-package-validation" },
+      "failure": { "severity": "blocking", "route": "BLOCKED" },
+      "rulesReference": "rules.md#prioridades-de-requisitos"
+    },
+    {
+      "id": "RULE-SDE-PRERELEASE-001",
+      "domain": "workflow",
+      "kind": "hard-invariant",
+      "authority": "spec-driven-engineering",
+      "summary": "An external build blocks release until retained rendered evidence is free of internal planning vocabulary and matches output-language.",
+      "applicability": { "mode": "always" },
+      "stageScopes": ["evidence-release"],
+      "enforcement": { "capability": "pre-release-content-scan" },
+      "failure": { "severity": "blocking", "route": "EVIDENCE_RELEASE" },
+      "rulesReference": "rules.md#sanitização-de-conteúdo-pré-release"
+    }
+  ]
+}

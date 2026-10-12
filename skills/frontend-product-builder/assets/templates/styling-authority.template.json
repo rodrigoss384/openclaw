@@ -1,0 +1,67 @@
+{
+  "$schema": "../schemas/styling-authority.schema.json",
+  "version": "2.0.0",
+  "status": "<draft|ready|approved|blocked>",
+  "repositoryEvidence": {
+    "inspectedFiles": [
+      "<package-and-styling-config-path>",
+      "<canonical-token-source-path>",
+      "<representative-component-path>"
+    ],
+    "detectedMechanisms": [
+      "<tailwind-utilities|css-modules|css-in-js|vanilla-extract|sass-modules|component-library-native|global-css-legacy|other-approved>"
+    ],
+    "classOwnershipTraces": []
+  },
+  "authority": {
+    "primaryMechanism": "<tailwind-utilities|css-modules|css-in-js|vanilla-extract|sass-modules|component-library-native|global-css-legacy|other-approved>",
+    "tokenSources": [
+      "<canonical-token-source-path>"
+    ],
+    "componentSources": [
+      "<canonical-component-source-path>"
+    ],
+    "globalStylesheets": [
+      {
+        "path": "<global-stylesheet-path>",
+        "allowedRoles": [
+          "root-semantic-tokens",
+          "theme-selectors",
+          "base-elements"
+        ],
+        "allowedSelectors": [
+          ":root",
+          "html",
+          "body",
+          ".dark"
+        ],
+        "componentSelectors": "forbidden",
+        "rationale": "<why-this-file-is-global-and-what-it-may-own>"
+      }
+    ]
+  },
+  "policies": {
+    "preserveExistingArchitecture": true,
+    "parallelStylingArchitectureAllowed": false,
+    "classOwnershipTraceRequired": true,
+    "unresolvedClassMayBeOverridden": false,
+    "componentSelectorsInGlobalStyles": "forbidden-unless-legacy-authority-or-approved-exception",
+    "rawValuesInFeatureCode": "forbidden-unless-approved-exception",
+    "arbitraryUtilityValues": "forbidden-unless-approved-exception",
+    "inlineStyles": "runtime-only-with-rationale",
+    "rawValuesInTokenAuthority": "allowed"
+  },
+  "visualResearch": {
+    "ref": "docs/frontend/visual-research.json",
+    "semanticDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "visualReferences": [
+    {
+      "referenceId": "REF-EXAMPLE-001",
+      "status": "adopted",
+      "appliedTo": ["<screen-or-design-decision-id>"],
+      "visualResearchDigest": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "exceptions": []
+}

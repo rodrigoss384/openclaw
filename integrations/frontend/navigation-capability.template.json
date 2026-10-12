@@ -1,0 +1,24 @@
+{
+  "$schema": "../../integrations/frontend/navigation-capability.schema.json",
+  "schemaVersion": "1.0.0",
+  "status": "draft",
+  "owner": "<PRODUCT_OR_FRONTEND_OWNER>",
+  "productContextRef": "docs/frontend/product-context.md",
+  "applicationShellScreenRef": "docs/frontend/screens/application-shell/screen-spec.json",
+  "navigationMode": "single-module",
+  "modules": [
+    {
+      "id": "<module-id>",
+      "label": "<User-facing module label>",
+      "capabilityRef": "<capability-id-used-by-application-shell-permissions-and-actions>",
+      "availability": "active",
+      "presentation": "navigate",
+      "sourceRef": "docs/frontend/product-context.md#<approved-source-location>",
+      "route": "/<real-route>",
+      "roadmapRef": null,
+      "commercialCapabilityRef": null,
+      "behavioralUxRef": null,
+      "reason": null
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/backend-product-builder/backend-representative-scorecard.schema.json",
+  "title": "Backend Representative Scorecard",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "feature", "dimensions", "criticalFindings", "acceptedRisks", "decision", "reviewer", "timestamp"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "feature": { "type": "string", "minLength": 1 },
+    "dimensions": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "rationale", "evidencePaths", "findings"],
+        "properties": {
+          "id": { "enum": ["contract-traceability","boundaries","invariants-validation","data-integrity","security-tenancy","concurrency-ordering","resilience-recovery","observability-sensitive-data","migration-compatibility","performance-slo","documentation-drift","speculative-complexity"] },
+          "status": { "enum": ["passed", "failed", "partial", "not-run", "not-applicable"] },
+          "rationale": { "type": "string" },
+          "evidencePaths": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+          "findings": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        }
+      }
+    },
+    "criticalFindings": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "acceptedRisks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "authority", "rationale"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "authority": { "type": "string", "minLength": 1 },
+          "rationale": { "type": "string", "minLength": 10 }
+        }
+      }
+    },
+    "decision": { "enum": ["approved", "approved-with-accepted-risk", "rejected", "awaiting-review"] },
+    "reviewer": { "type": "string" },
+    "timestamp": { "type": "string" }
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.spec-driven.local/global-retrieval.schema.json",
+  "title": "Global Retrieval Applicability Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "artifactKind",
+    "status",
+    "owner",
+    "productContextRef",
+    "applicationShellScreenRef",
+    "applicability",
+    "applicabilityBasis",
+    "reason",
+    "searchableEntityTypes",
+    "invocation",
+    "shortcut",
+    "authorizationMode",
+    "resultContract",
+    "backendContractRef",
+    "evidence"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": "1.0.0" },
+    "artifactKind": { "const": "global-retrieval-applicability" },
+    "status": { "enum": ["draft", "ready", "approved", "implemented"] },
+    "owner": { "type": "string", "minLength": 1 },
+    "productContextRef": { "type": "string", "minLength": 1 },
+    "applicationShellScreenRef": { "type": ["string", "null"] },
+    "applicability": { "enum": ["required", "optional", "not-applicable"] },
+    "applicabilityBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transversalRetrieval",
+        "multipleEntityTypes",
+        "recurringQuickFind",
+        "operationalHighFrequency"
+      ],
+      "properties": {
+        "transversalRetrieval": { "type": "boolean" },
+        "multipleEntityTypes": { "type": "boolean" },
+        "recurringQuickFind": { "type": "boolean" },
+        "operationalHighFrequency": { "type": "boolean" }
+      }
+    },
+    "reason": { "type": "string", "minLength": 1 },
+    "searchableEntityTypes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/searchableEntityType" }
+    },
+    "invocation": { "$ref": "#/$defs/invocation" },
+    "shortcut": { "type": ["string", "null"], "minLength": 1 },
+    "authorizationMode": {
+      "enum": [
+        "backend-authoritative-query-scope",
+        "backend-authoritative-per-result",
+        "not-applicable"
+      ]
+    },
+    "resultContract": {
+      "oneOf": [
+        { "$ref": "#/$defs/resultContract" },
+        { "type": "null" }
+      ]
+    },
+    "backendContractRef": { "type": ["string", "null"] },
+    "evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/applicabilityEvidence" }
+    }
+  },
+  "$defs": {
+    "kebabId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "searchableEntityType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "sourceRef", "capabilityRef", "sensitivity"],
+      "properties": {
+        "id": { "$ref": "#/$defs/kebabId" },
+        "label": { "type": "string", "minLength": 1 },
+        "sourceRef": { "type": "string", "minLength": 1 },
+        "capabilityRef": { "type": "string", "minLength": 1 },
+        "sensitivity": { "enum": ["ordinary", "restricted", "sensitive"] }
+      }
+    },
+    "invocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "globalEntryRequired", "accessibleTriggerRequired", "focusManagementRequired"],
+      "properties": {
+        "mode": { "enum": ["global-header", "command-menu", "dedicated-route", "hybrid", "none"] },
+        "globalEntryRequired": { "type": "boolean" },
+        "accessibleTriggerRequired": { "type": "boolean" },
+        "focusManagementRequired": { "type": "boolean" }
+      }
+    },
+    "resultContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requiredStates",
+        "requiredSemanticFields",
+        "destinationResolution",
+        "authorizationLeakageAllowed",
+        "resultAnnouncementRequired"
+      ],
+      "properties": {
+        "requiredStates": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["loading", "empty", "error", "results"] }
+        },
+        "requiredSemanticFields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["entityType", "primaryLabel", "destination"] }
+        },
+        "destinationResolution": { "enum": ["route", "overlay", "mixed"] },
+        "authorizationLeakageAllowed": { "const": false },
+        "resultAnnouncementRequired": { "const": true }
+      }
+    },
+    "applicabilityEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signal", "sourceRef", "statement"],
+      "properties": {
+        "signal": {
+          "enum": [
+            "transversal-retrieval",
+            "multiple-entity-types",
+            "recurring-quick-find",
+            "operational-high-frequency",
+            "not-applicable"
+          ]
+        },
+        "sourceRef": { "type": "string", "minLength": 1 },
+        "statement": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

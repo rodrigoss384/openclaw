@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/frontend-readiness.schema.json",
+  "title": "Frontend Craft Readiness Report",
+  "description": "Temporary, non-canonical controller output that classifies derived frontend craft relationships as resolved, unresolved, or blocked and scopes provider shape work to true provider-eligible open decisions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "generated",
+    "generatedAt",
+    "screenId",
+    "visualFamilyId",
+    "contractSetSha256",
+    "craftContractPath",
+    "productDesign",
+    "relationships",
+    "shape",
+    "gate",
+    "nextActions"
+  ],
+  "properties": {
+    "$schema": { "const": "frontend-readiness.schema.json" },
+    "schemaVersion": { "const": "1.0.0" },
+    "generated": { "const": true },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "screenId": { "$ref": "#/$defs/kebabId" },
+    "visualFamilyId": { "type": "string", "pattern": "^(operate|persuade|read|experience)-[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "contractSetSha256": { "$ref": "#/$defs/sha256" },
+    "craftContractPath": { "type": "string", "minLength": 1 },
+    "productDesign": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "supplied", "receiptPath", "valid", "passed", "stale", "status", "digest", "errors"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "supplied": { "type": "boolean" },
+        "receiptPath": { "type": ["string", "null"] },
+        "valid": { "type": "boolean" },
+        "passed": { "type": "boolean" },
+        "stale": { "type": "boolean" },
+        "status": { "type": "string", "minLength": 1 },
+        "digest": { "type": "string" },
+        "errors": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "afterAdoptionOf": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["reportPath", "contractSetSha256", "providerDimensions"],
+          "properties": {
+            "reportPath": { "type": "string", "minLength": 1 },
+            "contractSetSha256": { "$ref": "#/$defs/sha256" },
+            "providerDimensions": { "type": "array", "items": { "$ref": "#/$defs/dimensionId" }, "uniqueItems": true }
+          }
+        }
+      ]
+    },
+    "relationships": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": { "$ref": "#/$defs/relationship" }
+    },
+    "shape": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed", "required", "dimensions", "reason"],
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "required": { "type": "boolean" },
+        "dimensions": { "type": "array", "items": { "$ref": "#/$defs/dimensionId" }, "uniqueItems": true },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "blockingDimensions", "unresolvedDimensions", "providerDimensions", "upstreamBlockers"],
+      "properties": {
+        "status": { "enum": ["ready", "needs-resolution", "blocked"] },
+        "blockingDimensions": { "type": "array", "items": { "$ref": "#/$defs/dimensionId" }, "uniqueItems": true },
+        "unresolvedDimensions": { "type": "array", "items": { "$ref": "#/$defs/dimensionId" }, "uniqueItems": true },
+        "providerDimensions": { "type": "array", "items": { "$ref": "#/$defs/dimensionId" }, "uniqueItems": true },
+        "upstreamBlockers": { "type": "array", "items": { "const": "product-design-readiness" }, "uniqueItems": true }
+      }
+    },
+    "nextActions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nextAction" }
+    }
+  },
+  "$defs": {
+    "kebabId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "dimensionId": { "enum": ["spatialComposition", "perceptualHierarchy", "semanticPresentation", "interactionClarity", "decisionSupport", "typographyCoherence"] },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "craftStatus",
+        "status",
+        "owner",
+        "providerEligible",
+        "sourceRefs",
+        "canonicalTargets",
+        "requiredSourceRoles",
+        "missingSourceRoles",
+        "rationale"
+      ],
+      "properties": {
+        "dimension": { "$ref": "#/$defs/dimensionId" },
+        "craftStatus": { "enum": ["resolved", "partial", "unresolved"] },
+        "status": { "enum": ["resolved", "unresolved", "blocked"] },
+        "owner": { "enum": ["frontend-product-builder", "impeccable", "spec-driven-engineering"] },
+        "providerEligible": { "type": "boolean" },
+        "sourceRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "canonicalTargets": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "requiredSourceRoles": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "missingSourceRoles": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    },
+    "nextAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "dimensions", "owner", "canonicalTargets", "instruction"],
+      "properties": {
+        "type": { "enum": ["resolve-canonical", "resolve-product-design", "run-shape", "adopt-and-rederive", "ready"] },
+        "dimensions": { "type": "array", "items": { "$ref": "#/$defs/dimensionId" }, "uniqueItems": true },
+        "owner": { "enum": ["frontend-product-builder", "impeccable", "spec-driven-engineering", "workflow"] },
+        "canonicalTargets": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "instruction": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
