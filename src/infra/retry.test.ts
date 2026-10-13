@@ -57,6 +57,60 @@ describe("resolveRetryConfig", () => {
 });
 
 describe("retryAsync", () => {
+  it.each([1, 2, 3])(
+    "propagates the terminal error and reports only retries before the next attempt (%i attempts)",
+    async (attempts) => {
+      vi.useFakeTimers();
+
+      try {
+        const terminalError = new Error("terminal failure");
+        const events: string[] = [];
+        let calls = 0;
+        const fn = vi.fn(async () => {
+          calls += 1;
+          events.push(`attempt:${calls}`);
+          throw terminalError;
+        });
+        const onRetry = vi.fn(({ attempt }) => {
+          events.push(`callback:${attempt}`);
+        });
+
+        const result = retryAsync(fn, {
+          attempts,
+          minDelayMs: 0,
+          maxDelayMs: 0,
+          jitter: 0,
+          onRetry,
+        });
+        const terminalResult = result.then(
+          () => undefined,
+          (error: unknown) => error,
+        );
+        await vi.runAllTimersAsync();
+
+        await expect(terminalResult).resolves.toBe(terminalError);
+        expect(fn).toHaveBeenCalledTimes(attempts);
+        expect(onRetry).toHaveBeenCalledTimes(attempts - 1);
+        for (let attempt = 1; attempt < attempts; attempt += 1) {
+          expect(onRetry).toHaveBeenNthCalledWith(
+            attempt,
+            expect.objectContaining({ attempt, maxAttempts: attempts, err: terminalError }),
+          );
+        }
+        expect(events).toEqual(
+          Array.from({ length: attempts }, (_, index) => {
+            const attempt = index + 1;
+            return attempt < attempts
+              ? [`attempt:${attempt}`, `callback:${attempt}`]
+              : [`attempt:${attempt}`];
+          }).flat(),
+        );
+      } finally {
+        vi.useRealTimers();
+      }
+    },
+  );
+
   it("returns on first success", async () => {
     const fn = vi.fn().mockResolvedValue("ok");
     const result = await retryAsync(fn, 3, 10);

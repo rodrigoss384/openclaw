@@ -19,7 +19,7 @@
 - Requisitos/ACs: REQ-PIL-001, REQ-PIL-006, AC-PIL-001, AC-PIL-002, AT-PIL-001, AT-PIL-002, PROP-PIL-002.
 - Tipo: implementation
 - Depende de: T-PIL-001
-- Status: not-started
+- Status: complete
 - Onde: somente src/infra/retry.test.ts; Status desta task como progresso.
 - Reutiliza: retryAsync, fake timers/mocks e runner existentes. Abrir sessão limpa; não herdar conversa/home da task anterior.
 - Testes e RED: casos tabelados 1/2/3 tentativas, erro terminal propagado por identidade, callback antes de retry real com attempt/maxAttempts/err corretos, nenhuma callback após última falha. Sem waits reais/IO. Sensibilidade e condição GREEN existentes conforme 08-test-plan.md; produção fora do escopo.

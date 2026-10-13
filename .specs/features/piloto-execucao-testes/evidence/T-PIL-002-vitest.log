@@ -1,0 +1,10 @@
+
+ RUN  v4.0.18 /workspace
+
+ ✓ src/infra/retry.test.ts (18 tests) 18ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  11:19:36
+   Duration  450ms (transform 266ms, setup 283ms, import 28ms, tests 18ms, environment 0ms)
+

@@ -1,63 +1,61 @@
 # Handoff
 
 **Workflow:** `spec-driven-engineering@2.4.0`  
-**sessionId:** `execute-T-PIL-001-codex-20261013`  
-**revision:** `4` (atribuída pelo gravador)  
+**sessionId:** `execute-T-PIL-002-codex-20261013`  
+**revision:** `5` (assigned atomically by `update-handoff.mjs`; see `references/session-closure.md` Concurrency check)  
 **agent:** `codex-cli`  
-**Timestamp:** `2026-10-13T11:16:16.357Z`  
+**Timestamp:** `2026-10-13T11:21:45.462Z`  
 **Projeto/root:** OpenClaw piloto / `/workspace`  
 **Feature:** piloto-execucao-testes  
-**Estágio/gate/task:** implementation / task-local / T-PIL-001  
-**Status:** task-local passed; checkpoint/transição canônica aguardam supervisor
+**Estágio/gate/task:** implementation / task-local / T-PIL-002  
+**Status:** task-local passed; checkpoint e transição pertencem ao supervisor
 **Backend representative:** `not-applicable`  
 **Frontend representative:** `not-applicable`
 
 ## Ponto exato
 
-Implementação da task concluída em `src/infra/retry.test.ts:4` (`describe("resolveRetryConfig")`). `09-tasks.md:9` tem somente o Status de T-PIL-001 atualizado para `complete`.
+Task T-PIL-002 concluída em `src/infra/retry.test.ts:60` (`describe("retryAsync")`); Status atualizado em `09-tasks.md:21`. A nova tabela cobre 1/2/3 tentativas, identidade do erro terminal, callback antes da tentativa seguinte e ausência de callback na falha final.
 
 ## Concluído
 
-- Consumida a intervenção na mesma conversa/task; task, run e native sessionId foram registrados antes e depois. O identificador fornecido aparece somente na evidência.
-- Adicionados sete casos tabelados para defaults/ausência, overrides parciais, limites, arredondamento, valores não finitos, extremos finitos e max menor que min.
-- Suite passou com 15 testes, preservando os oito testes existentes. A implementação já estava GREEN antes da adição; nenhuma falha histórica foi fabricada.
-- Cópia descartável com mutante no fallback não finito falhou em três casos sensíveis; cópia removida e output/hash preservados.
-- Formatter, Oxlint e typecheck passaram. Manifest, lockfile e `src/infra/retry.ts` permaneceram sem diff.
-- Evidências e hashes foram gravados sob `.specs/features/piloto-execucao-testes/evidence/`.
+- Teste final GREEN: 18/18; a base de produção permaneceu intacta.
+- Contraexemplo de erro terminal em cópia temporária falhou nos três casos de identidade; a cópia foi removida e o log retido.
+- Oxfmt, Oxlint e typecheck completo passaram.
+- Evidências de RED/GREEN, restrições, Vitest, formato, lint e typecheck registradas sob `.specs/features/piloto-execucao-testes/evidence/T-PIL-002-*`.
+- Somente Status de T-PIL-002 alterado em `09-tasks.md`; nenhum estado de gate, enforcement ou transição escrito.
 
 ## Em andamento
 
-- Aguardando o supervisor validar o checkpoint desta task e executar suas transições/gates canônicos. O worker não executou `advance`.
+Supervisor valida as evidências e cria o checkpoint autorizado. Nenhuma implementação adicional está em andamento.
 
 ## Arquivos alterados / estado não commitado
 
-- Código/teste: somente `src/infra/retry.test.ts`.
-- Contrato: somente a linha Status de T-PIL-001 em `.specs/features/piloto-execucao-testes/09-tasks.md`.
-- Evidência da task: `T-PIL-001-preflight.json`, `T-PIL-001-restriction-trace.json`, `T-PIL-001-red-green.json`, `T-PIL-001-verification.json` e logs de instalação/checks em `.specs/features/piloto-execucao-testes/evidence/`.
-- Sem commit. `node_modules/` está ignorado pelo Git; instalação executada com scripts desativados. Ferramenta temporária em `/tmp/pilot-tools` removida.
-- Outros artefatos `.specs/` já estavam não rastreados antes desta execução; preservados.
+- Implementação de teste: `src/infra/retry.test.ts`.
+- Contrato: Status de T-PIL-002 em `.specs/features/piloto-execucao-testes/09-tasks.md`.
+- Evidências novas: `T-PIL-002-counterexample.log`, `T-PIL-002-format.log`, `T-PIL-002-oxlint.log`, `T-PIL-002-red-green.json`, `T-PIL-002-restriction-trace.json`, `T-PIL-002-tsgo.log`, `T-PIL-002-vitest.log`.
+- Sem commit. `src/infra/retry.ts`, manifests e lockfile sem alterações desta task. Arquivos preexistentes do pacote `.specs` e alterações anteriores foram preservados.
 
 ## Última verificação
 
-- Comandos: os checks 3–6 congelados em `08-test-plan.md`, seguidos de `git diff --check` e `git diff --exit-code -- package.json pnpm-lock.yaml src/infra/retry.ts`.
-- Resultado: `passed`; Vitest 15/15, formatter passou, Oxlint 0 warnings/0 errors, typecheck exit 0, escopo fora da task sem diff.
-- Evidência: `.specs/features/piloto-execucao-testes/evidence/T-PIL-001-verification.json`.
+- Comando: comandos 3–6 de `.specs/features/piloto-execucao-testes/08-test-plan.md`, mais `git diff --check`.
+- Resultado: `passed`; Vitest 18/18, Oxfmt passou, Oxlint 0 warnings/0 errors, `tsgo --noEmit` exit 0 e diff whitespace limpo.
+- Evidência: `.specs/features/piloto-execucao-testes/evidence/T-PIL-002-red-green.json` e logs adjacentes.
 
 ## Pendências imediatas
 
-- Supervisor: revisar a evidência e criar o checkpoint autorizado. Não inferir aprovação de feature/gate humano a partir deste resultado task-local.
+- Supervisor: verificar o pacote de evidências desta task e criar o checkpoint correspondente; executar transições conforme sua autoridade.
 
 ## Perguntas em aberto
 
-- Nenhuma para T-PIL-001.
+- Nenhuma.
 
 ## Ideias adiadas
 
-- Nenhuma.
+- DEF-PIL-001: prontidão completa e evolução funcional do OpenClaw permanecem fora do piloto.
 
 ## Bloqueios
 
-- Nenhum bloqueio de implementação task-local. A transição canônica não foi executada pelo worker conforme a diretiva do supervisor.
+- Nenhum bloqueio de implementação task-local. O worker não executou transição nem aprovou gate da feature.
 
 ## Ação humana pendente
 
@@ -65,12 +63,12 @@ Nenhuma.
 
 ## Contexto mínimo para retomar
 
-- `.specs/HANDOFF.md`
 - `.specs/features/piloto-execucao-testes/09-tasks.md`
 - `.specs/features/piloto-execucao-testes/08-test-plan.md`
-- `.specs/features/piloto-execucao-testes/evidence/T-PIL-001-verification.json`
+- `.specs/features/piloto-execucao-testes/evidence/T-PIL-002-red-green.json`
+- `.specs/features/piloto-execucao-testes/evidence/T-PIL-002-restriction-trace.json`
 - `src/infra/retry.test.ts`
 
 ## Primeira ação de retomada
 
-Supervisor confere o resultado e hashes em `T-PIL-001-verification.json` e cria o checkpoint correspondente; o worker não deve iniciar outra task nem avançar o workflow.
+Supervisor confere os comandos, resultados e hashes registrados no evidence `T-PIL-002-red-green.json`, então cria o checkpoint da task sem inferir aprovação de feature ou gate humano.
