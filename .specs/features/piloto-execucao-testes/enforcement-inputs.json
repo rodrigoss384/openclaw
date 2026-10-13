@@ -1,0 +1,8 @@
+{
+  "stages": {
+    "design-readiness": {},
+    "implementation": {},
+    "adversarial": {},
+    "evidence-release": {}
+  }
+}

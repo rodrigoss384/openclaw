@@ -1,0 +1,17 @@
+{
+  "feature": "piloto-execucao-testes",
+  "stages": {
+    "design-readiness": {
+      "status": "complete",
+      "snapshot": "34fc97f78e3c9a80e2d0081ef7121b33d2ca890d1fa8e431d94bf9ab1436861c",
+      "contextSha256": "7b7e9c7ac40c873fd2e14f5c0ebc5dea0e790576e6ab9dc87bbaa6e29c57de95",
+      "reportSha256": "a353a435fa06d56f909faa1dc6e24099eb3ec6bedb4ab5652942452e872c5cd7"
+    },
+    "implementation": {
+      "status": "complete",
+      "snapshot": "07431eacdd82811e9506fc2f934628511af0ad39b80fc5211d2f405de43c73f2",
+      "contextSha256": "7b7e9c7ac40c873fd2e14f5c0ebc5dea0e790576e6ab9dc87bbaa6e29c57de95",
+      "reportSha256": "71fb0f67c081f79c9daf2273f5d6ece3d7a12d63f5f07a398d1e203bbfcdabc1"
+    }
+  }
+}
