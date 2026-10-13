@@ -1,0 +1,81 @@
+
+ RUN  v4.0.18 /tmp/piloto-t-pil-001-counterexample-tpuexV
+
+ ❯ src/infra/retry.test.ts (15 tests | 3 failed) 26ms
+     × uses defaults when overrides are absent 11ms
+     ✓ rounds finite values and clamps jitter to its upper bound 0ms
+     ✓ keeps attempts positive and delay values non-negative 0ms
+     ✓ raises max delay to min delay when the overrides are reversed 0ms
+     × falls back per field for non-finite overrides 2ms
+     × preserves explicit values when other overrides are absent 1ms
+     ✓ accepts finite boundary values 0ms
+     ✓ returns on first success 1ms
+     ✓ retries then succeeds 0ms
+     ✓ propagates after exhausting retries 1ms
+     ✓ stops when shouldRetry returns false 0ms
+     ✓ calls onRetry before retrying 1ms
+     ✓ clamps attempts to at least 1 0ms
+     ✓ uses retryAfterMs when provided 2ms
+     ✓ clamps retryAfterMs to maxDelayMs 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/infra/retry.test.ts > resolveRetryConfig > uses defaults when overrides are absent
+ FAIL  src/infra/retry.test.ts > resolveRetryConfig > falls back per field for non-finite overrides
+AssertionError: expected { attempts: 1, minDelayMs: +0, …(2) } to deeply equal { attempts: 4, minDelayMs: 20, …(2) }
+
+- Expected
++ Received
+
+  {
+-   "attempts": 4,
+-   "jitter": 0.25,
+-   "maxDelayMs": 500,
+-   "minDelayMs": 20,
++   "attempts": 1,
++   "jitter": 0,
++   "maxDelayMs": 0,
++   "minDelayMs": 0,
+  }
+
+ ❯ src/infra/retry.test.ts:55:53
+     53|     ],
+     54|   ])("%s", (_case, overrides, expected) => {
+     55|     expect(resolveRetryConfig(defaults, overrides)).toEqual(expected);
+       |                                                     ^
+     56|   });
+     57| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/infra/retry.test.ts > resolveRetryConfig > preserves explicit values when other overrides are absent
+AssertionError: expected { attempts: 2, minDelayMs: +0, …(2) } to deeply equal { attempts: 2, minDelayMs: 20, …(2) }
+
+- Expected
++ Received
+
+  {
+    "attempts": 2,
+-   "jitter": 0.25,
++   "jitter": 0,
+    "maxDelayMs": 90,
+-   "minDelayMs": 20,
++   "minDelayMs": 0,
+  }
+
+ ❯ src/infra/retry.test.ts:55:53
+     53|     ],
+     54|   ])("%s", (_case, overrides, expected) => {
+     55|     expect(resolveRetryConfig(defaults, overrides)).toEqual(expected);
+       |                                                     ^
+     56|   });
+     57| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 12 passed (15)
+   Start at  11:14:42
+   Duration  252ms (transform 40ms, setup 0ms, import 64ms, tests 26ms, environment 0ms)
+

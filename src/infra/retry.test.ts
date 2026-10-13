@@ -1,5 +1,60 @@
 import { describe, expect, it, vi } from "vitest";
-import { retryAsync } from "./retry.js";
+import { resolveRetryConfig, retryAsync } from "./retry.js";
+
+describe("resolveRetryConfig", () => {
+  const defaults = { attempts: 4, minDelayMs: 20, maxDelayMs: 500, jitter: 0.25 };
+
+  it.each([
+    ["uses defaults when overrides are absent", undefined, defaults],
+    [
+      "rounds finite values and clamps jitter to its upper bound",
+      { attempts: 2.6, minDelayMs: 7.4, maxDelayMs: 29.6, jitter: 1.4 },
+      { attempts: 3, minDelayMs: 7, maxDelayMs: 30, jitter: 1 },
+    ],
+    [
+      "keeps attempts positive and delay values non-negative",
+      { attempts: 0, minDelayMs: -4, maxDelayMs: -2, jitter: -0.2 },
+      { attempts: 1, minDelayMs: 0, maxDelayMs: 0, jitter: 0 },
+    ],
+    [
+      "raises max delay to min delay when the overrides are reversed",
+      { attempts: 3, minDelayMs: 50, maxDelayMs: 20, jitter: 0.5 },
+      { attempts: 3, minDelayMs: 50, maxDelayMs: 50, jitter: 0.5 },
+    ],
+    [
+      "falls back per field for non-finite overrides",
+      {
+        attempts: Number.NaN,
+        minDelayMs: Number.POSITIVE_INFINITY,
+        maxDelayMs: Number.NEGATIVE_INFINITY,
+        jitter: Number.NaN,
+      },
+      defaults,
+    ],
+    [
+      "preserves explicit values when other overrides are absent",
+      { attempts: 2, maxDelayMs: 90 },
+      { attempts: 2, minDelayMs: 20, maxDelayMs: 90, jitter: 0.25 },
+    ],
+    [
+      "accepts finite boundary values",
+      {
+        attempts: Number.MAX_SAFE_INTEGER,
+        minDelayMs: Number.MIN_VALUE,
+        maxDelayMs: Number.MAX_VALUE,
+        jitter: Number.MIN_VALUE,
+      },
+      {
+        attempts: Number.MAX_SAFE_INTEGER,
+        minDelayMs: 0,
+        maxDelayMs: Number.MAX_VALUE,
+        jitter: Number.MIN_VALUE,
+      },
+    ],
+  ])("%s", (_case, overrides, expected) => {
+    expect(resolveRetryConfig(defaults, overrides)).toEqual(expected);
+  });
+});
 
 describe("retryAsync", () => {
   it("returns on first success", async () => {

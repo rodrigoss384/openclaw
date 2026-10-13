@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "task-input-preflight",
+  "feature": "piloto-execucao-testes",
+  "task": "T-PIL-001",
+  "sessionId": "execute-T-PIL-001-codex-20261013",
+  "observedAt": "2026-10-13T01:42:02.873Z",
+  "probes": [
+    {
+      "name": "handoff grant and deterministic task selection",
+      "status": "passed",
+      "handoffRevision": 1,
+      "taskStatus": "in-progress",
+      "taskFile": ".specs/features/piloto-execucao-testes/09-tasks.md",
+      "taskLine": 12
+    },
+    {
+      "name": "implementation governance bootstrap stdout",
+      "status": "passed",
+      "command": [
+        "node",
+        "integrations/governance/governance-control.mjs",
+        "bootstrap",
+        "--root",
+        "/workspace",
+        "--stage",
+        "implementation",
+        "--feature",
+        "piloto-execucao-testes",
+        "--applicability",
+        ".specs/features/piloto-execucao-testes/applicability.md"
+      ],
+      "exitCode": 0,
+      "canonical": false,
+      "outputSha256": "6fcc0adcc49c7a591b4deb67725ed9e492eb7cf42b896c37acfc401cd7b6f82d"
+    },
+    {
+      "name": "task-required intervention",
+      "status": "required-before-edit",
+      "taskFile": ".specs/features/piloto-execucao-testes/09-tasks.md",
+      "taskLine": 12,
+      "action": "ask operator which textual identifier to use in pilot evidence; do not edit before answer"
+    },
+    {
+      "name": "production and test source scope",
+      "status": "passed",
+      "inspected": "src/infra/retry.test.ts",
+      "diffPresent": false
+    }
+  ],
+  "conclusion": "Task authorized and input received; implementation is confined to src/infra/retry.test.ts.",
+  "taskRun": {
+    "taskId": "T-PIL-001",
+    "runId": "execute-T-PIL-001-codex-20261013",
+    "runIdProvenance": "No separate run identifier is present in the trusted handoff; use its stable session identifier for this task-local run record.",
+    "nativeSessionId": "execute-T-PIL-001-codex-20261013",
+    "beforeInputResponse": {
+      "taskId": "T-PIL-001",
+      "runId": "execute-T-PIL-001-codex-20261013",
+      "nativeSessionId": "execute-T-PIL-001-codex-20261013",
+      "observedAt": "2026-10-13T01:42:02.873Z"
+    },
+    "inputResponse": {
+      "taskId": "T-PIL-001",
+      "runId": "execute-T-PIL-001-codex-20261013",
+      "nativeSessionId": "execute-T-PIL-001-codex-20261013",
+      "value": "IDENTIFICADOR_ESCOLHIDO",
+      "receivedInSameConversation": true,
+      "observedAt": "2026-10-13T11:10:36.337Z"
+    },
+    "postResponse": {
+      "taskId": "T-PIL-001",
+      "runId": "execute-T-PIL-001-codex-20261013",
+      "nativeSessionId": "execute-T-PIL-001-codex-20261013",
+      "sameTaskAndSession": true,
+      "observedAt": "2026-10-13T11:10:36.337Z"
+    },
+    "postTask": {
+      "taskId": "T-PIL-001",
+      "runId": "execute-T-PIL-001-codex-20261013",
+      "nativeSessionId": "execute-T-PIL-001-codex-20261013",
+      "completedAt": "2026-10-13T11:15:44.309Z",
+      "result": "15 tests passed; format, lint, typecheck and out-of-scope diff checks passed; no canonical gate written."
+    }
+  }
+}
