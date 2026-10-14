@@ -7,7 +7,7 @@
   "feature": "piloto-execucao-testes",
   "task": null,
   "dryRun": false,
-  "snapshot": "07431eacdd82811e9506fc2f934628511af0ad39b80fc5211d2f405de43c73f2",
+  "snapshot": "bb0271095160b1655aede91235a5749de2c74e1019866d5b72fb7f933637b4a4",
   "requiredEnforcements": [
     "feature-package-validation",
     "governance-rule-admission-validation"
@@ -24,7 +24,7 @@
     {
       "capabilityId": "governance-rule-admission-validation",
       "status": "passed",
-      "command": "node integrations/governance/validate-governance-policy.mjs --root /workspace",
+      "command": "node integrations/governance/validate-governance-policy.mjs --root /home/rodrigo/.local/state/spec-driven-supervisor/workspaces/cd24bcf3-5715-473d-999f-2beea4f30e59",
       "blocking": true,
       "exitCode": 0,
       "detail": null
