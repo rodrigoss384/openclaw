@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/frontend-product-builder/behavioral-ux-contract.schema.json",
+  "title": "Behavioral UX Contract",
+  "description": "One object per PERSUASIVE or HIGH-RISK behavioral intervention. Forces a declared hypothesis, evidence grade, user benefit, and risk before implementation. See references/14-behavioral-ux.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "id",
+    "surface",
+    "userGoal",
+    "productGoal",
+    "principle",
+    "hypothesis",
+    "evidenceGrade",
+    "userBenefit",
+    "businessBenefit",
+    "truthful",
+    "reversible",
+    "userControl",
+    "manipulationRisk",
+    "experimentRequired",
+    "primaryMetric",
+    "guardrails"
+  ],
+  "properties": {
+    "$schema": { "const": "../schemas/behavioral-ux-contract.schema.json" },
+    "id": {
+      "type": "string",
+      "pattern": "^BUX-[A-Z0-9][A-Z0-9-]*-\\d{3}$"
+    },
+    "surface": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Where this intervention lives (e.g. onboarding, pricing, upgrade, renewal, cancellation)."
+    },
+    "userGoal": { "type": "string", "minLength": 1 },
+    "productGoal": { "type": "string", "minLength": 1 },
+    "principle": {
+      "enum": [
+        "reversible-choice-assistance",
+        "truthful-progress",
+        "value-before-commitment",
+        "meaningful-ownership",
+        "truthful-consequence-framing",
+        "relevant-comparative-context",
+        "trust-and-transparency",
+        "other"
+      ]
+    },
+    "hypothesis": {
+      "type": "string",
+      "minLength": 10,
+      "description": "A falsifiable behavioral hypothesis, not a command (e.g. 'showing real completed steps improves orientation and completion', never 'use loss aversion here')."
+    },
+    "evidenceGrade": {
+      "enum": ["A", "B", "C", "D"],
+      "description": "A: strong replicated/meta-analytic evidence. B: good, context-dependent. C: limited/indirect. D: practitioner heuristic/product precedent only."
+    },
+    "userBenefit": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Must be completable honestly: 'this helps the user by ___'. Never left generic/empty."
+    },
+    "businessBenefit": { "type": "string", "minLength": 1 },
+    "truthful": {
+      "const": true,
+      "description": "Always true — a Behavioral UX Contract for a deceptive intervention is a contradiction; deceptive patterns are handled under prohibited-patterns, not this contract."
+    },
+    "reversible": {
+      "type": "boolean",
+      "description": "Whether the user can undo/change the outcome this intervention nudges toward."
+    },
+    "userControl": {
+      "enum": ["preserved", "reduced"],
+      "description": "'reduced' requires manipulationRisk to be at least 'high' and a written justification in notes."
+    },
+    "manipulationRisk": {
+      "enum": ["low", "medium", "high"]
+    },
+    "experimentRequired": {
+      "type": "boolean",
+      "description": "True unless the surface has no measurable traffic — see references/14-behavioral-ux.md and outcome-evidence.md for the qualitative fallback."
+    },
+    "primaryMetric": { "type": "string", "minLength": 1 },
+    "guardrails": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Metrics that must not silently degrade while primaryMetric improves (e.g. setup-error-rate, support-contact-rate, early-churn, refund-rate)."
+    },
+    "notes": { "type": ["string", "null"] }
+  }
+}

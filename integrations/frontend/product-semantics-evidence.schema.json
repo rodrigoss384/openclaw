@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.spec-driven.local/product-semantics-evidence.schema.json",
+  "title": "Product Semantics Evidence",
+  "description": "Subordinate machine-readable Phase 5 evidence for rendered product semantics. Canonical product/design contracts remain authoritative.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "artifactKind",
+    "status",
+    "screenId",
+    "stateId",
+    "semanticDifferentiation",
+    "navigation",
+    "globalRetrieval"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "const": "1.0.0" },
+    "artifactKind": { "const": "product-semantics-evidence" },
+    "status": { "const": "captured" },
+    "screenId": { "type": "string", "minLength": 1 },
+    "stateId": { "type": "string", "minLength": 1 },
+    "semanticDifferentiation": { "$ref": "#/$defs/semanticDifferentiation" },
+    "navigation": { "$ref": "#/$defs/navigation" },
+    "globalRetrieval": { "$ref": "#/$defs/globalRetrieval" }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "nullableSha256": {
+      "oneOf": [
+        { "$ref": "#/$defs/sha256" },
+        { "type": "null" }
+      ]
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nullableString": {
+      "type": ["string", "null"]
+    },
+    "presentationSignature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["variantRole", "semanticColorRole", "shapeRole", "textRole"],
+      "properties": {
+        "variantRole": { "$ref": "#/$defs/nonEmptyString" },
+        "semanticColorRole": { "$ref": "#/$defs/nonEmptyString" },
+        "shapeRole": { "$ref": "#/$defs/nonEmptyString" },
+        "textRole": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "semanticObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["componentUsageId", "semanticRole", "rendered", "presentationSignature"],
+      "properties": {
+        "componentUsageId": { "$ref": "#/$defs/nonEmptyString" },
+        "semanticRole": { "$ref": "#/$defs/nonEmptyString" },
+        "rendered": { "type": "boolean" },
+        "presentationSignature": { "$ref": "#/$defs/presentationSignature" }
+      }
+    },
+    "semanticDifferentiation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applicability", "observations"],
+      "properties": {
+        "applicability": { "enum": ["required", "not-applicable"] },
+        "observations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/semanticObservation" }
+        }
+      }
+    },
+    "navigationModuleEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "capabilityRef",
+        "availability",
+        "presentation",
+        "rendered",
+        "navigable",
+        "destination",
+        "reasonVisible"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "capabilityRef": { "$ref": "#/$defs/nonEmptyString" },
+        "availability": { "enum": ["active", "entitlement-locked", "approved-coming-soon"] },
+        "presentation": { "enum": ["navigate", "hidden", "disabled-with-reason", "upsell-entry"] },
+        "rendered": { "type": "boolean" },
+        "navigable": { "type": "boolean" },
+        "destination": { "$ref": "#/$defs/nullableString" },
+        "reasonVisible": { "type": "boolean" }
+      }
+    },
+    "navigation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applicability", "contractRef", "contractSha256", "modules"],
+      "properties": {
+        "applicability": { "enum": ["required", "not-applicable"] },
+        "contractRef": { "$ref": "#/$defs/nullableString" },
+        "contractSha256": { "$ref": "#/$defs/nullableSha256" },
+        "modules": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/navigationModuleEvidence" }
+        }
+      }
+    },
+    "retrievalTriggerEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rendered",
+        "invocationMode",
+        "accessibleName",
+        "focusManaged",
+        "shortcutObserved"
+      ],
+      "properties": {
+        "rendered": { "type": "boolean" },
+        "invocationMode": { "enum": ["global-header", "command-menu", "dedicated-route", "hybrid"] },
+        "accessibleName": { "$ref": "#/$defs/nullableString" },
+        "focusManaged": { "type": "boolean" },
+        "shortcutObserved": { "$ref": "#/$defs/nullableString" }
+      }
+    },
+    "retrievalAuthorizationEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorizationMode",
+        "authorizationFiltered",
+        "tenantScopeValidated",
+        "unauthorizedResultCount",
+        "resultAnnouncementObserved",
+        "observedEntityTypes",
+        "authorizationEvidenceRefs"
+      ],
+      "properties": {
+        "authorizationMode": {
+          "enum": ["backend-authoritative-query-scope", "backend-authoritative-per-result"]
+        },
+        "authorizationFiltered": { "const": true },
+        "tenantScopeValidated": { "const": true },
+        "unauthorizedResultCount": { "const": 0 },
+        "resultAnnouncementObserved": { "const": true },
+        "observedEntityTypes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "authorizationEvidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        }
+      }
+    },
+    "globalRetrieval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicability",
+        "contractRef",
+        "contractSha256",
+        "trigger",
+        "observedState",
+        "resultAuthorization"
+      ],
+      "properties": {
+        "applicability": { "enum": ["required", "optional", "not-applicable"] },
+        "contractRef": { "$ref": "#/$defs/nullableString" },
+        "contractSha256": { "$ref": "#/$defs/nullableSha256" },
+        "trigger": {
+          "oneOf": [
+            { "$ref": "#/$defs/retrievalTriggerEvidence" },
+            { "type": "null" }
+          ]
+        },
+        "observedState": { "enum": ["loading", "empty", "error", "results", "not-applicable"] },
+        "resultAuthorization": {
+          "oneOf": [
+            { "$ref": "#/$defs/retrievalAuthorizationEvidence" },
+            { "type": "null" }
+          ]
+        }
+      }
+    }
+  }
+}

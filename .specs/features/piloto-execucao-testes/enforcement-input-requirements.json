@@ -1,0 +1,8 @@
+{
+  "status": "ready",
+  "diagnosticOnly": true,
+  "inputsRef": ".specs/features/piloto-execucao-testes/enforcement-inputs.json",
+  "requirements": {
+    "adversarial": []
+  }
+}

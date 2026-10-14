@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "1.0.0",
+  "meta": {
+    "id": "<screen-id>-screenshot-evidence",
+    "screenId": "<screen-id>",
+    "sliceId": "<slice-id>",
+    "status": "draft",
+    "owner": "<feature-or-team>",
+    "source": "docs/frontend/screens/<screen-id>/screenshot-evidence.json",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  "screen": {
+    "name": "<Screen Name>",
+    "route": "<real-route>",
+    "manifest": "docs/frontend/screens/<screen-id>/small-slice-manifest.json",
+    "browserValidation": "docs/frontend/screens/<screen-id>/browser-validation.md",
+    "defectLog": "docs/frontend/screens/<screen-id>/defect-log.md"
+  },
+  "captureEnvironment": {
+    "operatingSystem": "<Linux distribution and version>",
+    "browser": "<browser>",
+    "browserVersion": "<version>",
+    "renderingEngine": "<engine>",
+    "locale": "<locale>",
+    "timezone": "<IANA timezone>",
+    "colorScheme": "<light|dark|system>",
+    "reducedMotion": "<default|reduce>",
+    "applicationSource": "<development-server|production-build|storybook|browser-test-server>",
+    "applicationUrl": "<application-url>",
+    "commit": "<commit-hash>"
+  },
+  "policy": {
+    "containsProductionData": false,
+    "containsSecrets": false,
+    "syntheticFixturesOnly": true,
+    "redactionRequired": false,
+    "redactionNotes": [],
+    "externalImageDependencies": false,
+    "deterministicClock": true,
+    "fixedClock": "<ISO-8601 timestamp or not-applicable>"
+  },
+  "fixtures": [
+    {
+      "id": "<primary-fixture-id>",
+      "stateId": "data",
+      "source": "<fixture-source>",
+      "safe": true,
+      "deterministic": true
+    },
+    {
+      "id": "<non-success-fixture-id>",
+      "stateId": "<non-success-state-id>",
+      "source": "<fixture-source>",
+      "safe": true,
+      "deterministic": true
+    }
+  ],
+  "captures": [
+    {
+      "id": "capture-data-wide",
+      "stateId": "data",
+      "fixtureId": "<primary-fixture-id>",
+      "purpose": "Wide primary-state evidence.",
+      "route": "<real-route>",
+      "viewport": {
+        "id": "wide",
+        "width": 1440,
+        "height": 900,
+        "deviceScaleFactor": 1
+      },
+      "browserZoomPercent": 100,
+      "textScalePercent": 100,
+      "reducedMotion": false,
+      "path": "docs/frontend/screens/<screen-id>/screenshots/<screen-id>-data-1440x900.png",
+      "capturedAt": null,
+      "status": "planned",
+      "expected": [
+        "<Expected primary-state behavior>",
+        "No page-level horizontal overflow.",
+        "Primary task and action hierarchy are visible."
+      ],
+      "observed": [],
+      "checks": {
+        "stateAccuracy": "pending",
+        "responsive": "pending",
+        "designSystem": "pending",
+        "componentUsage": "pending",
+        "accessibility": "pending",
+        "contentStress": "pending",
+        "horizontalOverflow": "pending"
+      },
+      "defectIds": [],
+      "approvedBy": null,
+      "approvedAt": null
+    },
+    {
+      "id": "capture-data-compact",
+      "stateId": "data",
+      "fixtureId": "<primary-fixture-id>",
+      "purpose": "Compact primary-state responsive evidence.",
+      "route": "<real-route>",
+      "viewport": {
+        "id": "compact",
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 1
+      },
+      "browserZoomPercent": 100,
+      "textScalePercent": 100,
+      "reducedMotion": false,
+      "path": "docs/frontend/screens/<screen-id>/screenshots/<screen-id>-data-390x844.png",
+      "capturedAt": null,
+      "status": "planned",
+      "expected": [
+        "<Expected compact transformation>",
+        "Task order and focus order remain coherent.",
+        "No page-level horizontal overflow."
+      ],
+      "observed": [],
+      "checks": {
+        "stateAccuracy": "pending",
+        "responsive": "pending",
+        "designSystem": "pending",
+        "componentUsage": "pending",
+        "accessibility": "pending",
+        "contentStress": "pending",
+        "horizontalOverflow": "pending"
+      },
+      "defectIds": [],
+      "approvedBy": null,
+      "approvedAt": null
+    },
+    {
+      "id": "capture-non-success",
+      "stateId": "<non-success-state-id>",
+      "fixtureId": "<non-success-fixture-id>",
+      "purpose": "Meaningful non-success-state evidence.",
+      "route": "<real-route>",
+      "viewport": {
+        "id": "<compact|constrained|wide>",
+        "width": 1024,
+        "height": 768,
+        "deviceScaleFactor": 1
+      },
+      "browserZoomPercent": 100,
+      "textScalePercent": 100,
+      "reducedMotion": false,
+      "path": "docs/frontend/screens/<screen-id>/screenshots/<screen-id>-<non-success-state-id>-1024x768.png",
+      "capturedAt": null,
+      "status": "planned",
+      "expected": [
+        "<Expected non-success behavior>",
+        "Usable context remains visible when safe.",
+        "Recovery is available and understandable."
+      ],
+      "observed": [],
+      "checks": {
+        "stateAccuracy": "pending",
+        "responsive": "pending",
+        "designSystem": "pending",
+        "componentUsage": "pending",
+        "accessibility": "pending",
+        "contentStress": "pending",
+        "horizontalOverflow": "pending"
+      },
+      "defectIds": [],
+      "approvedBy": null,
+      "approvedAt": null
+    }
+  ],
+  "requiredCaptureIds": [
+    "capture-data-wide",
+    "capture-data-compact",
+    "capture-non-success"
+  ],
+  "validation": {
+    "allowedStatuses": [
+      "planned",
+      "captured",
+      "rejected",
+      "approved"
+    ],
+    "allowedCheckStatuses": [
+      "pending",
+      "passed",
+      "failed",
+      "not-applicable"
+    ],
+    "approvalRequires": [
+      "The image file exists and is non-empty.",
+      "The declared state and fixture were used.",
+      "The viewport and zoom are accurate.",
+      "All applicable checks passed.",
+      "No unresolved blocking defect is linked.",
+      "The capture contains no production data or secret.",
+      "Browser validation references the capture."
+    ]
+  }
+}

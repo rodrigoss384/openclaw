@@ -1,0 +1,350 @@
+{
+  "$schema": "../../integrations/governance/autonomy-policy.schema.json",
+  "schemaVersion": "1.1.0",
+  "status": "autonomy-control-contract",
+  "governancePolicy": "prompts/spec-driven/governance-policy.json",
+  "workflowManifest": "prompts/spec-driven/manifest.json",
+  "precedence": {
+    "effectivePolicyEscalations": "always-prevail",
+    "existingHumanGates": "always-prevail",
+    "unknownConsequential": "BLOCKED",
+    "missingValidCandidate": "BLOCKED",
+    "missingRequiredEvidence": "HUMAN_REQUIRED_OR_BLOCKED",
+    "autonomousPreferenceQuestion": "forbidden"
+  },
+  "runtimeConsumption": {
+    "controller": "integrations/governance/governance-control.mjs",
+    "decisionContract": "integrations/governance/autonomy-decision.schema.json",
+    "decideCommand": "node integrations/governance/governance-control.mjs decide --root <project-root> --request <request.json>",
+    "consumeCommand": "node integrations/governance/governance-control.mjs consume --root <project-root> --decision <result.json>",
+    "decisionTrigger": "bounded-choice-requires-selection-or-authority-resolution",
+    "existingHumanGates": "always-prevail",
+    "effectivePolicyEscalations": "always-prevail",
+    "autonomousExecution": "execute-selected-option-without-preference-question",
+    "humanQuestions": "HUMAN_REQUIRED-or-human-resolvable-BLOCKED-only",
+    "blockedHumanResolvableReasonCodes": ["UNKNOWN_CONSEQUENTIAL"]
+  },
+  "dispositions": [
+    {
+      "id": "SAFE_AUTONOMOUS",
+      "selectionAllowed": true,
+      "executionAllowed": true,
+      "humanRequired": false,
+      "decisionRecordRequired": false,
+      "description": "The agent may select and execute a valid bounded option without asking for a preference when all governing contracts remain satisfied."
+    },
+    {
+      "id": "AUTONOMOUS_WITH_AUDIT",
+      "selectionAllowed": true,
+      "executionAllowed": true,
+      "humanRequired": false,
+      "decisionRecordRequired": true,
+      "description": "The agent may select and execute a valid bounded option, but the decision and supporting provenance must be recorded."
+    },
+    {
+      "id": "HUMAN_REQUIRED",
+      "selectionAllowed": false,
+      "executionAllowed": false,
+      "humanRequired": true,
+      "decisionRecordRequired": true,
+      "description": "A human with the required authority must decide before selection or execution can proceed."
+    },
+    {
+      "id": "BLOCKED",
+      "selectionAllowed": false,
+      "executionAllowed": false,
+      "humanRequired": false,
+      "decisionRecordRequired": true,
+      "description": "The controller cannot select or execute an option because authority, classification, evidence or a valid candidate is missing."
+    }
+  ],
+  "decisionClasses": [
+    {
+      "id": "reversible-internal",
+      "decisionAuthority": "agent",
+      "defaultDisposition": "SAFE_AUTONOMOUS",
+      "humanRequired": false,
+      "recordDecision": false,
+      "allowedSources": ["canonical-contracts", "repository-precedent", "task-contract"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": true,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": false
+      },
+      "evidenceRequirements": {
+        "required": false,
+        "minimumRefs": 0,
+        "policyProvenanceRequired": false,
+        "riskAssessmentRequired": false
+      },
+      "description": "Internal, technically reversible implementation choices that do not alter approved behavior, public contracts, persistence, security boundaries or consequential product semantics."
+    },
+    {
+      "id": "reversible-contract-bounded",
+      "decisionAuthority": "agent",
+      "defaultDisposition": "AUTONOMOUS_WITH_AUDIT",
+      "humanRequired": false,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "repository-precedent", "task-contract", "test-evidence"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": true,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": false
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": false
+      },
+      "description": "Reversible choices made strictly inside approved contracts or bounded implementation ranges, where an audit trail is useful even though no new human decision is required."
+    },
+    {
+      "id": "equivalent-variant",
+      "decisionAuthority": "agent",
+      "defaultDisposition": "AUTONOMOUS_WITH_AUDIT",
+      "humanRequired": false,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "repository-precedent", "approved-design-system", "task-contract", "test-evidence"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": true,
+        "equivalenceProofRequired": true,
+        "explicitAuthorizationRequired": false
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": false
+      },
+      "description": "A choice among variants that are equivalent under the approved contract and can be demonstrated not to change observable or consequential semantics."
+    },
+    {
+      "id": "design-authority-bounded",
+      "decisionAuthority": "agent",
+      "defaultDisposition": "AUTONOMOUS_WITH_AUDIT",
+      "humanRequired": false,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "approved-design-system", "approved-product-context", "task-contract", "test-evidence", "visual-research", "candidate-comparison"],
+      "candidateRequirements": {
+        "minimumCandidates": 2,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": true,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": false
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 3,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": false,
+        "requiredSources": ["approved-product-context", "visual-research", "candidate-comparison"]
+      },
+      "description": "A reversible choice among at least two objectively compared visual directions inside approved product, behavioral, security, consent, public-promise and brand contracts. The agent selects and records the contextual direction without asking for aesthetic preference."
+    },
+    {
+      "id": "product-consequential",
+      "decisionAuthority": "human",
+      "defaultDisposition": "HUMAN_REQUIRED",
+      "humanRequired": true,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "approved-product-context", "runtime-evidence", "risk-assessment", "human-direction"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": false,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": true
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": true
+      },
+      "description": "A decision that materially changes product behavior, workflow semantics, user-visible capability, public promise or another consequential product contract."
+    },
+    {
+      "id": "security-consequential",
+      "decisionAuthority": "human",
+      "defaultDisposition": "HUMAN_REQUIRED",
+      "humanRequired": true,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "runtime-evidence", "test-evidence", "risk-assessment", "human-direction"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": false,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": true
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": true
+      },
+      "description": "A decision affecting authentication, authorization, tenancy, trust boundaries, secrets, abuse resistance or another material security property."
+    },
+    {
+      "id": "data-consequential",
+      "decisionAuthority": "human",
+      "defaultDisposition": "HUMAN_REQUIRED",
+      "humanRequired": true,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "runtime-evidence", "test-evidence", "risk-assessment", "human-direction"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": false,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": true
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": true
+      },
+      "description": "A decision affecting persistence, migration, retention, deletion, integrity, ownership, privacy or another material data lifecycle property."
+    },
+    {
+      "id": "cost-consequential",
+      "decisionAuthority": "human",
+      "defaultDisposition": "HUMAN_REQUIRED",
+      "humanRequired": true,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "runtime-evidence", "provider-contract", "risk-assessment", "human-direction"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": false,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": true
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": true
+      },
+      "description": "A decision that can materially change infrastructure, provider, licensing, operational or usage cost."
+    },
+    {
+      "id": "legal-consequential",
+      "decisionAuthority": "human",
+      "defaultDisposition": "HUMAN_REQUIRED",
+      "humanRequired": true,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "approved-product-context", "provider-contract", "risk-assessment", "human-direction"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": false,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": true
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": true
+      },
+      "description": "A decision involving legal, regulatory, licensing, contractual, privacy-policy or compliance consequences."
+    },
+    {
+      "id": "brand-consequential",
+      "decisionAuthority": "human",
+      "defaultDisposition": "HUMAN_REQUIRED",
+      "humanRequired": true,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "approved-design-system", "approved-product-context", "risk-assessment", "human-direction"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": false,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": true
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": true
+      },
+      "description": "A decision that materially changes approved brand identity, public-facing visual language, messaging or another durable brand commitment."
+    },
+    {
+      "id": "behavioral-high-risk",
+      "decisionAuthority": "human",
+      "defaultDisposition": "HUMAN_REQUIRED",
+      "humanRequired": true,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "approved-product-context", "test-evidence", "runtime-evidence", "risk-assessment", "human-direction"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": false,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": true
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": true
+      },
+      "description": "A behavioral or UX decision with material risk to safety, consent, accessibility, trust, irreversible user action or another high-impact interaction property."
+    },
+    {
+      "id": "external-destructive",
+      "decisionAuthority": "human",
+      "defaultDisposition": "HUMAN_REQUIRED",
+      "humanRequired": true,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "runtime-evidence", "provider-contract", "risk-assessment", "human-direction"],
+      "candidateRequirements": {
+        "minimumCandidates": 1,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": false,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": true
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": true
+      },
+      "description": "An external side effect that deletes, publishes, deploys, sends, charges, mutates production state or otherwise creates a destructive or hard-to-reverse consequence outside the local implementation boundary."
+    },
+    {
+      "id": "unknown-consequential",
+      "decisionAuthority": "human",
+      "defaultDisposition": "BLOCKED",
+      "humanRequired": true,
+      "recordDecision": true,
+      "allowedSources": ["canonical-contracts", "effective-policy", "approved-product-context", "runtime-evidence", "provider-contract", "risk-assessment", "human-direction"],
+      "candidateRequirements": {
+        "minimumCandidates": 0,
+        "mustSatisfyCanonicalContracts": true,
+        "reversibleRequired": false,
+        "equivalenceProofRequired": false,
+        "explicitAuthorizationRequired": true
+      },
+      "evidenceRequirements": {
+        "required": true,
+        "minimumRefs": 1,
+        "policyProvenanceRequired": true,
+        "riskAssessmentRequired": true
+      },
+      "description": "A potentially consequential decision whose authority class cannot yet be established safely. It remains blocked until the missing classification, evidence or authority is resolved."
+    }
+  ]
+}

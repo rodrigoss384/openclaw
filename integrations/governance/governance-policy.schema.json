@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/governance-policy.schema.json",
+  "title": "Spec-Driven Governance Rule Registry",
+  "description": "Machine-readable registry for governable engineering rules. Enforcement references stable capability IDs rather than repository paths.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "status", "rulesFile", "capabilityRegistry", "admissionBoundary", "authorities", "rationaleSections", "rules"],
+  "properties": {
+    "$schema": { "const": "../../integrations/governance/governance-policy.schema.json" },
+    "schemaVersion": { "const": "1.2.0" },
+    "status": { "const": "capability-registry" },
+    "rulesFile": { "const": "rules.md" },
+    "capabilityRegistry": { "const": "integrations/governance/enforcement-capabilities.json" },
+    "admissionBoundary": { "$ref": "#/$defs/admissionBoundary" },
+    "authorities": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/authority" }
+    },
+    "rationaleSections": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/rationaleSection" }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "authorityId": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "capabilityId": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "ruleId": { "type": "string", "pattern": "^RULE-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$" },
+    "gitBlobSha": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description"],
+      "properties": {
+        "id": { "$ref": "#/$defs/authorityId" },
+        "description": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "admissionBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "legacyBaseline", "unregisteredAdditions", "rationaleOnlyOperational", "admissions"],
+      "properties": {
+        "mode": { "const": "registry-first" },
+        "legacyBaseline": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rulesFileGitBlobSha", "operational"],
+          "properties": {
+            "rulesFileGitBlobSha": { "$ref": "#/$defs/gitBlobSha" },
+            "operational": { "const": true }
+          }
+        },
+        "unregisteredAdditions": { "const": "non-operative" },
+        "rationaleOnlyOperational": { "const": false },
+        "admissions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/admission" }
+        }
+      }
+    },
+    "admission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "rulesFileGitBlobSha", "ruleIds", "note"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^ADM-RULES-[0-9]{3}$" },
+        "kind": { "enum": ["legacy-baseline", "registered-governance", "rationale-only"] },
+        "rulesFileGitBlobSha": { "$ref": "#/$defs/gitBlobSha" },
+        "ruleIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/ruleId" }
+        },
+        "note": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": { "enum": ["always", "conditional"] },
+        "frontend": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["not-applicable", "lightweight", "substantial"] }
+        },
+        "backend": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["not-applicable", "lightweight", "substantial"] }
+        },
+        "behavioralUx": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["not-applicable", "applicable"] }
+        }
+      }
+    },
+    "enforcement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capability"],
+      "properties": {
+        "capability": { "$ref": "#/$defs/capabilityId" }
+      }
+    },
+    "resolver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref"],
+      "properties": {
+        "ref": { "type": "string", "minLength": 1 },
+        "command": { "type": "string", "minLength": 1 }
+      }
+    },
+    "escalation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["humanRequired", "reasonClasses"],
+      "properties": {
+        "humanRequired": { "const": true },
+        "reasonClasses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" }
+        }
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity", "route"],
+      "properties": {
+        "severity": { "enum": ["blocking", "warning", "advisory"] },
+        "route": { "enum": ["BLOCKED", "DESIGN_READINESS", "IMPLEMENTATION", "PATCH", "ADVERSARIAL", "EVIDENCE_RELEASE", "SESSION_CLOSURE", "NONE"] }
+      }
+    },
+    "rationaleSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anchor", "destination", "reason"],
+      "properties": {
+        "anchor": { "$ref": "#/$defs/nonEmptyString" },
+        "destination": { "const": "rationale" },
+        "reason": { "type": "string", "minLength": 8 }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "domain", "kind", "authority", "summary", "applicability", "stageScopes", "failure", "rulesReference"],
+      "properties": {
+        "id": { "$ref": "#/$defs/ruleId" },
+        "domain": { "enum": ["workflow", "common", "frontend", "backend", "testing", "security", "operations"] },
+        "kind": { "enum": ["hard-invariant", "deterministic-default", "contextual-heuristic", "consequential-decision"] },
+        "authority": { "$ref": "#/$defs/authorityId" },
+        "summary": { "type": "string", "minLength": 8 },
+        "applicability": { "$ref": "#/$defs/applicability" },
+        "stageScopes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["every-stage", "discovery", "specification", "acceptance", "design-readiness", "implementation", "backend-representative", "frontend-representative", "adversarial", "evidence-release", "session-closure"] }
+        },
+        "enforcement": { "$ref": "#/$defs/enforcement" },
+        "resolver": { "$ref": "#/$defs/resolver" },
+        "escalation": { "$ref": "#/$defs/escalation" },
+        "failure": { "$ref": "#/$defs/failure" },
+        "rulesReference": { "type": "string", "pattern": "^rules\\.md#[^\\s]+$" }
+      }
+    }
+  }
+}

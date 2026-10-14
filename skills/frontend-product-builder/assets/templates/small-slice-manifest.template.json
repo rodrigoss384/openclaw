@@ -1,0 +1,617 @@
+{
+  "$schema": "../schemas/small-slice-manifest.schema.json",
+  "meta": {
+    "id": "<screen-id>-small-slice",
+    "name": "<Screen Name> Small Slice",
+    "version": "1.0.0",
+    "status": "draft",
+    "owner": "<feature-or-team>",
+    "source": "docs/frontend/screens/<screen-id>/small-slice-manifest.json",
+    "generated": false,
+    "description": "Executable contract for the production-intended representative slice of <screen-name>.",
+    "createdAt": null,
+    "updatedAt": null
+  },
+  "screen": {
+    "id": "<screen-id>",
+    "name": "<Screen Name>",
+    "screenSpecification": "docs/frontend/screens/<screen-id>/screen-spec.json",
+    "stateMatrix": "docs/frontend/screens/<screen-id>/state-matrix.md",
+    "componentMap": "docs/frontend/screens/<screen-id>/component-map.md",
+    "implementationPlan": "docs/frontend/screens/<screen-id>/implementation-plan.md",
+    "readinessReport": "docs/frontend/screens/<screen-id>/readiness-report.json"
+  },
+  "release": {
+    "readinessStatus": "ready-for-small-slice",
+    "nextAllowedStage": "SMALL SLICE",
+    "reportPath": "docs/frontend/screens/<screen-id>/readiness-report.json",
+    "reportGeneratedAt": "<ISO-8601 timestamp from readiness report>",
+    "structuralOnly": false,
+    "strictWarnings": false,
+    "validatedBeforeSlice": true
+  },
+  "repository": {
+    "inspectionFile": "docs/frontend/screens/<screen-id>/repository-inspection.md",
+    "root": ".",
+    "workspaceType": "<single-package|npm-workspaces|pnpm-workspace|yarn-workspaces|turborepo|nx|lerna|custom-monorepo|other>",
+    "applicationPackage": "<application-package-path>",
+    "packageManager": {
+      "name": "<npm|pnpm|yarn|bun|other>",
+      "version": null,
+      "lockfile": "<authoritative-lockfile>",
+      "authority": "<Evidence establishing this package manager as authoritative>"
+    },
+    "commands": {
+      "install": "<approved-install-command-or-null>",
+      "dev": "<approved-development-command-or-null>",
+      "build": "<approved-build-command-or-null>",
+      "typecheck": "<approved-typecheck-command-or-null>",
+      "lint": "<approved-lint-command-or-null>",
+      "test": "<approved-test-command-or-null>",
+      "storybook": "<approved-storybook-command-or-null>",
+      "browserTest": "<approved-browser-test-command-or-null>"
+    },
+    "migrationRequired": false,
+    "migrationApproved": false,
+    "baselineCommit": "<baseline-commit-hash>",
+    "baselineBranch": "<baseline-branch>",
+    "baselineCapturedAt": "<ISO-8601 baseline timestamp>",
+    "preExistingChanges": []
+  },
+  "slice": {
+    "id": "<slice-id>",
+    "name": "<Slice Name>",
+    "purpose": "<What production-system decision this slice must prove>",
+    "routeOrSurface": "<Real route or bounded interaction surface>",
+    "entryPoint": "<Real source entry point>",
+    "extensionPath": "<How this slice extends directly into the final screen>",
+    "architectureProof": "<Route, feature, data, state, and side-effect boundary being proven>",
+    "stateProof": "<Primary and non-success states being proven>",
+    "interactionProof": "<Product interaction being proven>",
+    "responsiveProof": "<Responsive transformation being proven>",
+    "accessibilityProof": "<Semantic, keyboard, focus, and announcement behavior being proven>",
+    "completionDefinition": [
+      "<Observable completion condition>"
+    ]
+  },
+  "scope": {
+    "inScope": [
+      "<Slice implementation responsibility>"
+    ],
+    "outOfScope": [
+      "<Explicitly excluded work>"
+    ],
+    "assumptions": [
+      "<Reversible assumption or none>"
+    ],
+    "blockers": [],
+    "approvedDependencyChanges": []
+  },
+  "architecture": {
+    "routeOwner": "<Route module>",
+    "featureBoundary": "<Feature directory or package>",
+    "dataAdapter": "<Real query, loader, service, or view-model adapter>",
+    "fixtureAdapter": "<Fixture adapter used without bypassing the real model boundary>",
+    "componentSources": [
+      "<Existing project or catalog component source>"
+    ],
+    "tokenSources": [
+      "<Design-system token source>"
+    ],
+    "stateOwners": [
+      {
+        "concern": "<State concern>",
+        "owner": "<Owner>",
+        "boundary": "<What the owner controls and does not control>"
+      }
+    ],
+    "sideEffectOwners": [
+      {
+        "concern": "<Navigation, mutation, focus, scroll, storage, or another side effect>",
+        "owner": "<Owner>",
+        "boundary": "<Where the side effect executes>"
+      }
+    ],
+    "prohibitedShortcuts": [
+      "Do not hardcode production data inside JSX.",
+      "Do not create a temporary route or parallel component system.",
+      "Do not bypass DTO, mapper, frontend-model, or fixture-adapter boundaries.",
+      "Do not expand beyond the declared slice."
+    ]
+  },
+  "fixtures": {
+    "strategyFile": "docs/frontend/screens/<screen-id>/fixture-strategy.md",
+    "modelBoundary": "<Frontend model or view-model boundary>",
+    "deterministic": true,
+    "containsProductionData": false,
+    "items": [
+      {
+        "id": "<primary-fixture-id>",
+        "stateId": "data",
+        "purpose": "<Primary representative state>",
+        "source": "<Fixture source file>",
+        "model": "<Frontend model>",
+        "representative": true,
+        "safe": true,
+        "edgeCases": [
+          "<Long label, boundary value, or another edge case>"
+        ]
+      },
+      {
+        "id": "<non-success-fixture-id>",
+        "stateId": "<non-success-state-id>",
+        "purpose": "<Meaningful non-success state>",
+        "source": "<Fixture source file>",
+        "model": "<Frontend model or normalized failure model>",
+        "representative": true,
+        "safe": true,
+        "edgeCases": [
+          "<Recovery or preservation behavior>"
+        ]
+      }
+    ]
+  },
+  "states": [
+    {
+      "id": "data",
+      "category": "data",
+      "role": "primary",
+      "fixtureId": "<primary-fixture-id>",
+      "dataAuthority": "<What is authoritative in this slice state>",
+      "preservedContext": [
+        "<Preserved route, filter, selection, shell, or state>"
+      ],
+      "visibleRegions": [
+        "<Screen region>"
+      ],
+      "enabledActions": [
+        "<Action ID or none>"
+      ],
+      "recovery": [],
+      "expectedEvidence": [
+        "<Story, test, browser scenario, or screenshot>"
+      ]
+    },
+    {
+      "id": "<non-success-state-id>",
+      "category": "<empty|partial|error|forbidden|unavailable|processing|stale|custom>",
+      "role": "non-success",
+      "fixtureId": "<non-success-fixture-id>",
+      "dataAuthority": "<What remains authoritative>",
+      "preservedContext": [
+        "<Usable context preserved>"
+      ],
+      "visibleRegions": [
+        "<Visible region>"
+      ],
+      "enabledActions": [
+        "<Recovery action or none>"
+      ],
+      "recovery": [
+        "<Recovery behavior>"
+      ],
+      "expectedEvidence": [
+        "<Story, test, browser scenario, or screenshot>"
+      ]
+    }
+  ],
+  "interactions": [
+    {
+      "id": "<interaction-id>",
+      "userGoal": "<Product goal>",
+      "trigger": "<User trigger>",
+      "owner": "<Feature, form, route, URL, or local owner>",
+      "sideEffectBoundary": "<Where the actual side effect occurs>",
+      "eligibility": "<Eligibility rule>",
+      "success": "<Authoritative or local successful outcome>",
+      "failure": "<Normalized failure and preservation behavior>",
+      "keyboard": "<Keyboard contract>",
+      "focus": "<Focus contract>"
+    }
+  ],
+  "responsive": {
+    "proof": "<Responsive system decision being proven>",
+    "ranges": [
+      {
+        "id": "compact",
+        "condition": "<Compact container or viewport condition>",
+        "layout": "<Compact layout>",
+        "regionTransformation": [
+          "<Region transformation>"
+        ],
+        "actionTransformation": [
+          "<Action transformation>"
+        ],
+        "scrollBehavior": [
+          "<Scroll behavior>"
+        ],
+        "evidence": [
+          "<Compact screenshot or browser test>"
+        ]
+      },
+      {
+        "id": "wide",
+        "condition": "<Wide container or viewport condition>",
+        "layout": "<Wide layout>",
+        "regionTransformation": [
+          "<Region behavior>"
+        ],
+        "actionTransformation": [
+          "<Action behavior>"
+        ],
+        "scrollBehavior": [
+          "<Scroll behavior>"
+        ],
+        "evidence": [
+          "<Wide screenshot or browser test>"
+        ]
+      }
+    ],
+    "primaryScrollOwner": "<Primary scroll owner>",
+    "localScrollOwners": [
+      "<Local scroll owner or none>"
+    ],
+    "pageHorizontalOverflowAllowed": false
+  },
+  "accessibility": {
+    "proof": "<Accessibility decision being proven>",
+    "semantics": [
+      "<Landmark, heading, list, table, form, or dialog semantics>"
+    ],
+    "accessibleNames": [
+      "<Accessible-name source>"
+    ],
+    "keyboard": [
+      "<Keyboard behavior>"
+    ],
+    "focus": [
+      "<Focus behavior>"
+    ],
+    "announcements": [
+      "<Announcement or deliberate silent behavior>"
+    ],
+    "reducedMotion": [
+      "<Reduced-motion behavior>"
+    ],
+    "zoomAndReflow": [
+      "Validate at 125% browser zoom.",
+      "Validate critical reflow at 200% text scaling."
+    ],
+    "evidence": [
+      "<Accessibility test, browser test, or report>"
+    ]
+  },
+  "files": [
+    {
+      "path": "src/features/<feature>/<file>.tsx",
+      "action": "create",
+      "disposition": "production",
+      "purpose": "<Production responsibility>",
+      "owner": "<Feature or layer>",
+      "planned": true,
+      "dependencies": [
+        "<Dependency or none>"
+      ]
+    },
+    {
+      "path": "src/features/<feature>/fixtures/<file>.ts",
+      "action": "create",
+      "disposition": "fixture",
+      "purpose": "<Representative fixture responsibility>",
+      "owner": "<Feature>",
+      "planned": true,
+      "dependencies": [
+        "<Frontend model or mapper>"
+      ]
+    },
+    {
+      "path": "src/features/<feature>/<file>.test.tsx",
+      "action": "create",
+      "disposition": "test",
+      "purpose": "<Slice test responsibility>",
+      "owner": "<Feature>",
+      "planned": true,
+      "dependencies": [
+        "<Screen or feature implementation>"
+      ]
+    }
+  ],
+  "sequence": [
+    {
+      "order": 1,
+      "id": "confirm-release",
+      "description": "Confirm that the readiness report releases SMALL SLICE.",
+      "dependencies": [],
+      "completionEvidence": [
+        "docs/frontend/screens/<screen-id>/readiness-report.json"
+      ],
+      "stopOnFailure": true
+    },
+    {
+      "order": 2,
+      "id": "confirm-repository",
+      "description": "Confirm repository, package manager, application package, and existing architecture.",
+      "dependencies": [
+        "confirm-release"
+      ],
+      "completionEvidence": [
+        "docs/frontend/screens/<screen-id>/repository-inspection.md"
+      ],
+      "stopOnFailure": true
+    },
+    {
+      "order": 3,
+      "id": "confirm-fixtures",
+      "description": "Confirm safe deterministic fixtures and the real frontend-model boundary.",
+      "dependencies": [
+        "confirm-repository"
+      ],
+      "completionEvidence": [
+        "docs/frontend/screens/<screen-id>/fixture-strategy.md"
+      ],
+      "stopOnFailure": true
+    },
+    {
+      "order": 4,
+      "id": "implement-structure",
+      "description": "Implement the real route or surface and approved structural regions.",
+      "dependencies": [
+        "confirm-fixtures"
+      ],
+      "completionEvidence": [
+        "<Production source path>"
+      ],
+      "stopOnFailure": true
+    },
+    {
+      "order": 5,
+      "id": "implement-state-proof",
+      "description": "Implement the primary and selected non-success states.",
+      "dependencies": [
+        "implement-structure"
+      ],
+      "completionEvidence": [
+        "<Story or test paths>"
+      ],
+      "stopOnFailure": true
+    },
+    {
+      "order": 6,
+      "id": "implement-interaction-proof",
+      "description": "Implement the selected product interaction with ownership, keyboard, and focus behavior.",
+      "dependencies": [
+        "implement-state-proof"
+      ],
+      "completionEvidence": [
+        "<Test or browser scenario>"
+      ],
+      "stopOnFailure": true
+    },
+    {
+      "order": 7,
+      "id": "validate-slice",
+      "description": "Run browser validation, screenshots, and required audits without expanding scope.",
+      "dependencies": [
+        "implement-interaction-proof"
+      ],
+      "completionEvidence": [
+        "<Browser report>",
+        "<Screenshot>",
+        "<Audit report>"
+      ],
+      "stopOnFailure": true
+    }
+  ],
+  "evidence": [
+    {
+      "id": "readiness-evidence",
+      "type": "readiness-report",
+      "required": true,
+      "path": "docs/frontend/screens/<screen-id>/readiness-report.json",
+      "description": "Readiness release for SMALL SLICE.",
+      "status": "available"
+    },
+    {
+      "id": "primary-state-screenshot",
+      "type": "screenshot",
+      "required": true,
+      "path": "docs/frontend/screens/<screen-id>/screenshots/<screen-id>-data-1440x900.png",
+      "description": "Wide primary-state screenshot.",
+      "status": "planned"
+    },
+    {
+      "id": "compact-state-screenshot",
+      "type": "screenshot",
+      "required": true,
+      "path": "docs/frontend/screens/<screen-id>/screenshots/<screen-id>-data-390x844.png",
+      "description": "Compact responsive screenshot.",
+      "status": "planned"
+    },
+    {
+      "id": "non-success-evidence",
+      "type": "browser-test",
+      "required": true,
+      "path": "<browser-test-report-path>",
+      "description": "Browser evidence for the selected non-success state.",
+      "status": "planned"
+    },
+    {
+      "id": "accessibility-evidence",
+      "type": "accessibility-report",
+      "required": true,
+      "path": "<accessibility-report-path>",
+      "description": "Keyboard, focus, semantic, zoom, and reflow evidence.",
+      "status": "planned"
+    },
+    {
+      "id": "implementation-journal-evidence",
+      "type": "implementation-journal",
+      "required": true,
+      "path": "docs/frontend/screens/<screen-id>/small-slice-implementation-journal.md",
+      "description": "Traceable execution journal for the representative slice.",
+      "status": "planned"
+    },
+    {
+      "id": "browser-validation-evidence",
+      "type": "browser-validation",
+      "required": true,
+      "path": "docs/frontend/screens/<screen-id>/browser-validation.md",
+      "description": "Executed browser, responsive, keyboard, focus, zoom, reflow, console, and network validation.",
+      "status": "planned"
+    },
+    {
+      "id": "screenshot-registry-evidence",
+      "type": "screenshot-registry",
+      "required": true,
+      "path": "docs/frontend/screens/<screen-id>/screenshot-evidence.json",
+      "description": "Machine-readable registry for required screenshots.",
+      "status": "planned"
+    },
+    {
+      "id": "design-system-audit-evidence",
+      "type": "design-system-audit",
+      "required": true,
+      "path": "docs/frontend/screens/<screen-id>/design-system-audit.md",
+      "description": "Design-system, component, layout, responsive, accessibility, and content audit.",
+      "status": "planned"
+    },
+    {
+      "id": "defect-log-evidence",
+      "type": "defect-log",
+      "required": true,
+      "path": "docs/frontend/screens/<screen-id>/defect-log.md",
+      "description": "Verified defect inventory with patch and revalidation status.",
+      "status": "planned"
+    }
+  ],
+  "stopConditions": [
+    {
+      "id": "readiness-regressed",
+      "condition": "The readiness report no longer releases SMALL SLICE.",
+      "impact": "Slice implementation is no longer authorized.",
+      "requiredDecision": "Return to planning, resolve the blocking contract, and regenerate readiness.",
+      "owner": "<feature-or-team>",
+      "status": "inactive"
+    },
+    {
+      "id": "repository-conflict",
+      "condition": "Repository inspection contradicts the approved architecture or package-manager assumption.",
+      "impact": "Implementation would create an unapproved parallel architecture or migration.",
+      "requiredDecision": "Update the implementation plan or approve an explicit migration.",
+      "owner": "<architecture-owner>",
+      "status": "inactive"
+    },
+    {
+      "id": "scope-expansion",
+      "condition": "Implementation requires files, dependencies, routes, or responsibilities outside the declared slice.",
+      "impact": "The representative slice would no longer be bounded.",
+      "requiredDecision": "Pause, update planning and the manifest, then rerun validation.",
+      "owner": "<feature-or-team>",
+      "status": "inactive"
+    }
+  ],
+  "validation": {
+    "schema": "~/.agents/skills/frontend-product-builder/assets/schemas/small-slice-manifest.schema.json",
+    "checks": [
+      {
+        "id": "SLICE-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The small-slice manifest must validate against the small-slice manifest schema.",
+        "command": "node ~/.agents/skills/frontend-product-builder/scripts/validate-small-slice-manifest.mjs docs/frontend/screens/<screen-id>/small-slice-manifest.json",
+        "remediation": "Correct missing, invalid, unsupported, or unresolved manifest fields."
+      },
+      {
+        "id": "SLICE-002",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "The readiness report must release SMALL SLICE before implementation begins.",
+        "command": null,
+        "remediation": "Return to screen planning and resolve readiness blockers."
+      },
+      {
+        "id": "SLICE-003",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Repository inspection must identify the authoritative package manager, application package, architecture, and commands.",
+        "command": null,
+        "remediation": "Complete repository-inspection.md and resolve conflicting repository signals."
+      },
+      {
+        "id": "SLICE-004",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "The slice must use production-intended route, feature, component, token, data, state, and side-effect boundaries.",
+        "command": null,
+        "remediation": "Remove temporary or parallel architecture and use the approved production path."
+      },
+      {
+        "id": "SLICE-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Fixtures must be deterministic, synthetic, safe, and pass through the approved frontend-model boundary.",
+        "command": null,
+        "remediation": "Replace hardcoded JSX or production-like data with safe fixture adapters."
+      },
+      {
+        "id": "SLICE-006",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "The slice must prove architecture, primary and non-success states, interaction, responsive behavior, and accessibility.",
+        "command": null,
+        "remediation": "Complete the missing proof dimension without expanding beyond the representative slice."
+      },
+      {
+        "id": "SLICE-007",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "All created, modified, reused, inspected, or removed files must be declared in the manifest.",
+        "command": "node ~/.agents/skills/frontend-product-builder/scripts/audit-small-slice-files.mjs docs/frontend/screens/<screen-id>/small-slice-manifest.json",
+        "remediation": "Update the manifest or remove unapproved file changes."
+      },
+      {
+        "id": "SLICE-008",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "The declared primary state, non-success state, interaction, responsive transformation, and accessibility behavior must be browser validated.",
+        "command": null,
+        "remediation": "Run the declared browser scenarios and correct the verified defects."
+      },
+      {
+        "id": "SLICE-009",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "The implementation must remain inside the approved file, dependency, architecture, route, and migration scope.",
+        "command": "node ~/.agents/skills/frontend-product-builder/scripts/audit-small-slice-scope.mjs docs/frontend/screens/<screen-id>/small-slice-manifest.json",
+        "remediation": "Remove unapproved expansion or return to planning, update the authoritative contract, and revalidate."
+      },
+      {
+        "id": "SLICE-010",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Required source, test, browser, screenshot, audit, journal, and defect evidence must exist and be complete.",
+        "command": "node ~/.agents/skills/frontend-product-builder/scripts/audit-small-slice-evidence.mjs docs/frontend/screens/<screen-id>/small-slice-manifest.json",
+        "remediation": "Generate, execute, reconcile, or revalidate the missing or incomplete evidence."
+      },
+      {
+        "id": "SLICE-011",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Representative-gate preparation must aggregate passing planning, implementation, scope, evidence, screenshot, browser, audit, and defect results.",
+        "command": "node ~/.agents/skills/frontend-product-builder/scripts/prepare-representative-gate.mjs docs/frontend/screens/<screen-id>/small-slice-manifest.json",
+        "remediation": "Resolve the blocking audits and regenerate the representative-gate preparation artifact."
+      }
+    ]
+  }
+}

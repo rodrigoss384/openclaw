@@ -1,0 +1,1212 @@
+{
+  "$schema": "../schemas/layout-recipe.schema.json",
+  "meta": {
+    "id": "entity-detail",
+    "name": "Entity Detail Workspace",
+    "version": "1.1.0",
+    "status": "stable",
+    "category": "detail",
+    "description": "Compact entity orientation, critical attention, grouped section navigation, primary detail content, contextual information, and sensitive actions.",
+    "owner": "frontend-product-builder",
+    "source": "assets/recipes/entity-detail.recipe.json",
+    "tags": [
+      "entity",
+      "detail",
+      "workspace",
+      "sections",
+      "context"
+    ]
+  },
+  "purpose": "Allow users to understand one domain entity, review its current state, navigate related information, and perform contextual actions without losing orientation.",
+  "useWhen": [
+    "The dominant task concerns one entity.",
+    "The entity has several meaningful information groups or workflows.",
+    "Users need persistent orientation while navigating entity sections.",
+    "Actions depend on entity state, permissions, or context."
+  ],
+  "doNotUseWhen": [
+    "The primary task is comparing many entities.",
+    "The screen is only a short creation form.",
+    "The entity contains too little information to justify section navigation.",
+    "The workflow is a dedicated review-and-approval comparison."
+  ],
+  "requiredInputs": [
+    "Entity terminology",
+    "Entity identity fields",
+    "Critical-state criteria",
+    "Section inventory",
+    "Permission matrix",
+    "Contextual actions",
+    "Audit requirements",
+    "Content magnitude and long-value behavior"
+  ],
+  "screenContract": {
+    "requiredFields": [
+      "purpose",
+      "primaryUser",
+      "primaryTask",
+      "route",
+      "dataDependencies",
+      "primaryAction",
+      "secondaryActions",
+      "permissions",
+      "states",
+      "responsiveTransformations",
+      "accessibilityRequirements",
+      "acceptanceCriteria"
+    ],
+    "selectionQuestions": [
+      "Which identity fields are required for orientation?",
+      "Which entity conditions require immediate attention?",
+      "Which sections are primary, supporting, contextual, or audit?",
+      "Does section state belong in the route or URL?",
+      "Which actions apply globally to the entity and which belong inside sections?",
+      "Can contextual content remain visible beside the primary content?",
+      "Which information may be progressively disclosed?"
+    ]
+  },
+  "regions": [
+    {
+      "id": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "role": "Provide route and collection orientation without duplicating entity identity.",
+      "required": false,
+      "order": 1,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "Breadcrumbs",
+        "BackLink"
+      ],
+      "prohibitedComponents": [
+        "Long entity metadata",
+        "Primary actions"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "nav",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when route hierarchy improves orientation.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Top of page.",
+          "layout": "Compact back link or shortened breadcrumbs.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "collapse",
+          "notes": "Preserve the parent destination."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Top of page.",
+          "layout": "Truncated breadcrumb trail.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "collapse",
+          "notes": "Current entity name may remain in the header instead."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Top of page.",
+          "layout": "Full breadcrumb trail when concise.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "wrap",
+          "notes": "Avoid repeating technical hierarchy."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Top of page.",
+          "layout": "Full breadcrumb trail.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Do not add unnecessary levels."
+        }
+      },
+      "rules": [
+        "Breadcrumbs describe user-oriented hierarchy.",
+        "Current entity identity remains in the entity header.",
+        "Breadcrumbs use links except the current page."
+      ]
+    },
+    {
+      "id": "entityHeader",
+      "name": "Compact Entity Header",
+      "role": "Identify the entity, summarize current state, and expose limited entity-level actions.",
+      "required": true,
+      "order": 2,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "EntityHeader",
+        "EntityIdentity",
+        "StatusBadge",
+        "MetadataList",
+        "Button",
+        "OverflowMenu",
+        "FreshnessIndicator"
+      ],
+      "prohibitedComponents": [
+        "Large repeated edit buttons for every field",
+        "All entity metadata",
+        "Several export buttons",
+        "Technical identifiers without user value"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "header",
+      "labelRequirement": "not-required",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Top of entity workspace.",
+          "layout": "Stack identity, status, essential metadata, and primary action.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "wrap",
+          "notes": "Secondary actions move to overflow."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Top of entity workspace.",
+          "layout": "Identity and metadata left; actions wrap.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "wrap",
+          "notes": "Keep essential state visible."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Top of entity workspace.",
+          "layout": "Horizontal compact entity header.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Avoid excessive vertical height."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Top of entity workspace.",
+          "layout": "Horizontal compact entity header.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Do not expose additional low-value metadata simply to fill width."
+        }
+      },
+      "rules": [
+        "The entity header provides orientation, not a complete summary.",
+        "One entity-level primary action is allowed when justified.",
+        "Exports and low-frequency utilities move to overflow.",
+        "Raw UUIDs remain hidden unless operationally required."
+      ]
+    },
+    {
+      "id": "criticalAttention",
+      "name": "Critical Entity Attention",
+      "role": "Surface entity-specific risks, deadlines, conflicts, or blocking conditions.",
+      "required": false,
+      "order": 3,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "critical",
+      "allowedComponents": [
+        "CriticalAlertGroup",
+        "DeadlineAlert",
+        "ConflictAlert",
+        "BlockingState"
+      ],
+      "prohibitedComponents": [
+        "Neutral information",
+        "Automated suggestion represented as confirmed decision"
+      ],
+      "ownsSpacing": true,
+      "surface": "critical",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only when the entity requires immediate attention.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Below entity header.",
+          "layout": "Stacked critical alerts.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Critical content remains fully readable."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Below entity header.",
+          "layout": "Stacked or two-column alerts.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Expose clear next action."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Below entity header.",
+          "layout": "Constrained critical summary.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Do not create several competing danger cards."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Below entity header.",
+          "layout": "Constrained critical summary.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Remain grouped."
+        }
+      },
+      "rules": [
+        "Only material entity-specific risk appears here.",
+        "Automated findings are labeled as suggestions until confirmed.",
+        "Critical alerts remain distinct from ordinary status badges."
+      ]
+    },
+    {
+      "id": "sectionNavigation",
+      "name": "Section Navigation",
+      "role": "Navigate grouped entity information and workflows without horizontal overflow or unstable ordering.",
+      "required": false,
+      "order": 4,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "SectionNavigation",
+        "Tabs",
+        "SidebarSectionNavigation",
+        "SelectNavigation",
+        "OverflowNavigation"
+      ],
+      "prohibitedComponents": [
+        "Unbounded horizontal tab row",
+        "Different section order on different routes",
+        "Navigation labels taken directly from backend modules"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "nav",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": true,
+        "container": "entity detail content canvas",
+        "offsetToken": "reference.space.0",
+        "zIndexToken": "reference.zIndex.sticky",
+        "compactBehavior": "Transform to grouped select, compact navigation, or disclosure menu."
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when the entity has several approved sections.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Below critical attention.",
+          "layout": "Grouped select or compact disclosure navigation.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "collapse",
+          "notes": "Do not use an inaccessible horizontally scrolling tab row."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Below critical attention.",
+          "layout": "Wrapped grouped navigation or compact side navigation.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "collapse",
+          "notes": "Secondary sections may move to overflow."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Below critical attention or as a left section rail when approved.",
+          "layout": "Grouped horizontal or vertical section navigation.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Section grouping reduces excessive individual tabs."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Persistent section navigation beside or above content.",
+          "layout": "Grouped vertical or horizontal navigation.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Do not expose every subfeature as an equal top-level tab."
+        }
+      },
+      "rules": [
+        "Section order remains predictable.",
+        "Section navigation state uses route or validated URL state when shareable.",
+        "Labels use user-oriented domain terminology.",
+        "Narrow layouts transform structurally rather than relying on clipped tabs."
+      ]
+    },
+    {
+      "id": "primaryContent",
+      "name": "Primary Entity Content",
+      "role": "Render the active entity section or primary entity workflow.",
+      "required": true,
+      "order": 5,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "Section",
+        "EntitySummary",
+        "FeaturePanel",
+        "Form",
+        "DataTable",
+        "Timeline",
+        "DocumentList",
+        "MetricGroup",
+        "EmptyState",
+        "ErrorState"
+      ],
+      "prohibitedComponents": [
+        "Duplicate entity header",
+        "Page-local primitive reimplementations",
+        "Technical DTO dump"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Main content below section navigation.",
+          "layout": "Single-column section content.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Feature components own their internal compact behavior."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Main content.",
+          "layout": "Single primary content column with supporting content below.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Avoid narrow side-by-side forms."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Main content column.",
+          "layout": "Primary content with optional contextual aside.",
+          "width": "minmax(0, 1fr)",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "The active section selects an approved nested recipe when necessary."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Main content column.",
+          "layout": "Primary content with persistent contextual aside when useful.",
+          "width": "minmax(0, 1fr)",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Reading and form content remain constrained."
+        }
+      },
+      "rules": [
+        "Each active section has a clear purpose and heading.",
+        "The active section may use a nested approved recipe.",
+        "The primary content does not repeat orientation information unnecessarily.",
+        "State boundaries remain local when possible."
+      ]
+    },
+    {
+      "id": "contextualAside",
+      "name": "Contextual Aside",
+      "role": "Keep supporting metadata, activity, related entities, or contextual actions visible without competing with the primary task.",
+      "required": false,
+      "order": 6,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "contextual",
+      "allowedComponents": [
+        "ContextPanel",
+        "MetadataList",
+        "RelatedEntities",
+        "ActivitySummary",
+        "ContextualActions",
+        "FreshnessIndicator"
+      ],
+      "prohibitedComponents": [
+        "Complete duplicate of primary content",
+        "Several independent card stacks",
+        "Critical alerts hidden only in the aside"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "aside",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": true,
+        "container": "entity detail layout",
+        "offsetToken": "reference.space.4",
+        "zIndexToken": "reference.zIndex.sticky",
+        "compactBehavior": "Move below primary content or into grouped disclosure sections."
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when persistent supporting context improves the primary task.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Below primary content or inside grouped disclosures.",
+          "layout": "Single-column contextual sections.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Do not place essential primary actions only here."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Below primary content.",
+          "layout": "Stacked contextual sections.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Sticky behavior is removed."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Right-side contextual column.",
+          "layout": "Single contextual column.",
+          "width": "320px",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Remain subordinate to the primary content."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Right-side contextual column.",
+          "layout": "Single contextual column.",
+          "width": "360px",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Do not widen indefinitely."
+        }
+      },
+      "rules": [
+        "The aside contains supporting, not primary, content.",
+        "Critical information remains visible before the main content.",
+        "Sticky behavior is disabled when content exceeds usable viewport height.",
+        "Long contextual content may move to a dedicated section."
+      ]
+    },
+    {
+      "id": "auditDetails",
+      "name": "Audit and Technical Details",
+      "role": "Provide accountability, history, or technical context to authorized users through progressive disclosure.",
+      "required": false,
+      "order": 7,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "audit",
+      "allowedComponents": [
+        "AuditTimeline",
+        "ChangeHistory",
+        "TechnicalDetails",
+        "Disclosure",
+        "DefinitionList"
+      ],
+      "prohibitedComponents": [
+        "Raw stack traces",
+        "Authentication tokens",
+        "Technical content presented before primary operational information"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only to eligible roles and when audit or diagnostic context is required.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Collapsed disclosure or dedicated section.",
+          "layout": "Single column.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "visible",
+          "notes": "Technical identifiers wrap or copy safely."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Dedicated section below contextual content.",
+          "layout": "Single column.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "visible",
+          "notes": "Remain progressively disclosed."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Dedicated section or secondary navigation group.",
+          "layout": "Structured history or definition list.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "visible",
+          "notes": "Do not expose raw transport values."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Dedicated section or secondary navigation group.",
+          "layout": "Structured history or definition list.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "visible",
+          "notes": "Preserve readability."
+        }
+      },
+      "rules": [
+        "Audit data is not removed for visual simplicity.",
+        "Technical details are separated from ordinary user-facing content.",
+        "Sensitive technical values remain masked or omitted.",
+        "Timestamps use the approved user-facing format with optional technical detail for authorized contexts."
+      ]
+    },
+    {
+      "id": "entityActions",
+      "name": "Entity Action Surface",
+      "role": "Provide persistent or contextual actions when the active workflow requires them to remain available.",
+      "required": false,
+      "order": 8,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "StickyActionBar",
+        "Button",
+        "ConfirmationDialog",
+        "OverflowMenu"
+      ],
+      "prohibitedComponents": [
+        "Duplicate actions already present in the header",
+        "Destructive action adjacent to primary action without separation",
+        "Action without permission or state eligibility"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-elevated",
+      "landmark": "section",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": true,
+        "container": "entity detail content canvas",
+        "offsetToken": "reference.space.0",
+        "zIndexToken": "reference.zIndex.sticky",
+        "compactBehavior": "Render a compact bottom action surface only when it does not obscure content."
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only when the active section requires persistent actions.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Bottom of active content or compact sticky action surface.",
+          "layout": "One primary action with secondary overflow.",
+          "width": "100%",
+          "order": 8,
+          "overflow": "move-to-overflow",
+          "notes": "Must not cover focused controls or error messages."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Bottom of active section.",
+          "layout": "Horizontal wrapping action bar.",
+          "width": "100%",
+          "order": 8,
+          "overflow": "wrap",
+          "notes": "Sticky only when task continuity benefits."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Bottom of active section or contextual aside.",
+          "layout": "Horizontal action bar.",
+          "width": "100%",
+          "order": 8,
+          "overflow": "visible",
+          "notes": "Avoid duplication with header actions."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Bottom of active section or contextual aside.",
+          "layout": "Horizontal action bar.",
+          "width": "100%",
+          "order": 8,
+          "overflow": "visible",
+          "notes": "Keep actions grouped by semantic priority."
+        }
+      },
+      "rules": [
+        "Persistent actions are used only for active editing or review workflows.",
+        "One primary action is visually dominant.",
+        "Destructive actions are separated and confirmed.",
+        "Pending state prevents duplicate execution."
+      ]
+    }
+  ],
+  "composition": {
+    "layoutModel": "split",
+    "widthPolicy": "hybrid",
+    "container": {
+      "component": "PageContainer",
+      "maxWidthToken": "layout.container.detail",
+      "paddingToken": "layout.page.padding"
+    },
+    "columnPolicy": "Single-column orientation and navigation followed by one primary content column with an optional constrained contextual aside.",
+    "verticalRhythmToken": "reference.space.6",
+    "regionGapToken": "reference.space.6",
+    "spacingOwnership": [
+      "The recipe owns spacing between breadcrumbs, entity header, critical attention, navigation, and content layout.",
+      "The active section owns spacing between its internal subsections.",
+      "The contextual aside owns internal panel gaps.",
+      "The action surface owns action spacing."
+    ],
+    "surfacePolicy": [
+      "The entity header may use one orientation surface.",
+      "Primary content does not require a card around every subsection.",
+      "The contextual aside uses a subtle supporting surface.",
+      "Critical attention uses semantic critical treatment."
+    ],
+    "scrollOwner": "application content canvas",
+    "rules": [
+      "Entity orientation remains visible before section content.",
+      "Section order is stable.",
+      "Primary content remains wider than contextual content.",
+      "Audit details remain available through progressive disclosure."
+    ],
+    "prohibited": [
+      "Long horizontal tab rows that clip or overflow.",
+      "Repeated full entity header in every section.",
+      "Every field represented by a full-width edit button.",
+      "Primary and destructive actions with identical treatment.",
+      "Fixed-height content cards.",
+      "Raw DTO or JSON display in ordinary sections."
+    ]
+  },
+  "actions": {
+    "primaryPlacement": "Entity header for one entity-level action or active section action surface for workflow-specific submission.",
+    "secondaryPlacement": "Entity-header overflow, section toolbars, or contextual aside.",
+    "destructivePlacement": "Separated in overflow or a dedicated destructive area with confirmation.",
+    "bulkPlacement": "Not normally applicable to one entity.",
+    "contextualPlacement": "Inside the active section or contextual aside.",
+    "overflowPolicy": "Exports, audit utilities, and infrequent actions move to overflow.",
+    "maxDominantActionsPerRegion": 1,
+    "compactBehavior": "Preserve one primary action and move secondary or utility actions to overflow or the active section.",
+    "rules": [
+      "Do not repeat the same action in the header, section, and sticky footer.",
+      "Action eligibility reflects current entity state and capability.",
+      "Automated suggestions and human-confirmed actions remain distinct."
+    ]
+  },
+  "content": {
+    "density": "comfortable-compact",
+    "headingPolicy": "One h1 identifies the entity; active sections use h2, and nested subsections use h3.",
+    "longContentPolicy": "Entity names, case numbers, labels, and metadata must wrap or truncate according to explicit content contracts.",
+    "truncationPolicy": "Identity and critical decision values remain accessible in full; lower-priority metadata may truncate.",
+    "emptyStatePlacement": "Section-specific empty states replace only the active section content and preserve entity orientation.",
+    "loadingStrategy": "Render stable entity-header and section skeletons; preserve orientation during section refetch.",
+    "errorScope": "Entity fetch failures affect the route; active section failures remain local when entity orientation remains valid.",
+    "rules": [
+      "Missing, unknown, zero, not-applicable, and not-calculated values remain distinct.",
+      "Technical identifiers appear only in approved audit contexts.",
+      "Section labels use user-facing terminology."
+    ]
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "minimumViewport": "320 CSS pixels with stacked sections and compact section navigation.",
+    "primaryViewport": "1366×768 desktop detail workspace.",
+    "zoomExpectation": "The detail workspace must remain usable at 125% browser zoom.",
+    "pageOverflowPolicy": "No unexpected page-level horizontal overflow.",
+    "internalOverflowPolicy": "Nested tables may own controlled horizontal scrolling; ordinary entity content must wrap or stack.",
+    "transformations": [
+      {
+        "from": "ultrawide",
+        "to": "wide",
+        "change": "Keep the contextual aside constrained and preserve the primary content width.",
+        "reason": "Supporting context must remain subordinate."
+      },
+      {
+        "from": "wide",
+        "to": "medium",
+        "change": "Move the contextual aside below primary content and reduce section navigation density.",
+        "reason": "The primary workflow requires sufficient horizontal space."
+      },
+      {
+        "from": "medium",
+        "to": "compact",
+        "change": "Stack entity header content, transform section navigation into a compact grouped control, and move secondary actions to overflow.",
+        "reason": "Compact viewports cannot sustain a wide header, horizontal navigation, and contextual column."
+      }
+    ]
+  },
+  "states": [
+    {
+      "id": "initial-loading",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render entity-orientation and section-shaped skeletons.",
+      "userAction": "Wait."
+    },
+    {
+      "id": "refreshing",
+      "scope": "region",
+      "required": true,
+      "rendering": "Preserve current entity orientation and active section while indicating background refresh.",
+      "userAction": "Continue or wait."
+    },
+    {
+      "id": "data",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render entity identity, status, section navigation, active content, contextual information, and eligible actions.",
+      "userAction": "Review, navigate, edit, or act."
+    },
+    {
+      "id": "empty",
+      "scope": "region",
+      "required": true,
+      "rendering": "Render section-specific explanation and next action without removing entity orientation.",
+      "userAction": "Create, upload, configure, or return according to section purpose."
+    },
+    {
+      "id": "partial",
+      "scope": "region",
+      "required": true,
+      "rendering": "Keep successful entity regions visible while isolating failed or unavailable sections.",
+      "userAction": "Continue or retry the affected section."
+    },
+    {
+      "id": "error",
+      "scope": "route",
+      "required": true,
+      "rendering": "Use route-level recovery when the entity cannot be loaded and local recovery for optional sections.",
+      "userAction": "Retry or return to the parent collection."
+    },
+    {
+      "id": "forbidden",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render an approved permission state or read-only variant according to capability policy.",
+      "userAction": "Return or continue in read-only mode."
+    },
+    {
+      "id": "stale",
+      "scope": "region",
+      "required": false,
+      "rendering": "Preserve usable entity content with explicit freshness or conflict warning.",
+      "userAction": "Refresh or compare changes."
+    },
+    {
+      "id": "processing",
+      "scope": "region",
+      "required": false,
+      "rendering": "Render an explicit processing state for uploads, analysis, imports, or server calculations.",
+      "userAction": "Wait or continue in unaffected sections."
+    }
+  ],
+  "accessibility": {
+    "landmarkMap": [
+      "Breadcrumbs and section navigation use separately labeled nav landmarks.",
+      "Entity header uses a header region within the inherited main landmark.",
+      "Primary content uses labeled sections.",
+      "Contextual content uses an aside.",
+      "Persistent action surfaces use a labeled region when necessary."
+    ],
+    "headingStructure": [
+      "One h1 identifies the entity.",
+      "The active section uses h2.",
+      "Nested subsections use h3.",
+      "Audit and contextual sections use headings appropriate to their nesting."
+    ],
+    "focusOrder": [
+      "Breadcrumbs or return navigation.",
+      "Entity identity and entity-level actions.",
+      "Critical attention actions.",
+      "Section navigation.",
+      "Active section content.",
+      "Contextual aside.",
+      "Persistent actions.",
+      "Audit detail."
+    ],
+    "keyboard": [
+      "Section navigation is keyboard operable.",
+      "Active section changes provide appropriate focus or orientation.",
+      "Sticky actions do not intercept focus order unexpectedly.",
+      "Contextual disclosures and drawers restore focus."
+    ],
+    "announcements": [
+      "Active section changes should update page orientation where necessary.",
+      "Critical state changes require status communication.",
+      "Background refresh must not repeatedly interrupt users."
+    ],
+    "minimumTargetToken": "reference.control.target.minimum",
+    "contrastTarget": "WCAG 2.2 AA",
+    "colorIndependence": "Entity status, critical attention, selection, automated suggestion, and confirmation state do not depend only on color.",
+    "rules": [
+      "Do not create several unlabeled nav landmarks.",
+      "Collapsed section navigation must expose the active section.",
+      "Section error states require meaningful headings or accessible labels."
+    ]
+  },
+  "constraints": {
+    "requiredComponents": [
+      "EntityHeader",
+      "StatusBadge",
+      "SectionNavigation",
+      "Section",
+      "EmptyState",
+      "ErrorState",
+      "OverflowMenu"
+    ],
+    "prohibitedPatterns": [
+      "Unbounded horizontal tabs.",
+      "Repeated entity identity in every section.",
+      "Every field presented as a large full-width action.",
+      "Raw backend identifiers in ordinary content.",
+      "Primary content narrower than contextual content.",
+      "Critical information hidden only in a secondary tab."
+    ],
+    "dataMagnitude": [
+      "Entity names and labels may be long.",
+      "An entity may contain many sections, but only approved groups appear in primary navigation.",
+      "Timelines, documents, or related records may require nested list recipes."
+    ],
+    "performance": [
+      "Load heavy secondary sections lazily when appropriate.",
+      "Do not refetch every section for one local mutation without cache analysis.",
+      "Preserve entity orientation during section loading."
+    ],
+    "implementation": [
+      "Section state uses routes or validated URL state when shareable.",
+      "Nested workflows use approved recipes.",
+      "TanStack Query owns entity server state.",
+      "Capability checks control actions and read-only behavior.",
+      "Machine presence conditions come from presenceDefaults; visibilityCondition prose is explanatory only."
+    ]
+  },
+  "craftDefaults": {
+    "spatialComposition": {
+      "maxVisualNestingDepth": 2,
+      "regionAssignments": [
+        {
+          "regionId": "breadcrumbs",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "entityHeader",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "criticalAttention",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "sectionNavigation",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "primaryContent",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": true
+        },
+        {
+          "regionId": "contextualAside",
+          "widthStrategy": "constrained",
+          "heightStrategy": "natural",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "auditDetails",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "entityActions",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        }
+      ]
+    },
+    "perceptualHierarchy": {
+      "surfaceAssignments": [
+        {
+          "regionId": "breadcrumbs",
+          "role": "canvas"
+        },
+        {
+          "regionId": "entityHeader",
+          "role": "surface"
+        },
+        {
+          "regionId": "criticalAttention",
+          "role": "surface-elevated"
+        },
+        {
+          "regionId": "sectionNavigation",
+          "role": "surface-subtle"
+        },
+        {
+          "regionId": "primaryContent",
+          "role": "canvas"
+        },
+        {
+          "regionId": "contextualAside",
+          "role": "surface-subtle"
+        },
+        {
+          "regionId": "auditDetails",
+          "role": "surface-subtle"
+        },
+        {
+          "regionId": "entityActions",
+          "role": "surface-elevated"
+        }
+      ]
+    }
+  },
+  "presenceDefaults": [
+    {
+      "targetType": "region",
+      "targetId": "breadcrumbs",
+      "policy": "conditional",
+      "condition": {
+        "signal": "navigation.parentRoutePresent",
+        "operator": "truthy"
+      },
+      "rationale": "Detail wayfinding appears when a real parent route or collection context exists."
+    },
+    {
+      "targetType": "region",
+      "targetId": "entityHeader",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Entity detail always requires identity and current-state orientation."
+    },
+    {
+      "targetType": "region",
+      "targetId": "criticalAttention",
+      "policy": "conditional",
+      "condition": {
+        "signal": "criticalAttention.items.count",
+        "operator": "gt",
+        "value": 0
+      },
+      "rationale": "Critical entity attention disappears when no material entity-specific risk exists."
+    },
+    {
+      "targetType": "region",
+      "targetId": "sectionNavigation",
+      "policy": "conditional",
+      "condition": {
+        "signal": "entity.sections.count",
+        "operator": "gt",
+        "value": 1
+      },
+      "rationale": "A single-section entity does not render navigation chrome for a choice that does not exist."
+    },
+    {
+      "targetType": "region",
+      "targetId": "primaryContent",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Every entity-detail screen requires one primary content workflow, including section-level empty and error states."
+    },
+    {
+      "targetType": "region",
+      "targetId": "contextualAside",
+      "policy": "conditional",
+      "condition": {
+        "signal": "entity.contextualAside.enabled",
+        "operator": "truthy"
+      },
+      "rationale": "Persistent supporting context exists only when the approved screen contract shows that it materially improves the primary task."
+    },
+    {
+      "targetType": "region",
+      "targetId": "auditDetails",
+      "policy": "conditional",
+      "condition": {
+        "all": [
+          {
+            "signal": "entity.audit.available",
+            "operator": "truthy"
+          },
+          {
+            "signal": "permissions.canViewAudit",
+            "operator": "truthy"
+          }
+        ]
+      },
+      "rationale": "Audit detail appears only when relevant audit context exists and the current capability may disclose it."
+    },
+    {
+      "targetType": "region",
+      "targetId": "entityActions",
+      "policy": "conditional",
+      "condition": {
+        "signal": "entity.persistentActions.count",
+        "operator": "gt",
+        "value": 0
+      },
+      "rationale": "Persistent entity actions render only when the active section genuinely needs actions to remain available."
+    }
+  ],
+  "validation": {
+    "schema": "assets/schemas/layout-recipe.schema.json",
+    "checks": [
+      {
+        "id": "DETAIL-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The entity-detail recipe must validate against the layout recipe schema.",
+        "remediation": "Correct invalid or missing recipe fields."
+      },
+      {
+        "id": "DETAIL-002",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Section navigation must not clip, overlap, or create inaccessible horizontal overflow.",
+        "remediation": "Apply grouped navigation and the approved compact transformation."
+      },
+      {
+        "id": "DETAIL-003",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Primary, supporting, contextual, and audit content must remain visually distinct.",
+        "remediation": "Correct content hierarchy and progressive disclosure."
+      },
+      {
+        "id": "DETAIL-004",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "The contextual aside must move below or collapse before it compresses the primary workflow.",
+        "remediation": "Correct responsive column transformation."
+      },
+      {
+        "id": "DETAIL-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Automated suggestions must remain visually and semantically distinct from human-confirmed decisions.",
+        "remediation": "Use approved suggestion, review, and confirmation patterns."
+      },
+      {
+        "id": "DETAIL-006",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Entity-detail orientation, section navigation, contextual, audit, and persistent-action regions must follow typed recipe presence semantics.",
+        "remediation": "Correct craftDefaults/presenceDefaults and keep conditional regions required=false with cardinality.minimum=0."
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "Legal case detail",
+      "description": "Compact case identity, procedural status, critical deadlines, grouped sections, primary case content, contextual metadata, and audit history."
+    },
+    {
+      "name": "Tenant detail",
+      "description": "Organization identity, status, administrators, modules, billing configuration, activity, and sensitive actions."
+    }
+  ]
+}

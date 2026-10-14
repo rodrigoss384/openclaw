@@ -1,0 +1,1741 @@
+{
+  "$schema": "../schemas/design-system.schema.json",
+  "meta": {
+    "name": "<PROJECT_NAME> Design System",
+    "version": "0.1.0",
+    "status": "draft",
+    "productType": "<PRODUCT_TYPE>",
+    "density": "comfortable-compact",
+    "owner": "<OWNER_OR_TEAM>",
+    "language": "pt-BR",
+    "createdAt": "<YYYY-MM-DD>",
+    "updatedAt": "<YYYY-MM-DD>",
+    "sourceFiles": {
+      "productContext": "docs/frontend/product-context.md",
+      "designDirection": "docs/frontend/design-direction.md",
+      "frontendArchitecture": "docs/frontend/frontend-architecture.md",
+      "tokenContract": "docs/frontend/design-system/tokens.md",
+      "componentContractsDirectory": "docs/frontend/design-system/components",
+      "componentCatalog": "docs/frontend/design-system/component-catalog.json",
+      "tokenImplementation": "src/styles/tokens.css",
+      "tailwindConfiguration": "<TAILWIND_CONFIGURATION_PATH>",
+      "componentSourceDirectory": "src/components"
+    }
+  },
+  "principles": [
+    "User task clarity is more important than visual novelty.",
+    "Product components consume semantic tokens instead of raw palette values.",
+    "Shared component APIs express intent rather than low-level styling.",
+    "One section should normally contain no more than one dominant primary action.",
+    "Responsive behavior must be defined by component and layout contracts.",
+    "Loading, empty, warning, error, unavailable, and permission states are first-class interface requirements.",
+    "Technical backend identifiers must not appear directly in ordinary user-facing content.",
+    "Accessibility behavior belongs in shared components whenever possible."
+  ],
+  "stack": {
+    "framework": "React",
+    "language": "TypeScript",
+    "buildTool": "Vite",
+    "styling": "Tailwind CSS",
+    "componentFoundation": "shadcn/ui",
+    "primitiveFoundation": "Radix UI",
+    "variantUtility": "class-variance-authority",
+    "classMergeUtility": "cn",
+    "iconLibrary": "Lucide",
+    "componentWorkshop": "Storybook",
+    "browserTesting": "Playwright",
+    "accessibilityTesting": "axe-core"
+  },
+  "themes": {
+    "supported": [
+      "light",
+      "dark"
+    ],
+    "default": "dark",
+    "selectorStrategy": "class",
+    "selector": ".dark",
+    "supportsSystemPreference": true
+  },
+  "tokens": {
+    "reference": {
+      "color": {
+        "neutral": {
+          "0": {
+            "type": "color",
+            "value": "#FFFFFF",
+            "description": "Lightest neutral reference color.",
+            "status": "stable"
+          },
+          "50": {
+            "type": "color",
+            "value": "#F8FAFC",
+            "description": "Very light neutral reference color.",
+            "status": "stable"
+          },
+          "100": {
+            "type": "color",
+            "value": "#F1F5F9",
+            "description": "Light neutral reference color.",
+            "status": "stable"
+          },
+          "200": {
+            "type": "color",
+            "value": "#E2E8F0",
+            "description": "Light border neutral reference color.",
+            "status": "stable"
+          },
+          "400": {
+            "type": "color",
+            "value": "#94A3B8",
+            "description": "Muted neutral reference color.",
+            "status": "stable"
+          },
+          "600": {
+            "type": "color",
+            "value": "#475569",
+            "description": "Strong secondary neutral reference color.",
+            "status": "stable"
+          },
+          "800": {
+            "type": "color",
+            "value": "#1E293B",
+            "description": "Dark surface neutral reference color.",
+            "status": "stable"
+          },
+          "900": {
+            "type": "color",
+            "value": "#0F172A",
+            "description": "Dark neutral reference color.",
+            "status": "stable"
+          },
+          "950": {
+            "type": "color",
+            "value": "#020617",
+            "description": "Darkest neutral reference color.",
+            "status": "stable"
+          }
+        },
+        "primary": {
+          "500": {
+            "type": "color",
+            "value": "<APPROVED_PRIMARY_500>",
+            "description": "Primary brand reference color.",
+            "status": "experimental"
+          },
+          "600": {
+            "type": "color",
+            "value": "<APPROVED_PRIMARY_600>",
+            "description": "Primary action reference color.",
+            "status": "experimental"
+          },
+          "700": {
+            "type": "color",
+            "value": "<APPROVED_PRIMARY_700>",
+            "description": "Primary active-state reference color.",
+            "status": "experimental"
+          }
+        },
+        "success": {
+          "100": {
+            "type": "color",
+            "value": "#DCFCE7",
+            "description": "Success background reference color.",
+            "status": "stable"
+          },
+          "700": {
+            "type": "color",
+            "value": "#15803D",
+            "description": "Success foreground reference color.",
+            "status": "stable"
+          }
+        },
+        "warning": {
+          "100": {
+            "type": "color",
+            "value": "#FEF3C7",
+            "description": "Warning background reference color.",
+            "status": "stable"
+          },
+          "700": {
+            "type": "color",
+            "value": "#A16207",
+            "description": "Warning foreground reference color.",
+            "status": "stable"
+          }
+        },
+        "danger": {
+          "100": {
+            "type": "color",
+            "value": "#FEE2E2",
+            "description": "Danger background reference color.",
+            "status": "stable"
+          },
+          "700": {
+            "type": "color",
+            "value": "#B91C1C",
+            "description": "Danger foreground reference color.",
+            "status": "stable"
+          }
+        },
+        "info": {
+          "100": {
+            "type": "color",
+            "value": "#DBEAFE",
+            "description": "Information background reference color.",
+            "status": "stable"
+          },
+          "700": {
+            "type": "color",
+            "value": "#1D4ED8",
+            "description": "Information foreground reference color.",
+            "status": "stable"
+          }
+        }
+      },
+      "space": {
+        "0": {
+          "type": "dimension",
+          "value": "0px",
+          "description": "No spacing.",
+          "status": "stable"
+        },
+        "1": {
+          "type": "dimension",
+          "value": "4px",
+          "description": "Extra-small spacing.",
+          "status": "stable"
+        },
+        "2": {
+          "type": "dimension",
+          "value": "8px",
+          "description": "Small spacing.",
+          "status": "stable"
+        },
+        "3": {
+          "type": "dimension",
+          "value": "12px",
+          "description": "Compact spacing.",
+          "status": "stable"
+        },
+        "4": {
+          "type": "dimension",
+          "value": "16px",
+          "description": "Default component spacing.",
+          "status": "stable"
+        },
+        "5": {
+          "type": "dimension",
+          "value": "20px",
+          "description": "Medium spacing.",
+          "status": "stable"
+        },
+        "6": {
+          "type": "dimension",
+          "value": "24px",
+          "description": "Large component spacing.",
+          "status": "stable"
+        },
+        "8": {
+          "type": "dimension",
+          "value": "32px",
+          "description": "Section spacing.",
+          "status": "stable"
+        },
+        "10": {
+          "type": "dimension",
+          "value": "40px",
+          "description": "Large section spacing.",
+          "status": "stable"
+        },
+        "12": {
+          "type": "dimension",
+          "value": "48px",
+          "description": "Page-level spacing.",
+          "status": "stable"
+        }
+      },
+      "radius": {
+        "none": {
+          "type": "dimension",
+          "value": "0px",
+          "description": "No radius.",
+          "status": "stable"
+        },
+        "sm": {
+          "type": "dimension",
+          "value": "6px",
+          "description": "Small control radius.",
+          "status": "stable"
+        },
+        "md": {
+          "type": "dimension",
+          "value": "10px",
+          "description": "Default surface radius.",
+          "status": "stable"
+        },
+        "lg": {
+          "type": "dimension",
+          "value": "14px",
+          "description": "Large overlay radius.",
+          "status": "stable"
+        },
+        "full": {
+          "type": "dimension",
+          "value": "9999px",
+          "description": "Fully rounded radius.",
+          "status": "stable"
+        }
+      },
+      "font": {
+        "family": {
+          "interface": {
+            "type": "fontFamily",
+            "value": "<APPROVED_INTERFACE_FONT_STACK>",
+            "description": "Primary interface font family.",
+            "status": "experimental"
+          },
+          "mono": {
+            "type": "fontFamily",
+            "value": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+            "description": "Monospaced font for technical identifiers when approved.",
+            "status": "stable"
+          }
+        },
+        "size": {
+          "xs": {
+            "type": "fontSize",
+            "value": "12px",
+            "description": "Caption and compact metadata text.",
+            "status": "stable"
+          },
+          "sm": {
+            "type": "fontSize",
+            "value": "14px",
+            "description": "Default label and compact body text.",
+            "status": "stable"
+          },
+          "md": {
+            "type": "fontSize",
+            "value": "16px",
+            "description": "Default body text.",
+            "status": "stable"
+          },
+          "lg": {
+            "type": "fontSize",
+            "value": "18px",
+            "description": "Subsection title text.",
+            "status": "stable"
+          },
+          "xl": {
+            "type": "fontSize",
+            "value": "20px",
+            "description": "Section title text.",
+            "status": "stable"
+          },
+          "2xl": {
+            "type": "fontSize",
+            "value": "24px",
+            "description": "Page title text.",
+            "status": "stable"
+          },
+          "3xl": {
+            "type": "fontSize",
+            "value": "30px",
+            "description": "Large page title when explicitly approved.",
+            "status": "stable",
+            "restrictions": [
+              "Do not use for dense operational pages without design-direction approval."
+            ]
+          }
+        },
+        "weight": {
+          "regular": {
+            "type": "fontWeight",
+            "value": 400,
+            "description": "Regular text weight.",
+            "status": "stable"
+          },
+          "medium": {
+            "type": "fontWeight",
+            "value": 500,
+            "description": "Label and emphasized text weight.",
+            "status": "stable"
+          },
+          "semibold": {
+            "type": "fontWeight",
+            "value": 600,
+            "description": "Heading and action weight.",
+            "status": "stable"
+          },
+          "bold": {
+            "type": "fontWeight",
+            "value": 700,
+            "description": "Strong emphasis weight.",
+            "status": "stable"
+          }
+        },
+        "lineHeight": {
+          "tight": {
+            "type": "lineHeight",
+            "value": 1.2,
+            "description": "Tight heading line height.",
+            "status": "stable"
+          },
+          "normal": {
+            "type": "lineHeight",
+            "value": 1.5,
+            "description": "Default interface line height.",
+            "status": "stable"
+          },
+          "relaxed": {
+            "type": "lineHeight",
+            "value": 1.65,
+            "description": "Long-form content line height.",
+            "status": "stable"
+          }
+        }
+      },
+      "control": {
+        "height": {
+          "sm": {
+            "type": "dimension",
+            "value": "32px",
+            "description": "Compact control height.",
+            "status": "stable"
+          },
+          "md": {
+            "type": "dimension",
+            "value": "40px",
+            "description": "Default control height.",
+            "status": "stable"
+          },
+          "lg": {
+            "type": "dimension",
+            "value": "48px",
+            "description": "Large control height.",
+            "status": "stable"
+          }
+        },
+        "target": {
+          "minimum": {
+            "type": "dimension",
+            "value": "44px",
+            "description": "Minimum intended interactive target size.",
+            "status": "stable"
+          }
+        }
+      },
+      "icon": {
+        "size": {
+          "sm": {
+            "type": "dimension",
+            "value": "16px",
+            "description": "Small icon size.",
+            "status": "stable"
+          },
+          "md": {
+            "type": "dimension",
+            "value": "20px",
+            "description": "Default icon size.",
+            "status": "stable"
+          },
+          "lg": {
+            "type": "dimension",
+            "value": "24px",
+            "description": "Large icon size.",
+            "status": "stable"
+          }
+        }
+      },
+      "duration": {
+        "instant": {
+          "type": "duration",
+          "value": "0ms",
+          "description": "No transition.",
+          "status": "stable"
+        },
+        "fast": {
+          "type": "duration",
+          "value": "120ms",
+          "description": "Fast interaction transition.",
+          "status": "stable"
+        },
+        "normal": {
+          "type": "duration",
+          "value": "180ms",
+          "description": "Default overlay and state transition.",
+          "status": "stable"
+        },
+        "slow": {
+          "type": "duration",
+          "value": "260ms",
+          "description": "Slow transition used sparingly.",
+          "status": "stable"
+        }
+      },
+      "zIndex": {
+        "base": {
+          "type": "number",
+          "value": 0,
+          "description": "Base stacking level.",
+          "status": "stable"
+        },
+        "sticky": {
+          "type": "number",
+          "value": 20,
+          "description": "Sticky interface elements.",
+          "status": "stable"
+        },
+        "dropdown": {
+          "type": "number",
+          "value": 40,
+          "description": "Dropdown menus.",
+          "status": "stable"
+        },
+        "popover": {
+          "type": "number",
+          "value": 50,
+          "description": "Popovers.",
+          "status": "stable"
+        },
+        "drawer": {
+          "type": "number",
+          "value": 60,
+          "description": "Drawers.",
+          "status": "stable"
+        },
+        "modal": {
+          "type": "number",
+          "value": 70,
+          "description": "Modal dialogs.",
+          "status": "stable"
+        },
+        "toast": {
+          "type": "number",
+          "value": 80,
+          "description": "Toast notifications.",
+          "status": "stable"
+        },
+        "tooltip": {
+          "type": "number",
+          "value": 90,
+          "description": "Tooltips.",
+          "status": "stable"
+        }
+      }
+    },
+    "semantic": {
+      "background": {
+        "canvas": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.50}",
+            "dark": "{reference.color.neutral.950}"
+          },
+          "description": "Application canvas background.",
+          "status": "stable"
+        },
+        "surface": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.0}",
+            "dark": "{reference.color.neutral.900}"
+          },
+          "description": "Primary content surface.",
+          "status": "stable"
+        },
+        "surfaceSubtle": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.100}",
+            "dark": "{reference.color.neutral.800}"
+          },
+          "description": "Subtle nested surface.",
+          "status": "stable"
+        },
+        "surfaceElevated": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.0}",
+            "dark": "{reference.color.neutral.800}"
+          },
+          "description": "Elevated overlay surface.",
+          "status": "stable"
+        },
+        "disabled": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.100}",
+            "dark": "{reference.color.neutral.800}"
+          },
+          "description": "Disabled element background.",
+          "status": "stable"
+        }
+      },
+      "text": {
+        "primary": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.950}",
+            "dark": "{reference.color.neutral.50}"
+          },
+          "description": "Primary text.",
+          "status": "stable"
+        },
+        "secondary": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.600}",
+            "dark": "{reference.color.neutral.200}"
+          },
+          "description": "Supporting text.",
+          "status": "stable"
+        },
+        "muted": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.600}",
+            "dark": "{reference.color.neutral.400}"
+          },
+          "description": "Low-priority metadata text.",
+          "status": "stable"
+        },
+        "inverse": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.0}",
+            "dark": "{reference.color.neutral.950}"
+          },
+          "description": "Text displayed over inverse surfaces.",
+          "status": "stable"
+        },
+        "disabled": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.400}",
+            "dark": "{reference.color.neutral.600}"
+          },
+          "description": "Disabled text.",
+          "status": "stable"
+        }
+      },
+      "border": {
+        "default": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.200}",
+            "dark": "{reference.color.neutral.800}"
+          },
+          "description": "Default component border.",
+          "status": "stable"
+        },
+        "strong": {
+          "type": "color",
+          "values": {
+            "light": "{reference.color.neutral.400}",
+            "dark": "{reference.color.neutral.600}"
+          },
+          "description": "Strong structural border.",
+          "status": "stable"
+        }
+      },
+      "action": {
+        "primary": {
+          "background": {
+            "type": "color",
+            "value": "{reference.color.primary.600}",
+            "description": "Primary action background.",
+            "status": "experimental"
+          },
+          "foreground": {
+            "type": "color",
+            "value": "{reference.color.neutral.0}",
+            "description": "Primary action foreground.",
+            "status": "stable"
+          },
+          "hover": {
+            "type": "color",
+            "value": "{reference.color.primary.700}",
+            "description": "Primary action hover background.",
+            "status": "experimental"
+          }
+        },
+        "danger": {
+          "background": {
+            "type": "color",
+            "value": "{reference.color.danger.700}",
+            "description": "Destructive action background.",
+            "status": "stable"
+          },
+          "foreground": {
+            "type": "color",
+            "value": "{reference.color.neutral.0}",
+            "description": "Destructive action foreground.",
+            "status": "stable"
+          }
+        }
+      },
+      "status": {
+        "success": {
+          "background": {
+            "type": "color",
+            "value": "{reference.color.success.100}",
+            "description": "Success status background.",
+            "status": "stable"
+          },
+          "foreground": {
+            "type": "color",
+            "value": "{reference.color.success.700}",
+            "description": "Success status foreground.",
+            "status": "stable"
+          }
+        },
+        "warning": {
+          "background": {
+            "type": "color",
+            "value": "{reference.color.warning.100}",
+            "description": "Warning status background.",
+            "status": "stable"
+          },
+          "foreground": {
+            "type": "color",
+            "value": "{reference.color.warning.700}",
+            "description": "Warning status foreground.",
+            "status": "stable"
+          }
+        },
+        "danger": {
+          "background": {
+            "type": "color",
+            "value": "{reference.color.danger.100}",
+            "description": "Danger status background.",
+            "status": "stable"
+          },
+          "foreground": {
+            "type": "color",
+            "value": "{reference.color.danger.700}",
+            "description": "Danger status foreground.",
+            "status": "stable"
+          }
+        },
+        "info": {
+          "background": {
+            "type": "color",
+            "value": "{reference.color.info.100}",
+            "description": "Information status background.",
+            "status": "stable"
+          },
+          "foreground": {
+            "type": "color",
+            "value": "{reference.color.info.700}",
+            "description": "Information status foreground.",
+            "status": "stable"
+          }
+        }
+      },
+      "focus": {
+        "ring": {
+          "type": "color",
+          "value": "{reference.color.primary.500}",
+          "description": "Keyboard focus ring.",
+          "status": "experimental"
+        }
+      }
+    },
+    "component": {
+      "button": {
+        "radius": {
+          "type": "dimension",
+          "value": "{reference.radius.sm}",
+          "description": "Canonical button radius.",
+          "status": "stable"
+        }
+      },
+      "input": {
+        "radius": {
+          "type": "dimension",
+          "value": "{reference.radius.sm}",
+          "description": "Canonical input radius.",
+          "status": "stable"
+        }
+      },
+      "card": {
+        "radius": {
+          "type": "dimension",
+          "value": "{reference.radius.md}",
+          "description": "Canonical card radius.",
+          "status": "stable"
+        }
+      },
+      "dialog": {
+        "radius": {
+          "type": "dimension",
+          "value": "{reference.radius.lg}",
+          "description": "Canonical dialog radius.",
+          "status": "stable"
+        }
+      }
+    }
+  },
+  "visualGrammar": {
+    "baseProfile": "productive",
+    "semanticTextStyles": {
+      "display": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.display",
+        "weightToken": "tokens.semantic.font.weight.bold",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.tight",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.primary",
+        "wrapping": "balance",
+        "usage": [
+          "Only for expressive or explicitly approved hero moments."
+        ],
+        "exceptions": []
+      },
+      "pageTitle": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.pageTitle",
+        "weightToken": "tokens.semantic.font.weight.semibold",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.tight",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.primary",
+        "wrapping": "wrap",
+        "usage": [
+          "Primary route or workspace orientation."
+        ],
+        "exceptions": []
+      },
+      "sectionTitle": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.sectionTitle",
+        "weightToken": "tokens.semantic.font.weight.semibold",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.snug",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.primary",
+        "wrapping": "wrap",
+        "usage": [
+          "Major content groups."
+        ],
+        "exceptions": []
+      },
+      "subsectionTitle": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.subsectionTitle",
+        "weightToken": "tokens.semantic.font.weight.medium",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.snug",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.primary",
+        "wrapping": "wrap",
+        "usage": [
+          "Nested content groups."
+        ],
+        "exceptions": []
+      },
+      "body": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.body",
+        "weightToken": "tokens.semantic.font.weight.regular",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.normal",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.primary",
+        "wrapping": "wrap",
+        "usage": [
+          "Default readable interface text."
+        ],
+        "exceptions": []
+      },
+      "bodyStrong": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.body",
+        "weightToken": "tokens.semantic.font.weight.medium",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.normal",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.primary",
+        "wrapping": "wrap",
+        "usage": [
+          "Important inline or compact data text."
+        ],
+        "exceptions": []
+      },
+      "label": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.label",
+        "weightToken": "tokens.semantic.font.weight.medium",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.normal",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.secondary",
+        "wrapping": "wrap",
+        "usage": [
+          "Field labels and compact control labels."
+        ],
+        "exceptions": []
+      },
+      "metadata": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.metadata",
+        "weightToken": "tokens.semantic.font.weight.regular",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.normal",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.muted",
+        "wrapping": "wrap",
+        "usage": [
+          "Subordinate timestamps, IDs, and descriptive metadata."
+        ],
+        "exceptions": []
+      },
+      "caption": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.caption",
+        "weightToken": "tokens.semantic.font.weight.regular",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.normal",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.muted",
+        "wrapping": "wrap",
+        "usage": [
+          "Low-priority captions and helper text."
+        ],
+        "exceptions": []
+      },
+      "metric": {
+        "familyToken": "tokens.semantic.font.family.interface",
+        "sizeToken": "tokens.semantic.font.size.metric",
+        "weightToken": "tokens.semantic.font.weight.semibold",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.tight",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.primary",
+        "wrapping": "nowrap",
+        "usage": [
+          "Comparable numbers and metrics."
+        ],
+        "exceptions": []
+      },
+      "code": {
+        "familyToken": "tokens.semantic.font.family.mono",
+        "sizeToken": "tokens.semantic.font.size.code",
+        "weightToken": "tokens.semantic.font.weight.regular",
+        "lineHeightToken": "tokens.semantic.font.lineHeight.normal",
+        "trackingToken": "tokens.semantic.font.tracking.normal",
+        "colorToken": "tokens.semantic.color.text.primary",
+        "wrapping": "wrap",
+        "usage": [
+          "Approved technical identifiers and code-like values."
+        ],
+        "exceptions": []
+      }
+    },
+    "spacingRelations": [
+      {
+        "id": "internal",
+        "purpose": "internal",
+        "token": "tokens.semantic.space.internal",
+        "owner": "component",
+        "notes": "Padding inside a component."
+      },
+      {
+        "id": "related-elements",
+        "purpose": "related-elements",
+        "token": "tokens.semantic.space.related",
+        "owner": "parent-layout",
+        "notes": "Gap between elements that explain one another."
+      },
+      {
+        "id": "group-separation",
+        "purpose": "group-separation",
+        "token": "tokens.semantic.space.group",
+        "owner": "region",
+        "notes": "Gap between neighboring groups."
+      },
+      {
+        "id": "region-separation",
+        "purpose": "region-separation",
+        "token": "tokens.semantic.space.region",
+        "owner": "page",
+        "notes": "Gap between page regions."
+      }
+    ],
+    "alignmentPolicy": {
+      "rules": [
+        "Declare key lines for page content, section content, repeated rows, and action groups.",
+        "Do not align visual groups by eye when grid, flex, or layout primitives can express the relationship."
+      ],
+      "evidence": [
+        "screen visualHierarchy.alignmentAnchors",
+        "visual-composition-evidence.json"
+      ]
+    },
+    "emphasisPolicy": {
+      "rules": [
+        "One dominant focal point per state and viewport unless an approved exception exists.",
+        "Color cannot be the only signal of hierarchy."
+      ],
+      "evidence": [
+        "visualHierarchy.emphasisBudget",
+        "visual-quality-scorecard.json"
+      ]
+    },
+    "contrastPolicy": {
+      "rules": [
+        "WCAG contrast is the minimum legibility gate, not proof of hierarchy.",
+        "Primary, supporting, contextual, and audit information must remain distinguishable without relying only on color."
+      ],
+      "evidence": [
+        "visual-composition-evidence.json"
+      ]
+    },
+    "responsiveTypePolicy": {
+      "rules": [
+        "Do not scale font size directly with viewport width.",
+        "Responsive changes preserve reading order, action priority, and content priority."
+      ],
+      "evidence": [
+        "screen visualHierarchy.responsivePriority"
+      ]
+    },
+    "perceptualPolicy": {
+      "surfaceHierarchy": {
+        "levels": ["canvas", "surface", "surface-subtle", "surface-elevated"],
+        "separationModelByTheme": {
+          "light": "mixed",
+          "dark": "mixed"
+        }
+      },
+      "accentPolicy": {
+        "mode": "sparse",
+        "allowedSemanticRoles": ["primary-action", "active-navigation"],
+        "unregisteredRole": "error"
+      },
+      "semanticColorPolicy": {
+        "roles": ["success", "warning", "danger", "info", "neutral", "inactive"],
+        "brandAccentMayRepresentStatus": false
+      },
+      "textContrastHierarchy": {
+        "order": ["primary", "secondary", "muted", "disabled"],
+        "accessibilityFloor": "WCAG-2.2-AA"
+      },
+      "borderPolicy": {
+        "roles": ["subtle", "default", "strong", "focus", "error", "selection"],
+        "strongAllowedFor": ["focus", "error", "selection", "explicit-structure"]
+      },
+      "themeCalibration": {
+        "mode": "per-theme-context-validation",
+        "reuseExactColorValuesAllowedWhenValidated": true
+      },
+      "geometryAcrossThemes": {
+        "defaultBehavior": "stable",
+        "exceptionsRequireApproval": true
+      },
+      "presentationRoles": {
+        "status": {
+          "componentFamily": "StatusBadge",
+          "consistency": "strict"
+        },
+        "classification": {
+          "componentFamily": "ClassificationBadge",
+          "consistency": "strict"
+        },
+        "reusable-reference": {
+          "componentFamily": "ReferenceValue",
+          "consistency": "strict"
+        }
+      }
+    },
+    "momentOverrides": []
+  },
+  "componentCatalog": {
+    "Button": {
+      "status": "stable",
+      "category": "primitive",
+      "description": "Canonical action control.",
+      "source": "src/components/ui/button.tsx",
+      "foundation": "shadcn/ui Button",
+      "contract": "docs/frontend/design-system/components/button.md",
+      "owner": "<OWNER_OR_TEAM>",
+      "version": "1.0.0",
+      "tokens": [
+        "component.button.radius",
+        "reference.control.height.sm",
+        "reference.control.height.md",
+        "reference.control.height.lg",
+        "semantic.action.primary.background",
+        "semantic.action.primary.foreground",
+        "semantic.action.danger.background",
+        "semantic.action.danger.foreground",
+        "semantic.focus.ring"
+      ],
+      "variants": {
+        "primary": {
+          "intent": "Dominant action that advances the primary task.",
+          "default": true,
+          "allowedUse": [
+            "One dominant action per section.",
+            "Primary form submission.",
+            "Main workflow continuation."
+          ],
+          "prohibitedUse": [
+            "Export actions.",
+            "Destructive actions.",
+            "Several competing actions in one section."
+          ],
+          "tokens": [
+            "semantic.action.primary.background",
+            "semantic.action.primary.foreground"
+          ]
+        },
+        "secondary": {
+          "intent": "Important supporting action.",
+          "allowedUse": [
+            "Secondary workflow action.",
+            "Alternative action near the primary action.",
+            "Export or utility action when prominence is justified."
+          ],
+          "prohibitedUse": [
+            "Irreversible destructive action."
+          ]
+        },
+        "outline": {
+          "intent": "Lower-emphasis supporting action.",
+          "allowedUse": [
+            "Toolbar utility.",
+            "Cancel or return action.",
+            "Export."
+          ],
+          "prohibitedUse": [
+            "Primary submission when a primary action exists."
+          ]
+        },
+        "ghost": {
+          "intent": "Contextual low-emphasis action.",
+          "allowedUse": [
+            "Table row action.",
+            "Header utility.",
+            "Overflow trigger."
+          ],
+          "prohibitedUse": [
+            "Critical confirmation.",
+            "Only visible call to action in an empty state."
+          ]
+        },
+        "danger": {
+          "intent": "Destructive or irreversible action.",
+          "allowedUse": [
+            "Delete.",
+            "Disable.",
+            "Revoke.",
+            "Destructive confirmation."
+          ],
+          "prohibitedUse": [
+            "Decorative emphasis.",
+            "Ordinary validation warning."
+          ],
+          "tokens": [
+            "semantic.action.danger.background",
+            "semantic.action.danger.foreground"
+          ]
+        }
+      },
+      "sizes": {
+        "sm": {
+          "intent": "Compact toolbar and dense table action.",
+          "controlHeightToken": "reference.control.height.sm",
+          "targetSizeToken": "reference.control.target.minimum",
+          "iconSizeToken": "reference.icon.size.sm",
+          "allowedUse": [
+            "Dense toolbars.",
+            "Table rows.",
+            "Compact secondary actions."
+          ]
+        },
+        "md": {
+          "intent": "Default application action.",
+          "default": true,
+          "controlHeightToken": "reference.control.height.md",
+          "targetSizeToken": "reference.control.target.minimum",
+          "iconSizeToken": "reference.icon.size.sm",
+          "allowedUse": [
+            "Forms.",
+            "Page headers.",
+            "Dialogs."
+          ]
+        },
+        "lg": {
+          "intent": "High-attention action in spacious contexts.",
+          "controlHeightToken": "reference.control.height.lg",
+          "targetSizeToken": "reference.control.height.lg",
+          "iconSizeToken": "reference.icon.size.md",
+          "allowedUse": [
+            "Authentication.",
+            "Onboarding.",
+            "Large empty-state call to action."
+          ]
+        },
+        "icon": {
+          "intent": "Icon-only action with accessible name.",
+          "controlHeightToken": "reference.control.height.md",
+          "targetSizeToken": "reference.control.target.minimum",
+          "iconSizeToken": "reference.icon.size.md",
+          "allowedUse": [
+            "Recognizable toolbar action.",
+            "Dialog close action.",
+            "Overflow trigger."
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "hover",
+        "active",
+        "focus-visible",
+        "disabled",
+        "loading"
+      ],
+      "slots": [
+        {
+          "name": "leadingIcon",
+          "description": "Optional decorative or semantic icon before the label.",
+          "required": false
+        },
+        {
+          "name": "label",
+          "description": "Visible action label unless the icon-only size is used.",
+          "required": true
+        },
+        {
+          "name": "trailingIcon",
+          "description": "Optional directional or disclosure icon after the label.",
+          "required": false
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "primary | secondary | outline | ghost | danger",
+          "required": false,
+          "default": "primary",
+          "description": "Semantic visual intent."
+        },
+        {
+          "name": "size",
+          "type": "sm | md | lg | icon",
+          "required": false,
+          "default": "md",
+          "description": "Approved size variant."
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Displays pending feedback and prevents duplicate activation."
+        }
+      ],
+      "usage": {
+        "useWhen": [
+          "The user must invoke an action.",
+          "The action has a clear semantic priority."
+        ],
+        "doNotUseWhen": [
+          "Navigation should be represented by a standard link.",
+          "The element is only decorative."
+        ],
+        "compositionRules": [
+          "A section normally contains no more than one primary button.",
+          "Destructive buttons must not use the primary variant.",
+          "Icon-only buttons require an accessible name."
+        ]
+      },
+      "contentRules": {
+        "wrapping": "Button labels should remain short. Allow wrapping only when the approved layout requires it.",
+        "truncation": "Do not truncate critical action labels.",
+        "maximum": "Prefer concise verb-first labels.",
+        "localization": "Allow reasonable text expansion without fixed-width assumptions.",
+        "emptyContent": "A button must not render without an accessible label."
+      },
+      "accessibility": {
+        "semanticElement": "button unless the control is genuine navigation",
+        "keyboard": [
+          "Activate with Enter.",
+          "Activate with Space.",
+          "Do not activate while disabled or loading."
+        ],
+        "focus": [
+          "Display visible focus-visible ring.",
+          "Preserve focus after recoverable errors."
+        ],
+        "accessibleName": "Visible label or explicit aria-label for icon-only usage.",
+        "aria": [
+          "Use aria-disabled only when native disabled is unsuitable.",
+          "Use aria-busy when loading behavior requires announcement."
+        ],
+        "announcements": [
+          "Pending state should be perceivable when action duration is meaningful."
+        ],
+        "colorIndependence": "Danger and warning meaning must also be communicated by text, icon, or context.",
+        "minimumContrast": "WCAG 2.2 AA"
+      },
+      "responsive": {
+        "strategy": "Preserve semantic priority while allowing actions to wrap or move into overflow.",
+        "narrowBehavior": "Primary action may become full width in forms and onboarding. Secondary utilities may move to overflow.",
+        "wideBehavior": "Actions remain content-width and align according to the owning layout.",
+        "overflow": "Button labels must not create page-level overflow.",
+        "containerQueries": false
+      },
+      "storybook": {
+        "storyFile": "src/components/ui/button.stories.tsx",
+        "requiredStories": [
+          "Variants",
+          "Sizes",
+          "Loading",
+          "Disabled",
+          "IconOnly",
+          "LongLocalizedLabel",
+          "DarkTheme"
+        ]
+      },
+      "tests": {
+        "testFile": "src/components/ui/button.test.tsx",
+        "requiredCases": [
+          "Accessible name",
+          "Keyboard activation",
+          "Disabled behavior",
+          "Loading duplicate prevention",
+          "Variant contract"
+        ]
+      }
+    },
+    "Input": {
+      "status": "stable",
+      "category": "primitive",
+      "description": "Canonical single-line text input.",
+      "source": "src/components/ui/input.tsx",
+      "foundation": "shadcn/ui Input",
+      "contract": "docs/frontend/design-system/components/input.md",
+      "owner": "<OWNER_OR_TEAM>",
+      "version": "1.0.0",
+      "tokens": [
+        "component.input.radius",
+        "reference.control.height.md",
+        "semantic.background.surface",
+        "semantic.text.primary",
+        "semantic.border.default",
+        "semantic.focus.ring"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Standard editable text input.",
+          "default": true,
+          "allowedUse": [
+            "Forms.",
+            "Search fields when composed with SearchInput."
+          ],
+          "prohibitedUse": [
+            "Multiline content.",
+            "Selection from a constrained option list."
+          ]
+        }
+      },
+      "sizes": {
+        "md": {
+          "intent": "Default input size.",
+          "default": true,
+          "controlHeightToken": "reference.control.height.md",
+          "targetSizeToken": "reference.control.target.minimum",
+          "allowedUse": [
+            "Application forms."
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "hover",
+        "focus-visible",
+        "disabled",
+        "invalid",
+        "read-only"
+      ],
+      "slots": [],
+      "props": [
+        {
+          "name": "aria-invalid",
+          "type": "boolean",
+          "required": false,
+          "description": "Communicates validation state."
+        }
+      ],
+      "usage": {
+        "useWhen": [
+          "The user must enter one line of textual or numeric content."
+        ],
+        "doNotUseWhen": [
+          "A constrained option selector is more appropriate.",
+          "The field requires multiple lines."
+        ],
+        "compositionRules": [
+          "Compose with the canonical FormField for label, help, and error behavior.",
+          "Placeholder text must not replace a visible label."
+        ]
+      },
+      "contentRules": {
+        "wrapping": "Single-line content.",
+        "truncation": "Native horizontal text behavior.",
+        "maximum": "Length must follow the feature schema.",
+        "localization": "Labels and help text must support expansion.",
+        "emptyContent": "Empty value must remain distinguishable from unavailable data."
+      },
+      "accessibility": {
+        "semanticElement": "input",
+        "keyboard": [
+          "Use native keyboard behavior."
+        ],
+        "focus": [
+          "Display visible focus-visible ring."
+        ],
+        "accessibleName": "Associated visible label.",
+        "aria": [
+          "Use aria-invalid for validation errors.",
+          "Use aria-describedby for help and error text."
+        ],
+        "announcements": [
+          "Validation messages must be programmatically associated."
+        ],
+        "colorIndependence": "Invalid state must include text, not only color.",
+        "minimumContrast": "WCAG 2.2 AA"
+      },
+      "responsive": {
+        "strategy": "Width is owned by the form layout rather than the primitive.",
+        "narrowBehavior": "May become full width within the form group.",
+        "wideBehavior": "Width should reflect expected content when the form recipe supports columns.",
+        "overflow": "Must not exceed the parent container.",
+        "containerQueries": false
+      },
+      "storybook": {
+        "storyFile": "src/components/ui/input.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "Disabled",
+          "ReadOnly",
+          "Invalid",
+          "LongValue",
+          "DarkTheme"
+        ]
+      },
+      "tests": {
+        "testFile": "src/components/ui/input.test.tsx",
+        "requiredCases": [
+          "Label association",
+          "Invalid association",
+          "Disabled behavior"
+        ]
+      }
+    }
+  },
+  "layoutRecipes": [
+    {
+      "id": "application-shell",
+      "source": "../assets/recipes/application-shell.recipe.json",
+      "status": "stable",
+      "description": "Persistent authenticated application structure."
+    },
+    {
+      "id": "dashboard",
+      "source": "../assets/recipes/dashboard.recipe.json",
+      "status": "stable",
+      "description": "Decision-oriented operational dashboard."
+    },
+    {
+      "id": "searchable-list",
+      "source": "../assets/recipes/searchable-list.recipe.json",
+      "status": "stable",
+      "description": "Server-backed searchable and filterable collection."
+    },
+    {
+      "id": "entity-detail",
+      "source": "../assets/recipes/entity-detail.recipe.json",
+      "status": "stable",
+      "description": "Single-entity detail and workflow workspace."
+    },
+    {
+      "id": "form-workflow",
+      "source": "../assets/recipes/form-workflow.recipe.json",
+      "status": "stable",
+      "description": "Structured create and edit workflow."
+    },
+    {
+      "id": "administration",
+      "source": "../assets/recipes/administration.recipe.json",
+      "status": "stable",
+      "description": "Capability-oriented administration workspace."
+    },
+    {
+      "id": "authentication",
+      "source": "../assets/recipes/authentication.recipe.json",
+      "status": "stable",
+      "description": "Authentication, verification, and account recovery."
+    },
+    {
+      "id": "review-approval",
+      "source": "../assets/recipes/review-approval.recipe.json",
+      "status": "stable",
+      "description": "Evidence-based human review and approval workspace."
+    }
+  ],
+  "policies": {
+    "color": {
+      "rules": [
+        "Product screens consume semantic colors.",
+        "Status meaning must use the matching semantic status role.",
+        "The primary brand color is reserved for primary actions, focus, and approved emphasis."
+      ],
+      "prohibited": [
+        "Raw hex colors inside product components.",
+        "Tailwind palette colors directly inside route-level JSX.",
+        "Danger colors used decoratively.",
+        "Color as the only status indicator."
+      ],
+      "exceptions": [
+        "Brand assets may preserve approved embedded colors.",
+        "Third-party visualizations may use a documented chart palette."
+      ]
+    },
+    "spacing": {
+      "rules": [
+        "Use the approved spacing scale.",
+        "The parent layout owns spacing between sibling elements.",
+        "Use gap-based composition for repeated layouts."
+      ],
+      "prohibited": [
+        "Arbitrary spacing without documented reason.",
+        "Simultaneous parent gap and child margins for the same relationship.",
+        "Large empty regions without structural purpose."
+      ]
+    },
+    "typography": {
+      "rules": [
+        "Use semantic text styles.",
+        "Use restrained headings in operational screens.",
+        "Use tabular numerals where numeric comparison benefits."
+      ],
+      "prohibited": [
+        "Page-specific heading scales.",
+        "Excessively light weights for important information.",
+        "Uppercase labels used indiscriminately."
+      ]
+    },
+    "components": {
+      "rules": [
+        "Search the catalog before creating a component.",
+        "Extend canonical components through approved variants.",
+        "Register stable shared components with a contract, stories, and tests.",
+        "Use semantic props rather than low-level style props."
+      ],
+      "prohibited": [
+        "Components named NewButton, BetterCard, ModernInput, or ComponentV2.",
+        "Duplicated canonical primitives.",
+        "Page-local reimplementations of registered shared components.",
+        "Shared components containing feature-specific API requests."
+      ]
+    },
+    "responsiveness": {
+      "rules": [
+        "Responsive transformation is defined in the component or layout contract.",
+        "Validate rendered behavior at approved viewports.",
+        "Use internal scrolling only where the pattern explicitly permits it."
+      ],
+      "prohibited": [
+        "Page-level horizontal overflow.",
+        "Fixed-width assumptions that break localization.",
+        "Claiming responsiveness based only on Tailwind class presence."
+      ]
+    },
+    "accessibility": {
+      "rules": [
+        "Use native semantics before ARIA.",
+        "Every interactive control has an accessible name.",
+        "Focus-visible state is mandatory.",
+        "Validation errors are programmatically associated."
+      ],
+      "prohibited": [
+        "Important actions available only on hover.",
+        "Placeholder-only labels.",
+        "Color-only state communication.",
+        "Interactive div elements without valid semantics."
+      ]
+    },
+    "content": {
+      "rules": [
+        "Use real or domain-plausible content.",
+        "Test long labels, long values, empty values, and unavailable values.",
+        "Translate backend identifiers through a presentation layer."
+      ],
+      "prohibited": [
+        "Lorem ipsum in product screens.",
+        "Raw snake_case or camelCase values in ordinary user interfaces.",
+        "Raw ISO timestamps displayed directly.",
+        "Critical content truncated without access to the full value."
+      ]
+    },
+    "motion": {
+      "rules": [
+        "Motion communicates state, continuity, or progress.",
+        "Respect reduced-motion preferences.",
+        "Use approved duration and easing tokens."
+      ],
+      "prohibited": [
+        "Decorative animation that delays interaction.",
+        "Unapproved custom durations.",
+        "Continuous motion without operational value."
+      ]
+    },
+    "icons": {
+      "rules": [
+        "Use the approved icon library.",
+        "Icon-only controls require an accessible name.",
+        "Decorative icons are hidden from assistive technology."
+      ],
+      "prohibited": [
+        "Mixing icon libraries without approval.",
+        "Information icons beside every label.",
+        "Unlabeled icon-only actions."
+      ]
+    },
+    "forms": {
+      "rules": [
+        "Form fields use canonical label, help, error, disabled, and read-only patterns.",
+        "Field widths reflect content expectations and the approved form recipe.",
+        "Primary submission and destructive actions remain semantically distinct."
+      ],
+      "prohibited": [
+        "Placeholder text replacing labels.",
+        "Every field stretched to maximum page width.",
+        "Validation communicated only through border color."
+      ]
+    },
+    "dataDisplay": {
+      "rules": [
+        "Metric groups distinguish critical, financial, operational, and informational data.",
+        "Tables define column priority and responsive behavior.",
+        "Numerical alignment supports comparison."
+      ],
+      "prohibited": [
+        "Large grids of equally prominent metrics.",
+        "Table actions visually dominating the data.",
+        "Cards used as the default container for every value."
+      ]
+    }
+  },
+  "validation": {
+    "schema": "~/.agents/skills/frontend-product-builder/assets/schemas/design-system.schema.json",
+    "checks": [
+      {
+        "id": "DS-001",
+        "severity": "error",
+        "description": "The machine-readable design system must validate against its JSON schema.",
+        "method": "script",
+        "script": "scripts/validate-design-system.mjs",
+        "blocking": true,
+        "scope": [
+          "docs/frontend/design-system/design-system.json"
+        ],
+        "remediation": "Correct invalid fields or update the schema through an approved design-system change."
+      },
+      {
+        "id": "DS-002",
+        "severity": "error",
+        "description": "Product components must not contain unapproved literal colors.",
+        "method": "script",
+        "script": "scripts/audit-design-tokens.mjs",
+        "blocking": true,
+        "scope": [
+          "src/routes",
+          "src/features",
+          "src/entities",
+          "src/components"
+        ],
+        "remediation": "Replace the literal value with an approved semantic token."
+      },
+      {
+        "id": "DS-003",
+        "severity": "warning",
+        "description": "Arbitrary Tailwind spacing, radius, typography, and z-index values require documented approval.",
+        "method": "script",
+        "script": "scripts/audit-arbitrary-utilities.mjs",
+        "blocking": false,
+        "scope": [
+          "src"
+        ],
+        "remediation": "Use an approved token or document the integration-specific exception."
+      },
+      {
+        "id": "DS-004",
+        "severity": "error",
+        "description": "Canonical primitives must not be duplicated.",
+        "method": "script",
+        "script": "scripts/audit-component-duplicates.mjs",
+        "blocking": true,
+        "scope": [
+          "src"
+        ],
+        "remediation": "Use or extend the registered canonical component."
+      },
+      {
+        "id": "DS-005",
+        "severity": "error",
+        "description": "Interactive controls must have accessible names and visible focus behavior.",
+        "method": "test",
+        "blocking": true,
+        "scope": [
+          "src/components",
+          "src/features"
+        ],
+        "remediation": "Correct component semantics, labels, and focus-visible styles."
+      },
+      {
+        "id": "DS-006",
+        "severity": "error",
+        "description": "Rendered screens must not introduce unexpected page-level horizontal overflow.",
+        "method": "browser",
+        "blocking": true,
+        "scope": [
+          "approved browser viewports"
+        ],
+        "remediation": "Correct the owning layout or component responsive contract."
+      },
+      {
+        "id": "DS-007",
+        "severity": "warning",
+        "description": "Stable shared components should have approved component contracts and Storybook coverage.",
+        "method": "manual",
+        "blocking": false,
+        "scope": [
+          "src/components"
+        ],
+        "remediation": "Create the missing contract and meaningful component stories."
+      },
+      {
+        "id": "DS-008",
+        "severity": "error",
+        "description": "Destructive actions must use approved destructive semantics.",
+        "method": "manual",
+        "blocking": true,
+        "scope": [
+          "src/routes",
+          "src/features"
+        ],
+        "remediation": "Use the danger variant, confirmation pattern, and approved content."
+      },
+      {
+        "id": "DS-009",
+        "severity": "error",
+        "description": "Backend identifiers and raw technical errors must not be exposed to ordinary users.",
+        "method": "script",
+        "script": "scripts/audit-user-facing-technical-values.mjs",
+        "blocking": true,
+        "scope": [
+          "src"
+        ],
+        "remediation": "Map the value through the approved terminology, formatter, or error layer."
+      }
+    ]
+  },
+  "deprecations": []
+}

@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-driven.local/schemas/product-design-control.schema.json",
+  "title": "Delegated Product Design Authority Artifacts",
+  "oneOf": [
+    { "$ref": "#/$defs/profile" },
+    { "$ref": "#/$defs/researchPlan" },
+    { "$ref": "#/$defs/brief" },
+    { "$ref": "#/$defs/research" },
+    { "$ref": "#/$defs/decision" },
+    { "$ref": "#/$defs/assetRequirements" },
+    { "$ref": "#/$defs/assetRequest" },
+    { "$ref": "#/$defs/assetSidecar" },
+    { "$ref": "#/$defs/readiness" },
+    { "$ref": "#/$defs/findingsArtifact" }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project", "commit"],
+      "properties": {
+        "project": { "type": "string", "minLength": 1 },
+        "commit": { "type": "string", "minLength": 1 }
+      }
+    },
+    "base": {
+      "type": "object",
+      "required": ["artifactKind", "schemaVersion", "semanticDigest", "subject"],
+      "properties": {
+        "artifactKind": { "type": "string", "minLength": 1 },
+        "schemaVersion": { "type": "string", "pattern": "^[1-9][0-9]*\\.[0-9]+\\.[0-9]+$" },
+        "semanticDigest": { "$ref": "#/$defs/sha256" },
+        "subject": { "$ref": "#/$defs/subject" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "required": ["id", "severity", "source", "message", "findingKey"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^PDA-(?:0[1-9]|1[0-3])$" },
+        "severity": { "enum": ["P0", "P1", "P2"] },
+        "source": { "const": "product-design-control" },
+        "message": { "type": "string", "minLength": 1 },
+        "findingKey": { "type": "string", "minLength": 1 }
+      }
+    },
+    "profile": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "product-design-profile" },
+            "visitorMode": { "enum": ["Operate", "Read", "Persuade", "Experience", "unknown"] },
+            "productMaturity": { "type": "string", "minLength": 1 },
+            "changeMode": { "type": "string", "minLength": 1 },
+            "localSources": { "type": "array" },
+            "openCapabilities": { "type": "array", "uniqueItems": true },
+            "prohibitedProviders": { "type": "array", "uniqueItems": true }
+          },
+          "required": ["feature", "visitorMode", "productMaturity", "changeMode", "localSources", "openCapabilities", "prohibitedProviders"]
+        }
+      ]
+    },
+    "researchPlan": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "visual-research-plan" },
+            "profileDigest": { "$ref": "#/$defs/sha256" },
+            "intensity": { "enum": ["research-not-required", "established-extension", "targeted-research", "expanded-research"] },
+            "minimumReferences": { "type": "integer", "minimum": 0 },
+            "minimumOrigins": { "type": "integer", "minimum": 0 },
+            "requiredCategories": { "type": "array", "uniqueItems": true },
+            "rationale": { "type": "string", "minLength": 1 }
+          },
+          "required": ["profileDigest", "intensity", "minimumReferences", "minimumOrigins", "requiredCategories", "rationale"]
+        }
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["id", "grade", "statement"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "grade": { "enum": ["observed", "proxy", "hypothesis"] },
+        "statement": { "type": "string", "minLength": 1 },
+        "validationPlan": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [{ "if": { "properties": { "grade": { "const": "hypothesis" } } }, "then": { "required": ["validationPlan"] } }]
+    },
+    "brief": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "product-design-brief" },
+            "profileDigest": { "$ref": "#/$defs/sha256" },
+            "researchPlanDigest": { "$ref": "#/$defs/sha256" },
+            "product": { "type": "object", "required": ["name", "maturity"] },
+            "audience": { "type": "object", "required": ["primary"] },
+            "task": { "type": "object", "required": ["dominant"] },
+            "context": { "type": "object", "required": ["visitorMode", "emotional"] },
+            "content": { "type": "object", "required": ["representativeCopy", "claims"] },
+            "states": { "type": "array", "minItems": 1, "uniqueItems": true },
+            "userEvidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidence" } },
+            "evidenceGaps": { "type": "array" },
+            "visualPreferenceQuestions": { "type": "array", "maxItems": 0 }
+          },
+          "required": ["feature", "profileDigest", "researchPlanDigest", "product", "audience", "task", "context", "content", "states", "userEvidence", "evidenceGaps", "visualPreferenceQuestions"]
+        }
+      ]
+    },
+    "reference": {
+      "type": "object",
+      "required": ["id", "queryId", "url", "origin", "accessedAt", "usage", "category", "taskObserved", "usefulPatterns", "antiPatterns", "adoptedAspects", "excludedAspects", "templateRisk", "license", "affectedScreens", "affectedDecisionIds"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "queryId": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "origin": { "type": "string", "minLength": 1 },
+        "accessedAt": { "type": "string", "format": "date" },
+        "usage": { "enum": ["reference-only", "production-candidate", "template-code"] },
+        "category": { "enum": ["real-product", "domain-reference", "material-or-asset", "official-design-system", "local"] },
+        "taskObserved": { "type": "string", "minLength": 1 },
+        "usefulPatterns": { "type": "array", "minItems": 1 },
+        "antiPatterns": { "type": "array", "minItems": 1 },
+        "adoptedAspects": { "type": "array" },
+        "excludedAspects": { "type": "array", "minItems": 1 },
+        "templateRisk": { "enum": ["low", "medium", "high"] },
+        "license": {
+          "type": "object",
+          "oneOf": [
+            { "required": ["status", "retention"], "properties": { "status": { "const": "reference-only" }, "retention": { "type": "string", "minLength": 1 } } },
+            { "required": ["id", "sourceUrl", "verifiedAt", "retention"], "properties": { "id": { "enum": ["CC0-1.0", "Public-Domain", "CC-BY-4.0", "MIT", "Apache-2.0", "ISC", "OFL-1.1"] }, "sourceUrl": { "type": "string", "format": "uri" }, "verifiedAt": { "type": "string", "format": "date" }, "retention": { "type": "string", "minLength": 1 } } }
+          ]
+        },
+        "affectedScreens": { "type": "array", "minItems": 1 },
+        "affectedDecisionIds": { "type": "array", "minItems": 1 }
+      }
+    },
+    "research": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "visual-research" },
+            "briefDigest": { "$ref": "#/$defs/sha256" },
+            "intensity": { "enum": ["research-not-required", "established-extension", "targeted-research", "expanded-research"] },
+            "queries": { "type": "array", "items": { "type": "object", "required": ["id", "query", "objective"] } },
+            "references": { "type": "array", "items": { "$ref": "#/$defs/reference" } },
+            "rejectedCandidates": { "type": "array" },
+            "coverage": { "type": "object", "required": ["references", "origins", "categories"] },
+            "network": { "type": "object", "required": ["mode", "status"] }
+          },
+          "required": ["briefDigest", "intensity", "queries", "references", "rejectedCandidates", "coverage", "network"]
+        }
+      ]
+    },
+    "decision": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "design-authority-decision" },
+            "briefDigest": { "$ref": "#/$defs/sha256" },
+            "researchDigest": { "$ref": "#/$defs/sha256" },
+            "thesis": { "type": "string", "minLength": 20 },
+            "signatureElement": { "type": "string", "minLength": 3 },
+            "alternatives": { "type": "array", "minItems": 2, "items": { "type": "object", "required": ["id", "status", "rationale"] } },
+            "criteria": { "type": "array", "minItems": 3, "items": { "type": "object", "required": ["id", "weight", "score", "rationale"] } },
+            "selectedCandidateId": { "type": "string", "minLength": 1 },
+            "risks": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["id", "mitigation"] } },
+            "evidenceRefs": { "type": "array", "minItems": 3, "uniqueItems": true },
+            "adoptedAspects": { "type": "array", "minItems": 1 },
+            "excludedAspects": { "type": "array", "minItems": 1 },
+            "visualDirectionSelectedBy": { "const": "agent" },
+            "autonomyDecisionId": { "type": "string", "pattern": "^DEC-[A-F0-9]{16}$" },
+            "policyProvenance": { "type": "object", "required": ["autonomyPolicy", "effectivePolicy"] }
+          },
+          "required": ["briefDigest", "researchDigest", "thesis", "signatureElement", "alternatives", "criteria", "selectedCandidateId", "risks", "evidenceRefs", "adoptedAspects", "excludedAspects", "visualDirectionSelectedBy", "autonomyDecisionId", "policyProvenance"]
+        }
+      ]
+    },
+    "assetRequirements": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "asset-requirements" },
+            "briefDigest": { "$ref": "#/$defs/sha256" },
+            "decisionDigest": { "$ref": "#/$defs/sha256" },
+            "assets": { "type": "array", "items": { "type": "object", "required": ["id", "function", "essentiality", "equivalentAvailable", "materialLossWithoutAsset", "acceptance"] } }
+          },
+          "required": ["briefDigest", "decisionDigest", "assets"]
+        }
+      ]
+    },
+    "assetRequest": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "asset-acquisition-request" },
+            "attempt": { "type": "integer", "minimum": 1, "maximum": 2 },
+            "type": { "enum": ["photography", "illustration", "texture", "icon", "diagram", "motion"] },
+            "rejectionReasonCodes": { "type": "array", "minItems": 1, "items": { "enum": ["NO_RESULTS", "LICENSE_UNVERIFIABLE", "DOMAIN_MISMATCH", "BRAND_CONFLICT", "REPRESENTATION_RISK", "COMPOSITION_MISMATCH", "RESOLUTION_INSUFFICIENT", "ACCESSIBILITY_CONFLICT", "PERFORMANCE_BUDGET_EXCEEDED"] } },
+            "rightsDeclarationRequired": { "const": true }
+          },
+          "required": ["assetId", "attempt", "requirementsDigest", "researchDigest", "purpose", "targetScreen", "message", "type", "subjectDescription", "environment", "action", "emotion", "realism", "composition", "palette", "requiredElements", "prohibitedElements", "representationRisks", "generationConstraints", "delivery", "crops", "positivePrompt", "negativePrompt", "recommendedVariations", "altTextIntent", "acceptanceChecklist", "expectedFileName", "expectedDestination", "rightsDeclarationRequired", "rejectionReasonCodes"]
+        }
+      ]
+    },
+    "assetSidecar": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "approved-product-asset" },
+            "fileDigest": { "$ref": "#/$defs/sha256" },
+            "license": { "type": "object", "required": ["id", "sourceUrl", "verifiedAt"] },
+            "rightsAttestation": { "type": "object", "required": ["origin", "rightToUse", "attestedAt"] },
+            "variants": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "fileName", "fileDigest", "mime", "width", "height", "crop", "meaningPreserved"],
+                "properties": {
+                  "id": { "type": "string", "minLength": 1 },
+                  "fileName": { "type": "string", "pattern": "^[^/\\\\]+\\.(?:png|jpe?g)$" },
+                  "fileDigest": { "$ref": "#/$defs/sha256" },
+                  "mime": { "enum": ["image/png", "image/jpeg"] },
+                  "width": { "type": "integer", "minimum": 1 },
+                  "height": { "type": "integer", "minimum": 1 },
+                  "crop": { "type": "object", "required": ["x", "y", "width", "height", "aspectRatio"] },
+                  "meaningPreserved": { "const": true }
+                }
+              }
+            },
+            "sensitiveMetadataRemoved": { "const": true }
+          },
+          "required": ["assetId", "requestDigest", "fileDigest", "mime", "width", "height", "bytes", "license", "rightsAttestation", "attribution", "variants", "altText", "sensitiveMetadataRemoved"]
+        }
+      ]
+    },
+    "readiness": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "product-design-readiness" },
+            "status": { "enum": ["passed", "failed", "partial", "not-run", "stale"] },
+            "visualDirectionSelectedBy": { "const": "agent" },
+            "blockingFindingIds": { "type": "array", "uniqueItems": true },
+            "dependencyDigests": { "type": "object", "minProperties": 4 }
+          },
+          "required": ["briefDigest", "researchDigest", "decisionDigest", "assetDigests", "policyDigest", "status", "visualDirectionSelectedBy", "blockingFindingIds", "dependencyDigests"]
+        }
+      ]
+    },
+    "findingsArtifact": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "properties": {
+            "artifactKind": { "const": "product-design-findings" },
+            "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" } }
+          },
+          "required": ["findings"]
+        }
+      ]
+    }
+  }
+}

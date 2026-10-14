@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/frontend-family-consistency-policy.schema.json",
+  "title": "Frontend Family Consistency Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "individualEvidence",
+    "themeCoverage",
+    "crossTheme",
+    "crossScreen",
+    "routing"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "frontend-family-consistency-policy.schema.json"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "individualEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phase5AuditRequired"],
+      "properties": {
+        "phase5AuditRequired": { "const": true }
+      }
+    },
+    "themeCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": { "const": "all-design-system-supported" }
+      }
+    },
+    "crossTheme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requireStableSemanticStructure",
+        "requireStableReadingOrder",
+        "requireStableTypography",
+        "maxGeometryDeltaPx",
+        "maxContentOccupancyDelta"
+      ],
+      "properties": {
+        "requireStableSemanticStructure": { "const": true },
+        "requireStableReadingOrder": { "const": true },
+        "requireStableTypography": { "const": true },
+        "maxGeometryDeltaPx": { "type": "number", "minimum": 0, "maximum": 8 },
+        "maxContentOccupancyDelta": { "type": "number", "minimum": 0, "maximum": 0.1 }
+      }
+    },
+    "crossScreen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strictSemanticRolePresentationFamily",
+        "stableDensityModeWithinVisualFamily",
+        "stableMaxNestingDepthWithinVisualFamily",
+        "stableTypographyFamilyRoleContract",
+        "stableObservedTypographyByTheme"
+      ],
+      "properties": {
+        "strictSemanticRolePresentationFamily": { "const": true },
+        "stableDensityModeWithinVisualFamily": { "const": true },
+        "stableMaxNestingDepthWithinVisualFamily": { "const": true },
+        "stableTypographyFamilyRoleContract": { "const": true },
+        "stableObservedTypographyByTheme": { "const": true }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "implementationReturnStage",
+        "contractReturnStage",
+        "evidenceGapTransition"
+      ],
+      "properties": {
+        "implementationReturnStage": { "const": "PATCH" },
+        "contractReturnStage": { "const": "DESIGN_READINESS" },
+        "evidenceGapTransition": { "const": "CAPTURE_EVIDENCE" }
+      }
+    }
+  }
+}

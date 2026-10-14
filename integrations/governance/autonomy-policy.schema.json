@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./autonomy-policy.schema.json",
+  "title": "Autonomy Control Policy",
+  "description": "Canonical contract for classifying engineering decisions and consuming their runtime disposition without weakening governance or human approval boundaries.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "status",
+    "governancePolicy",
+    "workflowManifest",
+    "precedence",
+    "runtimeConsumption",
+    "dispositions",
+    "decisionClasses"
+  ],
+  "properties": {
+    "$schema": { "const": "../../integrations/governance/autonomy-policy.schema.json" },
+    "schemaVersion": { "const": "1.1.0" },
+    "status": { "const": "autonomy-control-contract" },
+    "governancePolicy": { "const": "prompts/spec-driven/governance-policy.json" },
+    "workflowManifest": { "const": "prompts/spec-driven/manifest.json" },
+    "precedence": { "$ref": "#/$defs/precedence" },
+    "runtimeConsumption": { "$ref": "#/$defs/runtimeConsumption" },
+    "dispositions": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": { "$ref": "#/$defs/disposition" }
+    },
+    "decisionClasses": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "items": { "$ref": "#/$defs/decisionClass" }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "dispositionId": {
+      "enum": [
+        "SAFE_AUTONOMOUS",
+        "AUTONOMOUS_WITH_AUDIT",
+        "HUMAN_REQUIRED",
+        "BLOCKED"
+      ]
+    },
+    "decisionClassId": {
+      "enum": [
+        "reversible-internal",
+        "reversible-contract-bounded",
+        "equivalent-variant",
+        "design-authority-bounded",
+        "product-consequential",
+        "security-consequential",
+        "data-consequential",
+        "cost-consequential",
+        "legal-consequential",
+        "brand-consequential",
+        "behavioral-high-risk",
+        "external-destructive",
+        "unknown-consequential"
+      ]
+    },
+    "sourceId": {
+      "enum": [
+        "canonical-contracts",
+        "effective-policy",
+        "repository-precedent",
+        "approved-design-system",
+        "approved-product-context",
+        "task-contract",
+        "test-evidence",
+        "runtime-evidence",
+        "provider-contract",
+        "risk-assessment",
+        "visual-research",
+        "candidate-comparison",
+        "human-direction"
+      ]
+    },
+    "precedence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effectivePolicyEscalations",
+        "existingHumanGates",
+        "unknownConsequential",
+        "missingValidCandidate",
+        "missingRequiredEvidence",
+        "autonomousPreferenceQuestion"
+      ],
+      "properties": {
+        "effectivePolicyEscalations": { "const": "always-prevail" },
+        "existingHumanGates": { "const": "always-prevail" },
+        "unknownConsequential": { "const": "BLOCKED" },
+        "missingValidCandidate": { "const": "BLOCKED" },
+        "missingRequiredEvidence": { "const": "HUMAN_REQUIRED_OR_BLOCKED" },
+        "autonomousPreferenceQuestion": { "const": "forbidden" }
+      }
+    },
+    "runtimeConsumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "controller",
+        "decisionContract",
+        "decideCommand",
+        "consumeCommand",
+        "decisionTrigger",
+        "existingHumanGates",
+        "effectivePolicyEscalations",
+        "autonomousExecution",
+        "humanQuestions",
+        "blockedHumanResolvableReasonCodes"
+      ],
+      "properties": {
+        "controller": { "const": "integrations/governance/governance-control.mjs" },
+        "decisionContract": { "const": "integrations/governance/autonomy-decision.schema.json" },
+        "decideCommand": { "const": "node integrations/governance/governance-control.mjs decide --root <project-root> --request <request.json>" },
+        "consumeCommand": { "const": "node integrations/governance/governance-control.mjs consume --root <project-root> --decision <result.json>" },
+        "decisionTrigger": { "const": "bounded-choice-requires-selection-or-authority-resolution" },
+        "existingHumanGates": { "const": "always-prevail" },
+        "effectivePolicyEscalations": { "const": "always-prevail" },
+        "autonomousExecution": { "const": "execute-selected-option-without-preference-question" },
+        "humanQuestions": { "const": "HUMAN_REQUIRED-or-human-resolvable-BLOCKED-only" },
+        "blockedHumanResolvableReasonCodes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": { "const": "UNKNOWN_CONSEQUENTIAL" }
+        }
+      }
+    },
+    "disposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "selectionAllowed", "executionAllowed", "humanRequired", "decisionRecordRequired", "description"],
+      "properties": {
+        "id": { "$ref": "#/$defs/dispositionId" },
+        "selectionAllowed": { "type": "boolean" },
+        "executionAllowed": { "type": "boolean" },
+        "humanRequired": { "type": "boolean" },
+        "decisionRecordRequired": { "type": "boolean" },
+        "description": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "candidateRequirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimumCandidates",
+        "mustSatisfyCanonicalContracts",
+        "reversibleRequired",
+        "equivalenceProofRequired",
+        "explicitAuthorizationRequired"
+      ],
+      "properties": {
+        "minimumCandidates": { "type": "integer", "minimum": 0, "maximum": 2 },
+        "mustSatisfyCanonicalContracts": { "type": "boolean" },
+        "reversibleRequired": { "type": "boolean" },
+        "equivalenceProofRequired": { "type": "boolean" },
+        "explicitAuthorizationRequired": { "type": "boolean" }
+      }
+    },
+    "evidenceRequirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "minimumRefs", "policyProvenanceRequired", "riskAssessmentRequired"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "minimumRefs": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "policyProvenanceRequired": { "type": "boolean" },
+        "riskAssessmentRequired": { "type": "boolean" },
+        "requiredSources": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceId" }
+        }
+      }
+    },
+    "decisionClass": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "decisionAuthority",
+        "defaultDisposition",
+        "humanRequired",
+        "recordDecision",
+        "allowedSources",
+        "candidateRequirements",
+        "evidenceRequirements",
+        "description"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/decisionClassId" },
+        "decisionAuthority": { "enum": ["agent", "human"] },
+        "defaultDisposition": { "$ref": "#/$defs/dispositionId" },
+        "humanRequired": { "type": "boolean" },
+        "recordDecision": { "type": "boolean" },
+        "allowedSources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceId" }
+        },
+        "candidateRequirements": { "$ref": "#/$defs/candidateRequirements" },
+        "evidenceRequirements": { "$ref": "#/$defs/evidenceRequirements" },
+        "description": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    }
+  }
+}

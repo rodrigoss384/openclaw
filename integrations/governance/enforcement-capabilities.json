@@ -1,0 +1,1373 @@
+{
+  "$schema": "./enforcement-capabilities.schema.json",
+  "schemaVersion": "1.0.0",
+  "status": "foundation",
+  "capabilities": [
+    {
+      "id": "feature-package-validation",
+      "owner": "spec-driven-engineering",
+      "kind": "validator",
+      "description": "Validates canonical feature-package structure, traceability, explicit P0 proof, gate-status certainty and unresolved placeholder absence.",
+      "entrypoint": "skills/spec-driven-engineering/scripts/validate-feature-package.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/spec-driven-engineering/scripts/validate-feature-package.mjs <feature-directory>",
+        "argv": [
+          "node",
+          "skills/spec-driven-engineering/scripts/validate-feature-package.mjs",
+          "<feature-directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "feature-directory",
+          "type": "directory",
+          "required": true,
+          "description": "Canonical .specs/features/<feature> package directory."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "every-stage"
+      ]
+    },
+    {
+      "id": "open-question-closure",
+      "owner": "spec-driven-engineering",
+      "kind": "validator",
+      "description": "Blocks adversarial and evidence-release while any Q- defined in 02-assumptions.md/00-intent.md is open, has no status, or is closed without its D-/AD- decision, answer or DEF- reference.",
+      "entrypoint": "skills/spec-driven-engineering/scripts/validate-open-questions.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/spec-driven-engineering/scripts/validate-open-questions.mjs <feature-directory>",
+        "argv": [
+          "node",
+          "skills/spec-driven-engineering/scripts/validate-open-questions.mjs",
+          "<feature-directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "feature-directory",
+          "type": "directory",
+          "required": true,
+          "description": "Canonical .specs/features/<feature> package directory."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "workflow-lock-validation",
+      "owner": "spec-driven-engineering",
+      "kind": "validator",
+      "description": "Verifies routed local skill trees and workflowVersion against the committed workflow lock.",
+      "entrypoint": "skills/spec-driven-engineering/scripts/lock-workflow.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/spec-driven-engineering/scripts/lock-workflow.mjs --root <project-root> --check",
+        "argv": [
+          "node",
+          "skills/spec-driven-engineering/scripts/lock-workflow.mjs",
+          "--root",
+          "<project-root>",
+          "--check"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root containing manifest.json and workflow.lock.json."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "governance-rule-admission-validation",
+      "owner": "spec-driven-engineering",
+      "kind": "validator",
+      "description": "Freezes the legacy rules baseline and requires every subsequent rules.md revision to be admitted through the canonical governance registry before it can become operational governance.",
+      "entrypoint": "integrations/governance/validate-governance-policy.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/governance/validate-governance-policy.mjs --root <project-root>",
+        "argv": [
+          "node",
+          "integrations/governance/validate-governance-policy.mjs",
+          "--root",
+          "<project-root>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "governance-policy",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical governance registry containing the rule admission ledger."
+        },
+        {
+          "id": "rules-source",
+          "type": "markdown-file",
+          "required": true,
+          "description": "Canonical rules.md source whose Git blob SHA must match the latest admitted revision."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "every-stage"
+      ]
+    },
+    {
+      "id": "frontend-styling-authority-validation",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Validates frontend styling authority structure and semantic authorization constraints.",
+      "entrypoint": "skills/frontend-product-builder/scripts/validate-styling-authority.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/frontend-product-builder/scripts/validate-styling-authority.mjs <styling-authority.json>",
+        "argv": [
+          "node",
+          "skills/frontend-product-builder/scripts/validate-styling-authority.mjs",
+          "<styling-authority.json>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "styling-authority",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical frontend styling-authority JSON contract."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "frontend-representative",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-composition-contract-validation",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Validates screen visual hierarchy, Design System composition grammar and composition proof as one contract set.",
+      "entrypoint": "skills/frontend-product-builder/scripts/validate-visual-composition-contract.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/frontend-product-builder/scripts/validate-visual-composition-contract.mjs <screen-spec.json> <design-system.json> <composition-proof.json>",
+        "argv": [
+          "node",
+          "skills/frontend-product-builder/scripts/validate-visual-composition-contract.mjs",
+          "<screen-spec.json>",
+          "<design-system.json>",
+          "<composition-proof.json>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "screen-specification",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical screen specification containing visual hierarchy."
+        },
+        {
+          "id": "design-system",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical frontend Design System contract."
+        },
+        {
+          "id": "composition-proof",
+          "type": "json-file",
+          "required": true,
+          "description": "Derived composition proof bound to the canonical screen/design inputs."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "frontend-representative"
+      ]
+    },
+    {
+      "id": "frontend-craft-contract-control",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Derives and verifies frontend craft relationships, including same-role consistency and cross-role semantic differentiation, from canonical contracts.",
+      "entrypoint": "integrations/impeccable/frontend-craft.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/impeccable/frontend-craft.mjs verify-craft --root <project-root> --craft-contract <craft-contract.json>",
+        "argv": [
+          "node",
+          "integrations/impeccable/frontend-craft.mjs",
+          "verify-craft",
+          "--root",
+          "<project-root>",
+          "--craft-contract",
+          "<craft-contract.json>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root used to resolve canonical craft-contract sources."
+        },
+        {
+          "id": "craft-contract",
+          "type": "json-file",
+          "required": true,
+          "description": "Derived frontend craft contract whose source relationships and semantic presentation signatures are reverified."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "frontend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-navigation-capability-control",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Validates product-navigation capability provenance and its application-shell consumption, including exact active routes, permission/action binding, unavailable presentation, roadmap provenance, commercial capability evidence and applicable Behavioral UX governance.",
+      "entrypoint": "integrations/frontend/navigation-capability.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/navigation-capability.mjs check --root <project-root> <contract-or-not-applicable>",
+        "argv": [
+          "node",
+          "integrations/frontend/navigation-capability.mjs",
+          "check",
+          "--root",
+          "<project-root>",
+          "<contract-or-not-applicable>"
+        ],
+        "choices": {
+          "<contract-or-not-applicable>": {
+            "contract": [
+              "--contract",
+              "<contract-file>"
+            ],
+            "not-applicable": [
+              "--not-applicable",
+              "<not-applicable-reason>"
+            ]
+          }
+        }
+      },
+      "inputContracts": [
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root used to resolve Product Context, application-shell and module provenance references."
+        },
+        {
+          "id": "contract-or-not-applicable",
+          "type": "file",
+          "required": true,
+          "description": "Enumerated contract/manifest/not-applicable choice; file path and reason are separate scalar placeholders."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "frontend-representative",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-global-retrieval-control",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Validates evidence-backed global retrieval applicability, application-shell consumption, searchable entity capability provenance, invocation/accessibility/result semantics, and the referenced backend retrieval guarantees for authorization, tenant isolation, limits, ranking, timeout and sensitive-data handling.",
+      "entrypoint": "integrations/frontend/global-retrieval.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/global-retrieval.mjs check --root <project-root> --contract <global-retrieval.json>",
+        "argv": [
+          "node",
+          "integrations/frontend/global-retrieval.mjs",
+          "check",
+          "--root",
+          "<project-root>",
+          "--contract",
+          "<global-retrieval.json>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root used to resolve Product Context, application-shell, entity provenance and backend retrieval evidence."
+        },
+        {
+          "id": "global-retrieval",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical docs/frontend global retrieval applicability projection, including an explicit not-applicable decision when appropriate."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "frontend-representative",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-product-semantics-evidence-control",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Validates Phase 5 product-semantics evidence as a subordinate companion to visual-composition-evidence, proving rendered semantic differentiation, navigation availability/presentation and global retrieval trigger/state/authorization semantics against canonical 10A/10B/10C contracts.",
+      "entrypoint": "skills/frontend-product-builder/scripts/audit-theme-operational-evidence.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/frontend-product-builder/scripts/audit-theme-operational-evidence.mjs <screen-spec.json> <design-system.json> <craft-contract.json> <visual-composition-evidence.json>",
+        "argv": [
+          "node",
+          "skills/frontend-product-builder/scripts/audit-theme-operational-evidence.mjs",
+          "<screen-spec.json>",
+          "<design-system.json>",
+          "<craft-contract.json>",
+          "<visual-composition-evidence.json>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "screen-specification",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical screen contract used to resolve applicable product-semantics owners."
+        },
+        {
+          "id": "design-system",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical Design System containing semantic presentation signatures."
+        },
+        {
+          "id": "craft-contract",
+          "type": "json-file",
+          "required": true,
+          "description": "Derived craft contract binding semantic presentation assignments to the Design System."
+        },
+        {
+          "id": "visual-composition-evidence",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical Phase 5 evidence owner; when 10A/10B/10C apply, presenceSignals contains productSemantics.evidenceRef to the subordinate companion."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "frontend-representative",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "backend-change-manifest-contract",
+      "owner": "backend-product-builder",
+      "kind": "schema",
+      "description": "Defines structured backend representative-gate, architecture-mechanism, security, reliability and evidence constraints.",
+      "entrypoint": "skills/backend-product-builder/assets/backend-change-manifest.schema.json",
+      "invocation": {
+        "mode": "schema"
+      },
+      "inputContracts": [
+        {
+          "id": "backend-change-manifest",
+          "type": "json-file",
+          "required": true,
+          "description": "Backend change manifest validated against the registered schema."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "schema-rejection",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "backend-representative",
+        "adversarial"
+      ]
+    },
+    {
+      "id": "frontend-human-decision-verification",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Verifies release authorization against the fresh canonical UI gate, current checkout and trusted executor authority.",
+      "entrypoint": "integrations/frontend/ui-engineering-control.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/ui-engineering-control.mjs verify-authorization --decision <human-decision-receipt.json> --signature <human-decision-signature> --gate <feature-directory>/ui-release/ui-quality-gate.json",
+        "argv": [
+          "node",
+          "integrations/frontend/ui-engineering-control.mjs",
+          "verify-authorization",
+          "--decision",
+          "<human-decision-receipt.json>",
+          "--signature",
+          "<human-decision-signature>",
+          "--gate",
+          "<feature-directory>/ui-release/ui-quality-gate.json"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "human-decision-receipt",
+          "type": "json-file",
+          "required": true,
+          "description": "Human decision receipt emitted by the UI quality gate."
+        },
+        {
+          "id": "human-decision-signature",
+          "type": "file",
+          "required": true,
+          "description": "Detached OpenSSH signature over the decision receipt."
+        },
+        {
+          "id": "trusted-executor-authority",
+          "type": "artifact",
+          "required": true,
+          "description": "SDE_HUMAN_AUTHORITY supplied by the executor outside checkout; gate comes from this enforcement run."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-screen-readiness-audit",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Runs the consolidated screen readiness report: specification schema, reference, component coverage, action/state coverage, data ownership and representative-gate audits plus the visual composition contract, composition evidence and visual quality scorecard. Most of these had no capability of their own and were reachable only if the agent remembered to run the skill.",
+      "entrypoint": "skills/frontend-product-builder/scripts/report-screen-readiness.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/frontend-product-builder/scripts/report-screen-readiness.mjs <screen-spec.json> --design-system <design-system.json> --composition-proof <composition-proof.json> --visual-composition-evidence <visual-composition-evidence.json> --visual-quality-scorecard <visual-quality-scorecard.json>",
+        "argv": [
+          "node",
+          "skills/frontend-product-builder/scripts/report-screen-readiness.mjs",
+          "<screen-spec.json>",
+          "--design-system",
+          "<design-system.json>",
+          "--composition-proof",
+          "<composition-proof.json>",
+          "--visual-composition-evidence",
+          "<visual-composition-evidence.json>",
+          "--visual-quality-scorecard",
+          "<visual-quality-scorecard.json>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "screen-specification",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical screen contract to audit. One invocation covers one screen; supply the representative screen for the stage."
+        },
+        {
+          "id": "design-system",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical frontend Design System contract."
+        },
+        {
+          "id": "composition-proof",
+          "type": "json-file",
+          "required": true,
+          "description": "Derived composition proof bound to the screen and Design System."
+        },
+        {
+          "id": "visual-composition-evidence",
+          "type": "json-file",
+          "required": true,
+          "description": "Phase 5 visual composition evidence for the captured screen/state."
+        },
+        {
+          "id": "visual-quality-scorecard",
+          "type": "json-file",
+          "required": true,
+          "description": "Visual quality scorecard whose blocking criteria must be resolved."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "frontend-representative",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-small-slice-gate-audit",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Runs the small-slice representative gate preparation audits: styling authority contract, the global-CSS code audit that detects an unregistered global stylesheet, small-slice manifest, files, scope and evidence. The global-CSS audit is the only mechanism behind the rules.md styling-authority block and had no capability.",
+      "entrypoint": "skills/frontend-product-builder/scripts/prepare-representative-gate.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/frontend-product-builder/scripts/prepare-representative-gate.mjs <small-slice-manifest.json>",
+        "argv": [
+          "node",
+          "skills/frontend-product-builder/scripts/prepare-representative-gate.mjs",
+          "<small-slice-manifest.json>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "small-slice-manifest",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical small-slice manifest. No output path is passed on purpose: enforce reads, it does not rewrite canonical artifacts."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "frontend-representative"
+      ]
+    },
+    {
+      "id": "frontend-entity-projection-consistency",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Audits how the same entity is projected across screen contracts, so field, label and ownership drift between screens is caught. Distinct from cross-screen navigation/retrieval semantics; this auditor had zero invocation anywhere in the repository.",
+      "entrypoint": "skills/frontend-product-builder/scripts/audit-cross-screen-projection-consistency.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/frontend-product-builder/scripts/audit-cross-screen-projection-consistency.mjs <entity-projections.json> --screens-dir <screens-directory>",
+        "argv": [
+          "node",
+          "skills/frontend-product-builder/scripts/audit-cross-screen-projection-consistency.mjs",
+          "<entity-projections.json>",
+          "--screens-dir",
+          "<screens-directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "entity-projections",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical entity projection registry."
+        },
+        {
+          "id": "screens-directory",
+          "type": "directory",
+          "required": true,
+          "description": "Directory holding the canonical screen contracts to compare, normally docs/frontend/screens."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "frontend-representative",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-behavioral-ux-contract-validation",
+      "owner": "frontend-product-builder",
+      "kind": "validator",
+      "description": "Validates the Behavioral UX Contract for a PERSUASIVE or HIGH-RISK intervention: falsifiable hypothesis, evidence grade, real user benefit, manipulation risk, guardrails and the prohibited-pattern set.",
+      "entrypoint": "skills/frontend-product-builder/scripts/validate-behavioral-ux-contract.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/frontend-product-builder/scripts/validate-behavioral-ux-contract.mjs <behavioral-ux-contract.json>",
+        "argv": [
+          "node",
+          "skills/frontend-product-builder/scripts/validate-behavioral-ux-contract.mjs",
+          "<behavioral-ux-contract.json>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "behavioral-ux-contract",
+          "type": "json-file",
+          "required": true,
+          "description": "Canonical Behavioral UX Contract governed by behavioral-ux-contract.schema.json."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "frontend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "backend-representative-gate-audit",
+      "owner": "backend-product-builder",
+      "kind": "validator",
+      "description": "Audits backend representative-gate release: the full change-manifest contract and governance hardening plus the release condition itself, which validate-backend-package.mjs does not check.",
+      "entrypoint": "skills/backend-product-builder/scripts/audit-backend-representative-gate.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/backend-product-builder/scripts/audit-backend-representative-gate.mjs <backend-change-manifest.json> --root <project-root>",
+        "argv": [
+          "node",
+          "skills/backend-product-builder/scripts/audit-backend-representative-gate.mjs",
+          "<backend-change-manifest.json>",
+          "--root",
+          "<project-root>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "backend-change-manifest",
+          "type": "json-file",
+          "required": true,
+          "description": "Current backend change manifest. An applicable gate must be released as 'backend-broad-build-approved'; validate-backend-package.mjs accepts any other status, so only this auditor closes the gate."
+        },
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root used to resolve contract, evidence and scorecard references. --run-contract-validators is deliberately omitted: it rewrites the manifest, and enforce must stay read-only."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "backend-representative"
+      ]
+    },
+    {
+      "id": "backend-technology-selection-validation",
+      "owner": "backend-product-builder",
+      "kind": "validator",
+      "description": "Validates backend runtime context, Rust/Axum default selection, brownfield preservation and evidence-backed technical exceptions in the current backend change manifest.",
+      "entrypoint": "skills/backend-product-builder/scripts/validate-backend-package.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/backend-product-builder/scripts/validate-backend-package.mjs <backend-change-manifest.json> --root <project-root> --check-files",
+        "argv": [
+          "node",
+          "skills/backend-product-builder/scripts/validate-backend-package.mjs",
+          "<backend-change-manifest.json>",
+          "--root",
+          "<project-root>",
+          "--check-files"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "backend-change-manifest",
+          "type": "json-file",
+          "required": true,
+          "description": "Current backend change manifest 1.3.0 containing a structured technology decision."
+        },
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root used to resolve decision and exception evidence references."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "backend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "backend-naming-language-audit",
+      "owner": "backend-product-builder",
+      "kind": "validator",
+      "description": "Audits generated backend domain identifiers for the pt-BR ASCII snake_case layer, leaving technical/protocol vocabulary and control-plane governance enums in English.",
+      "entrypoint": "skills/backend-product-builder/scripts/audit-naming-language.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/backend-product-builder/scripts/audit-naming-language.mjs <backend-change-manifest.json> --root <project-root>",
+        "argv": [
+          "node",
+          "skills/backend-product-builder/scripts/audit-naming-language.mjs",
+          "<backend-change-manifest.json>",
+          "--root",
+          "<project-root>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "backend-change-manifest",
+          "type": "json-file",
+          "required": true,
+          "description": "Backend change manifest whose interfaces[] declare the contract paths to audit."
+        },
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root used to resolve each declared contractPath."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "backend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-ui-policy-control",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Detects governed UI surfaces, resolves supported adapters and compiles semantic tokens, recipes, responsibilities, locale/status registries and expected render coverage before implementation.",
+      "entrypoint": "integrations/frontend/ui-engineering-control.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/ui-engineering-control.mjs compile --input <json-file> --profile <ui-platform-profile.json> --adapter <ui-adapter-resolution.json> --output-dir <directory>",
+        "argv": [
+          "node",
+          "integrations/frontend/ui-engineering-control.mjs",
+          "compile",
+          "--input",
+          "<json-file>",
+          "--profile",
+          "<ui-platform-profile.json>",
+          "--adapter",
+          "<ui-adapter-resolution.json>",
+          "--output-dir",
+          "<directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "ui-policy-control-input",
+          "type": "json-file",
+          "required": true,
+          "description": "Normalized Design System bundle governed by ui-engineering-control.schema.json. 'compile' is the deciding subcommand: it derives the compiled policy, token resolution and expected render model and exits non-zero on findings, while 'profile' only resolves the platform adapter."
+        },
+        {
+          "id": "ui-platform-profile",
+          "type": "json-file",
+          "required": true,
+          "description": "Platform profile emitted by the 'profile' subcommand."
+        },
+        {
+          "id": "ui-adapter-resolution",
+          "type": "json-file",
+          "required": true,
+          "description": "Adapter resolution emitted by the 'profile' subcommand."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "frontend-representative",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-ui-source-control",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Uses the React/Tailwind v4 source adapter and TypeScript AST to reject semantic-token, primitive, layout, affordance, status and locale bypasses.",
+      "entrypoint": "integrations/frontend/ui-engineering-control.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/ui-engineering-control.mjs lint --input <source-request.json> --policy <ui-policy.compiled.json> --output-dir <directory>",
+        "argv": [
+          "node",
+          "integrations/frontend/ui-engineering-control.mjs",
+          "lint",
+          "--input",
+          "<source-request.json>",
+          "--policy",
+          "<ui-policy.compiled.json>",
+          "--output-dir",
+          "<directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "ui-source-control-request",
+          "type": "json-file",
+          "required": true,
+          "description": "Source file inventory bound to a compiled UI policy."
+        },
+        {
+          "id": "ui-compiled-policy",
+          "type": "json-file",
+          "required": true,
+          "description": "Current ui-policy.compiled.json for the same commit and adapter."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "implementation",
+        "frontend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-ui-render-control",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Collects deterministic Playwright web DOM facts and derives coverage, composition, HCI, content and accessibility findings through a stack-independent kernel.",
+      "entrypoint": "integrations/frontend/ui-engineering-control.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/ui-engineering-control.mjs analyze --expected <expected-render-model.json> --rendered <rendered-ui-evidence.json> --source <source-ui-facts.json> --output-dir <directory>",
+        "argv": [
+          "node",
+          "integrations/frontend/ui-engineering-control.mjs",
+          "analyze",
+          "--expected",
+          "<expected-render-model.json>",
+          "--rendered",
+          "<rendered-ui-evidence.json>",
+          "--source",
+          "<source-ui-facts.json>",
+          "--output-dir",
+          "<directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "expected-render-model",
+          "type": "json-file",
+          "required": true,
+          "description": "Compiled expected coverage and relational UI contracts."
+        },
+        {
+          "id": "source-ui-facts",
+          "type": "json-file",
+          "required": true,
+          "description": "Source-derived UI facts emitted by 'lint', so source/render cross-checks are reachable instead of silently skipped."
+        },
+        {
+          "id": "rendered-ui-evidence",
+          "type": "json-file",
+          "required": true,
+          "description": "Rendered browser evidence produced by the 'collect' subcommand. 'analyze' is the deciding subcommand: it compares expected against observed and exits non-zero on P0/P1 findings, while 'collect' only gathers facts."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "frontend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-ui-evidence-integrity",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Executes profile, compile, source lint, browser collection and analysis on current source, then derives the canonical gate from linked outputs.",
+      "entrypoint": "integrations/frontend/ui-engineering-control.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/ui-engineering-control.mjs gate --product-design-readiness <product-design-readiness.json> --require-product-design --output-dir <feature-directory>/ui-release --execution <ui-execution-request.json> --feature <feature-slug>",
+        "argv": [
+          "node",
+          "integrations/frontend/ui-engineering-control.mjs",
+          "gate",
+          "--product-design-readiness",
+          "<product-design-readiness.json>",
+          "--require-product-design",
+          "--output-dir",
+          "<feature-directory>/ui-release",
+          "--execution",
+          "<ui-execution-request.json>",
+          "--feature",
+          "<feature-slug>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "ui-execution-request",
+          "type": "json-file",
+          "required": true,
+          "description": "Project-relative profileInput, bundle, sourceRequest and collectRequest; current subject and real browser URL are mandatory."
+        },
+        {
+          "id": "product-design-readiness",
+          "type": "json-file",
+          "required": true,
+          "description": "Current Product Design readiness receipt. Passed together with --require-product-design so the Product Design Authority prerequisite cannot evaporate by omission."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "frontend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-product-design-authority",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Compiles product design context, compares bounded visual directions autonomously, records the governance ledger and derives current Product Design Readiness before downstream craft or UI gates.",
+      "entrypoint": "integrations/frontend/product-design-control.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/product-design-control.mjs verify --input <product-design-verification-input.json> --output-dir <directory>",
+        "argv": [
+          "node",
+          "integrations/frontend/product-design-control.mjs",
+          "verify",
+          "--input",
+          "<product-design-verification-input.json>",
+          "--output-dir",
+          "<directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "product-design-verification-input",
+          "type": "json-file",
+          "required": true,
+          "description": "Governed dependency set (brief, candidates, research, assets, policy provenance) with the current readiness artifact embedded as `readiness`, as produced by 'gate' from the Product Design Brief, candidate directions, policy provenance and governed dependency set. 'verify' is the deciding subcommand: it exits non-zero unless readiness is 'passed', while 'profile'/'compile'/'decide'/'gate' exit 0 on any well-formed input."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "frontend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-open-visual-research",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Validates task-oriented open visual research coverage, provenance, adopted/excluded aspects, retention boundaries and production-candidate licenses without making CI depend on live network access.",
+      "entrypoint": "integrations/frontend/product-design-control.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/product-design-control.mjs research --input <visual-research-input.json> --output-dir <directory>",
+        "argv": [
+          "node",
+          "integrations/frontend/product-design-control.mjs",
+          "research",
+          "--input",
+          "<visual-research-input.json>",
+          "--output-dir",
+          "<directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "visual-research-input",
+          "type": "json-file",
+          "required": true,
+          "description": "Normalized fixture, open-web, Openverse or local research result with source-level provenance."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "frontend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-asset-provenance",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Verifies assets actually referenced by the frozen source inventory and their retained provenance; an empty observed inventory is explicitly not applicable.",
+      "entrypoint": "integrations/frontend/product-design-control.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/product-design-control.mjs verify-assets --input <asset-inventory.json> --output-dir <directory> --root <project-root> --feature <feature-slug>",
+        "argv": [
+          "node",
+          "integrations/frontend/product-design-control.mjs",
+          "verify-assets",
+          "--input",
+          "<asset-inventory.json>",
+          "--output-dir",
+          "<directory>",
+          "--root",
+          "<project-root>",
+          "--feature",
+          "<feature-slug>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "asset-inventory",
+          "type": "json-file",
+          "required": true,
+          "description": "Assets referenced by frozen frontend source scope, with ref, file and approved sidecar. Empty is valid only when source has no asset references."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "implementation",
+        "frontend-representative",
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-human-asset-acquisition",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Restricts human participation to executable asset acquisition, product truth, rights, consequential risk and broad build/release authorization; generic aesthetic approval is rejected.",
+      "entrypoint": "integrations/frontend/product-design-control.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/frontend/product-design-control.mjs gate --input <json-file> --output-dir <directory>",
+        "argv": [
+          "node",
+          "integrations/frontend/product-design-control.mjs",
+          "gate",
+          "--input",
+          "<json-file>",
+          "--output-dir",
+          "<directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "human-asset-or-scope-input",
+          "type": "json-file",
+          "required": true,
+          "description": "Proven asset need and executable briefing or an enumerated human truth/risk/authorization receipt. 'gate' is the deciding subcommand: it exits non-zero unless readiness is 'passed', while 'request-asset' exits 0 for any well-formed briefing."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "design-readiness",
+        "implementation",
+        "frontend-representative",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "backend-test-integrity-audit",
+      "owner": "backend-product-builder",
+      "kind": "validator",
+      "description": "Audits test-file deletion, new skip/disable/focus markers, net assertion loss and disappeared contract IDs against an explicit Git baseline, never an inferred one.",
+      "entrypoint": "skills/backend-product-builder/scripts/audit-test-integrity.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/backend-product-builder/scripts/audit-test-integrity.mjs --root <project-root> --manifest <backend-change-manifest.json> --base <baseline-git-ref>",
+        "argv": [
+          "node",
+          "skills/backend-product-builder/scripts/audit-test-integrity.mjs",
+          "--root",
+          "<project-root>",
+          "--manifest",
+          "<backend-change-manifest.json>",
+          "--base",
+          "<baseline-git-ref>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root the audit diffs against the baseline ref."
+        },
+        {
+          "id": "backend-change-manifest",
+          "type": "json-file",
+          "required": true,
+          "description": "Current backend change manifest declaring test paths and contract identifiers."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "frontend-family-consistency-control",
+      "owner": "frontend-product-builder",
+      "kind": "controller",
+      "description": "Validates cross-screen and cross-theme consistency across a frontend family: semantic presentation signatures, perceptual calibration, and cross-screen product semantics. A family with a single screen and a design system with a single theme has nothing to compare; that is a legitimate --not-applicable outcome, recorded with a reason, never a silent skip.",
+      "entrypoint": "integrations/impeccable/frontend-family-consistency.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/impeccable/frontend-family-consistency.mjs --root <project-root> <manifest-or-not-applicable>",
+        "argv": [
+          "node",
+          "integrations/impeccable/frontend-family-consistency.mjs",
+          "--root",
+          "<project-root>",
+          "<manifest-or-not-applicable>"
+        ],
+        "choices": {
+          "<manifest-or-not-applicable>": {
+            "manifest": [
+              "--manifest",
+              "<manifest-file>"
+            ],
+            "not-applicable": [
+              "--not-applicable",
+              "<not-applicable-reason>"
+            ]
+          }
+        }
+      },
+      "inputContracts": [
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root used to resolve the design system and per-screen craft contracts."
+        },
+        {
+          "id": "manifest-or-not-applicable",
+          "type": "file",
+          "required": true,
+          "description": "Enumerated contract/manifest/not-applicable choice; file path and reason are separate scalar placeholders."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "adversarial",
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "autonomy-decision-evidence-check",
+      "owner": "spec-driven-engineering",
+      "kind": "validator",
+      "description": "Verifies the durable autonomy decision ledger, when one exists, for schema, owner, duplicity, canonical path and durability. A feature where no decision required durable recording has no ledger, which is a legitimate not-applicable outcome, not a failure.",
+      "entrypoint": "integrations/governance/autonomy-evidence.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/governance/autonomy-evidence.mjs check --root <project-root> --ledger <feature-directory>/autonomous-decisions.json",
+        "argv": [
+          "node",
+          "integrations/governance/autonomy-evidence.mjs",
+          "check",
+          "--root",
+          "<project-root>",
+          "--ledger",
+          "<feature-directory>/autonomous-decisions.json"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root containing the feature's .specs directory."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "evidence-release"
+      ]
+    },
+    {
+      "id": "session-handoff-control",
+      "owner": "spec-driven-engineering",
+      "kind": "controller",
+      "description": "Performs atomic concurrency-safe HANDOFF.md updates with stale-revision sidecar fallback.",
+      "entrypoint": "skills/spec-driven-engineering/scripts/update-handoff.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node skills/spec-driven-engineering/scripts/update-handoff.mjs --root <project-root> --session-id <id> --agent <name> --base-revision <revision> --handoff-file <path> --sidecar-file <path>",
+        "argv": [
+          "node",
+          "skills/spec-driven-engineering/scripts/update-handoff.mjs",
+          "--root",
+          "<project-root>",
+          "--session-id",
+          "<id>",
+          "--agent",
+          "<name>",
+          "--base-revision",
+          "<revision>",
+          "--handoff-file",
+          "<path>",
+          "--sidecar-file",
+          "<path>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root containing the .specs session state."
+        },
+        {
+          "id": "handoff-template",
+          "type": "markdown-file",
+          "required": true,
+          "description": "Prepared HANDOFF content containing session placeholders resolved atomically by the controller."
+        },
+        {
+          "id": "sidecar-template",
+          "type": "json-file",
+          "required": true,
+          "description": "Prepared session sidecar content used when optimistic concurrency detects a stale base revision."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "session-closure"
+      ]
+    },
+    {
+      "id": "pre-release-content-scan",
+      "owner": "spec-driven-engineering",
+      "kind": "validator",
+      "description": "When a feature declares an external build, blocks release until retained rendered evidence exists and is free of internal planning vocabulary and the wrong output language. Absent declaration is not applicable.",
+      "entrypoint": "integrations/governance/pre-release-content-scan.mjs",
+      "invocation": {
+        "mode": "cli",
+        "command": "node integrations/governance/pre-release-content-scan.mjs --root <project-root> --feature-directory <feature-directory>",
+        "argv": [
+          "node",
+          "integrations/governance/pre-release-content-scan.mjs",
+          "--root",
+          "<project-root>",
+          "--feature-directory",
+          "<feature-directory>"
+        ]
+      },
+      "inputContracts": [
+        {
+          "id": "project-root",
+          "type": "repository-root",
+          "required": true,
+          "description": "Repository root containing .specs/project/PROJECT.md and the feature package."
+        },
+        {
+          "id": "feature-directory",
+          "type": "directory",
+          "required": true,
+          "description": "Feature package that may declare external-build.json."
+        }
+      ],
+      "failureSemantics": {
+        "mode": "nonzero-exit",
+        "blocking": true
+      },
+      "supportedStages": [
+        "evidence-release"
+      ]
+    }
+  ]
+}

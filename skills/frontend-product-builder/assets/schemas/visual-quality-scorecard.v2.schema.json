@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.frontend-product-builder.local/visual-quality-scorecard.v2.schema.json",
+  "title": "Generated Visual Quality Scorecard v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactKind", "schemaVersion", "generatedFrom", "decisionState", "objectiveCriteria", "semanticDigest"],
+  "properties": {
+    "artifactKind": { "const": "visual-quality-scorecard" },
+    "schemaVersion": { "const": "2.0.0" },
+    "generatedFrom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gateDigest"],
+      "properties": { "gateDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+    },
+    "decisionState": { "enum": ["eligible-for-human-decision", "objective-gate-failed"] },
+    "objectiveCriteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "severity", "message", "findingKey"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^UI-[A-Z0-9-]+$" },
+          "severity": { "enum": ["P0", "P1", "P2", "P3", "critical", "serious"] },
+          "message": { "type": "string", "minLength": 1 },
+          "findingKey": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "semanticDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  }
+}

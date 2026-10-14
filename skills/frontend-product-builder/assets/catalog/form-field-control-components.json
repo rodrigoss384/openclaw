@@ -1,0 +1,3719 @@
+{
+  "$schema": "../schemas/component-catalog.schema.json",
+  "meta": {
+    "id": "frontend-product-builder-form-field-control-components",
+    "name": "Frontend Product Builder Form Field Control Components",
+    "version": "1.0.0",
+    "status": "approved",
+    "owner": "frontend-product-builder",
+    "category": "forms",
+    "source": "./form-field-control-components.json",
+    "designSystem": "docs/frontend/design-system/design-system.json",
+    "generated": false,
+    "description": "Canonical specialized form controls for boolean choices, exclusive choices, bounded selections, multiline text, and date-related values."
+  },
+  "components": {
+    "CheckboxField": {
+      "id": "checkbox-field",
+      "name": "CheckboxField",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical boolean or explicitly approved tri-state form field with a clickable label, supporting description, validation, eligibility explanation, and consent-aware behavior.",
+      "capabilities": [
+        "Collect one independent boolean value.",
+        "Represent checked, unchecked, and explicitly approved indeterminate states.",
+        "Present consent, acknowledgement, preference, and feature-option choices.",
+        "Associate the control with visible label, description, and validation feedback.",
+        "Explain disabled or unavailable eligibility without relying on a tooltip.",
+        "Preserve native checkbox semantics and keyboard interaction."
+      ],
+      "keywords": [
+        "checkbox",
+        "boolean",
+        "consent",
+        "acknowledgement",
+        "preference",
+        "indeterminate"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/checkbox-field.tsx",
+      "publicImport": "@/components/form/checkbox-field",
+      "contract": "docs/frontend/design-system/components/checkbox-field.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Radix Checkbox or native checkbox, Label, FieldHelp, FieldError",
+        "components": [
+          "Checkbox",
+          "Label",
+          "FieldHelp",
+          "FieldError"
+        ],
+        "reason": "Checkbox fields require specialized control-label composition, full-label activation, consent policy, indeterminate semantics, validation association, and disabled-reason handling."
+      },
+      "tokens": [
+        "semantic.background.surface",
+        "semantic.background.surfaceSubtle",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "semantic.status.danger.foreground",
+        "reference.control.target.minimum",
+        "reference.icon.size.sm",
+        "reference.space.1",
+        "reference.space.2",
+        "reference.space.3"
+      ],
+      "variants": {
+        "boolean": {
+          "intent": "Collect an ordinary independent true or false value.",
+          "default": true,
+          "allowedUse": [
+            "Enable a preference.",
+            "Include an optional capability.",
+            "Mark an independent condition.",
+            "Choose whether a secondary behavior applies."
+          ],
+          "prohibitedUse": [
+            "Choosing one option from a mutually exclusive set.",
+            "Triggering an immediate destructive action.",
+            "Representing an unknown value without an approved tri-state contract."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "checked",
+            "unchecked",
+            "focus-visible",
+            "disabled",
+            "invalid"
+          ]
+        },
+        "consent": {
+          "intent": "Collect explicit informed consent for a policy, declaration, or consequential agreement.",
+          "allowedUse": [
+            "Accept terms required for the current workflow.",
+            "Confirm authorization to perform an operation.",
+            "Acknowledge a material consequence.",
+            "Provide explicit data-processing consent where the product policy requires it."
+          ],
+          "prohibitedUse": [
+            "Preselected consent.",
+            "Bundling unrelated consent statements.",
+            "Hiding material policy text behind a tooltip.",
+            "Using one checkbox for several legally or operationally distinct agreements."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default",
+            "semantic.text.primary"
+          ],
+          "states": [
+            "checked",
+            "unchecked",
+            "focus-visible",
+            "disabled",
+            "invalid"
+          ]
+        },
+        "acknowledgement": {
+          "intent": "Require the user to confirm that a consequence or condition has been understood.",
+          "allowedUse": [
+            "Confirm understanding before a sensitive operation.",
+            "Acknowledge that an operation is irreversible.",
+            "Confirm review of a required warning."
+          ],
+          "prohibitedUse": [
+            "Replacing a ConfirmationDialog for a destructive action.",
+            "Using generic wording without naming the consequence."
+          ],
+          "tokens": [
+            "semantic.status.warning.foreground",
+            "semantic.border.default"
+          ],
+          "states": [
+            "checked",
+            "unchecked",
+            "focus-visible",
+            "disabled",
+            "invalid"
+          ]
+        },
+        "triState": {
+          "intent": "Represent an explicit three-state domain value or hierarchical selection.",
+          "allowedUse": [
+            "Hierarchical selection with partially selected descendants.",
+            "Domain value whose contract explicitly distinguishes yes, no, and unspecified.",
+            "Administrative inheritance state."
+          ],
+          "prohibitedUse": [
+            "Using indeterminate only as a visual effect.",
+            "Submitting indeterminate without a defined domain mapping.",
+            "Ordinary consent.",
+            "Mutually exclusive option selection."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "checked",
+            "unchecked",
+            "indeterminate",
+            "focus-visible",
+            "disabled",
+            "invalid"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense independent option inside a compact operational form or filter region.",
+          "allowedUse": [
+            "Compact filter panel.",
+            "Administrative option list.",
+            "Bounded preference group."
+          ],
+          "tokens": [
+            "reference.space.1",
+            "reference.space.2",
+            "reference.icon.size.sm"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary checkbox field with label and optional description.",
+          "default": true,
+          "allowedUse": [
+            "Route form.",
+            "Dialog form.",
+            "Authentication preference.",
+            "Administration."
+          ],
+          "tokens": [
+            "reference.space.2",
+            "reference.space.3"
+          ]
+        },
+        "comfortable": {
+          "intent": "High-attention acknowledgement or consent with longer supporting content.",
+          "allowedUse": [
+            "Sensitive confirmation.",
+            "Material policy acknowledgement.",
+            "Review declaration."
+          ],
+          "tokens": [
+            "reference.space.3",
+            "reference.space.4"
+          ]
+        }
+      },
+      "states": [
+        "checked",
+        "unchecked",
+        "indeterminate",
+        "focus-visible",
+        "disabled",
+        "invalid",
+        "read-only",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "control",
+          "description": "The native or approved checkbox control.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Checkbox"
+          ],
+          "contentRestrictions": [
+            "The control must expose native-equivalent checked, unchecked, disabled, required, and indeterminate semantics.",
+            "The visual indicator must not be the only source of state."
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Visible statement describing the independent choice.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Label",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Write the label as a clear state or agreement.",
+            "Avoid vague labels such as Ativar without naming what will be enabled.",
+            "Consent wording must identify the agreement."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Optional persistent explanation, consequence, or eligibility context.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "FieldHelp",
+            "Text",
+            "Link"
+          ],
+          "contentRestrictions": [
+            "Material consequences remain visible.",
+            "Supplementary policy details may use a clearly labeled link.",
+            "The description must not contain unrelated choices."
+          ]
+        },
+        {
+          "name": "requiredIndicator",
+          "description": "Optional localized required-choice indication.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required state must also exist in validation and control semantics.",
+            "Required consent must begin unchecked."
+          ]
+        },
+        {
+          "name": "disabledReason",
+          "description": "Optional visible explanation of why the choice cannot be changed.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "FieldHelp",
+            "PermissionState",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required when the reason is not otherwise obvious.",
+            "Do not expose internal capability keys."
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Current normalized checkbox-field validation error.",
+          "required": false,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "FieldError"
+          ],
+          "contentRestrictions": [
+            "Required-checkbox errors explain the required acknowledgement or choice.",
+            "Raw schema messages are prohibited."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Stable checkbox identity associated with its label and descriptive content.",
+          "semantic": true,
+          "restrictions": [
+            "Must remain unique and stable."
+          ]
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Stable form-field name.",
+          "semantic": true,
+          "restrictions": [
+            "Must map to one boolean or approved tri-state field."
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "boolean | consent | acknowledgement | triState",
+          "required": false,
+          "default": "boolean",
+          "description": "Semantic choice contract.",
+          "semantic": true,
+          "restrictions": [
+            "Consent and acknowledgement variants require purpose-specific content.",
+            "Tri-state requires an explicit domain mapping."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default | comfortable",
+          "required": false,
+          "default": "default",
+          "description": "Approved field density.",
+          "semantic": true,
+          "restrictions": [
+            "Compact must not reduce the usable target below the design-system minimum."
+          ]
+        },
+        {
+          "name": "checked",
+          "type": "boolean | indeterminate",
+          "required": true,
+          "description": "Controlled current checkbox state.",
+          "semantic": true,
+          "restrictions": [
+            "Indeterminate is valid only for triState.",
+            "Consent must not be initialized as checked unless a specific lawful and product-approved policy explicitly permits it."
+          ]
+        },
+        {
+          "name": "onCheckedChange",
+          "type": "(checked: boolean | indeterminate) => void",
+          "required": true,
+          "description": "Controlled state-change callback.",
+          "semantic": true,
+          "restrictions": [
+            "The callback updates form state but does not perform a consequential mutation directly."
+          ]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the active form contract requires the checked state or an explicit value.",
+          "semantic": true,
+          "restrictions": [
+            "Required semantics must match the validation schema.",
+            "Required does not imply default checked."
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the value cannot currently be changed.",
+          "semantic": true,
+          "restrictions": [
+            "The disabled reason must be available when not obvious.",
+            "Disabled and read-only presentation must not be conflated."
+          ]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the current checkbox value violates the active form contract.",
+          "semantic": true,
+          "restrictions": [
+            "Invalid state requires an associated normalized error."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormSection",
+          "Dialog form",
+          "Authentication form",
+          "Administration form",
+          "Review decision form",
+          "ConfirmationDialog verification"
+        ],
+        "allowedChildren": [
+          "Checkbox",
+          "Label",
+          "FieldHelp",
+          "FieldError",
+          "PermissionState",
+          "Text",
+          "Link"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "Tooltip",
+          "RadioGroupField",
+          "SelectField"
+        ],
+        "prohibitedChildren": [
+          "Second checkbox representing another value",
+          "Complete policy document",
+          "Submit button",
+          "Unrelated form control"
+        ],
+        "spacingOwnership": [
+          "CheckboxField owns spacing among control, label, description, disabled reason, and error.",
+          "The form layout owns spacing among sibling fields.",
+          "The clickable label region includes the control and primary label without including unrelated links."
+        ],
+        "surfaceOwnership": "CheckboxField owns no surface by default. High-attention acknowledgement may use a subtle semantic region supplied by the parent workflow.",
+        "rules": [
+          "One CheckboxField represents one independent boolean or approved tri-state value.",
+          "Mutually exclusive choices require RadioGroupField.",
+          "Consent begins unchecked by default.",
+          "Indeterminate requires an explicit submitted-value policy.",
+          "A checkbox must not execute a destructive operation immediately upon checking.",
+          "The label and control form one clear activation target."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Checkbox",
+          "Label",
+          "FieldHelp",
+          "FieldError",
+          "PermissionState"
+        ],
+        "libraries": [
+          "@radix-ui/react-checkbox"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "required",
+          "notes": "Use for independent boolean values and explicit acknowledgements."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "recommended",
+          "notes": "Remember-device or session preferences must state their effect clearly."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions"
+          ],
+          "status": "recommended",
+          "notes": "Feature toggles, inheritance, and acknowledgements require capability-aware state."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "recommended",
+          "notes": "Use for required declarations or review acknowledgements, not for the final decision itself."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters"
+          ],
+          "status": "allowed",
+          "notes": "Use for independent binary filters when the meaning remains clear."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Executing mutations.",
+          "Persisting preferences directly.",
+          "Evaluating capabilities.",
+          "Reading form context without an approved adapter.",
+          "Loading consent policy."
+        ]
+      },
+      "stateOwnership": {
+        "model": "form-owned",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": true,
+        "serverState": false,
+        "notes": [
+          "The owning form controls the checked value, validation, touched state, dirty state, and submission mapping.",
+          "Hierarchical selection logic remains in the owning feature."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The field emits value changes only.",
+          "Policy links retain their own explicit navigation behavior."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve the complete label, consequence, and validation content beside or below a consistently positioned control.",
+        "compact": "Align the control to the start of the first label line. Supporting content wraps beneath the label.",
+        "medium": "Use ordinary control-label alignment.",
+        "wide": "Keep readable line length for consent and acknowledgement text.",
+        "ultrawide": "Do not stretch legal or operational text across the route.",
+        "overflowPolicy": "Labels, descriptions, reasons, and errors wrap without page overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "The control, label, links, and error remain operable and associated at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "native checkbox or equivalent checkbox role with associated visible label",
+        "accessibleName": "Visible checkbox label.",
+        "keyboard": [
+          "Space toggles the checkbox when eligible.",
+          "Tab moves focus to the checkbox once.",
+          "Links inside supporting content remain separately operable.",
+          "Indeterminate state follows approved checkbox keyboard behavior."
+        ],
+        "focus": [
+          "The checkbox receives visible focus.",
+          "Clicking the associated label toggles the control.",
+          "Validation does not reset the current value."
+        ],
+        "announcements": [
+          "Checked, unchecked, and mixed states are exposed.",
+          "Required and invalid state are perceivable.",
+          "Disabled reason is programmatically associated when necessary."
+        ],
+        "aria": [
+          "Use native checked semantics where possible.",
+          "Use aria-checked=mixed only for approved indeterminate state.",
+          "Use aria-describedby for description, disabled reason, and error.",
+          "Use aria-invalid when invalid."
+        ],
+        "colorIndependence": "Checked, mixed, invalid, disabled, required, and consent meaning use text, shape, and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One checkbox and one clear visible label.",
+        "typical": "Control, label, optional description, and conditional validation error.",
+        "maximum": "One coherent agreement or independent choice with concise supporting content.",
+        "wrapping": "Labels and descriptions wrap naturally while the control remains aligned to the first line.",
+        "truncation": "Consent, acknowledgement, and validation text must not be truncated.",
+        "localization": "Support expanded labels, policy links, required wording, and validation messages.",
+        "emptyBehavior": "A CheckboxField without a label is invalid.",
+        "technicalContent": "Raw boolean field names, capability keys, policy IDs, and backend enum values are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/checkbox-field.stories.tsx",
+        "requiredStories": [
+          "BooleanUnchecked",
+          "BooleanChecked",
+          "Consent",
+          "Acknowledgement",
+          "TriStateUnchecked",
+          "TriStateMixed",
+          "TriStateChecked",
+          "RequiredInvalid",
+          "DisabledWithReason",
+          "LongLocalizedLabel",
+          "Compact",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/checkbox-field.test.tsx",
+        "requiredTests": [
+          "Label-control association",
+          "Checked-state control",
+          "Space-key interaction",
+          "Required semantics",
+          "Consent default policy",
+          "Indeterminate semantics",
+          "Invalid association",
+          "Disabled-reason association",
+          "No immediate mutation"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Consent form",
+          "Administration preference",
+          "Tri-state inheritance",
+          "390x844",
+          "125% browser zoom",
+          "Keyboard-only interaction",
+          "Long policy label"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormWorkflowRoute",
+          "AuthenticationForm",
+          "AdministrationForm",
+          "ReviewDecisionForm"
+        ]
+      },
+      "notes": [
+        "A group of independent checkboxes may be composed by a feature-owned fieldset, but each CheckboxField still owns one independent value.",
+        "Bulk table selection uses the DataTable selection contract rather than CheckboxField."
+      ]
+    },
+    "RadioGroupField": {
+      "id": "radio-group-field",
+      "name": "RadioGroupField",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical exclusive-choice field for selecting exactly one value from a small, visible, stable set of mutually exclusive options.",
+      "capabilities": [
+        "Collect one value from a mutually exclusive option set.",
+        "Present options as stacked, inline, or descriptive-card choices.",
+        "Associate the complete option set with a visible legend.",
+        "Expose option descriptions and disabled reasons.",
+        "Support native-equivalent arrow-key navigation.",
+        "Represent required, invalid, disabled, and read-only group states."
+      ],
+      "keywords": [
+        "radio",
+        "exclusive-choice",
+        "options",
+        "fieldset",
+        "legend",
+        "single-selection"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/radio-group-field.tsx",
+      "publicImport": "@/components/form/radio-group-field",
+      "contract": "docs/frontend/design-system/components/radio-group-field.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Radix Radio Group or native radio controls, fieldset, legend, FieldHelp, FieldError",
+        "components": [
+          "RadioGroup",
+          "RadioGroupItem",
+          "FieldHelp",
+          "FieldError"
+        ],
+        "reason": "Exclusive choices require fieldset-level semantics, one shared legend, option-level labels, arrow-key interaction, disabled-option policy, and responsive option composition."
+      },
+      "tokens": [
+        "semantic.background.surface",
+        "semantic.background.surfaceSubtle",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "semantic.status.danger.foreground",
+        "reference.control.target.minimum",
+        "reference.icon.size.sm",
+        "reference.space.1",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.space.4"
+      ],
+      "variants": {
+        "stacked": {
+          "intent": "Present options vertically for reliable scanning, descriptions, or narrow containers.",
+          "default": true,
+          "allowedUse": [
+            "Two to seven short options.",
+            "Options with descriptions.",
+            "Mobile and narrow layouts.",
+            "Decision choices requiring deliberate comparison."
+          ],
+          "prohibitedUse": [
+            "Large dynamic option sets.",
+            "Dozens of values.",
+            "Options requiring remote search."
+          ],
+          "tokens": [
+            "reference.space.2",
+            "reference.space.3"
+          ],
+          "states": [
+            "default",
+            "selected",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        },
+        "inline": {
+          "intent": "Present a very small set of short, familiar choices on one wrapping line.",
+          "allowedUse": [
+            "Two or three short options.",
+            "Yes or no when a checkbox would not communicate the semantics correctly.",
+            "Short frequency or visibility choices."
+          ],
+          "prohibitedUse": [
+            "Options with descriptions.",
+            "Long localized labels.",
+            "More options than remain immediately scannable.",
+            "Compact layout where controls become crowded."
+          ],
+          "tokens": [
+            "reference.space.3",
+            "reference.space.4"
+          ],
+          "states": [
+            "default",
+            "selected",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        },
+        "cards": {
+          "intent": "Present a small set of consequential options requiring a title, description, and optional supporting metadata.",
+          "allowedUse": [
+            "Plan or workflow mode.",
+            "Review outcome with explanatory differences.",
+            "Configuration strategy.",
+            "Mutually exclusive operational behavior."
+          ],
+          "prohibitedUse": [
+            "Decorative card selection.",
+            "More than a small bounded set.",
+            "Options that are not mutually exclusive.",
+            "Using card layout only to make an ordinary choice appear premium."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.background.surfaceSubtle",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "selected",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense set of short exclusive options.",
+          "allowedUse": [
+            "Compact filters.",
+            "Bounded administration dialog."
+          ],
+          "tokens": [
+            "reference.space.1",
+            "reference.space.2"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary exclusive-choice field.",
+          "default": true,
+          "allowedUse": [
+            "Route form.",
+            "Dialog.",
+            "Review decision.",
+            "Administration."
+          ],
+          "tokens": [
+            "reference.space.2",
+            "reference.space.3"
+          ]
+        },
+        "comfortable": {
+          "intent": "Consequential or descriptive options requiring more reading space.",
+          "allowedUse": [
+            "Card options.",
+            "Review outcome.",
+            "Configuration strategy."
+          ],
+          "tokens": [
+            "reference.space.3",
+            "reference.space.4"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "selected",
+        "disabled",
+        "invalid",
+        "read-only",
+        "loading",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "legend",
+          "description": "Visible group question or field label.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Legend",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "The legend must communicate the decision represented by the complete option set.",
+            "Do not repeat the same label inside every option."
+          ]
+        },
+        {
+          "name": "requiredIndicator",
+          "description": "Optional localized required-choice indication.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required state must also exist in validation semantics."
+          ]
+        },
+        {
+          "name": "help",
+          "description": "Optional persistent guidance applying to the complete option set.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "FieldHelp"
+          ],
+          "contentRestrictions": [
+            "Explain the decision criteria or scope.",
+            "Option-specific content belongs with the option."
+          ]
+        },
+        {
+          "name": "option",
+          "description": "One mutually exclusive selectable option.",
+          "required": true,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "RadioGroupItem",
+            "RadioOption"
+          ],
+          "contentRestrictions": [
+            "Every option requires a stable value and visible label.",
+            "Options must be mutually exclusive.",
+            "Raw backend enum values are prohibited."
+          ]
+        },
+        {
+          "name": "optionLabel",
+          "description": "Visible user-facing option label.",
+          "required": true,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "Label",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Labels should allow direct comparison among options.",
+            "Avoid ambiguous labels such as Standard or Advanced without context."
+          ]
+        },
+        {
+          "name": "optionDescription",
+          "description": "Optional explanation of one option's effect, eligibility, or trade-off.",
+          "required": false,
+          "multiple": true,
+          "order": 6,
+          "allowedComponents": [
+            "Text",
+            "MetadataList"
+          ],
+          "contentRestrictions": [
+            "Descriptions must remain concise.",
+            "Material differences among options should remain visible."
+          ]
+        },
+        {
+          "name": "optionDisabledReason",
+          "description": "Optional visible reason one option cannot be selected.",
+          "required": false,
+          "multiple": true,
+          "order": 7,
+          "allowedComponents": [
+            "Text",
+            "PermissionState"
+          ],
+          "contentRestrictions": [
+            "Required when the reason is not obvious.",
+            "Do not expose capability IDs or policy internals."
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Current normalized group validation error.",
+          "required": false,
+          "multiple": false,
+          "order": 8,
+          "allowedComponents": [
+            "FieldError"
+          ],
+          "contentRestrictions": [
+            "The error applies to the complete choice group.",
+            "Do not repeat the same group error after every option."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Stable group identity used by legend, descriptions, and errors.",
+          "semantic": true,
+          "restrictions": [
+            "Must be unique and stable."
+          ]
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Stable form name shared by the mutually exclusive options.",
+          "semantic": true,
+          "restrictions": [
+            "All options in the group represent one form value."
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "stacked | inline | cards",
+          "required": false,
+          "default": "stacked",
+          "description": "Semantic option presentation.",
+          "semantic": true,
+          "restrictions": [
+            "Inline is limited to a very small set of short labels.",
+            "Cards require meaningful descriptive content."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default | comfortable",
+          "required": false,
+          "default": "default",
+          "description": "Approved group density.",
+          "semantic": true,
+          "restrictions": [
+            "Compact must retain minimum target size and readable option association."
+          ]
+        },
+        {
+          "name": "value",
+          "type": "string | null",
+          "required": true,
+          "description": "Controlled selected option value.",
+          "semantic": true,
+          "restrictions": [
+            "Value must match one eligible normalized option or null before selection.",
+            "Do not store visible labels as unstable values."
+          ]
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "description": "Controlled selected-value callback.",
+          "semantic": true,
+          "restrictions": [
+            "The callback updates form state and does not execute the final workflow action."
+          ]
+        },
+        {
+          "name": "options",
+          "type": "RadioOption[]",
+          "required": true,
+          "description": "Normalized stable option set.",
+          "semantic": true,
+          "restrictions": [
+            "Options require unique values and user-facing labels.",
+            "Large or remotely searched option sets require SelectField or a dedicated combobox.",
+            "Option order follows user decision logic rather than backend enumeration."
+          ]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that one option must be selected.",
+          "semantic": true,
+          "restrictions": [
+            "Must remain synchronized with the validation schema."
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Disables the complete choice group.",
+          "semantic": true,
+          "restrictions": [
+            "Group-level disabled reason must be visible when not obvious."
+          ]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the current selection violates the active form contract.",
+          "semantic": true,
+          "restrictions": [
+            "Invalid state requires a group-level error."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormSection",
+          "Dialog form",
+          "Administration form",
+          "Review decision form",
+          "Authentication form"
+        ],
+        "allowedChildren": [
+          "RadioGroup",
+          "RadioGroupItem",
+          "RadioOption",
+          "FieldHelp",
+          "FieldError",
+          "PermissionState",
+          "Text",
+          "MetadataList"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Button",
+          "Tooltip",
+          "CheckboxField"
+        ],
+        "prohibitedChildren": [
+          "Checkbox",
+          "Select",
+          "Several unrelated controls",
+          "Submit action"
+        ],
+        "spacingOwnership": [
+          "RadioGroupField owns spacing among legend, help, options, option descriptions, disabled reasons, and error.",
+          "Each option owns spacing between its control, label, and supporting description.",
+          "The form layout owns spacing around the complete field."
+        ],
+        "surfaceOwnership": "Stacked and inline variants own no surface. Cards variant owns one selectable option surface per option without adding another card around the complete group.",
+        "rules": [
+          "One group represents one mutually exclusive value.",
+          "The complete field uses one legend.",
+          "Few visible options favor radio controls over a select.",
+          "Large or searchable option sets require another control.",
+          "Option values are normalized before reaching the shared component.",
+          "Disabled options retain understandable visible context."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "RadioGroup",
+          "RadioGroupItem",
+          "FieldHelp",
+          "FieldError",
+          "PermissionState",
+          "MetadataList"
+        ],
+        "libraries": [
+          "@radix-ui/react-radio-group"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "required",
+          "notes": "Use for small, stable, mutually exclusive option sets."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "required",
+          "notes": "Decision options must remain distinct from machine recommendations."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions"
+          ],
+          "status": "recommended",
+          "notes": "Use for configuration modes and bounded policy choices."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "allowed",
+          "notes": "Use only when authentication requires a genuine exclusive option."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters"
+          ],
+          "status": "allowed",
+          "notes": "Use for a very small exclusive filter set; larger sets use SelectField."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching options.",
+          "Mapping raw enums.",
+          "Evaluating option permissions.",
+          "Executing mutations.",
+          "Submitting the form."
+        ]
+      },
+      "stateOwnership": {
+        "model": "form-owned",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": true,
+        "serverState": false,
+        "notes": [
+          "The owning form controls the selected value, validation, touched state, dirty state, and submission mapping.",
+          "The owning feature resolves option eligibility and content."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The group emits selection changes only.",
+          "The foundation manages native-equivalent option focus movement."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve visible comparison among options while transforming inline choices into stacked choices before labels or targets become crowded.",
+        "compact": "Use stacked presentation. Card options become full width.",
+        "medium": "Use stacked or a short wrapping inline group.",
+        "wide": "Use the selected variant while preserving readable option widths.",
+        "ultrawide": "Constrain descriptive cards rather than stretching them across the route.",
+        "overflowPolicy": "Options wrap or stack. Horizontal page overflow is prohibited.",
+        "containerQueries": true,
+        "zoomExpectation": "Inline groups must transform before labels or targets become unusable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "fieldset with legend and native radio controls or an equivalent radiogroup",
+        "accessibleName": "Visible group legend.",
+        "keyboard": [
+          "Tab enters and exits the group according to the radio foundation behavior.",
+          "Arrow keys move among eligible options.",
+          "Space selects the focused option.",
+          "Disabled options cannot be selected."
+        ],
+        "focus": [
+          "The selected or first eligible option receives the appropriate tab stop.",
+          "Every focused option has a visible focus indicator.",
+          "Validation does not reset the current selection."
+        ],
+        "announcements": [
+          "Selected option and position in the set are exposed.",
+          "Group help and error are programmatically associated.",
+          "Disabled reasons are available when required."
+        ],
+        "aria": [
+          "Prefer native fieldset, legend, and radio semantics where possible.",
+          "Use aria-describedby for group help and error.",
+          "Use aria-invalid on the group or relevant control according to the foundation."
+        ],
+        "colorIndependence": "Selected, disabled, invalid, and read-only meaning use control state, text, border, and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One visible legend and at least two mutually exclusive options.",
+        "typical": "Two to five options with concise labels and optional descriptions.",
+        "maximum": "A small immediately scannable set. Larger sets require SelectField or a dedicated searchable control.",
+        "wrapping": "Labels and descriptions wrap while the control remains aligned to the first line.",
+        "truncation": "Option labels and material descriptions must not be truncated.",
+        "localization": "Support expanded legend, options, descriptions, disabled reasons, and validation.",
+        "emptyBehavior": "A group with fewer than two eligible options requires review; one fixed value may not require an interactive control.",
+        "technicalContent": "Raw enum keys, option IDs, capability names, and backend descriptions are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/radio-group-field.stories.tsx",
+        "requiredStories": [
+          "Stacked",
+          "Inline",
+          "Cards",
+          "Required",
+          "Invalid",
+          "DisabledGroup",
+          "DisabledOption",
+          "WithDescriptions",
+          "ReadOnly",
+          "LongLocalizedLabels",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/radio-group-field.test.tsx",
+        "requiredTests": [
+          "Group legend semantics",
+          "Exclusive selection",
+          "Controlled value",
+          "Arrow-key navigation",
+          "Required validation",
+          "Disabled-option behavior",
+          "Group error association",
+          "Stable option values",
+          "Responsive DOM order"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Review decision form",
+          "Administration mode selection",
+          "390x844 stacked transformation",
+          "1024x768 card options",
+          "125% browser zoom",
+          "Keyboard-only selection",
+          "Long localized option descriptions"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormWorkflowRoute",
+          "ReviewDecisionForm",
+          "AdministrationForm"
+        ]
+      },
+      "notes": [
+        "A yes-or-no question may use RadioGroupField when the user must make an explicit mutually exclusive choice. An independent optional state normally uses CheckboxField."
+      ]
+    },
+    "SelectField": {
+      "id": "select-field",
+      "name": "SelectField",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical single-selection field for choosing one normalized value from a bounded option set through a native or approved custom select foundation.",
+      "capabilities": [
+        "Collect one value from a bounded option set.",
+        "Present placeholder, groups, descriptions, disabled options, and an optional clear action.",
+        "Support controlled opening, selection, loading, empty-option, and dependency-error states.",
+        "Associate the select with visible label, help, and validation feedback.",
+        "Preserve keyboard navigation and focus behavior through an approved select foundation.",
+        "Prevent raw backend enums from becoming user-facing options."
+      ],
+      "keywords": [
+        "select",
+        "dropdown",
+        "single-selection",
+        "options",
+        "placeholder",
+        "option-group"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/select-field.tsx",
+      "publicImport": "@/components/form/select-field",
+      "contract": "docs/frontend/design-system/components/select-field.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Radix Select or native select, FormField, FieldHelp, FieldError",
+        "components": [
+          "FormField",
+          "Select",
+          "FieldHelp",
+          "FieldError",
+          "Button",
+          "LoadingState",
+          "EmptyState",
+          "ErrorState"
+        ],
+        "reason": "Single-selection fields require normalized options, placeholder semantics, overlay focus management, disabled-option policy, loading and empty states, and clear boundaries from radio and searchable-combobox patterns."
+      },
+      "tokens": [
+        "component.input.radius",
+        "semantic.background.surface",
+        "semantic.background.surfaceElevated",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "semantic.status.danger.foreground",
+        "reference.control.height.sm",
+        "reference.control.height.md",
+        "reference.control.target.minimum",
+        "reference.icon.size.sm",
+        "reference.space.1",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.zIndex.dropdown"
+      ],
+      "variants": {
+        "standard": {
+          "intent": "Collect one value from an ordinary bounded option set.",
+          "default": true,
+          "allowedUse": [
+            "Status filter.",
+            "Category.",
+            "Organization unit.",
+            "Configuration option.",
+            "Bounded domain enumeration."
+          ],
+          "prohibitedUse": [
+            "Two or three options better compared as radios.",
+            "Large remotely searched entity collection.",
+            "Multiple selection."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "selected",
+            "disabled",
+            "invalid",
+            "loading",
+            "empty",
+            "error"
+          ]
+        },
+        "nullable": {
+          "intent": "Allow a deliberate no-selection or none value in addition to the bounded options.",
+          "allowedUse": [
+            "Optional assignment.",
+            "Optional category.",
+            "Clearable filter.",
+            "Explicit no-owner state."
+          ],
+          "prohibitedUse": [
+            "Required field.",
+            "Using placeholder as an ambiguous submitted value.",
+            "Conflating none with unknown or unavailable."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "selected",
+            "disabled",
+            "invalid",
+            "empty"
+          ]
+        },
+        "grouped": {
+          "intent": "Present a bounded option set divided into meaningful nonselectable groups.",
+          "allowedUse": [
+            "Options grouped by category.",
+            "Options grouped by organization scope.",
+            "Options grouped by lifecycle class."
+          ],
+          "prohibitedUse": [
+            "Using groups only as decoration.",
+            "Deep hierarchy.",
+            "Large tree selection.",
+            "Groups whose labels expose backend structure."
+          ],
+          "tokens": [
+            "semantic.background.surfaceElevated",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "selected",
+            "disabled",
+            "invalid",
+            "loading",
+            "empty",
+            "error"
+          ]
+        },
+        "dependent": {
+          "intent": "Present options whose availability depends on another already selected field or resolved prerequisite.",
+          "allowedUse": [
+            "City after state selection.",
+            "Team after organization selection.",
+            "Template after document type selection."
+          ],
+          "prohibitedUse": [
+            "Fetching options directly inside SelectField.",
+            "Silently clearing an existing value without form reconciliation.",
+            "Displaying stale options as authoritative."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "selected",
+            "disabled",
+            "invalid",
+            "loading",
+            "empty",
+            "error",
+            "unavailable"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense bounded selection for filters or compact dialogs.",
+          "allowedUse": [
+            "Search filters.",
+            "Compact administration dialog.",
+            "Contextual form."
+          ],
+          "tokens": [
+            "reference.control.height.sm",
+            "reference.space.2"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary application select field.",
+          "default": true,
+          "allowedUse": [
+            "Route form.",
+            "Dialog.",
+            "Administration.",
+            "Authentication where applicable."
+          ],
+          "tokens": [
+            "reference.control.height.md",
+            "reference.space.3"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "focus-visible",
+        "selected",
+        "disabled",
+        "invalid",
+        "loading",
+        "empty",
+        "error",
+        "read-only",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Visible field label.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Label",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Identify the value being selected.",
+            "Do not use the placeholder as the only label."
+          ]
+        },
+        {
+          "name": "trigger",
+          "description": "Approved select trigger showing placeholder or current selected label.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "SelectTrigger",
+            "Native select"
+          ],
+          "contentRestrictions": [
+            "Must expose expanded, disabled, invalid, and current-value state.",
+            "Current value uses the normalized option label."
+          ]
+        },
+        {
+          "name": "placeholder",
+          "description": "Prompt shown before an eligible value is selected.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use task-oriented text such as Selecione uma categoria.",
+            "Placeholder is not a hidden submitted value.",
+            "Required fields must not submit the placeholder."
+          ]
+        },
+        {
+          "name": "option",
+          "description": "One normalized selectable value.",
+          "required": true,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "SelectItem",
+            "Native option"
+          ],
+          "contentRestrictions": [
+            "Every option requires a stable value and user-facing label.",
+            "Raw backend enum keys are prohibited.",
+            "Disabled options require an understandable reason when relevant."
+          ]
+        },
+        {
+          "name": "optionDescription",
+          "description": "Optional concise supplementary option context.",
+          "required": false,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Keep descriptions short.",
+            "If options require substantial comparison, use RadioGroupField or a dedicated picker."
+          ]
+        },
+        {
+          "name": "groupLabel",
+          "description": "Optional nonselectable heading for a meaningful option group.",
+          "required": false,
+          "multiple": true,
+          "order": 6,
+          "allowedComponents": [
+            "SelectGroupLabel",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use user-facing categories.",
+            "Do not expose backend namespaces."
+          ]
+        },
+        {
+          "name": "clearAction",
+          "description": "Optional action clearing a nullable selection.",
+          "required": false,
+          "multiple": false,
+          "order": 7,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "Allowed only when null is a valid form value.",
+            "Require an accessible label."
+          ]
+        },
+        {
+          "name": "help",
+          "description": "Optional persistent selection guidance.",
+          "required": false,
+          "multiple": false,
+          "order": 8,
+          "allowedComponents": [
+            "FieldHelp"
+          ],
+          "contentRestrictions": [
+            "Explain selection criteria or prerequisite.",
+            "Do not duplicate the selected option."
+          ]
+        },
+        {
+          "name": "state",
+          "description": "Loading, no-options, dependency-error, or unavailable option state.",
+          "required": false,
+          "multiple": false,
+          "order": 9,
+          "allowedComponents": [
+            "LoadingState",
+            "EmptyState",
+            "ErrorState",
+            "PermissionState"
+          ],
+          "contentRestrictions": [
+            "Loading options, no eligible options, and failed option retrieval remain distinct.",
+            "State presentation must not be represented as a fake selectable option."
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Current normalized field validation error.",
+          "required": false,
+          "multiple": false,
+          "order": 10,
+          "allowedComponents": [
+            "FieldError"
+          ],
+          "contentRestrictions": [
+            "Validation error remains separate from option-loading failure."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Stable select identity.",
+          "semantic": true,
+          "restrictions": [
+            "Must be unique and stable."
+          ]
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Stable form-field name.",
+          "semantic": true,
+          "restrictions": [
+            "Maps to one selected value."
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "standard | nullable | grouped | dependent",
+          "required": false,
+          "default": "standard",
+          "description": "Semantic option-set contract.",
+          "semantic": true,
+          "restrictions": [
+            "Nullable requires null to be an approved value.",
+            "Dependent requires external prerequisite ownership."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Approved trigger density.",
+          "semantic": true,
+          "restrictions": [
+            "The option overlay retains usable targets regardless of trigger density."
+          ]
+        },
+        {
+          "name": "value",
+          "type": "string | null",
+          "required": true,
+          "description": "Controlled selected option value.",
+          "semantic": true,
+          "restrictions": [
+            "Must match one normalized eligible option or null when permitted.",
+            "The visible option label is not used as the stable value."
+          ]
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string | null) => void",
+          "required": true,
+          "description": "Controlled selected-value callback.",
+          "semantic": true,
+          "restrictions": [
+            "The callback updates form state and does not execute a mutation."
+          ]
+        },
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "required": true,
+          "description": "Normalized bounded option set.",
+          "semantic": true,
+          "restrictions": [
+            "Options require unique stable values.",
+            "Option order follows user task logic.",
+            "Very large or remotely searchable sets require a dedicated combobox or entity picker.",
+            "Multi-selection requires a separate component."
+          ]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that one eligible non-null value is required.",
+          "semantic": true,
+          "restrictions": [
+            "Must remain synchronized with validation.",
+            "Required fields must not allow clear."
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Disables selection.",
+          "semantic": true,
+          "restrictions": [
+            "A dependency-disabled field requires visible prerequisite guidance when not obvious."
+          ]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates an invalid selected value or missing required selection.",
+          "semantic": true,
+          "restrictions": [
+            "Requires an associated normalized FieldError."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the current option source is pending.",
+          "semantic": true,
+          "restrictions": [
+            "Loading must not silently preserve options from an incompatible prerequisite.",
+            "The shared component does not fetch the options."
+          ]
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": "Optional controlled overlay visibility.",
+          "semantic": true,
+          "restrictions": [
+            "Use controlled opening only when the owning workflow needs it.",
+            "Ordinary overlay state may remain foundation-owned."
+          ]
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "description": "Optional overlay-visibility callback.",
+          "semantic": true,
+          "restrictions": [
+            "Must remain paired with controlled open when supplied."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormSection",
+          "Dialog form",
+          "Filter panel",
+          "Administration form",
+          "Review decision form",
+          "Authentication form"
+        ],
+        "allowedChildren": [
+          "FormField",
+          "Select",
+          "SelectTrigger",
+          "SelectItem",
+          "SelectGroupLabel",
+          "FieldHelp",
+          "FieldError",
+          "LoadingState",
+          "EmptyState",
+          "ErrorState",
+          "PermissionState",
+          "Button"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "Tooltip",
+          "RadioGroupField",
+          "DataTable cell without inline-editing policy"
+        ],
+        "prohibitedChildren": [
+          "SearchInput embedded as an improvised combobox",
+          "Checkbox list for multi-selection",
+          "Complete form",
+          "Raw option DTO"
+        ],
+        "spacingOwnership": [
+          "SelectField owns spacing among label, trigger, help, state, clear action, and error.",
+          "The select foundation owns overlay item spacing and positioning.",
+          "The form layout owns spacing around the complete field."
+        ],
+        "surfaceOwnership": "SelectField owns one trigger surface. The select foundation owns one elevated option overlay.",
+        "rules": [
+          "One SelectField represents one selected value.",
+          "Options are normalized outside the shared component.",
+          "Placeholder, null, unknown, unavailable, and no eligible options remain distinct.",
+          "Few visible options may be better represented by RadioGroupField.",
+          "Large searchable sets require a dedicated combobox or entity picker.",
+          "The component does not fetch options."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "FormField",
+          "Select",
+          "FieldHelp",
+          "FieldError",
+          "Button",
+          "LoadingState",
+          "EmptyState",
+          "ErrorState",
+          "PermissionState"
+        ],
+        "libraries": [
+          "@radix-ui/react-select"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "required",
+          "notes": "Use for bounded single-selection fields."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters"
+          ],
+          "status": "recommended",
+          "notes": "Use for bounded filter values and preserve URL ownership outside the component."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions"
+          ],
+          "status": "required",
+          "notes": "Organization, role, policy, and integration options require normalized labels and eligibility."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "recommended",
+          "notes": "Use for bounded classifications; final decisions with few consequential options may favor RadioGroupField."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "allowed",
+          "notes": "Use only for genuine bounded authentication context such as organization selection."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching options.",
+          "Executing dependent queries.",
+          "Mapping raw DTO options.",
+          "Evaluating option permissions.",
+          "Writing URL state.",
+          "Submitting mutations."
+        ]
+      },
+      "stateOwnership": {
+        "model": "form-owned",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": true,
+        "serverState": false,
+        "notes": [
+          "The owning form controls the selected value, validation, touched state, and dirty state.",
+          "Option data, dependency state, and eligibility remain feature- or query-owned.",
+          "Overlay disclosure may remain foundation-owned unless explicitly controlled."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The foundation manages trigger focus, overlay focus, and local overlay scrolling.",
+          "Value changes are emitted to the owning form."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve the selected value, option labels, and overlay usability within the available viewport.",
+        "compact": "The trigger fills the field width. The option overlay respects viewport margins and may use a constrained height.",
+        "medium": "Use the expected-content width or form-grid width.",
+        "wide": "Do not expand the trigger beyond the value's reasonable reading width.",
+        "ultrawide": "The form recipe constrains width.",
+        "overflowPolicy": "Long option labels wrap or use an approved safe truncation policy. The overlay scrolls locally.",
+        "containerQueries": true,
+        "zoomExpectation": "Trigger, options, descriptions, and actions remain usable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "native select or approved listbox-style select with a visible associated label",
+        "accessibleName": "Visible field label.",
+        "keyboard": [
+          "Trigger opens with the foundation-supported keys.",
+          "Arrow keys move among eligible options.",
+          "Enter or Space selects according to foundation behavior.",
+          "Escape closes without changing the current value.",
+          "Typeahead behavior may be supported for the already loaded bounded option set."
+        ],
+        "focus": [
+          "Opening moves focus according to the approved select foundation.",
+          "Closing restores focus to the trigger.",
+          "Validation does not clear the selected value.",
+          "Dependency updates do not unexpectedly move focus."
+        ],
+        "announcements": [
+          "Expanded state, selected option, option count, disabled options, and invalid state are exposed.",
+          "Loading and option errors use canonical state semantics.",
+          "No-options state is not announced as a selectable option."
+        ],
+        "aria": [
+          "Prefer native select semantics when product requirements permit.",
+          "Custom selects must follow the foundation listbox interaction contract.",
+          "Use aria-describedby for help, dependency context, and error.",
+          "Use aria-invalid when invalid."
+        ],
+        "colorIndependence": "Selected, expanded, disabled, invalid, loading, and unavailable meaning use text, control state, and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One visible label, one select trigger, and at least one eligible normalized option or an explicit option state.",
+        "typical": "Label, trigger, bounded options, optional help, and conditional error.",
+        "maximum": "A bounded single-selection option set. Large, hierarchical, searchable, or multi-selection sets require another component.",
+        "wrapping": "Labels, help, errors, and option descriptions wrap. Trigger text remains understandable.",
+        "truncation": "Selected values must not truncate into ambiguity. Full option text remains available in the overlay.",
+        "localization": "Support expanded labels, placeholders, options, group labels, disabled reasons, and errors.",
+        "emptyBehavior": "No eligible options use a deliberate EmptyState or unavailable explanation rather than a disabled fake option.",
+        "technicalContent": "Raw enum keys, IDs, query-state labels, API errors, and backend grouping names are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/select-field.stories.tsx",
+        "requiredStories": [
+          "Standard",
+          "Nullable",
+          "Grouped",
+          "Dependent",
+          "Required",
+          "Invalid",
+          "Disabled",
+          "ReadOnly",
+          "LoadingOptions",
+          "NoOptions",
+          "OptionError",
+          "DisabledOption",
+          "LongLocalizedOptions",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/select-field.test.tsx",
+        "requiredTests": [
+          "Label association",
+          "Controlled selected value",
+          "Placeholder semantics",
+          "Required behavior",
+          "Clear nullable behavior",
+          "Keyboard option navigation",
+          "Disabled-option behavior",
+          "Loading versus empty versus error",
+          "Focus restoration",
+          "No internal option fetching"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Route form selection",
+          "Dependent administration select",
+          "Compact filter",
+          "390x844 overlay",
+          "125% browser zoom",
+          "Keyboard-only selection",
+          "Long localized options",
+          "Virtual keyboard where applicable"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormWorkflowRoute",
+          "SearchableListFilters",
+          "AdministrationForm",
+          "ReviewDecisionForm"
+        ]
+      },
+      "notes": [
+        "Searchable entity selection requires a dedicated ComboboxField or EntityPicker contract and must not be improvised by combining SearchInput with SelectField.",
+        "Multi-selection requires a separate component and value model."
+      ]
+    },
+    "TextareaField": {
+      "id": "textarea-field",
+      "name": "TextareaField",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical multiline plain-text field for descriptions, notes, rationale, and bounded long-form input, with controlled resizing, character limits, validation, and accessible guidance.",
+      "capabilities": [
+        "Collect plain multiline text.",
+        "Present default, rationale, notes, and long-form input variants.",
+        "Support fixed or bounded automatic height growth.",
+        "Integrate character-count feedback with authoritative validation limits.",
+        "Preserve user-entered content through validation and recoverable submission failures.",
+        "Associate the textarea with visible label, help, and normalized errors."
+      ],
+      "keywords": [
+        "textarea",
+        "multiline",
+        "rationale",
+        "notes",
+        "description",
+        "long-form"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/textarea-field.tsx",
+      "publicImport": "@/components/form/textarea-field",
+      "contract": "docs/frontend/design-system/components/textarea-field.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "FormField, native textarea, FieldHelp, FieldError, CharacterCount",
+        "components": [
+          "FormField",
+          "Textarea",
+          "FieldHelp",
+          "FieldError",
+          "CharacterCount"
+        ],
+        "reason": "Multiline input requires bounded resizing, content-purpose variants, validation preservation, character-limit alignment, and specific accessibility behavior beyond a generic input."
+      },
+      "tokens": [
+        "component.input.radius",
+        "semantic.background.surface",
+        "semantic.background.surfaceSubtle",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "semantic.status.danger.foreground",
+        "reference.space.1",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.space.4"
+      ],
+      "variants": {
+        "standard": {
+          "intent": "Collect an ordinary bounded multiline description.",
+          "default": true,
+          "allowedUse": [
+            "Description.",
+            "Comment.",
+            "Supporting note.",
+            "Short explanation."
+          ],
+          "prohibitedUse": [
+            "Single short value better represented by Input.",
+            "Rich-text document editing.",
+            "Code editor.",
+            "Unbounded document content."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only",
+            "loading"
+          ]
+        },
+        "rationale": {
+          "intent": "Collect a human explanation supporting a consequential decision or review outcome.",
+          "allowedUse": [
+            "Approval rationale.",
+            "Rejection reason.",
+            "Policy-exception justification.",
+            "Review decision explanation."
+          ],
+          "prohibitedUse": [
+            "Machine-generated explanation accepted as human rationale without review.",
+            "Optional decorative notes.",
+            "Hiding required evidence inside a free-text field."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only",
+            "loading"
+          ]
+        },
+        "notes": {
+          "intent": "Collect optional operational notes that supplement structured data.",
+          "allowedUse": [
+            "Internal note.",
+            "Processing comment.",
+            "Optional context."
+          ],
+          "prohibitedUse": [
+            "Replacing structured fields with unsearchable free text.",
+            "Collecting secrets or sensitive credentials.",
+            "Required decision rationale."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        },
+        "longForm": {
+          "intent": "Collect a longer but still bounded plain-text response.",
+          "allowedUse": [
+            "Detailed incident description.",
+            "Extended review explanation.",
+            "Structured narrative supported by visible guidance."
+          ],
+          "prohibitedUse": [
+            "Rich text requiring headings, lists, or embedded media.",
+            "Unbounded document authoring.",
+            "Markdown editor without a dedicated preview and security contract."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only",
+            "loading"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Short multiline content in a constrained dialog or panel.",
+          "allowedUse": [
+            "Compact note.",
+            "Short optional comment."
+          ],
+          "tokens": [
+            "reference.space.2"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary multiline field.",
+          "default": true,
+          "allowedUse": [
+            "Route form.",
+            "Dialog.",
+            "Administration."
+          ],
+          "tokens": [
+            "reference.space.3"
+          ]
+        },
+        "comfortable": {
+          "intent": "High-attention rationale or long-form response.",
+          "allowedUse": [
+            "Review decision.",
+            "Incident explanation.",
+            "Sensitive-action rationale."
+          ],
+          "tokens": [
+            "reference.space.4"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "focus-visible",
+        "disabled",
+        "invalid",
+        "read-only",
+        "loading",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Visible field label.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Label",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Name the requested narrative or rationale.",
+            "Do not use placeholder text as the only label."
+          ]
+        },
+        {
+          "name": "control",
+          "description": "Native textarea control.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Textarea"
+          ],
+          "contentRestrictions": [
+            "Plain text only unless another specialized editor contract exists.",
+            "The control must retain entered content through recoverable errors."
+          ]
+        },
+        {
+          "name": "help",
+          "description": "Optional persistent instruction, criteria, format, or privacy context.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "FieldHelp"
+          ],
+          "contentRestrictions": [
+            "Rationale fields should explain the expected decision evidence.",
+            "Do not require the user to infer expectations from placeholder examples alone."
+          ]
+        },
+        {
+          "name": "characterCount",
+          "description": "Optional authoritative character-count feedback.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "CharacterCount"
+          ],
+          "contentRestrictions": [
+            "Count limit must match the active client and server validation contract.",
+            "Do not announce every character typed."
+          ]
+        },
+        {
+          "name": "status",
+          "description": "Optional autosave, restored-draft, or pending-dependency context supplied by the owning workflow.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "FormStatus",
+            "MetadataList",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "The shared field does not implement autosave.",
+            "Status must not obscure current validation."
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Current normalized textarea validation error.",
+          "required": false,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "FieldError"
+          ],
+          "contentRestrictions": [
+            "Explain required content, length, or field-specific business constraints.",
+            "Do not expose raw schema messages."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Stable textarea identity.",
+          "semantic": true,
+          "restrictions": [
+            "Must be unique and stable."
+          ]
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Stable form-field name.",
+          "semantic": true,
+          "restrictions": [
+            "Maps to one plain-text value."
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "standard | rationale | notes | longForm",
+          "required": false,
+          "default": "standard",
+          "description": "Semantic text-entry purpose.",
+          "semantic": true,
+          "restrictions": [
+            "Rationale requires user-authored review or decision context.",
+            "Notes must not replace structured fields."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default | comfortable",
+          "required": false,
+          "default": "default",
+          "description": "Approved field density.",
+          "semantic": true,
+          "restrictions": [
+            "Comfortable is reserved for higher-attention content."
+          ]
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "description": "Controlled current plain-text value.",
+          "semantic": true,
+          "restrictions": [
+            "Must remain visible through validation and recoverable submission failures.",
+            "Do not normalize whitespace destructively while the user is typing."
+          ]
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "description": "Controlled value-change callback.",
+          "semantic": true,
+          "restrictions": [
+            "The callback updates form state and does not execute autosave or mutation directly."
+          ]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the active form contract requires a nonempty value.",
+          "semantic": true,
+          "restrictions": [
+            "Must match validation.",
+            "Whitespace-only values require an explicit normalization policy."
+          ]
+        },
+        {
+          "name": "minimumLength",
+          "type": "number",
+          "required": false,
+          "description": "Minimum accepted content length.",
+          "semantic": true,
+          "restrictions": [
+            "Must match the active schema.",
+            "Use only when minimum length meaningfully improves content quality."
+          ]
+        },
+        {
+          "name": "maximumLength",
+          "type": "number",
+          "required": false,
+          "description": "Maximum accepted content length.",
+          "semantic": true,
+          "restrictions": [
+            "Must match client and server validation.",
+            "Required when CharacterCount is rendered."
+          ]
+        },
+        {
+          "name": "minimumRows",
+          "type": "number",
+          "required": false,
+          "default": 3,
+          "description": "Minimum visible textarea rows.",
+          "semantic": true,
+          "restrictions": [
+            "Must remain large enough to communicate multiline behavior."
+          ]
+        },
+        {
+          "name": "maximumRows",
+          "type": "number",
+          "required": false,
+          "default": 12,
+          "description": "Maximum automatic-growth rows before internal scrolling begins.",
+          "semantic": true,
+          "restrictions": [
+            "Must be greater than or equal to minimumRows.",
+            "Unbounded page growth is prohibited."
+          ]
+        },
+        {
+          "name": "autoResize",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "Allows bounded automatic height growth.",
+          "semantic": true,
+          "restrictions": [
+            "Growth remains bounded by maximumRows.",
+            "Resizing must not cause disruptive page jumps."
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Disables editing.",
+          "semantic": true,
+          "restrictions": [
+            "The reason should be available when not obvious."
+          ]
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Preserves visible selectable content while preventing editing.",
+          "semantic": true,
+          "restrictions": [
+            "Ordinary non-form read-only narratives may use another data-display component."
+          ]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the current text violates the active field contract.",
+          "semantic": true,
+          "restrictions": [
+            "Requires an associated FieldError."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormSection",
+          "Dialog form",
+          "Administration form",
+          "Review decision form",
+          "ConfirmationDialog verification"
+        ],
+        "allowedChildren": [
+          "FormField",
+          "Textarea",
+          "FieldHelp",
+          "FieldError",
+          "CharacterCount",
+          "FormStatus",
+          "MetadataList"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "Tooltip",
+          "DataTable cell without inline-editing policy"
+        ],
+        "prohibitedChildren": [
+          "Rich-text toolbar",
+          "File upload",
+          "Complete markdown editor",
+          "Unbounded preview",
+          "Second unrelated control"
+        ],
+        "spacingOwnership": [
+          "TextareaField owns spacing among label, textarea, help, character count, status, and error.",
+          "The textarea owns its internal text padding and bounded scrolling.",
+          "The form layout owns spacing around the complete field."
+        ],
+        "surfaceOwnership": "TextareaField owns one textarea control surface and no additional card.",
+        "rules": [
+          "The component collects plain text.",
+          "Character limits remain synchronized with validation.",
+          "Automatic growth remains bounded.",
+          "Recoverable validation and submission errors preserve entered content.",
+          "Autosave behavior belongs to the owning workflow.",
+          "Structured data should not be replaced by free-text notes."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "FormField",
+          "Textarea",
+          "FieldHelp",
+          "FieldError",
+          "CharacterCount",
+          "MetadataList"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "required",
+          "notes": "Use for bounded multiline plain text."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "required",
+          "notes": "Human rationale must remain editable, reviewable, and distinct from machine-generated recommendation text."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions"
+          ],
+          "status": "recommended",
+          "notes": "Use for descriptions, reasons, and bounded configuration notes."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "prohibited",
+          "notes": "Authentication should not normally require multiline free text."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters"
+          ],
+          "status": "prohibited",
+          "notes": "Use SearchInput and structured filters."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Executing autosave.",
+          "Submitting mutations.",
+          "Reading or writing local storage.",
+          "Generating machine text.",
+          "Running content moderation or validation requests directly."
+        ]
+      },
+      "stateOwnership": {
+        "model": "form-owned",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": true,
+        "serverState": false,
+        "notes": [
+          "The owning form controls value, touched state, dirty state, validation, and submission mapping.",
+          "Draft persistence and autosave remain workflow-owned."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The textarea manages text-editing focus and local internal scrolling after reaching its maximum height.",
+          "No persistence side effect occurs inside the shared field."
+        ]
+      },
+      "responsive": {
+        "strategy": "Use the available field width, preserve readable line length, and bound vertical growth.",
+        "compact": "Fill the field width and use the approved minimum rows. Supporting information stacks below.",
+        "medium": "Use the form-grid width and bounded automatic resizing.",
+        "wide": "Constrain long-form reading width even when the form section is wider.",
+        "ultrawide": "Do not stretch long-form text across the complete route.",
+        "overflowPolicy": "Text wraps natively. Internal vertical scrolling begins after maximumRows. Horizontal scrolling is prohibited for ordinary prose.",
+        "containerQueries": true,
+        "zoomExpectation": "Label, text, count, status, and validation remain usable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "native textarea associated with a visible label",
+        "accessibleName": "Visible field label.",
+        "keyboard": [
+          "Use native multiline text editing.",
+          "Tab follows project policy and normally moves focus rather than inserting a tab character.",
+          "Keyboard users can reach supporting links or actions separately."
+        ],
+        "focus": [
+          "The textarea exposes visible focus.",
+          "Validation and autosave status do not move focus.",
+          "Recoverable failures preserve selection and entered content where possible."
+        ],
+        "announcements": [
+          "Help, character limits, and validation errors are associated with the textarea.",
+          "Character count is not announced for every keystroke.",
+          "Autosave status announcements are owned by FormStatus."
+        ],
+        "aria": [
+          "Use aria-describedby for help, count, status, and error as appropriate.",
+          "Use aria-invalid when invalid.",
+          "Prefer native required, disabled, and read-only semantics."
+        ],
+        "colorIndependence": "Required, invalid, disabled, read-only, count-warning, and pending meaning use text and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One visible label and one multiline text control.",
+        "typical": "Label, textarea, help, optional character count, and conditional validation error.",
+        "maximum": "A bounded plain-text response. Rich, structured, or document-length content requires another editor contract.",
+        "wrapping": "Plain text wraps naturally.",
+        "truncation": "Editable content is never visually truncated.",
+        "localization": "Support expanded labels, guidance, validation, counts, and status text.",
+        "emptyBehavior": "Empty value is valid only when the field contract permits it.",
+        "technicalContent": "Raw HTML, hidden markup, secrets, credentials, stack traces, and implementation configuration are prohibited unless the field explicitly collects safe technical content."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/textarea-field.stories.tsx",
+        "requiredStories": [
+          "Standard",
+          "Rationale",
+          "Notes",
+          "LongForm",
+          "Required",
+          "Invalid",
+          "Disabled",
+          "ReadOnly",
+          "WithCharacterCount",
+          "ApproachingLimit",
+          "ExceededLimit",
+          "AutoResize",
+          "MaximumRows",
+          "LongLocalizedHelp",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/textarea-field.test.tsx",
+        "requiredTests": [
+          "Label association",
+          "Controlled value",
+          "Plain-text behavior",
+          "Required validation",
+          "Character-limit synchronization",
+          "Bounded auto-resize",
+          "Content preservation after error",
+          "Disabled versus read-only",
+          "No internal autosave"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Review rationale",
+          "Administration note",
+          "Recoverable submission error",
+          "390x844",
+          "125% browser zoom",
+          "Long pasted content",
+          "Keyboard-only editing",
+          "Long localized help"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormWorkflowRoute",
+          "ReviewDecisionForm",
+          "AdministrationForm",
+          "ConfirmationDialog"
+        ]
+      },
+      "notes": [
+        "Rich-text, code, markdown, and document editors require dedicated contracts, sanitization policies, keyboard models, and preview behavior."
+      ]
+    },
+    "DateField": {
+      "id": "date-field",
+      "name": "DateField",
+      "level": "shared-composite",
+      "category": "form",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical single-value date field for date-only, month, or local date-time values, with explicit temporal semantics, calendar interaction, manual entry, localization, constraints, and timezone ownership.",
+      "capabilities": [
+        "Collect one date-only, month, or local date-time value.",
+        "Support localized manual entry and an approved calendar picker.",
+        "Preserve an unambiguous canonical value at the form boundary.",
+        "Communicate minimum, maximum, unavailable, invalid, and dependency states.",
+        "Distinguish date-only values from instants and local wall-clock values.",
+        "Prevent accidental timezone conversion of date-only values."
+      ],
+      "keywords": [
+        "date",
+        "datetime",
+        "calendar",
+        "month",
+        "timezone",
+        "date-only"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/form"
+      },
+      "implementation": "src/components/form/date-field.tsx",
+      "publicImport": "@/components/form/date-field",
+      "contract": "docs/frontend/design-system/components/date-field.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "FormField, native date inputs or approved calendar popover, Button, FieldHelp, FieldError",
+        "components": [
+          "FormField",
+          "Input",
+          "Popover",
+          "Calendar",
+          "Button",
+          "Select",
+          "FieldHelp",
+          "FieldError"
+        ],
+        "reason": "Temporal input requires explicit value semantics, localization, parsing and formatting boundaries, calendar keyboard behavior, constraint validation, and timezone policy beyond a generic text field."
+      },
+      "tokens": [
+        "component.input.radius",
+        "semantic.background.surface",
+        "semantic.background.surfaceElevated",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "semantic.status.danger.foreground",
+        "reference.control.height.sm",
+        "reference.control.height.md",
+        "reference.control.target.minimum",
+        "reference.icon.size.sm",
+        "reference.space.1",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.zIndex.dropdown"
+      ],
+      "variants": {
+        "dateOnly": {
+          "intent": "Collect a calendar date that does not represent an instant or time of day.",
+          "default": true,
+          "allowedUse": [
+            "Birth date.",
+            "Due date.",
+            "Start or end calendar date.",
+            "Document date.",
+            "Holiday or business date."
+          ],
+          "prohibitedUse": [
+            "Event timestamp.",
+            "Audit timestamp.",
+            "Server execution instant.",
+            "Converting the value through UTC before storage."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "selected",
+            "disabled",
+            "invalid",
+            "read-only",
+            "unavailable"
+          ]
+        },
+        "dateTimeLocal": {
+          "intent": "Collect a local wall-clock date and time whose timezone or zone context is supplied explicitly by the workflow.",
+          "allowedUse": [
+            "Schedule an event in a known organization timezone.",
+            "Set a local deadline with explicit zone context.",
+            "Plan an operation in a selected location."
+          ],
+          "prohibitedUse": [
+            "Storing an ambiguous local date-time without zone context.",
+            "Audit or system timestamps entered manually without a product requirement.",
+            "Assuming the browser timezone is always authoritative."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "selected",
+            "disabled",
+            "invalid",
+            "read-only",
+            "unavailable"
+          ]
+        },
+        "month": {
+          "intent": "Collect one calendar month without a specific day.",
+          "allowedUse": [
+            "Reporting month.",
+            "Billing period month.",
+            "Competency month.",
+            "Planning month."
+          ],
+          "prohibitedUse": [
+            "Fabricating the first day of the month as user-entered meaning.",
+            "Date ranges.",
+            "Precise timestamps."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "selected",
+            "disabled",
+            "invalid",
+            "read-only",
+            "unavailable"
+          ]
+        },
+        "dependent": {
+          "intent": "Collect a date whose valid range depends on another resolved form value.",
+          "allowedUse": [
+            "End date after start date.",
+            "Renewal date after activation date.",
+            "Review deadline after submission date."
+          ],
+          "prohibitedUse": [
+            "Calculating business rules inside the shared component.",
+            "Silently changing the selected date when the dependency changes.",
+            "Using a single DateField to collect a complete date range."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "selected",
+            "disabled",
+            "invalid",
+            "read-only",
+            "unavailable"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Compact date control for filters or bounded dialogs.",
+          "allowedUse": [
+            "Search filters.",
+            "Compact administration dialog.",
+            "Contextual form."
+          ],
+          "tokens": [
+            "reference.control.height.sm",
+            "reference.space.2"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary application date field.",
+          "default": true,
+          "allowedUse": [
+            "Route form.",
+            "Dialog.",
+            "Administration.",
+            "Review workflow."
+          ],
+          "tokens": [
+            "reference.control.height.md",
+            "reference.space.3"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "focus-visible",
+        "selected",
+        "disabled",
+        "invalid",
+        "read-only",
+        "loading",
+        "unavailable"
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Visible field label naming the temporal value.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Label",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Name the business meaning of the date.",
+            "Do not use placeholder text as the only label."
+          ]
+        },
+        {
+          "name": "input",
+          "description": "Manual date, month, or local date-time entry control.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Input",
+            "Native date input",
+            "Native month input",
+            "Native datetime-local input"
+          ],
+          "contentRestrictions": [
+            "Visible formatting follows locale while the canonical value remains unambiguous.",
+            "Date-only values must not be converted through UTC."
+          ]
+        },
+        {
+          "name": "calendarTrigger",
+          "description": "Optional action opening the approved calendar picker.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "Require an accessible label.",
+            "Manual input must remain available when required by the product accessibility policy."
+          ]
+        },
+        {
+          "name": "calendar",
+          "description": "Optional calendar or month-picker overlay.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "Calendar",
+            "MonthPicker"
+          ],
+          "contentRestrictions": [
+            "Disabled dates must be programmatically unavailable.",
+            "Month and year navigation must be keyboard operable.",
+            "The picker must not hide the active date constraints."
+          ]
+        },
+        {
+          "name": "timeControl",
+          "description": "Optional local time control for dateTimeLocal.",
+          "required": false,
+          "multiple": false,
+          "order": 5,
+          "allowedComponents": [
+            "Input",
+            "Select",
+            "TimeField"
+          ],
+          "contentRestrictions": [
+            "Allowed only for dateTimeLocal.",
+            "Use one consistent 12-hour or 24-hour locale policy.",
+            "Timezone context remains visible."
+          ]
+        },
+        {
+          "name": "timezoneContext",
+          "description": "Visible timezone or zone context for local date-time values.",
+          "required": false,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "FieldHelp",
+            "MetadataList",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required for dateTimeLocal unless the product context makes the zone unambiguous.",
+            "Do not expose an internal timezone identifier without a user-facing label."
+          ]
+        },
+        {
+          "name": "help",
+          "description": "Optional persistent format, range, or business-rule guidance.",
+          "required": false,
+          "multiple": false,
+          "order": 7,
+          "allowedComponents": [
+            "FieldHelp"
+          ],
+          "contentRestrictions": [
+            "Explain minimum, maximum, excluded dates, or dependency where relevant.",
+            "Do not rely only on disabled calendar cells to communicate the rule."
+          ]
+        },
+        {
+          "name": "clearAction",
+          "description": "Optional action clearing a nullable date value.",
+          "required": false,
+          "multiple": false,
+          "order": 8,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "Allowed only when null is a valid value.",
+            "Require an accessible label."
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Current normalized date-field validation error.",
+          "required": false,
+          "multiple": false,
+          "order": 9,
+          "allowedComponents": [
+            "FieldError"
+          ],
+          "contentRestrictions": [
+            "Explain invalid format, range, dependency, or unavailable date in user-facing language.",
+            "Do not expose parser exceptions."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Stable temporal-field identity.",
+          "semantic": true,
+          "restrictions": [
+            "Must be unique and stable."
+          ]
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Stable form-field name.",
+          "semantic": true,
+          "restrictions": [
+            "Maps to one canonical temporal value."
+          ]
+        },
+        {
+          "name": "variant",
+          "type": "dateOnly | dateTimeLocal | month | dependent",
+          "required": false,
+          "default": "dateOnly",
+          "description": "Semantic temporal value model.",
+          "semantic": true,
+          "restrictions": [
+            "Variant must match the domain meaning.",
+            "Dependent retains the underlying date-only or local-date-time contract defined by the feature."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "default",
+          "description": "Approved date-control density.",
+          "semantic": true,
+          "restrictions": [
+            "Calendar targets retain the design-system minimum size."
+          ]
+        },
+        {
+          "name": "value",
+          "type": "string | null",
+          "required": true,
+          "description": "Controlled canonical temporal value.",
+          "semantic": true,
+          "restrictions": [
+            "dateOnly uses YYYY-MM-DD.",
+            "month uses YYYY-MM.",
+            "dateTimeLocal uses an explicitly documented local date-time representation paired with zone context.",
+            "Do not pass JavaScript Date objects across the field boundary.",
+            "Null is allowed only when the field contract permits it."
+          ]
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string | null) => void",
+          "required": true,
+          "description": "Controlled canonical-value callback.",
+          "semantic": true,
+          "restrictions": [
+            "Manual entry and calendar selection emit the same canonical representation.",
+            "The callback does not convert date-only values to UTC."
+          ]
+        },
+        {
+          "name": "minimum",
+          "type": "string | null",
+          "required": false,
+          "default": null,
+          "description": "Canonical minimum eligible value.",
+          "semantic": true,
+          "restrictions": [
+            "Must use the same temporal representation as value.",
+            "Must remain synchronized with validation."
+          ]
+        },
+        {
+          "name": "maximum",
+          "type": "string | null",
+          "required": false,
+          "default": null,
+          "description": "Canonical maximum eligible value.",
+          "semantic": true,
+          "restrictions": [
+            "Must use the same temporal representation as value.",
+            "Must remain synchronized with validation."
+          ]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that a valid temporal value is required.",
+          "semantic": true,
+          "restrictions": [
+            "Must remain synchronized with validation.",
+            "Required fields must not expose clear behavior."
+          ]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Disables temporal entry.",
+          "semantic": true,
+          "restrictions": [
+            "The reason should be visible when not obvious."
+          ]
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Displays the canonical temporal value without allowing modification.",
+          "semantic": true,
+          "restrictions": [
+            "Read-only date presentation outside a form may use DefinitionList or MetadataList."
+          ]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates invalid format, range, dependency, or temporal semantics.",
+          "semantic": true,
+          "restrictions": [
+            "Requires an associated normalized FieldError."
+          ]
+        },
+        {
+          "name": "timezone",
+          "type": "string | null",
+          "required": false,
+          "default": null,
+          "description": "Explicit IANA timezone or approved project timezone context for dateTimeLocal.",
+          "semantic": true,
+          "restrictions": [
+            "Required when local date-time meaning depends on a zone.",
+            "Must not be inferred silently from the browser when the product has an authoritative zone."
+          ]
+        },
+        {
+          "name": "isDateDisabled",
+          "type": "(value: string) => boolean",
+          "required": false,
+          "description": "Externally supplied eligibility function for calendar dates.",
+          "semantic": true,
+          "restrictions": [
+            "Business rules are resolved outside the shared component.",
+            "The function must remain deterministic for the rendered option set.",
+            "Disabled dates require visible rule guidance when not obvious."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormSection",
+          "Dialog form",
+          "Search filter panel",
+          "Administration form",
+          "Review decision form"
+        ],
+        "allowedChildren": [
+          "FormField",
+          "Input",
+          "Popover",
+          "Calendar",
+          "MonthPicker",
+          "Button",
+          "Select",
+          "FieldHelp",
+          "FieldError",
+          "MetadataList"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "Tooltip",
+          "DataTable cell without inline-editing policy"
+        ],
+        "prohibitedChildren": [
+          "Second date field forming an undocumented range",
+          "Raw JavaScript Date object",
+          "Timezone selector without a product contract",
+          "Complete scheduling workflow"
+        ],
+        "spacingOwnership": [
+          "DateField owns spacing among label, input, calendar trigger, timezone context, help, clear action, and error.",
+          "The calendar foundation owns overlay layout and date-grid spacing.",
+          "The form layout owns spacing around the complete field."
+        ],
+        "surfaceOwnership": "DateField owns one input or grouped temporal-control surface. The calendar foundation owns one elevated picker surface.",
+        "rules": [
+          "Temporal semantics are selected before implementation.",
+          "Date-only values never become instants implicitly.",
+          "Local date-time requires explicit zone context.",
+          "Manual entry and picker selection share one canonical value contract.",
+          "Date ranges require a dedicated range composition.",
+          "Business-day and availability rules remain feature-owned."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "FormField",
+          "Input",
+          "Popover",
+          "Calendar",
+          "Button",
+          "Select",
+          "FieldHelp",
+          "FieldError",
+          "MetadataList"
+        ],
+        "libraries": [
+          "date-fns or approved project date utility"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "required",
+          "notes": "Use for explicit single temporal values."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters"
+          ],
+          "status": "recommended",
+          "notes": "Single date filters may use DateField; ranges require a dedicated range composition."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions"
+          ],
+          "status": "required",
+          "notes": "Activation, expiration, and scheduling require explicit zone and constraint policies."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm",
+            "criticalReviewContext"
+          ],
+          "status": "recommended",
+          "notes": "Review deadlines and effective dates require explicit temporal meaning."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "allowed",
+          "notes": "Use only for a genuine authentication requirement such as date of birth, following privacy policy."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching availability.",
+          "Calculating business days.",
+          "Resolving organization timezone.",
+          "Executing scheduling mutations.",
+          "Converting values through transport DTOs.",
+          "Reading browser timezone as authoritative without a policy."
+        ]
+      },
+      "stateOwnership": {
+        "model": "form-owned",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": true,
+        "serverState": false,
+        "notes": [
+          "The owning form controls canonical value, validation, touched state, dirty state, and submission mapping.",
+          "The feature supplies temporal semantics, timezone, range constraints, and date eligibility.",
+          "Calendar overlay disclosure may remain foundation-owned."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The calendar foundation manages local focus and overlay scrolling.",
+          "Value changes are emitted without persistence or transport conversion."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve temporal meaning, complete formatted value, calendar navigation, and timezone context within the viewport.",
+        "compact": "The input fills the field width. Calendar overlay uses viewport margins and appropriately sized date targets. Time controls stack.",
+        "medium": "Use expected-content width with visible timezone context where required.",
+        "wide": "Keep input width aligned to the temporal format rather than stretching indefinitely.",
+        "ultrawide": "The form recipe constrains width.",
+        "overflowPolicy": "Labels, help, zone context, and errors wrap. Calendar overlays scroll or reposition locally without page overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Manual input, calendar navigation, dates, time controls, and errors remain operable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "native date-related input or labeled composite date field with an accessible dialog-style calendar",
+        "accessibleName": "Visible temporal-field label.",
+        "keyboard": [
+          "Manual entry follows native text or date-input behavior.",
+          "Calendar trigger is keyboard operable.",
+          "Calendar navigation follows the approved date-picker keyboard model.",
+          "Escape closes the picker and restores focus to the trigger.",
+          "Disabled dates cannot be selected."
+        ],
+        "focus": [
+          "Opening the picker moves focus to the selected date, current date, or first eligible date according to the foundation policy.",
+          "Closing restores focus to the trigger.",
+          "Validation does not clear the current value.",
+          "Dependency changes do not unexpectedly move focus."
+        ],
+        "announcements": [
+          "Selected date, visible month, disabled dates, range constraints, invalid state, and timezone context are perceivable.",
+          "Month changes are announced appropriately.",
+          "Manual parsing errors use FieldError."
+        ],
+        "aria": [
+          "Use native temporal input semantics where appropriate.",
+          "Composite calendar implementations require an accessible dialog and date-grid contract.",
+          "Use aria-describedby for help, zone context, and error.",
+          "Use aria-invalid when invalid."
+        ],
+        "colorIndependence": "Selected, current, unavailable, disabled, invalid, required, and out-of-range dates use text, shape, semantics, or icons in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One visible label and one temporal input.",
+        "typical": "Label, input, optional calendar picker, visible constraints, and conditional validation error.",
+        "maximum": "One date, month, or local date-time value. Ranges and scheduling workflows require dedicated compositions.",
+        "wrapping": "Labels, zone context, guidance, and validation wrap naturally.",
+        "truncation": "Formatted values and timezone context must not truncate into ambiguity.",
+        "localization": "Support localized display, manual-entry guidance, month names, weekday names, time format, and validation while retaining a canonical machine value.",
+        "emptyBehavior": "Empty value is valid only when the active contract permits null.",
+        "technicalContent": "Raw Date objects, epoch values, parser exceptions, UTC conversion details, and transport formats are prohibited in ordinary presentation."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/form/date-field.stories.tsx",
+        "requiredStories": [
+          "DateOnly",
+          "DateTimeLocal",
+          "Month",
+          "Dependent",
+          "Required",
+          "InvalidFormat",
+          "BeforeMinimum",
+          "AfterMaximum",
+          "DisabledDates",
+          "NullableClear",
+          "ReadOnly",
+          "TimezoneContext",
+          "LongLocalizedDate",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/form/date-field.test.tsx",
+        "requiredTests": [
+          "Label association",
+          "Canonical date-only value",
+          "No implicit UTC conversion",
+          "Month value contract",
+          "Local date-time zone requirement",
+          "Manual input and picker synchronization",
+          "Minimum and maximum validation",
+          "Disabled-date behavior",
+          "Keyboard calendar navigation",
+          "Focus restoration",
+          "Controlled value"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Date-only route form",
+          "Local deadline with timezone",
+          "Dependent end date",
+          "390x844 calendar overlay",
+          "125% browser zoom",
+          "Keyboard-only date selection",
+          "Long localized month names",
+          "Invalid manual entry"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormWorkflowRoute",
+          "SearchableListFilters",
+          "AdministrationForm",
+          "ReviewDecisionForm"
+        ]
+      },
+      "notes": [
+        "A DateRangeField requires a separate contract covering start and end values, range ordering, inclusive or exclusive semantics, range presets, and two-field validation.",
+        "Instant timestamps are generally produced by the system rather than manually entered through DateField."
+      ]
+    }
+  },
+  "validation": {
+    "schema": "../schemas/component-catalog.schema.json",
+    "checks": [
+      {
+        "id": "FORM-CONTROL-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The form-field control catalog must validate against the component catalog schema.",
+        "command": "node scripts/validate-component-catalog.mjs ~/.agents/skills/frontend-product-builder/assets/catalog/form-field-control-components.json",
+        "remediation": "Correct invalid or missing specialized-control fields."
+      },
+      {
+        "id": "FORM-CONTROL-002",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Specialized field IDs, names, implementations, public imports, and canonical responsibilities must remain unique.",
+        "command": "node scripts/audit-component-catalog-collisions.mjs",
+        "remediation": "Resolve duplicate ownership or merge overlapping form-control contracts."
+      },
+      {
+        "id": "FORM-CONTROL-003",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Shared specialized controls must not execute queries, mutations, persistence, permission checks, enum mapping, temporal business rules, or transport conversion.",
+        "command": "node scripts/audit-component-dependencies.mjs",
+        "remediation": "Move data access, domain mapping, eligibility, temporal policy, and persistence to the owning form, feature, query, or route."
+      },
+      {
+        "id": "FORM-CONTROL-004",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "CheckboxField, RadioGroupField, and SelectField must be selected according to the value model and option-set characteristics rather than visual preference.",
+        "remediation": "Replace the control with the canonical field matching boolean, small exclusive-choice, or bounded compacted-selection semantics."
+      },
+      {
+        "id": "FORM-CONTROL-005",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Checkbox and radio controls must expose native-equivalent label, checked, mixed, selected, required, disabled, invalid, and keyboard semantics.",
+        "command": "npm run test:components -- checkbox-field radio-group-field",
+        "remediation": "Correct label association, fieldset semantics, checked state, arrow-key behavior, focus, required state, or validation relationships."
+      },
+      {
+        "id": "FORM-CONTROL-006",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "SelectField must preserve accessible single-selection behavior, focus restoration, normalized options, placeholder semantics, and state distinction.",
+        "command": "npm run test:components -- select-field",
+        "remediation": "Correct select foundation behavior, option normalization, overlay focus, clear behavior, or loading and empty states."
+      },
+      {
+        "id": "FORM-CONTROL-007",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Consent checkboxes must not be preselected and must not combine unrelated agreements.",
+        "remediation": "Initialize consent as unchecked and divide distinct agreements into independently labeled fields."
+      },
+      {
+        "id": "FORM-CONTROL-008",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "SelectField must not be used as an improvised searchable entity picker, multi-select, tree selector, or remote combobox.",
+        "remediation": "Create or select the dedicated control contract required by the option model."
+      },
+      {
+        "id": "FORM-CONTROL-009",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "TextareaField character limits and validation constraints must remain synchronized with the authoritative form schema and server contract.",
+        "remediation": "Pass limits from the authoritative field contract and preserve entered content through recoverable failures."
+      },
+      {
+        "id": "FORM-CONTROL-010",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Date-only, month, local date-time, instant, and date-range semantics must not be conflated.",
+        "remediation": "Select an explicit temporal value contract and use a dedicated range or scheduling composition when necessary."
+      },
+      {
+        "id": "FORM-CONTROL-011",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "DateField must preserve canonical values, avoid implicit UTC conversion of date-only values, and expose accessible picker behavior.",
+        "command": "npm run test:components -- date-field",
+        "remediation": "Correct canonical representation, timezone ownership, parsing, formatting, range validation, keyboard navigation, or focus restoration."
+      },
+      {
+        "id": "FORM-CONTROL-012",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Specialized form controls must remain labeled, operable, correctly associated, and free from page-level overflow across approved viewports, zoom levels, and keyboard scenarios.",
+        "command": "npm run test:e2e:form-controls",
+        "remediation": "Correct option stacking, overlay dimensions, textarea growth, calendar positioning, label wrapping, target size, or focus behavior."
+      },
+      {
+        "id": "FORM-CONTROL-013",
+        "severity": "warning",
+        "method": "script",
+        "blocking": false,
+        "description": "Page-local checkbox fields, radio-card groups, selects, textareas, and date pickers similar to canonical components require review.",
+        "command": "node scripts/audit-component-duplicates.mjs",
+        "remediation": "Reuse the canonical specialized field or document why the local implementation requires a distinct contract."
+      }
+    ]
+  },
+  "deprecations": []
+}

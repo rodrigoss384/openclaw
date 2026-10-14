@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactKind": "task-red-green-evidence",
+  "taskId": "T-PIL-002",
+  "contract": {
+    "requirementIds": [
+      "REQ-PIL-001",
+      "REQ-PIL-006"
+    ],
+    "acceptanceCriteriaIds": [
+      "AC-PIL-001",
+      "AC-PIL-002"
+    ],
+    "scenarioIds": [
+      "SCN-PIL-001"
+    ],
+    "testIds": [
+      "AT-PIL-001",
+      "PROP-PIL-002"
+    ],
+    "taskFile": ".specs/features/piloto-execucao-testes/09-tasks.md",
+    "testPlan": ".specs/features/piloto-execucao-testes/08-test-plan.md",
+    "design": ".specs/features/piloto-execucao-testes/07-design.md",
+    "sha256": {
+      "task": "b8fb83732f61f7ce648588c45f8834a1e5669d210247217ad15b0b3898d478dc",
+      "testPlan": "dcf02696cbd33f93054bb034d9f481586b7e415f58cd51b51ac6fb9a987548a0",
+      "design": "c3e479674b4b24d4b359f98d1053f608281aaa8adc46278994686fa7c5e39120",
+      "applicability": "e9607fe6c4b08cce970ab419a6c0a02a0f4cadb24230d9ec801db67029030e5a"
+    }
+  },
+  "red": {
+    "mode": "authorized-disposable-counterexample",
+    "note": "A implementação em produção já estava GREEN; o plano autoriza provar sensibilidade em cópia descartável, sem fabricar falha no checkout.",
+    "command": "node node_modules/vitest/vitest.mjs run src/infra/retry.test.ts --root /tmp/T-PIL-002-counterexample.SI8PLo --config /tmp/T-PIL-002-counterexample.SI8PLo/vitest.config.ts --maxWorkers=1 --no-file-parallelism --testNamePattern=\"propagates the terminal error\"",
+    "exitCode": 1,
+    "observed": "3/3 casos tabelados falharam por identidade do erro ao substituir o throw terminal na cópia; 15 casos foram ignorados pela seleção.",
+    "evidence": ".specs/features/piloto-execucao-testes/evidence/T-PIL-002-counterexample.log",
+    "disposableCopyRemoved": true
+  },
+  "green": {
+    "command": "node node_modules/vitest/vitest.mjs run src/infra/retry.test.ts --config vitest.unit.config.ts --maxWorkers=1 --no-file-parallelism",
+    "exitCode": 0,
+    "testsPassed": 18,
+    "testsFailed": 0,
+    "evidence": ".specs/features/piloto-execucao-testes/evidence/T-PIL-002-vitest.log"
+  },
+  "validation": [
+    {
+      "command": "./node_modules/.bin/oxfmt --check src/infra/retry.test.ts",
+      "exitCode": 0,
+      "evidence": ".specs/features/piloto-execucao-testes/evidence/T-PIL-002-format.log"
+    },
+    {
+      "command": "./node_modules/.bin/oxlint --type-aware src/infra/retry.test.ts",
+      "exitCode": 0,
+      "evidence": ".specs/features/piloto-execucao-testes/evidence/T-PIL-002-oxlint.log"
+    },
+    {
+      "command": "env GOMAXPROCS=2 GOMEMLIMIT=1800MiB ./node_modules/.bin/tsgo --noEmit",
+      "exitCode": 0,
+      "evidence": ".specs/features/piloto-execucao-testes/evidence/T-PIL-002-tsgo.log"
+    }
+  ],
+  "scope": {
+    "changedProductFile": "src/infra/retry.test.ts",
+    "productionChanged": false,
+    "dependenciesOrLockfileChanged": false
+  }
+}

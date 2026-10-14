@@ -1,0 +1,67 @@
+name: SDE delivery
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      feature:
+        type: string
+        required: false
+        default: ''
+      inputs_file:
+        type: string
+        required: false
+        default: ''
+permissions:
+  contents: read
+jobs:
+  delivery:
+    name: sde-delivery
+    runs-on: ubuntu-latest
+    environment: sde-delivery
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.18.0
+      - name: Install control-plane validation dependencies
+        working-directory: skills/frontend-product-builder
+        run: npm ci
+      - name: Install browser for applicable UI evidence
+        working-directory: skills/frontend-product-builder
+        run: node node_modules/playwright/cli.js install --with-deps chromium
+      # Owned by the product: build/start the current checkout and wait for readiness.
+      # Missing runtime is rejected by the applicable UI gate, never replaced by fixtures.
+      - name: Prepare product runtime when configured
+        if: ${{ hashFiles('.specs/project/delivery-prepare.mjs') != '' }}
+        run: node .specs/project/delivery-prepare.mjs
+      - name: Verify delivery against protected executor context
+        env:
+          SDE_FEATURE: ${{ inputs.feature }}
+          SDE_INPUTS: ${{ inputs.inputs_file }}
+          SDE_BASE_COMMIT: ${{ secrets.SDE_BASE_COMMIT }}
+          SDE_CONTEXT_SHA256: ${{ secrets.SDE_CONTEXT_SHA256 }}
+          SDE_PROJECT: ${{ secrets.SDE_PROJECT }}
+          SDE_APPROVER: ${{ secrets.SDE_APPROVER }}
+          SDE_ALLOWED_SIGNERS: ${{ secrets.SDE_ALLOWED_SIGNERS }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$SDE_BASE_COMMIT"
+          test -n "$SDE_CONTEXT_SHA256"
+          export SDE_HUMAN_AUTHORITY="$RUNNER_TEMP/sde-authority.json"
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          const signers = path.join(process.env.RUNNER_TEMP, 'sde-allowed-signers');
+          fs.writeFileSync(signers, process.env.SDE_ALLOWED_SIGNERS || '', { mode: 0o600 });
+          fs.writeFileSync(process.env.SDE_HUMAN_AUTHORITY, JSON.stringify({project: process.env.SDE_PROJECT, principal: process.env.SDE_APPROVER, allowedSignersPath: signers}), { mode: 0o600 });
+          NODE
+          args=()
+          if [ -n "$SDE_FEATURE" ]; then args+=(--feature "$SDE_FEATURE"); fi
+          if [ -n "$SDE_INPUTS" ]; then args+=(--inputs "$SDE_INPUTS"); fi
+          node integrations/governance/workflow-entry.mjs delivery --root "$GITHUB_WORKSPACE" "${args[@]}"

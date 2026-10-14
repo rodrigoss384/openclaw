@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "task-restriction-trace",
+  "feature": "piloto-execucao-testes",
+  "task": "T-PIL-001",
+  "sources": [
+    ".specs/features/piloto-execucao-testes/01-spec.md:35-48",
+    ".specs/features/piloto-execucao-testes/02-assumptions.md:13-31",
+    ".specs/features/piloto-execucao-testes/07-design.md:5-33",
+    ".specs/features/piloto-execucao-testes/09-tasks.md:5-16"
+  ],
+  "restrictions": [
+    { "restriction": "Fork próprio e main", "ids": ["REQ-PIL-003"], "applicability": "not-applicable", "owner": "supervisor/publisher", "observableAction": "T-PIL-001 não faz push, PR, issue nem escreve na main; nenhum efeito externo será executado." },
+    { "restriction": "Codex gpt-6-luna high conta1/2", "ids": ["REQ-PIL-001", "REQ-PIL-004"], "applicability": "applicable", "owner": "supervisor", "observableAction": "Retomar a mesma tarefa/conversa após intervenção; não trocar modelo/provider durante a execução nem por resultado de teste." },
+    { "restriction": "Cursor Grok4.6High como fallback; retorno entre tasks", "ids": ["REQ-PIL-004"], "applicability": "not-applicable", "owner": "supervisor/dispatcher", "observableAction": "T-PIL-001 não seleciona ou troca provider; essa ação não é implementada na task." },
+    { "restriction": "Revisão Agy Pro3.1High; fallback executor Flash3.8High", "ids": ["REQ-PIL-002", "REQ-PIL-004"], "applicability": "not-applicable", "owner": "supervisor/reviewer", "observableAction": "Nenhuma revisão ou fallback de executor é executado nesta task." },
+    { "restriction": "Task limpa e intervenção na mesma sessão", "ids": ["REQ-PIL-001"], "applicability": "applicable", "owner": "worker", "observableAction": "Evidência task-run registra T-PIL-001, mesmo run/session antes e depois e a resposta textual recebida; o identificador fica somente na evidência." },
+    { "restriction": "PR rascunho, issues comprovadas, merge humano", "ids": ["REQ-PIL-003"], "applicability": "not-applicable", "owner": "supervisor/publisher/operador", "observableAction": "Nenhuma publicação, issue, promoção, merge ou deploy ocorre em T-PIL-001." },
+    { "restriction": "Quota incluída e tetos de uso", "ids": ["REQ-PIL-004"], "applicability": "applicable", "owner": "supervisor e worker dentro do grant", "observableAction": "Não mudar conta/provider, iniciar custo adicional ou contornar testes reprovados; checks locais usam somente ferramentas autorizadas pelo test plan." },
+    { "restriction": "Docker descartável, limites, WIP e bots preservados", "ids": ["REQ-PIL-005"], "applicability": "applicable", "owner": "worker/supervisor", "observableAction": "Usar comandos frozen/ignore-scripts do plano, limitar o escopo ao teste indicado, não tocar bots/WIP e confirmar que manifest/lockfile e produção não mudaram." },
+    { "restriction": "Bootstrap local autorizado; grant separado para execução", "ids": ["REQ-PIL-006"], "applicability": "applicable", "owner": "supervisor", "observableAction": "Bootstrap de implementação retorna policy temporária não-canônica e a execução segue somente a seleção explícita T-PIL-001; não escrever estado de gate." },
+    { "restriction": "Sem Hermes v1; agendamento sem LLM", "ids": ["REQ-PIL-004"], "applicability": "not-applicable", "owner": "supervisor", "observableAction": "T-PIL-001 não altera scheduler nem invoca Hermes." }
+  ],
+  "mechanismsAdded": [],
+  "driverIds": [],
+  "result": "Todos os itens aplicáveis têm owner e ação observável; itens de publicação/review/fallback fora do escopo não serão implementados."
+}

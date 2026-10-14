@@ -1,0 +1,3442 @@
+{
+  "$schema": "../schemas/component-catalog.schema.json",
+  "meta": {
+    "id": "frontend-product-builder-foundational-components",
+    "name": "Frontend Product Builder Foundational Components",
+    "version": "1.0.0",
+    "status": "approved",
+    "owner": "frontend-product-builder",
+    "category": "foundational",
+    "source": "./assets/catalog/foundational-components.json",
+    "designSystem": "docs/frontend/design-system/design-system.json",
+    "generated": false,
+    "description": "Canonical primitive components used as the interaction and visual foundation of the product frontend."
+  },
+  "components": {
+    "Button": {
+      "id": "button",
+      "name": "Button",
+      "level": "primitive",
+      "category": "action",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical control for invoking an explicit user action with semantic priority, pending behavior, and accessible interaction.",
+      "capabilities": [
+        "Invoke an explicit user action.",
+        "Communicate primary, secondary, neutral, or destructive action priority.",
+        "Prevent duplicate activation during pending operations.",
+        "Support visible-label and icon-only actions."
+      ],
+      "keywords": [
+        "action",
+        "submit",
+        "save",
+        "delete",
+        "cancel",
+        "button"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/button.tsx",
+      "publicImport": "@/components/ui/button",
+      "contract": "docs/frontend/design-system/components/button.md",
+      "foundation": {
+        "type": "shadcn",
+        "source": "shadcn/ui Button",
+        "components": [
+          "Slot"
+        ],
+        "reason": "Provides a composable accessible base that can be constrained through semantic variants and design tokens."
+      },
+      "tokens": [
+        "component.button.radius",
+        "reference.control.height.sm",
+        "reference.control.height.md",
+        "reference.control.height.lg",
+        "reference.control.target.minimum",
+        "semantic.action.primary.background",
+        "semantic.action.primary.foreground",
+        "semantic.action.danger.background",
+        "semantic.action.danger.foreground",
+        "semantic.focus.ring"
+      ],
+      "variants": {
+        "primary": {
+          "intent": "Advance the dominant task in the current region.",
+          "default": true,
+          "allowedUse": [
+            "Primary form submission.",
+            "Main workflow continuation.",
+            "One dominant action in a page section."
+          ],
+          "prohibitedUse": [
+            "Destructive action.",
+            "Routine export.",
+            "Several competing actions in the same region."
+          ],
+          "tokens": [
+            "semantic.action.primary.background",
+            "semantic.action.primary.foreground"
+          ],
+          "states": [
+            "default",
+            "hover",
+            "active",
+            "focus-visible",
+            "disabled",
+            "loading"
+          ]
+        },
+        "secondary": {
+          "intent": "Expose an important supporting action without competing with the primary action.",
+          "allowedUse": [
+            "Alternative workflow action.",
+            "Supporting dialog action.",
+            "Important non-destructive utility."
+          ],
+          "prohibitedUse": [
+            "Irreversible destructive action."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.text.primary",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "hover",
+            "active",
+            "focus-visible",
+            "disabled",
+            "loading"
+          ]
+        },
+        "outline": {
+          "intent": "Provide a lower-emphasis supporting action.",
+          "allowedUse": [
+            "Cancel or return.",
+            "Export.",
+            "Toolbar utility."
+          ],
+          "prohibitedUse": [
+            "Dominant form submission when a primary action exists."
+          ],
+          "tokens": [
+            "semantic.border.default",
+            "semantic.text.primary"
+          ],
+          "states": [
+            "default",
+            "hover",
+            "focus-visible",
+            "disabled",
+            "loading"
+          ]
+        },
+        "ghost": {
+          "intent": "Provide a contextual low-emphasis action.",
+          "allowedUse": [
+            "Table row utility.",
+            "Header utility.",
+            "Overflow trigger."
+          ],
+          "prohibitedUse": [
+            "Only call to action in a full empty state.",
+            "Critical confirmation."
+          ],
+          "tokens": [
+            "semantic.text.primary"
+          ],
+          "states": [
+            "default",
+            "hover",
+            "focus-visible",
+            "disabled"
+          ]
+        },
+        "danger": {
+          "intent": "Communicate a destructive, revoking, disabling, or irreversible action.",
+          "allowedUse": [
+            "Delete.",
+            "Disable.",
+            "Revoke.",
+            "Confirm an explicitly destructive workflow."
+          ],
+          "prohibitedUse": [
+            "Decorative emphasis.",
+            "Ordinary form validation.",
+            "Non-destructive rejection."
+          ],
+          "tokens": [
+            "semantic.action.danger.background",
+            "semantic.action.danger.foreground"
+          ],
+          "states": [
+            "default",
+            "hover",
+            "active",
+            "focus-visible",
+            "disabled",
+            "loading"
+          ]
+        },
+        "link": {
+          "intent": "Render a button-like action with link-level visual emphasis when genuine navigation is not intended.",
+          "allowedUse": [
+            "Low-emphasis disclosure.",
+            "Local action embedded in supporting content."
+          ],
+          "prohibitedUse": [
+            "Genuine route navigation.",
+            "Destructive action."
+          ],
+          "tokens": [
+            "semantic.text.link"
+          ],
+          "states": [
+            "default",
+            "hover",
+            "focus-visible",
+            "disabled"
+          ]
+        }
+      },
+      "sizes": {
+        "sm": {
+          "intent": "Compact toolbar and dense operational action.",
+          "allowedUse": [
+            "Table rows.",
+            "Dense toolbars.",
+            "Compact secondary controls."
+          ],
+          "tokens": [
+            "reference.control.height.sm",
+            "reference.icon.size.sm"
+          ]
+        },
+        "md": {
+          "intent": "Default application action size.",
+          "default": true,
+          "allowedUse": [
+            "Forms.",
+            "Page headers.",
+            "Dialogs.",
+            "Ordinary workflows."
+          ],
+          "tokens": [
+            "reference.control.height.md",
+            "reference.icon.size.sm"
+          ]
+        },
+        "lg": {
+          "intent": "Prominent action in spacious and focused contexts.",
+          "allowedUse": [
+            "Authentication.",
+            "Onboarding.",
+            "Large empty-state call to action."
+          ],
+          "tokens": [
+            "reference.control.height.lg",
+            "reference.icon.size.md"
+          ]
+        },
+        "icon": {
+          "intent": "Icon-only action with an explicit accessible name.",
+          "allowedUse": [
+            "Recognizable toolbar utility.",
+            "Dialog close control.",
+            "Overflow trigger."
+          ],
+          "tokens": [
+            "reference.control.height.md",
+            "reference.icon.size.md",
+            "reference.control.target.minimum"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "hover",
+        "active",
+        "focus-visible",
+        "disabled",
+        "loading"
+      ],
+      "slots": [
+        {
+          "name": "leadingIcon",
+          "description": "Optional icon displayed before the visible label.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "Decorative icons must be hidden from assistive technology.",
+            "Do not use an icon as the only label unless the icon size contract is selected."
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Visible action label.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use concise verb-first labels.",
+            "Do not use vague labels such as Confirmar when the outcome can be named."
+          ]
+        },
+        {
+          "name": "trailingIcon",
+          "description": "Optional directional or disclosure icon displayed after the label.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "Use only when the icon communicates direction, disclosure, or external behavior."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "primary | secondary | outline | ghost | danger | link",
+          "required": false,
+          "default": "primary",
+          "description": "Semantic action-priority variant.",
+          "semantic": true,
+          "restrictions": [
+            "Do not select a variant only to obtain a preferred color."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "sm | md | lg | icon",
+          "required": false,
+          "default": "md",
+          "description": "Approved control-size variant.",
+          "semantic": true,
+          "restrictions": [
+            "Consumers must not override control height through arbitrary classes."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that the invoked action is pending and prevents duplicate activation.",
+          "semantic": true,
+          "restrictions": [
+            "Loading does not replace mutation error handling."
+          ]
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Allows semantic composition with another element when supported by the foundation.",
+          "semantic": false,
+          "restrictions": [
+            "Do not use asChild to create invalid button or link semantics."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormActionBar",
+          "DialogFooter",
+          "PageHeader",
+          "Toolbar",
+          "EmptyState",
+          "Feature component"
+        ],
+        "allowedChildren": [
+          "Text",
+          "Approved icon",
+          "Loading indicator"
+        ],
+        "prohibitedParents": [
+          "Disabled interactive element",
+          "Another Button"
+        ],
+        "prohibitedChildren": [
+          "Interactive controls",
+          "Route-level form",
+          "Complex layout container"
+        ],
+        "spacingOwnership": [
+          "Button owns spacing between icon and label.",
+          "The parent action group owns spacing between buttons."
+        ],
+        "surfaceOwnership": "Button owns its interactive surface according to the selected semantic variant.",
+        "rules": [
+          "One region normally contains no more than one primary button.",
+          "A button must not be nested inside another interactive control.",
+          "Use genuine links for route navigation."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [
+          "class-variance-authority",
+          "Radix Slot"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "application-shell",
+          "regions": [
+            "globalHeader"
+          ],
+          "status": "allowed",
+          "notes": "Only for approved global utilities."
+        },
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "pageHeader",
+            "criticalAttention",
+            "actionQueue"
+          ],
+          "status": "recommended",
+          "notes": "Variant must reflect action hierarchy."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "pageHeader",
+            "searchAndFilters",
+            "bulkActions",
+            "contextualDetails"
+          ],
+          "status": "recommended",
+          "notes": "Bulk destructive actions require confirmation."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formActions"
+          ],
+          "status": "required",
+          "notes": "Submission uses one dominant primary action."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionActions"
+          ],
+          "status": "required",
+          "notes": "The selected human decision determines the dominant action."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct API calls.",
+          "Feature query hooks.",
+          "Role-name evaluation.",
+          "Route access."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Pending behavior is received through props.",
+          "Mutation ownership remains with the feature or form."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The consumer callback owns the action side effect."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve semantic priority while allowing labels and action groups to wrap through parent composition.",
+        "compact": "May become full width when the owning form, authentication, or empty-state contract requires it.",
+        "medium": "Uses content width and may wrap inside action groups.",
+        "wide": "Uses content width and remains aligned by the owning layout.",
+        "ultrawide": "Does not expand merely because more viewport width exists.",
+        "overflowPolicy": "Button labels must not create page-level horizontal overflow.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain operable at 200% text scaling and at least 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "button unless composed as a genuine semantic link",
+        "accessibleName": "Visible label or explicit accessible name for icon-only usage.",
+        "keyboard": [
+          "Activate with Enter.",
+          "Activate with Space.",
+          "Do not activate while disabled or loading."
+        ],
+        "focus": [
+          "Display a visible focus-visible indicator.",
+          "Do not remove native focusability.",
+          "Preserve focus after recoverable action errors."
+        ],
+        "announcements": [
+          "Meaningful pending state should be perceivable.",
+          "Action completion is announced by the owning workflow when required."
+        ],
+        "aria": [
+          "Use aria-busy when the pending state requires announcement.",
+          "Prefer native disabled over aria-disabled when possible."
+        ],
+        "colorIndependence": "Destructive and warning meaning must also be communicated through label, icon, or surrounding context.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One meaningful accessible action name.",
+        "typical": "A concise verb-first label with an optional icon.",
+        "maximum": "A localized action label that may wrap only where the parent contract allows it.",
+        "wrapping": "Avoid wrapping by using concise labels; allow controlled wrapping in compact full-width contexts.",
+        "truncation": "Do not truncate critical action labels.",
+        "localization": "Support substantial text expansion without fixed widths.",
+        "emptyBehavior": "A button without an accessible name is invalid.",
+        "technicalContent": "Technical identifiers must not be used as ordinary action labels."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/button.stories.tsx",
+        "requiredStories": [
+          "Variants",
+          "Sizes",
+          "Loading",
+          "Disabled",
+          "IconOnly",
+          "LongLocalizedLabel",
+          "DarkTheme",
+          "KeyboardFocus"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/button.test.tsx",
+        "requiredTests": [
+          "Accessible name",
+          "Keyboard activation",
+          "Disabled behavior",
+          "Loading duplicate prevention",
+          "Variant contract"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Primary and secondary actions in compact forms",
+          "Danger action inside confirmation dialog",
+          "Long localized action label",
+          "Keyboard focus"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormActionBar",
+          "DialogFooter",
+          "PageHeader",
+          "EmptyState"
+        ]
+      },
+      "notes": []
+    },
+    "Input": {
+      "id": "input",
+      "name": "Input",
+      "level": "primitive",
+      "category": "input",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical single-line input for textual, numeric, email, search, and other native input modes.",
+      "capabilities": [
+        "Receive one line of user-entered data.",
+        "Expose native browser input behavior.",
+        "Communicate disabled, read-only, invalid, and focus states."
+      ],
+      "keywords": [
+        "input",
+        "text",
+        "email",
+        "number",
+        "search",
+        "field"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/input.tsx",
+      "publicImport": "@/components/ui/input",
+      "contract": "docs/frontend/design-system/components/input.md",
+      "foundation": {
+        "type": "native-html",
+        "source": "HTML input",
+        "components": [],
+        "reason": "Native input semantics provide browser, keyboard, validation, autofill, and assistive-technology behavior."
+      },
+      "tokens": [
+        "component.input.radius",
+        "reference.control.height.md",
+        "semantic.background.surface",
+        "semantic.text.primary",
+        "semantic.text.disabled",
+        "semantic.border.default",
+        "semantic.focus.ring"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Ordinary editable single-line data entry.",
+          "default": true,
+          "allowedUse": [
+            "Text.",
+            "Email.",
+            "Telephone.",
+            "Search.",
+            "Numeric entry when native number behavior is appropriate."
+          ],
+          "prohibitedUse": [
+            "Multiline content.",
+            "Selection from a constrained option list.",
+            "Formatted monetary behavior without an approved composite."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.text.primary",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "hover",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        }
+      },
+      "sizes": {
+        "md": {
+          "intent": "Default application input size.",
+          "default": true,
+          "allowedUse": [
+            "Forms.",
+            "Search composition.",
+            "Dialogs."
+          ],
+          "tokens": [
+            "reference.control.height.md"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "hover",
+        "focus-visible",
+        "disabled",
+        "invalid",
+        "read-only"
+      ],
+      "slots": [],
+      "props": [
+        {
+          "name": "type",
+          "type": "React.HTMLInputTypeAttribute",
+          "required": false,
+          "default": "text",
+          "description": "Native input mode matching the expected value.",
+          "semantic": true,
+          "restrictions": [
+            "Do not use type=number for identifiers or values with leading zeroes."
+          ]
+        },
+        {
+          "name": "aria-invalid",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Communicates validation state.",
+          "semantic": true,
+          "restrictions": [
+            "An invalid field also requires associated error content."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormField",
+          "SearchInput",
+          "InputGroup",
+          "Feature form"
+        ],
+        "allowedChildren": [],
+        "prohibitedParents": [
+          "Button",
+          "Interactive link"
+        ],
+        "prohibitedChildren": [],
+        "spacingOwnership": [
+          "Input owns internal text padding.",
+          "FormField owns spacing between label, input, help, and error."
+        ],
+        "surfaceOwnership": "Input owns its control surface and border.",
+        "rules": [
+          "Compose ordinary form usage through FormField.",
+          "Placeholder text must not replace a visible label.",
+          "Input width is owned by the form layout."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "recommended",
+          "notes": "Compose through FormField."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "recommended",
+          "notes": "Credential fields require appropriate autocomplete attributes."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters"
+          ],
+          "status": "allowed",
+          "notes": "Ordinary search should use SearchInput rather than a bare Input."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct API calls.",
+          "Formatting domain objects.",
+          "Fetching option values."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled-or-uncontrolled",
+        "controlled": true,
+        "uncontrolled": true,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning form or feature determines controlled versus uncontrolled usage.",
+          "Do not copy a controlled value into local state without lifecycle analysis."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Follow the width assigned by the owning form or search layout.",
+        "compact": "Normally fills the available field-group width.",
+        "medium": "May use content-appropriate width inside approved field grids.",
+        "wide": "Must not stretch indefinitely when expected content is short.",
+        "ultrawide": "Remains constrained by the owning form recipe.",
+        "overflowPolicy": "Must not exceed the parent container.",
+        "containerQueries": false,
+        "zoomExpectation": "Label, value, help, and error must remain usable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "input",
+        "accessibleName": "Associated visible label supplied by FormField or explicit label element.",
+        "keyboard": [
+          "Use native keyboard interaction.",
+          "Preserve browser autofill and editing shortcuts."
+        ],
+        "focus": [
+          "Display visible focus-visible treatment.",
+          "Do not remove focus through preventDefault behavior."
+        ],
+        "announcements": [
+          "Validation errors must be programmatically associated.",
+          "Required state must be exposed through form semantics."
+        ],
+        "aria": [
+          "Use aria-invalid for invalid values.",
+          "Use aria-describedby for help and error content."
+        ],
+        "colorIndependence": "Invalid and disabled states must not depend only on border color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "An empty editable value with an external label.",
+        "typical": "One line of user-entered domain data.",
+        "maximum": "Length defined by the feature schema and backend contract.",
+        "wrapping": "Single line with native horizontal input behavior.",
+        "truncation": "The editable value uses native input scrolling rather than visual ellipsis.",
+        "localization": "Labels and help content are owned externally and must support expansion.",
+        "emptyBehavior": "Empty value remains distinct from unavailable or read-only information.",
+        "technicalContent": "Technical identifiers are permitted only in explicitly approved administrative or audit fields."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/input.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "Disabled",
+          "ReadOnly",
+          "Invalid",
+          "LongValue",
+          "DarkTheme",
+          "KeyboardFocus"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/input.test.tsx",
+        "requiredTests": [
+          "Native input behavior",
+          "Invalid semantics",
+          "Disabled behavior",
+          "Read-only behavior"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Compact form",
+          "Long value",
+          "Browser autofill",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormField",
+          "SearchInput",
+          "AuthenticationPanel"
+        ]
+      },
+      "notes": []
+    },
+    "Textarea": {
+      "id": "textarea",
+      "name": "Textarea",
+      "level": "primitive",
+      "category": "input",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical multiline input for notes, rationale, descriptions, and other variable-length textual content.",
+      "capabilities": [
+        "Receive multiline user-entered text.",
+        "Support validation, disabled, read-only, and focus states.",
+        "Resize according to approved content and layout policy."
+      ],
+      "keywords": [
+        "textarea",
+        "notes",
+        "description",
+        "rationale",
+        "multiline"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/textarea.tsx",
+      "publicImport": "@/components/ui/textarea",
+      "contract": "docs/frontend/design-system/components/textarea.md",
+      "foundation": {
+        "type": "native-html",
+        "source": "HTML textarea",
+        "components": [],
+        "reason": "Native textarea semantics provide reliable editing, selection, keyboard, and assistive-technology behavior."
+      },
+      "tokens": [
+        "component.input.radius",
+        "semantic.background.surface",
+        "semantic.text.primary",
+        "semantic.border.default",
+        "semantic.focus.ring"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Ordinary multiline text entry.",
+          "default": true,
+          "allowedUse": [
+            "Description.",
+            "Comment.",
+            "Review rationale.",
+            "Operational notes."
+          ],
+          "prohibitedUse": [
+            "Structured rich-text editing.",
+            "Code editor.",
+            "One-line identifiers."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.text.primary",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "hover",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "read-only"
+          ]
+        }
+      },
+      "sizes": {
+        "md": {
+          "intent": "Default multiline entry.",
+          "default": true,
+          "allowedUse": [
+            "Ordinary form sections."
+          ],
+          "tokens": [
+            "reference.control.height.lg"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "hover",
+        "focus-visible",
+        "disabled",
+        "invalid",
+        "read-only"
+      ],
+      "slots": [],
+      "props": [
+        {
+          "name": "rows",
+          "type": "number",
+          "required": false,
+          "default": 4,
+          "description": "Initial visible line count appropriate to expected content.",
+          "semantic": true,
+          "restrictions": [
+            "Do not use a large fixed height to reserve empty space.",
+            "Expected content length must justify the value."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormField",
+          "DecisionForm",
+          "Feature form"
+        ],
+        "allowedChildren": [],
+        "prohibitedParents": [
+          "Button",
+          "Interactive link"
+        ],
+        "prohibitedChildren": [],
+        "spacingOwnership": [
+          "Textarea owns internal text padding.",
+          "FormField owns label, help, and error spacing."
+        ],
+        "surfaceOwnership": "Textarea owns its editable control surface.",
+        "rules": [
+          "Use through FormField in ordinary forms.",
+          "Do not apply fixed heights that clip enlarged text.",
+          "Character count belongs to an approved composite when required."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "recommended",
+          "notes": "Use for variable-length textual input."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "recommended",
+          "notes": "Human rationale must remain distinct from machine recommendation text."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct persistence.",
+          "Automatic AI generation.",
+          "Direct API submission."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled-or-uncontrolled",
+        "controlled": true,
+        "uncontrolled": true,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Owning form controls persistence and dirty state."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Fill the owning field width while preserving readable minimum height.",
+        "compact": "Uses full field-group width and grows vertically.",
+        "medium": "Uses form-column width.",
+        "wide": "Remains constrained by the form container.",
+        "ultrawide": "Does not stretch beyond the approved reading width.",
+        "overflowPolicy": "Text wraps; the control must not create page-level horizontal overflow.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain usable with enlarged text and 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "textarea",
+        "accessibleName": "Associated visible label.",
+        "keyboard": [
+          "Use native multiline editing behavior.",
+          "Preserve expected line-break and selection shortcuts."
+        ],
+        "focus": [
+          "Display visible focus-visible treatment."
+        ],
+        "announcements": [
+          "Validation and character constraints must be associated when applicable."
+        ],
+        "aria": [
+          "Use aria-invalid for invalid values.",
+          "Use aria-describedby for help, count, and error content."
+        ],
+        "colorIndependence": "Invalid and read-only state must not depend only on color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "An empty multiline field with an associated label.",
+        "typical": "Several sentences of notes, explanation, or rationale.",
+        "maximum": "Length controlled by the feature schema and backend contract.",
+        "wrapping": "Natural multiline wrapping.",
+        "truncation": "Editable text is not visually truncated.",
+        "localization": "Labels, instructions, and validation messages support expansion.",
+        "emptyBehavior": "Empty value remains distinguishable from unavailable information.",
+        "technicalContent": "Raw logs or stack traces must not be entered or displayed through ordinary user workflows."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/textarea.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "LongContent",
+          "Invalid",
+          "Disabled",
+          "ReadOnly",
+          "DarkTheme",
+          "NarrowContainer"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/textarea.test.tsx",
+        "requiredTests": [
+          "Native editing",
+          "Invalid semantics",
+          "Disabled behavior",
+          "Read-only behavior"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Long rationale",
+          "Compact form",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormField",
+          "DecisionForm"
+        ]
+      },
+      "notes": []
+    },
+    "Checkbox": {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "level": "primitive",
+      "category": "selection",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical binary or indeterminate selection control used for independent choices and explicit acknowledgements.",
+      "capabilities": [
+        "Represent checked, unchecked, and indeterminate states.",
+        "Allow keyboard and pointer selection.",
+        "Communicate disabled and invalid states."
+      ],
+      "keywords": [
+        "checkbox",
+        "checked",
+        "selection",
+        "acknowledgement",
+        "boolean"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/checkbox.tsx",
+      "publicImport": "@/components/ui/checkbox",
+      "contract": "docs/frontend/design-system/components/checkbox.md",
+      "foundation": {
+        "type": "shadcn",
+        "source": "shadcn/ui Checkbox",
+        "components": [
+          "Radix Checkbox"
+        ],
+        "reason": "Provides accessible controlled and uncontrolled checkbox behavior including indeterminate state."
+      },
+      "tokens": [
+        "semantic.action.primary.background",
+        "semantic.action.primary.foreground",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "reference.control.target.minimum"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Ordinary independent binary selection.",
+          "default": true,
+          "allowedUse": [
+            "Optional preference.",
+            "Table row selection.",
+            "Explicit acknowledgement.",
+            "Multi-select option."
+          ],
+          "prohibitedUse": [
+            "Mutually exclusive choice where RadioGroup is appropriate.",
+            "Immediate destructive execution without confirmation."
+          ],
+          "tokens": [
+            "semantic.border.default",
+            "semantic.action.primary.background"
+          ],
+          "states": [
+            "unchecked",
+            "checked",
+            "indeterminate",
+            "focus-visible",
+            "disabled",
+            "invalid"
+          ]
+        }
+      },
+      "sizes": {
+        "md": {
+          "intent": "Default checkbox with an adequate interactive target.",
+          "default": true,
+          "allowedUse": [
+            "Forms.",
+            "Lists.",
+            "Tables."
+          ],
+          "tokens": [
+            "reference.icon.size.sm",
+            "reference.control.target.minimum"
+          ]
+        }
+      },
+      "states": [
+        "unchecked",
+        "checked",
+        "indeterminate",
+        "focus-visible",
+        "disabled",
+        "invalid"
+      ],
+      "slots": [
+        {
+          "name": "indicator",
+          "description": "Visual checked or indeterminate indicator.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "State must also be exposed semantically."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "checked",
+          "type": "boolean | indeterminate",
+          "required": false,
+          "description": "Controlled selection state.",
+          "semantic": true,
+          "restrictions": [
+            "Do not supply checked without an appropriate change handler in controlled usage."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormField",
+          "CheckboxField",
+          "DataTable",
+          "SelectionGroup"
+        ],
+        "allowedChildren": [
+          "Indicator"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "Interactive link"
+        ],
+        "prohibitedChildren": [
+          "Visible label text inside the checkbox primitive"
+        ],
+        "spacingOwnership": [
+          "The checkbox-field composite owns spacing between control, label, help, and error."
+        ],
+        "surfaceOwnership": "Checkbox owns its selection surface.",
+        "rules": [
+          "The visible label must activate the checkbox.",
+          "The checkbox primitive does not own descriptive content.",
+          "Indeterminate state must not be treated as checked submission without feature rules."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [
+          "Radix Checkbox"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "recommended",
+          "notes": "Use through a labeled field composition."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results",
+            "bulkActions"
+          ],
+          "status": "recommended",
+          "notes": "Selection count and select-all scope must be explicit."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionForm"
+          ],
+          "status": "allowed",
+          "notes": "Use only for independent acknowledgement or optional conditions."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct selection mutation.",
+          "Permission interpretation."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled-or-uncontrolled",
+        "controlled": true,
+        "uncontrolled": true,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning form, table, or feature owns the selected value."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Maintain a usable target while the label wraps independently.",
+        "compact": "Control remains aligned to the start of multiline labels.",
+        "medium": "Uses the same control size.",
+        "wide": "Uses the same control size.",
+        "ultrawide": "Does not scale with viewport width.",
+        "overflowPolicy": "The label wraps through the owning field composition.",
+        "containerQueries": false,
+        "zoomExpectation": "The control and label must remain operable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "checkbox",
+        "accessibleName": "Associated visible label or row-specific accessible label.",
+        "keyboard": [
+          "Toggle with Space.",
+          "Follow native or Radix checkbox interaction."
+        ],
+        "focus": [
+          "Display a visible focus-visible indicator.",
+          "Maintain logical order in table selection."
+        ],
+        "announcements": [
+          "Checked and indeterminate state must be exposed.",
+          "Validation errors must be associated through the owning field."
+        ],
+        "aria": [
+          "Use the foundation-provided checked semantics.",
+          "Use aria-describedby through the owning field when necessary."
+        ],
+        "colorIndependence": "Checked and indeterminate states use shape or icon in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One binary choice with an accessible name.",
+        "typical": "A checkbox paired with a concise visible label.",
+        "maximum": "A localized multiline label with optional supporting help.",
+        "wrapping": "Label wraps independently beside the control.",
+        "truncation": "Do not truncate legal acknowledgement or critical permission labels.",
+        "localization": "Support substantial label expansion.",
+        "emptyBehavior": "A checkbox without an accessible name is invalid.",
+        "technicalContent": "Backend Boolean property names must be translated into user-facing statements."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/checkbox.stories.tsx",
+        "requiredStories": [
+          "Unchecked",
+          "Checked",
+          "Indeterminate",
+          "Disabled",
+          "Invalid",
+          "LongLabelComposition",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/checkbox.test.tsx",
+        "requiredTests": [
+          "Keyboard toggle",
+          "Controlled state",
+          "Indeterminate state",
+          "Disabled behavior"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Long form label",
+          "Table selection",
+          "Keyboard interaction"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "CheckboxField",
+          "DataTable"
+        ]
+      },
+      "notes": []
+    },
+    "Select": {
+      "id": "select",
+      "name": "Select",
+      "level": "primitive",
+      "category": "selection",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical single-selection popup control for choosing one value from a constrained option collection.",
+      "capabilities": [
+        "Select one option from a constrained collection.",
+        "Support keyboard navigation and type-ahead behavior.",
+        "Communicate disabled, invalid, and open states."
+      ],
+      "keywords": [
+        "select",
+        "dropdown",
+        "option",
+        "selection",
+        "combobox"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/select.tsx",
+      "publicImport": "@/components/ui/select",
+      "contract": "docs/frontend/design-system/components/select.md",
+      "foundation": {
+        "type": "shadcn",
+        "source": "shadcn/ui Select",
+        "components": [
+          "Radix Select"
+        ],
+        "reason": "Provides accessible popup selection behavior, keyboard navigation, portals, and focus management."
+      },
+      "tokens": [
+        "component.input.radius",
+        "reference.control.height.md",
+        "semantic.background.surface",
+        "semantic.background.surfaceElevated",
+        "semantic.text.primary",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "reference.zIndex.dropdown"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Ordinary constrained single selection.",
+          "default": true,
+          "allowedUse": [
+            "Status selection.",
+            "Category selection.",
+            "Compact filter with a manageable option count."
+          ],
+          "prohibitedUse": [
+            "Free text search across a large remote collection.",
+            "Multiple selection.",
+            "Navigation disguised as a field."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default",
+            "semantic.background.surfaceElevated"
+          ],
+          "states": [
+            "default",
+            "focus-visible",
+            "disabled",
+            "invalid",
+            "expanded",
+            "collapsed"
+          ]
+        }
+      },
+      "sizes": {
+        "md": {
+          "intent": "Default form and filter selection size.",
+          "default": true,
+          "allowedUse": [
+            "Forms.",
+            "Filters.",
+            "Dialogs."
+          ],
+          "tokens": [
+            "reference.control.height.md"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "focus-visible",
+        "disabled",
+        "invalid",
+        "expanded",
+        "collapsed"
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "Control displaying the current selection and opening the popup.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "SelectTrigger"
+          ],
+          "contentRestrictions": [
+            "Must expose an accessible name through the owning field."
+          ]
+        },
+        {
+          "name": "content",
+          "description": "Popup containing selectable options.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "SelectContent"
+          ],
+          "contentRestrictions": [
+            "Do not render unrelated actions inside the option list."
+          ]
+        },
+        {
+          "name": "item",
+          "description": "One selectable option.",
+          "required": true,
+          "multiple": true,
+          "order": 3,
+          "allowedComponents": [
+            "SelectItem"
+          ],
+          "contentRestrictions": [
+            "Every value requires a meaningful user-facing label.",
+            "Raw enum values must be mapped before rendering."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Controlled selected option value.",
+          "semantic": true,
+          "restrictions": [
+            "User-facing labels must not be used as unstable persistence identifiers."
+          ]
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "description": "Controlled selection-change callback.",
+          "semantic": true,
+          "restrictions": [
+            "The primitive does not persist the selection directly."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "FormField",
+          "FilterBar",
+          "Dialog",
+          "Feature form"
+        ],
+        "allowedChildren": [
+          "SelectTrigger",
+          "SelectContent",
+          "SelectItem",
+          "SelectGroup",
+          "SelectLabel",
+          "SelectSeparator"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "Another Select popup"
+        ],
+        "prohibitedChildren": [
+          "Arbitrary interactive forms",
+          "Destructive actions"
+        ],
+        "spacingOwnership": [
+          "Select trigger owns internal value and indicator spacing.",
+          "Select content owns option spacing.",
+          "FormField owns external label and error spacing."
+        ],
+        "surfaceOwnership": "Trigger owns a control surface; content owns an elevated popup surface.",
+        "rules": [
+          "Use Combobox rather than Select for large searchable remote collections.",
+          "Option order must follow product logic.",
+          "Popup width must support realistic labels without creating viewport overflow."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [
+          "Radix Select"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "recommended",
+          "notes": "Use for constrained single selection."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "searchAndFilters",
+            "resultsSummary"
+          ],
+          "status": "allowed",
+          "notes": "Use for compact filters, sorting, or page size."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent"
+          ],
+          "status": "allowed",
+          "notes": "Raw permission and backend enum values must be mapped."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching options.",
+          "Direct server filtering.",
+          "Permission evaluation."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled-or-uncontrolled",
+        "controlled": true,
+        "uncontrolled": true,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning form, feature, or URL filter controls the selected value."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The foundation manages popup focus and option scrolling."
+        ]
+      },
+      "responsive": {
+        "strategy": "Use the width assigned by the owning form while constraining popup content to the viewport.",
+        "compact": "Trigger normally fills the available field width; popup remains viewport constrained.",
+        "medium": "Uses content-appropriate field width.",
+        "wide": "Uses form or filter width rather than equal-width expansion.",
+        "ultrawide": "Does not stretch with unused page width.",
+        "overflowPolicy": "Long option labels wrap or truncate according to the approved content contract; popup must remain inside the viewport.",
+        "containerQueries": false,
+        "zoomExpectation": "Trigger and popup must remain operable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "combobox and listbox semantics provided by Radix Select",
+        "accessibleName": "Visible associated label or explicit accessible label.",
+        "keyboard": [
+          "Open with Enter, Space, ArrowDown, or ArrowUp according to foundation behavior.",
+          "Navigate options with arrow keys.",
+          "Select with Enter or Space.",
+          "Close with Escape."
+        ],
+        "focus": [
+          "Trigger displays visible focus.",
+          "Popup restores focus to the trigger on close."
+        ],
+        "announcements": [
+          "Selected option and expanded state are exposed.",
+          "Validation errors are associated through the owning field."
+        ],
+        "aria": [
+          "Use foundation-provided ARIA semantics.",
+          "Do not override roles inconsistently."
+        ],
+        "colorIndependence": "Selected and disabled options require non-color indicators.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One selected value or an explicit unselected prompt.",
+        "typical": "A constrained collection of concise labeled options.",
+        "maximum": "A manageable option collection whose labels remain readable in the popup.",
+        "wrapping": "Trigger and option wrapping follow the approved field contract.",
+        "truncation": "Critical option distinctions must not be lost through truncation.",
+        "localization": "Support expanded labels without fixed popup width assumptions.",
+        "emptyBehavior": "An empty option collection requires a disabled or unavailable composite state.",
+        "technicalContent": "Raw enum keys must be translated before rendering."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/select.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "GroupedOptions",
+          "LongLabels",
+          "Disabled",
+          "InvalidComposition",
+          "DarkTheme",
+          "NarrowViewport"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/select.test.tsx",
+        "requiredTests": [
+          "Keyboard navigation",
+          "Selection",
+          "Controlled value",
+          "Disabled behavior",
+          "Focus restoration"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Compact form",
+          "Long options",
+          "Popup near viewport edge",
+          "Keyboard-only use"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "FormField",
+          "FilterBar",
+          "Pagination"
+        ]
+      },
+      "notes": []
+    },
+    "Dialog": {
+      "id": "dialog",
+      "name": "Dialog",
+      "level": "primitive",
+      "category": "overlay",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical modal overlay for focused tasks that temporarily interrupt the underlying interface and require explicit focus management.",
+      "capabilities": [
+        "Present a focused modal task.",
+        "Trap focus while open.",
+        "Restore focus after dismissal.",
+        "Provide title, description, content, and action regions."
+      ],
+      "keywords": [
+        "dialog",
+        "modal",
+        "overlay",
+        "confirmation",
+        "form"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/dialog.tsx",
+      "publicImport": "@/components/ui/dialog",
+      "contract": "docs/frontend/design-system/components/dialog.md",
+      "foundation": {
+        "type": "shadcn",
+        "source": "shadcn/ui Dialog",
+        "components": [
+          "Radix Dialog"
+        ],
+        "reason": "Provides accessible modal semantics, focus trapping, portals, dismissal, and restoration behavior."
+      },
+      "tokens": [
+        "component.dialog.radius",
+        "semantic.background.overlay",
+        "semantic.background.surfaceElevated",
+        "semantic.text.primary",
+        "semantic.border.default",
+        "reference.zIndex.modal"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Focused modal task or contextual workflow.",
+          "default": true,
+          "allowedUse": [
+            "Confirmation.",
+            "Short form.",
+            "Contextual review.",
+            "Focused explanation requiring user acknowledgement."
+          ],
+          "prohibitedUse": [
+            "Long route-level workflow.",
+            "Large data exploration workspace.",
+            "Ordinary navigation.",
+            "Non-modal tooltip content."
+          ],
+          "tokens": [
+            "semantic.background.surfaceElevated",
+            "reference.zIndex.modal"
+          ],
+          "states": [
+            "expanded",
+            "collapsed"
+          ]
+        }
+      },
+      "sizes": {
+        "sm": {
+          "intent": "Short confirmation or compact focused content.",
+          "allowedUse": [
+            "Simple confirmation.",
+            "Short explanation."
+          ],
+          "tokens": []
+        },
+        "md": {
+          "intent": "Default dialog workflow.",
+          "default": true,
+          "allowedUse": [
+            "Short form.",
+            "Configuration.",
+            "Confirmation with impact summary."
+          ],
+          "tokens": []
+        },
+        "lg": {
+          "intent": "Complex but still modal workflow.",
+          "allowedUse": [
+            "Document preview.",
+            "Structured comparison.",
+            "Multi-section modal content with explicit height management."
+          ],
+          "tokens": []
+        }
+      },
+      "states": [
+        "expanded",
+        "collapsed"
+      ],
+      "slots": [
+        {
+          "name": "title",
+          "description": "Visible title naming the modal task.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "DialogTitle"
+          ],
+          "contentRestrictions": [
+            "Use concise task-oriented text."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Optional explanation of task impact or required context.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "DialogDescription"
+          ],
+          "contentRestrictions": [
+            "Do not place critical content only in inaccessible helper text."
+          ]
+        },
+        {
+          "name": "content",
+          "description": "Focused modal task content.",
+          "required": true,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Form",
+            "DefinitionList",
+            "Feature component",
+            "Feedback component"
+          ],
+          "contentRestrictions": [
+            "Avoid complete route-level experiences."
+          ]
+        },
+        {
+          "name": "footer",
+          "description": "Action region for confirmation, cancellation, or workflow controls.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "DialogFooter",
+            "Button"
+          ],
+          "contentRestrictions": [
+            "One dominant action.",
+            "Destructive actions require semantic danger treatment."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": "Controlled visibility state.",
+          "semantic": true,
+          "restrictions": [
+            "The consumer must handle state changes when controlled."
+          ]
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "description": "Controlled visibility callback.",
+          "semantic": true,
+          "restrictions": [
+            "Do not suppress close behavior without a documented workflow reason."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Application feedback portal",
+          "Screen",
+          "Feature component"
+        ],
+        "allowedChildren": [
+          "DialogTrigger",
+          "DialogContent",
+          "DialogHeader",
+          "DialogTitle",
+          "DialogDescription",
+          "DialogFooter",
+          "DialogClose"
+        ],
+        "prohibitedParents": [
+          "Another modal Dialog without an approved nested workflow"
+        ],
+        "prohibitedChildren": [
+          "Complete application shell",
+          "Unbounded route content"
+        ],
+        "spacingOwnership": [
+          "DialogContent owns internal modal padding.",
+          "DialogHeader owns title and description spacing.",
+          "DialogFooter owns action spacing and alignment."
+        ],
+        "surfaceOwnership": "Dialog owns overlay and elevated modal surfaces.",
+        "rules": [
+          "Every dialog requires an accessible title.",
+          "The underlying interface is inert while a modal dialog is open.",
+          "Dialog height must respect the viewport.",
+          "Ordinary error messages should not open a modal automatically."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Button"
+        ],
+        "libraries": [
+          "Radix Dialog"
+        ],
+        "contexts": [
+          "Portal"
+        ],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "application-shell",
+          "regions": [
+            "globalFeedback"
+          ],
+          "status": "recommended",
+          "notes": "Dialog portals belong in the global feedback layer."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formActions"
+          ],
+          "status": "allowed",
+          "notes": "Use for unsaved changes, conflicts, or short supporting workflows."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "sensitiveActions"
+          ],
+          "status": "recommended",
+          "notes": "Sensitive confirmations may require reauthentication."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "decisionActions"
+          ],
+          "status": "allowed",
+          "notes": "Use for final confirmation or stale conflict resolution."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct feature mutation.",
+          "Direct API loading.",
+          "Permission evaluation."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled-or-uncontrolled",
+        "controlled": true,
+        "uncontrolled": true,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Feature composites own workflow and mutation state.",
+          "The primitive owns only foundation-level open-state behavior when uncontrolled."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Opening traps focus and may lock background scrolling.",
+          "Closing restores focus to the trigger or approved target."
+        ]
+      },
+      "responsive": {
+        "strategy": "Constrain width and height by viewport while preserving task clarity and safe scrolling.",
+        "compact": "May use near-full-width or full-height presentation with safe margins.",
+        "medium": "Centered constrained modal.",
+        "wide": "Centered modal using approved size variant.",
+        "ultrawide": "Remains constrained and does not scale with the viewport.",
+        "overflowPolicy": "Dialog content may scroll internally only when height exceeds the viewport; actions remain accessible.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain operable at 200% text scaling without inaccessible content or actions."
+      },
+      "accessibility": {
+        "semanticElement": "dialog with aria-modal semantics provided by Radix",
+        "accessibleName": "Dialog title.",
+        "keyboard": [
+          "Close with Escape when dismissal is allowed.",
+          "Tab and Shift+Tab remain inside the modal.",
+          "All actions remain keyboard operable."
+        ],
+        "focus": [
+          "Move focus to the appropriate initial element.",
+          "Trap focus while open.",
+          "Restore focus on close."
+        ],
+        "announcements": [
+          "Title and description are announced when the dialog opens.",
+          "Pending and error states inside the dialog remain perceivable."
+        ],
+        "aria": [
+          "Use foundation-provided dialog semantics.",
+          "Do not remove the title solely for visual reasons."
+        ],
+        "colorIndependence": "Destructive, warning, and pending state must not depend only on color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "A title and focused task content.",
+        "typical": "Title, optional description, concise content, and action footer.",
+        "maximum": "A bounded complex workflow whose height and reading order remain manageable.",
+        "wrapping": "Titles, descriptions, content, and actions wrap within the viewport.",
+        "truncation": "Do not truncate critical impact descriptions or action labels.",
+        "localization": "Support expanded titles and buttons without fixed-height assumptions.",
+        "emptyBehavior": "A dialog without meaningful content is invalid.",
+        "technicalContent": "Raw errors, tokens, stack traces, and implementation details are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/dialog.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "Confirmation",
+          "LongContent",
+          "ScrollableContent",
+          "DestructiveComposition",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/dialog.test.tsx",
+        "requiredTests": [
+          "Accessible title",
+          "Focus trap",
+          "Escape dismissal",
+          "Focus restoration",
+          "Controlled state"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Compact viewport with virtual keyboard",
+          "Long localized content",
+          "Keyboard-only confirmation",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "ConfirmationDialog",
+          "UnsavedChangesDialog",
+          "SensitiveActionDialog"
+        ]
+      },
+      "notes": []
+    },
+    "DropdownMenu": {
+      "id": "dropdown-menu",
+      "name": "DropdownMenu",
+      "level": "primitive",
+      "category": "overlay",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical contextual menu for grouping low-frequency actions associated with a trigger, row, entity, or toolbar.",
+      "capabilities": [
+        "Expose a contextual action collection.",
+        "Move low-frequency actions out of primary visual hierarchy.",
+        "Support keyboard navigation, grouping, disabled items, and submenus."
+      ],
+      "keywords": [
+        "menu",
+        "dropdown",
+        "overflow",
+        "actions",
+        "contextual"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/dropdown-menu.tsx",
+      "publicImport": "@/components/ui/dropdown-menu",
+      "contract": "docs/frontend/design-system/components/dropdown-menu.md",
+      "foundation": {
+        "type": "shadcn",
+        "source": "shadcn/ui Dropdown Menu",
+        "components": [
+          "Radix DropdownMenu"
+        ],
+        "reason": "Provides accessible menu semantics, keyboard navigation, portals, groups, separators, and submenus."
+      },
+      "tokens": [
+        "semantic.background.surfaceElevated",
+        "semantic.text.primary",
+        "semantic.border.default",
+        "reference.zIndex.dropdown"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Group contextual low-frequency actions.",
+          "default": true,
+          "allowedUse": [
+            "Row actions.",
+            "Page-header utilities.",
+            "User menu.",
+            "Overflow actions."
+          ],
+          "prohibitedUse": [
+            "Primary action hidden by default.",
+            "Large navigation tree.",
+            "Form field option selection."
+          ],
+          "tokens": [
+            "semantic.background.surfaceElevated",
+            "reference.zIndex.dropdown"
+          ],
+          "states": [
+            "expanded",
+            "collapsed",
+            "disabled",
+            "focus-visible"
+          ]
+        }
+      },
+      "sizes": {
+        "md": {
+          "intent": "Default contextual action menu.",
+          "default": true,
+          "allowedUse": [
+            "Toolbars.",
+            "Rows.",
+            "Headers."
+          ],
+          "tokens": []
+        }
+      },
+      "states": [
+        "expanded",
+        "collapsed",
+        "disabled",
+        "focus-visible"
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "Control opening the contextual menu.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "Icon-only triggers require an accessible name."
+          ]
+        },
+        {
+          "name": "content",
+          "description": "Popup menu surface.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "DropdownMenuContent"
+          ],
+          "contentRestrictions": [
+            "Menu content contains menu items and structural menu elements."
+          ]
+        },
+        {
+          "name": "item",
+          "description": "One contextual action.",
+          "required": true,
+          "multiple": true,
+          "order": 3,
+          "allowedComponents": [
+            "DropdownMenuItem",
+            "DropdownMenuCheckboxItem",
+            "DropdownMenuRadioItem"
+          ],
+          "contentRestrictions": [
+            "Item labels use action language.",
+            "Destructive actions require danger semantics and separation."
+          ]
+        }
+      ],
+      "props": [],
+      "composition": {
+        "allowedParents": [
+          "PageHeader",
+          "EntityHeader",
+          "DataTable",
+          "Toolbar",
+          "GlobalHeader",
+          "Feature component"
+        ],
+        "allowedChildren": [
+          "DropdownMenuTrigger",
+          "DropdownMenuContent",
+          "DropdownMenuItem",
+          "DropdownMenuLabel",
+          "DropdownMenuSeparator",
+          "DropdownMenuGroup",
+          "DropdownMenuSub"
+        ],
+        "prohibitedParents": [
+          "FormField as a value selector"
+        ],
+        "prohibitedChildren": [
+          "Large forms",
+          "Arbitrary page content"
+        ],
+        "spacingOwnership": [
+          "Menu content owns internal item spacing.",
+          "The trigger parent owns external spacing."
+        ],
+        "surfaceOwnership": "DropdownMenu owns an elevated popup surface.",
+        "rules": [
+          "The main task must not be hidden in overflow.",
+          "Destructive actions appear after a separator or inside an explicit danger group.",
+          "Menu items must not be nested interactive components."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Button"
+        ],
+        "libraries": [
+          "Radix DropdownMenu"
+        ],
+        "contexts": [
+          "Portal"
+        ],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "application-shell",
+          "regions": [
+            "globalHeader"
+          ],
+          "status": "recommended",
+          "notes": "Use for user and low-frequency global utilities."
+        },
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "pageHeader"
+          ],
+          "status": "recommended",
+          "notes": "Exports and configuration may move to overflow."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "pageHeader",
+            "resultsSummary",
+            "results",
+            "bulkActions"
+          ],
+          "status": "recommended",
+          "notes": "Row actions must remain subordinate to row content."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader",
+            "entityActions"
+          ],
+          "status": "recommended",
+          "notes": "Audit and low-frequency utilities may move to overflow."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct mutation.",
+          "Direct navigation decisions.",
+          "Permission evaluation."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled-or-uncontrolled",
+        "controlled": true,
+        "uncontrolled": true,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Feature composition provides action callbacks and eligibility."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The foundation manages focus and viewport collision."
+        ]
+      },
+      "responsive": {
+        "strategy": "Keep the trigger compact while constraining menu content to the viewport.",
+        "compact": "Menu may align to a safe viewport edge or use a sheet only when the action set is unusually complex.",
+        "medium": "Popup menu aligned to the trigger.",
+        "wide": "Popup menu aligned contextually.",
+        "ultrawide": "Menu remains constrained.",
+        "overflowPolicy": "Long labels wrap or truncate only when full meaning remains accessible.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain keyboard operable and viewport constrained at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "menu semantics provided by Radix DropdownMenu",
+        "accessibleName": "Trigger accessible name and visible item labels.",
+        "keyboard": [
+          "Open with Enter, Space, or ArrowDown.",
+          "Navigate with arrow keys.",
+          "Activate with Enter or Space.",
+          "Close with Escape."
+        ],
+        "focus": [
+          "Move focus into the menu on open.",
+          "Restore focus to the trigger on close."
+        ],
+        "announcements": [
+          "Expanded state, disabled items, and checked items are exposed."
+        ],
+        "aria": [
+          "Use foundation-provided menu semantics."
+        ],
+        "colorIndependence": "Destructive, checked, and disabled states use text, icons, or semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One contextual action and an accessible trigger.",
+        "typical": "Several grouped low-frequency actions.",
+        "maximum": "A constrained action list; large capability navigation requires another pattern.",
+        "wrapping": "Item labels may wrap when necessary.",
+        "truncation": "Do not truncate actions whose consequences would become ambiguous.",
+        "localization": "Menu width supports expanded localized labels.",
+        "emptyBehavior": "A menu with no eligible items must not open or must present an explicit unavailable state.",
+        "technicalContent": "Raw permission names and internal action identifiers are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/dropdown-menu.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "Grouped",
+          "CheckboxItems",
+          "DestructiveItem",
+          "DisabledItems",
+          "LongLabels",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/dropdown-menu.test.tsx",
+        "requiredTests": [
+          "Keyboard navigation",
+          "Item activation",
+          "Disabled behavior",
+          "Focus restoration",
+          "Controlled state"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Row action near viewport edge",
+          "Compact header",
+          "Keyboard-only use"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "OverflowMenu",
+          "RowActionMenu",
+          "UserMenu"
+        ]
+      },
+      "notes": []
+    },
+    "Tooltip": {
+      "id": "tooltip",
+      "name": "Tooltip",
+      "level": "primitive",
+      "category": "overlay",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical supplementary label or concise clarification displayed for hover and keyboard focus without containing essential interactive content.",
+      "capabilities": [
+        "Provide a concise supplementary label.",
+        "Expose the meaning of an icon-only control.",
+        "Clarify nonessential abbreviated content."
+      ],
+      "keywords": [
+        "tooltip",
+        "hint",
+        "label",
+        "icon",
+        "help"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/tooltip.tsx",
+      "publicImport": "@/components/ui/tooltip",
+      "contract": "docs/frontend/design-system/components/tooltip.md",
+      "foundation": {
+        "type": "shadcn",
+        "source": "shadcn/ui Tooltip",
+        "components": [
+          "Radix Tooltip"
+        ],
+        "reason": "Provides keyboard-focus and hover behavior, portals, timing, and accessible description relationships."
+      },
+      "tokens": [
+        "semantic.background.surfaceElevated",
+        "semantic.text.primary",
+        "reference.zIndex.tooltip"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Supplementary concise clarification.",
+          "default": true,
+          "allowedUse": [
+            "Icon-only control label.",
+            "Abbreviation clarification.",
+            "Nonessential supplementary explanation."
+          ],
+          "prohibitedUse": [
+            "Critical instructions.",
+            "Validation error.",
+            "Large interactive content.",
+            "Information required to complete a task."
+          ],
+          "tokens": [
+            "semantic.background.surfaceElevated",
+            "reference.zIndex.tooltip"
+          ],
+          "states": [
+            "expanded",
+            "collapsed"
+          ]
+        }
+      },
+      "sizes": {
+        "md": {
+          "intent": "Concise tooltip content.",
+          "default": true,
+          "allowedUse": [
+            "One or two short sentences."
+          ],
+          "tokens": []
+        }
+      },
+      "states": [
+        "expanded",
+        "collapsed"
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "Element that receives hover or focus.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Button",
+            "Text",
+            "Icon"
+          ],
+          "contentRestrictions": [
+            "The trigger remains independently understandable when possible."
+          ]
+        },
+        {
+          "name": "content",
+          "description": "Concise supplementary text.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not include form controls or critical actions."
+          ]
+        }
+      ],
+      "props": [],
+      "composition": {
+        "allowedParents": [
+          "Toolbar",
+          "DataTable",
+          "Form",
+          "Navigation",
+          "Feature component"
+        ],
+        "allowedChildren": [
+          "TooltipTrigger",
+          "TooltipContent"
+        ],
+        "prohibitedParents": [
+          "Tooltip"
+        ],
+        "prohibitedChildren": [
+          "Interactive form",
+          "Button inside content",
+          "Long documentation"
+        ],
+        "spacingOwnership": [
+          "Tooltip content owns internal padding."
+        ],
+        "surfaceOwnership": "Tooltip owns a small elevated surface.",
+        "rules": [
+          "Essential information must remain available without hover.",
+          "Tooltip content must also appear on keyboard focus.",
+          "Do not place an information icon beside every label."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [
+          "Radix Tooltip"
+        ],
+        "contexts": [
+          "TooltipProvider"
+        ],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "application-shell",
+          "regions": [
+            "primaryNavigation",
+            "globalHeader"
+          ],
+          "status": "allowed",
+          "notes": "Useful for compact navigation icons."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results"
+          ],
+          "status": "allowed",
+          "notes": "May expose full secondary values but must not hide critical table data."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections",
+            "contextualHelp"
+          ],
+          "status": "prohibited",
+          "notes": "Essential form help must use visible help text or disclosure."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching content.",
+          "Rendering raw server errors."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled-or-uncontrolled",
+        "controlled": true,
+        "uncontrolled": true,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": []
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Position near the trigger while respecting viewport collision.",
+        "compact": "Must not be the only way touch users access important information.",
+        "medium": "Appears near the focused or hovered trigger.",
+        "wide": "Appears near the focused or hovered trigger.",
+        "ultrawide": "Remains constrained.",
+        "overflowPolicy": "Content wraps inside a constrained maximum width.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain readable and viewport constrained at enlarged text sizes."
+      },
+      "accessibility": {
+        "semanticElement": "tooltip semantics provided by Radix",
+        "accessibleName": "Tooltip content supplements the trigger's accessible description.",
+        "keyboard": [
+          "Display on keyboard focus.",
+          "Dismiss with Escape according to foundation behavior."
+        ],
+        "focus": [
+          "Tooltip content does not receive focus.",
+          "Trigger retains focus."
+        ],
+        "announcements": [
+          "Content is exposed as a description where appropriate."
+        ],
+        "aria": [
+          "Use foundation-provided tooltip relationships."
+        ],
+        "colorIndependence": "Meaning remains understandable through text.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One concise supplementary phrase.",
+        "typical": "A short label or one-sentence clarification.",
+        "maximum": "Two short sentences; longer content requires another pattern.",
+        "wrapping": "Wrap inside a constrained width.",
+        "truncation": "Do not truncate tooltip content.",
+        "localization": "Support localized expansion while preserving concise content.",
+        "emptyBehavior": "Do not render an empty tooltip.",
+        "technicalContent": "Technical definitions are permitted only when they are appropriate to the target user."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/tooltip.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "IconButton",
+          "LongContent",
+          "ViewportCollision",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/tooltip.test.tsx",
+        "requiredTests": [
+          "Display on focus",
+          "Accessible description",
+          "Dismissal",
+          "Trigger focus retention"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Keyboard focus",
+          "Compact viewport",
+          "Viewport edge"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "IconButton composition",
+          "NavigationRail",
+          "DataTable"
+        ]
+      },
+      "notes": []
+    },
+    "Badge": {
+      "id": "badge",
+      "name": "Badge",
+      "level": "primitive",
+      "category": "feedback",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical compact non-interactive label for status, category, scope, or small metadata.",
+      "capabilities": [
+        "Present a concise status or category label.",
+        "Communicate semantic tone through token-backed variants.",
+        "Support icons and short text without behaving as an action."
+      ],
+      "keywords": [
+        "badge",
+        "status",
+        "label",
+        "tag",
+        "pill"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/badge.tsx",
+      "publicImport": "@/components/ui/badge",
+      "contract": "docs/frontend/design-system/components/badge.md",
+      "foundation": {
+        "type": "shadcn",
+        "source": "shadcn/ui Badge",
+        "components": [],
+        "reason": "Provides a concise primitive that can be constrained to semantic non-interactive status variants."
+      },
+      "tokens": [
+        "semantic.status.info.background",
+        "semantic.status.info.foreground",
+        "semantic.status.success.background",
+        "semantic.status.success.foreground",
+        "semantic.status.warning.background",
+        "semantic.status.warning.foreground",
+        "semantic.status.danger.background",
+        "semantic.status.danger.foreground"
+      ],
+      "variants": {
+        "neutral": {
+          "intent": "Communicate neutral category or metadata.",
+          "default": true,
+          "allowedUse": [
+            "Category.",
+            "Scope.",
+            "Neutral metadata."
+          ],
+          "prohibitedUse": [
+            "Critical warning.",
+            "Primary action."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "info": {
+          "intent": "Communicate informational state.",
+          "allowedUse": [
+            "Informational status."
+          ],
+          "prohibitedUse": [
+            "Success or warning state."
+          ],
+          "tokens": [
+            "semantic.status.info.background",
+            "semantic.status.info.foreground"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "success": {
+          "intent": "Communicate completed, healthy, or successful state.",
+          "allowedUse": [
+            "Completed.",
+            "Active.",
+            "Healthy."
+          ],
+          "prohibitedUse": [
+            "Machine recommendation awaiting review.",
+            "Unverified outcome."
+          ],
+          "tokens": [
+            "semantic.status.success.background",
+            "semantic.status.success.foreground"
+          ],
+          "states": [
+            "success"
+          ]
+        },
+        "warning": {
+          "intent": "Communicate attention or caution without immediate destructive severity.",
+          "allowedUse": [
+            "Near deadline.",
+            "Incomplete configuration.",
+            "Review required."
+          ],
+          "prohibitedUse": [
+            "Neutral information."
+          ],
+          "tokens": [
+            "semantic.status.warning.background",
+            "semantic.status.warning.foreground"
+          ],
+          "states": [
+            "warning"
+          ]
+        },
+        "danger": {
+          "intent": "Communicate failed, blocked, expired, or materially risky state.",
+          "allowedUse": [
+            "Failed.",
+            "Blocked.",
+            "Expired.",
+            "Critical."
+          ],
+          "prohibitedUse": [
+            "Decorative emphasis."
+          ],
+          "tokens": [
+            "semantic.status.danger.background",
+            "semantic.status.danger.foreground"
+          ],
+          "states": [
+            "error"
+          ]
+        }
+      },
+      "sizes": {
+        "sm": {
+          "intent": "Compact metadata and dense table state.",
+          "default": true,
+          "allowedUse": [
+            "Tables.",
+            "Metadata.",
+            "Compact headers."
+          ],
+          "tokens": [
+            "reference.font.size.xs"
+          ]
+        },
+        "md": {
+          "intent": "Default prominent status label.",
+          "allowedUse": [
+            "Entity header.",
+            "Review state.",
+            "Critical summary."
+          ],
+          "tokens": [
+            "reference.font.size.sm"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "success",
+        "warning",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "icon",
+          "description": "Optional semantic icon.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "Icon meaning must match the semantic variant."
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Visible concise status or category label.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use user-facing terminology."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "neutral | info | success | warning | danger",
+          "required": false,
+          "default": "neutral",
+          "description": "Semantic tone of the label.",
+          "semantic": true,
+          "restrictions": [
+            "Do not select based only on preferred color."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "EntityHeader",
+          "DataTable",
+          "DefinitionList",
+          "PageHeader",
+          "Feature component"
+        ],
+        "allowedChildren": [
+          "Text",
+          "Approved icon"
+        ],
+        "prohibitedParents": [
+          "Button when the badge is only decorative"
+        ],
+        "prohibitedChildren": [
+          "Interactive controls"
+        ],
+        "spacingOwnership": [
+          "Badge owns spacing between optional icon and label."
+        ],
+        "surfaceOwnership": "Badge owns its compact semantic surface.",
+        "rules": [
+          "Badge is non-interactive by default.",
+          "Use StatusBadge when domain mapping and accessibility labels are required.",
+          "Do not display long sentences inside badges."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [
+          "class-variance-authority"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "criticalAttention",
+            "actionQueue"
+          ],
+          "status": "allowed",
+          "notes": "Use for concise status, not complete alert content."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results"
+          ],
+          "status": "recommended",
+          "notes": "Domain statuses should normally use StatusBadge."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader",
+            "contextualAside"
+          ],
+          "status": "allowed",
+          "notes": "Use concise labels."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Mapping raw backend enums.",
+          "Direct permission evaluation."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": []
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Remain compact while allowing concise text wrapping where unavoidable.",
+        "compact": "May wrap to a second line when a localized label requires it.",
+        "medium": "Uses content width.",
+        "wide": "Uses content width.",
+        "ultrawide": "Does not scale with viewport.",
+        "overflowPolicy": "Do not create page overflow; long labels require a different presentation.",
+        "containerQueries": false,
+        "zoomExpectation": "Must remain legible at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "span or appropriate non-interactive text element",
+        "accessibleName": "Visible label, optionally supplemented by hidden context.",
+        "keyboard": [
+          "Non-interactive badges are not focusable."
+        ],
+        "focus": [
+          "No focus behavior unless the owning composite is interactive."
+        ],
+        "announcements": [
+          "Dynamic critical changes require announcement through the owning status component."
+        ],
+        "aria": [
+          "Avoid unnecessary roles on static badges."
+        ],
+        "colorIndependence": "Semantic state is expressed through text and optionally icon in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One concise label.",
+        "typical": "One to three words describing a status or category.",
+        "maximum": "A short localized phrase; sentences require another component.",
+        "wrapping": "Prefer one line; allow controlled wrapping.",
+        "truncation": "Do not truncate when the remaining label becomes ambiguous.",
+        "localization": "Support text expansion without fixed pill width.",
+        "emptyBehavior": "Do not render an empty badge.",
+        "technicalContent": "Raw enum keys and identifiers are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/badge.stories.tsx",
+        "requiredStories": [
+          "Variants",
+          "Sizes",
+          "WithIcon",
+          "LongLabel",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/badge.test.tsx",
+        "requiredTests": [
+          "Variant contract",
+          "Visible label",
+          "Non-interactive semantics"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Table status",
+          "Entity header",
+          "Long localized label"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "StatusBadge",
+          "EntityHeader",
+          "DataTable"
+        ]
+      },
+      "notes": []
+    },
+    "Skeleton": {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "level": "primitive",
+      "category": "feedback",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical non-interactive placeholder used to preserve expected layout geometry during initial loading.",
+      "capabilities": [
+        "Represent pending visual structure.",
+        "Reduce layout shift during initial loading.",
+        "Compose route-, region-, and component-shaped loading states."
+      ],
+      "keywords": [
+        "skeleton",
+        "loading",
+        "placeholder",
+        "pending"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/ui"
+      },
+      "implementation": "src/components/ui/skeleton.tsx",
+      "publicImport": "@/components/ui/skeleton",
+      "contract": "docs/frontend/design-system/components/skeleton.md",
+      "foundation": {
+        "type": "shadcn",
+        "source": "shadcn/ui Skeleton",
+        "components": [],
+        "reason": "Provides a minimal token-backed primitive for composing realistic loading structures."
+      },
+      "tokens": [
+        "semantic.background.surfaceSubtle",
+        "reference.duration.normal"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Represent one pending content shape.",
+          "default": true,
+          "allowedUse": [
+            "Initial route loading.",
+            "Region loading.",
+            "Component-shaped placeholders."
+          ],
+          "prohibitedUse": [
+            "Background refresh replacing existing data.",
+            "Indeterminate long-running process without status text.",
+            "Decorative shimmer."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle"
+          ],
+          "states": [
+            "loading"
+          ]
+        }
+      },
+      "sizes": {},
+      "states": [
+        "loading"
+      ],
+      "slots": [],
+      "props": [],
+      "composition": {
+        "allowedParents": [
+          "LoadingState",
+          "Route skeleton",
+          "Region skeleton",
+          "Component story"
+        ],
+        "allowedChildren": [],
+        "prohibitedParents": [
+          "Button",
+          "Interactive element"
+        ],
+        "prohibitedChildren": [],
+        "spacingOwnership": [
+          "The owning loading composition controls spacing between skeleton shapes."
+        ],
+        "surfaceOwnership": "Skeleton owns only its placeholder shape.",
+        "rules": [
+          "Skeleton dimensions approximate eventual content.",
+          "Different regions use different realistic skeleton structures.",
+          "Background refresh preserves populated content instead of replacing it with skeletons."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "pageHeader",
+            "primaryMetrics",
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "recommended",
+          "notes": "Use region-specific shapes."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results"
+          ],
+          "status": "recommended",
+          "notes": "Use row- and column-shaped table skeletons."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections"
+          ],
+          "status": "allowed",
+          "notes": "Use before authoritative edit values are available."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct loading-state detection.",
+          "API access."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning query or screen determines when the skeleton renders."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Mirror the responsive geometry of the eventual component.",
+        "compact": "Uses compact target geometry.",
+        "medium": "Uses medium layout geometry.",
+        "wide": "Uses wide layout geometry.",
+        "ultrawide": "Does not create additional placeholder regions absent from final content.",
+        "overflowPolicy": "Must not create overflow beyond the eventual component contract.",
+        "containerQueries": false,
+        "zoomExpectation": "Must not hide progress meaning from assistive technology."
+      },
+      "accessibility": {
+        "semanticElement": "decorative element hidden from assistive technology unless wrapped by a labeled loading region",
+        "accessibleName": "Provided by the owning LoadingState rather than individual skeleton shapes.",
+        "keyboard": [
+          "Skeleton is not interactive."
+        ],
+        "focus": [
+          "Skeleton is not focusable."
+        ],
+        "announcements": [
+          "The owning loading region communicates pending state when required."
+        ],
+        "aria": [
+          "Hide individual decorative skeleton shapes from assistive technology."
+        ],
+        "colorIndependence": "Loading meaning is communicated by the owning status text or busy state, not only animation.",
+        "contrastTarget": "Non-text contrast appropriate to the approved loading treatment."
+      },
+      "content": {
+        "minimum": "One placeholder shape inside a labeled loading composition.",
+        "typical": "Several shapes approximating eventual content.",
+        "maximum": "Only enough placeholders to communicate the expected structure.",
+        "wrapping": "Not applicable.",
+        "truncation": "Not applicable.",
+        "localization": "Skeleton geometry must tolerate eventual localized expansion.",
+        "emptyBehavior": "Do not render a zero-size skeleton.",
+        "technicalContent": "Not applicable."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/ui/skeleton.stories.tsx",
+        "requiredStories": [
+          "Text",
+          "Card",
+          "TableRows",
+          "DarkTheme",
+          "ReducedMotion"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/ui/skeleton.test.tsx",
+        "requiredTests": [
+          "Non-interactive semantics",
+          "Assistive-technology hiding"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Dashboard loading",
+          "Table loading",
+          "Reduced motion"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "LoadingState",
+          "DataTableSkeleton",
+          "MetricSkeleton"
+        ]
+      },
+      "notes": []
+    }
+  },
+  "validation": {
+    "schema": "~/.agents/skills/frontend-product-builder/assets/schemas/component-catalog.schema.json",
+    "checks": [
+      {
+        "id": "FOUND-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The foundational component catalog must validate against the component catalog schema.",
+        "command": "node scripts/validate-component-catalog.mjs ~/.agents/skills/frontend-product-builder/assets/catalog/foundational-components.json",
+        "remediation": "Correct invalid or missing component catalog fields."
+      },
+      {
+        "id": "FOUND-002",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Foundational component IDs, names, implementations, and public imports must be unique.",
+        "command": "node scripts/audit-component-catalog-collisions.mjs",
+        "remediation": "Resolve duplicate primitive ownership."
+      },
+      {
+        "id": "FOUND-003",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Primitive components must not import feature, entity, route, query, permission, or transport modules.",
+        "command": "node scripts/audit-component-dependencies.mjs",
+        "remediation": "Move domain and data behavior to the appropriate composite or feature owner."
+      },
+      {
+        "id": "FOUND-004",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Stable interactive primitives must have keyboard, focus, accessible-name, disabled, and pending-state coverage where applicable.",
+        "command": "npm run test:components",
+        "remediation": "Create or correct the required component tests."
+      },
+      {
+        "id": "FOUND-005",
+        "severity": "warning",
+        "method": "script",
+        "blocking": false,
+        "description": "Potential primitive duplicates and suspicious names require review.",
+        "command": "node scripts/audit-component-duplicates.mjs",
+        "remediation": "Reuse, merge, remove, or document the semantic difference."
+      }
+    ]
+  },
+  "deprecations": []
+}

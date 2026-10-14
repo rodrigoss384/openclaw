@@ -1,0 +1,29 @@
+{
+  "$schema": "frontend-family-consistency-policy.schema.json",
+  "schemaVersion": "1.0.0",
+  "individualEvidence": {
+    "phase5AuditRequired": true
+  },
+  "themeCoverage": {
+    "mode": "all-design-system-supported"
+  },
+  "crossTheme": {
+    "requireStableSemanticStructure": true,
+    "requireStableReadingOrder": true,
+    "requireStableTypography": true,
+    "maxGeometryDeltaPx": 8,
+    "maxContentOccupancyDelta": 0.06
+  },
+  "crossScreen": {
+    "strictSemanticRolePresentationFamily": true,
+    "stableDensityModeWithinVisualFamily": true,
+    "stableMaxNestingDepthWithinVisualFamily": true,
+    "stableTypographyFamilyRoleContract": true,
+    "stableObservedTypographyByTheme": true
+  },
+  "routing": {
+    "implementationReturnStage": "PATCH",
+    "contractReturnStage": "DESIGN_READINESS",
+    "evidenceGapTransition": "CAPTURE_EVIDENCE"
+  }
+}

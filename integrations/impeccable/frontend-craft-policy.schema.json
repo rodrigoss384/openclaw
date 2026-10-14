@@ -1,0 +1,844 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/frontend-craft-policy.schema.json",
+  "title": "Frontend Craft Provider Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "provider",
+    "authority",
+    "contextBridge",
+    "craftContract",
+    "detector",
+    "visualDirection",
+    "readiness",
+    "findingRouter",
+    "repairLoop",
+    "representativeReview",
+    "finalAudit",
+    "polish",
+    "commands",
+    "visitorModes",
+    "guardrails",
+    "rollout"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "../../integrations/impeccable/frontend-craft-policy.schema.json"
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "package",
+        "version",
+        "authority",
+        "canonicalContext",
+        "contextMode"
+      ],
+      "properties": {
+        "id": {
+          "const": "impeccable"
+        },
+        "package": {
+          "const": "impeccable"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "authority": {
+          "const": "bounded-advisory"
+        },
+        "canonicalContext": {
+          "const": "spec-driven"
+        },
+        "contextMode": {
+          "const": "derived-projection"
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "productBehavior",
+        "frontendArchitecture",
+        "visualCraft",
+        "browserEvidence",
+        "behavioralInfluence",
+        "implementationIdioms",
+        "rule",
+        "precedence"
+      ],
+      "properties": {
+        "productBehavior": {
+          "const": "spec-driven-engineering"
+        },
+        "frontendArchitecture": {
+          "const": "frontend-product-builder"
+        },
+        "visualCraft": {
+          "const": "impeccable"
+        },
+        "browserEvidence": {
+          "const": "playwright-skill"
+        },
+        "behavioralInfluence": {
+          "const": "behavioral-ux-contract"
+        },
+        "implementationIdioms": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "rule": {
+          "const": "one-concern-one-authority-other-skills-may-advise-never-compete"
+        },
+        "precedence": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "contextBridge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direction",
+        "environmentVariable",
+        "baseDirectory",
+        "productProjection",
+        "designProjection",
+        "provenanceArtifact",
+        "includeSourceSha256",
+        "providerArtifactsAreCanonical"
+      ],
+      "properties": {
+        "direction": {
+          "const": "canonical-to-provider-only"
+        },
+        "environmentVariable": {
+          "const": "IMPECCABLE_CONTEXT_DIR"
+        },
+        "baseDirectory": {
+          "type": "string",
+          "minLength": 1
+        },
+        "productProjection": {
+          "const": "PRODUCT.md"
+        },
+        "designProjection": {
+          "const": "DESIGN.md"
+        },
+        "provenanceArtifact": {
+          "const": "frontend-craft-provenance.json"
+        },
+        "includeSourceSha256": {
+          "const": true
+        },
+        "providerArtifactsAreCanonical": {
+          "const": false
+        }
+      }
+    },
+    "craftContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "schema",
+        "artifact",
+        "canonical",
+        "persistence",
+        "visualFamilyDerivation",
+        "unresolvedPolicy",
+        "contractSetIdentity",
+        "componentCatalogDependencyMode",
+        "perceptualPolicyPointer"
+      ],
+      "properties": {
+        "mode": {
+          "const": "derived"
+        },
+        "schema": {
+          "const": "integrations/impeccable/craft-contract.schema.json"
+        },
+        "artifact": {
+          "const": "craft-contract.json"
+        },
+        "canonical": {
+          "const": false
+        },
+        "persistence": {
+          "const": "temporary-until-evidence"
+        },
+        "visualFamilyDerivation": {
+          "const": "visitor-mode-plus-recipe"
+        },
+        "unresolvedPolicy": {
+          "const": "explicit-never-infer-from-prompt"
+        },
+        "contractSetIdentity": {
+          "const": "sha256-of-ordered-source-identities"
+        },
+        "componentCatalogDependencyMode": {
+          "const": "screen-component-map"
+        },
+        "perceptualPolicyPointer": {
+          "const": "design-system.json#visualGrammar.perceptualPolicy"
+        }
+      }
+    },
+    "detector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "hook",
+        "fallback",
+        "hookAbsenceBlocks"
+      ],
+      "properties": {
+        "required": {
+          "const": true
+        },
+        "hook": {
+          "const": "preferred-when-supported"
+        },
+        "fallback": {
+          "const": "manual-detector"
+        },
+        "hookAbsenceBlocks": {
+          "const": false
+        }
+      }
+    },
+    "visualDirection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "command",
+        "mode",
+        "requiredWhen",
+        "writesProductionCode",
+        "selectedOutputRole"
+      ],
+      "properties": {
+        "command": {
+          "const": "shape"
+        },
+        "mode": {
+          "enum": [
+            "shadow",
+            "primary"
+          ]
+        },
+        "requiredWhen": {
+          "const": "readiness-controller-provider-open"
+        },
+        "writesProductionCode": {
+          "const": false
+        },
+        "selectedOutputRole": {
+          "const": "approved-visual-reference-not-implementation-contract"
+        }
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "controller",
+        "reportSchema",
+        "relationshipMode",
+        "shapeInvocation",
+        "canonicalAdoptionRequired",
+        "rederiveAfterAdoption",
+        "unchangedAfterAdoption",
+        "dimensionRoutes"
+      ],
+      "properties": {
+        "controller": {
+          "const": "integrations/impeccable/frontend-control.mjs"
+        },
+        "reportSchema": {
+          "const": "integrations/impeccable/frontend-readiness.schema.json"
+        },
+        "relationshipMode": {
+          "const": "resolved-unresolved-blocked"
+        },
+        "shapeInvocation": {
+          "const": "unresolved-provider-eligible-only"
+        },
+        "canonicalAdoptionRequired": {
+          "const": true
+        },
+        "rederiveAfterAdoption": {
+          "const": true
+        },
+        "unchangedAfterAdoption": {
+          "const": "block-contract-model-do-not-repeat-shape"
+        },
+        "dimensionRoutes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "spatialComposition",
+            "perceptualHierarchy",
+            "semanticPresentation",
+            "interactionClarity",
+            "decisionSupport",
+            "typographyCoherence"
+          ],
+          "properties": {
+            "spatialComposition": {
+              "$ref": "#/$defs/dimensionRoute"
+            },
+            "perceptualHierarchy": {
+              "$ref": "#/$defs/dimensionRoute"
+            },
+            "semanticPresentation": {
+              "$ref": "#/$defs/dimensionRoute"
+            },
+            "interactionClarity": {
+              "$ref": "#/$defs/dimensionRoute"
+            },
+            "decisionSupport": {
+              "$ref": "#/$defs/dimensionRoute"
+            },
+            "typographyCoherence": {
+              "$ref": "#/$defs/dimensionRoute"
+            }
+          }
+        }
+      }
+    },
+    "findingRouter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "classification",
+        "returnStageByDefectKind",
+        "repairStrategyByDefectKind",
+        "classes"
+      ],
+      "properties": {
+        "schema": {
+          "const": "integrations/impeccable/finding-route.schema.json"
+        },
+        "classification": {
+          "const": "explicit-taxonomy-no-free-text-inference"
+        },
+        "returnStageByDefectKind": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "implementation",
+            "contract"
+          ],
+          "properties": {
+            "implementation": {
+              "const": "PATCH"
+            },
+            "contract": {
+              "const": "DESIGN_READINESS"
+            }
+          }
+        },
+        "repairStrategyByDefectKind": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "implementation",
+            "contract"
+          ],
+          "properties": {
+            "implementation": {
+              "const": "targeted-implementation-repair"
+            },
+            "contract": {
+              "const": "canonical-contract-repair"
+            }
+          }
+        },
+        "classes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "spatial-density",
+            "surface-layering",
+            "surface-economy",
+            "accent-overuse",
+            "semantic-color",
+            "semantic-presentation",
+            "text-hierarchy",
+            "interaction-affordance",
+            "system-status-visibility",
+            "control-presence",
+            "empty-recovery",
+            "wayfinding",
+            "information-scent",
+            "reference-utility",
+            "responsive-composition",
+            "content-clarity"
+          ],
+          "properties": {
+            "spatial-density": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "surface-layering": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "surface-economy": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "accent-overuse": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "semantic-color": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "semantic-presentation": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "text-hierarchy": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "interaction-affordance": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "system-status-visibility": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "control-presence": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "empty-recovery": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "wayfinding": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "information-scent": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "reference-utility": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "responsive-composition": {
+              "$ref": "#/$defs/findingClassRoute"
+            },
+            "content-clarity": {
+              "$ref": "#/$defs/findingClassRoute"
+            }
+          }
+        }
+      }
+    },
+    "representativeReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "command",
+        "mode",
+        "requiredFor",
+        "requiresBrowserEvidence",
+        "requiresCompositionEvidence",
+        "mayApproveGate"
+      ],
+      "properties": {
+        "command": {
+          "const": "critique"
+        },
+        "mode": {
+          "enum": [
+            "shadow",
+            "primary"
+          ]
+        },
+        "requiredFor": {
+          "const": "substantial-frontend"
+        },
+        "requiresBrowserEvidence": {
+          "const": true
+        },
+        "requiresCompositionEvidence": {
+          "const": true
+        },
+        "mayApproveGate": {
+          "const": false
+        }
+      }
+    },
+    "finalAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "command",
+        "requiredFor",
+        "optionalFor",
+        "mayReplaceExistingObjectiveValidators"
+      ],
+      "properties": {
+        "command": {
+          "const": "audit"
+        },
+        "requiredFor": {
+          "const": "critical-ui"
+        },
+        "optionalFor": {
+          "const": "standard-substantial-ui"
+        },
+        "mayReplaceExistingObjectiveValidators": {
+          "const": false
+        }
+      }
+    },
+    "polish": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maxVisualInspectionRounds",
+        "maxPolishRounds"
+      ],
+      "properties": {
+        "maxVisualInspectionRounds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "maxPolishRounds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "commands": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "managed",
+        "findingDriven",
+        "explicitApproval",
+        "strongExplicitApproval",
+        "notCanonicalInManagedWorkflow",
+        "designSystemMaintenanceOnly"
+      ],
+      "properties": {
+        "managed": {
+          "$ref": "#/$defs/commandList"
+        },
+        "findingDriven": {
+          "$ref": "#/$defs/commandList"
+        },
+        "explicitApproval": {
+          "$ref": "#/$defs/commandList"
+        },
+        "strongExplicitApproval": {
+          "$ref": "#/$defs/commandList"
+        },
+        "notCanonicalInManagedWorkflow": {
+          "$ref": "#/$defs/commandList"
+        },
+        "designSystemMaintenanceOnly": {
+          "$ref": "#/$defs/commandList"
+        }
+      }
+    },
+    "visitorModes": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "operate",
+          "persuade",
+          "read",
+          "experience"
+        ]
+      }
+    },
+    "guardrails": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "impeccableMay",
+        "impeccableMayNotSilentlyRedefine",
+        "behavioralUxPrecedes",
+        "hardenIsAdvisoryTo",
+        "projectWideDetectorIgnoreRequiresHumanApproval",
+        "narrowIgnoreRequiresDecisionOrDesignSystemRuleId"
+      ],
+      "properties": {
+        "impeccableMay": {
+          "$ref": "#/$defs/stringList"
+        },
+        "impeccableMayNotSilentlyRedefine": {
+          "$ref": "#/$defs/stringList"
+        },
+        "behavioralUxPrecedes": {
+          "$ref": "#/$defs/stringList"
+        },
+        "hardenIsAdvisoryTo": {
+          "$ref": "#/$defs/stringList"
+        },
+        "projectWideDetectorIgnoreRequiresHumanApproval": {
+          "const": true
+        },
+        "narrowIgnoreRequiresDecisionOrDesignSystemRuleId": {
+          "const": true
+        }
+      }
+    },
+    "rollout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "phase",
+        "frontendDesign",
+        "impeccable",
+        "cutoverRequires"
+      ],
+      "properties": {
+        "phase": {
+          "enum": [
+            "passive",
+            "shadow",
+            "primary",
+            "legacy-cleanup"
+          ]
+        },
+        "frontendDesign": {
+          "type": "string",
+          "minLength": 1
+        },
+        "impeccable": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cutoverRequires": {
+          "$ref": "#/$defs/stringList"
+        }
+      }
+    },
+    "repairLoop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "controller",
+        "reportSchema",
+        "normalizedFindingBatchSchema",
+        "classification",
+        "sequence",
+        "maxCraftRounds",
+        "maxPolishRounds",
+        "noMaterialFindingTransition",
+        "contractFindingTransition",
+        "implementationFindingTransition",
+        "rerenderAfterRepair",
+        "reauditAfterRepair",
+        "recritiqueAfterRepair",
+        "polishMode"
+      ],
+      "properties": {
+        "controller": {
+          "const": "integrations/impeccable/frontend-control.mjs"
+        },
+        "reportSchema": {
+          "const": "integrations/impeccable/frontend-representative-loop.schema.json"
+        },
+        "normalizedFindingBatchSchema": {
+          "const": "integrations/impeccable/normalized-finding-batch.schema.json"
+        },
+        "classification": {
+          "const": "explicit-taxonomy-no-free-text-inference"
+        },
+        "sequence": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "evidence",
+              "objective-audit",
+              "critique",
+              "normalize",
+              "route",
+              "repair",
+              "rerender",
+              "reaudit",
+              "recritique"
+            ]
+          }
+        },
+        "maxCraftRounds": {
+          "const": 2
+        },
+        "maxPolishRounds": {
+          "const": 1
+        },
+        "noMaterialFindingTransition": {
+          "const": "human-gate"
+        },
+        "contractFindingTransition": {
+          "const": "design-readiness"
+        },
+        "implementationFindingTransition": {
+          "const": "patch"
+        },
+        "rerenderAfterRepair": {
+          "const": true
+        },
+        "reauditAfterRepair": {
+          "const": true
+        },
+        "recritiqueAfterRepair": {
+          "const": true
+        },
+        "polishMode": {
+          "const": "explicit-request-only"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "findingClassRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "implementationOwner",
+        "contractOwner",
+        "affectedContracts",
+        "providerCommand",
+        "revalidationSet"
+      ],
+      "properties": {
+        "implementationOwner": {
+          "enum": [
+            "frontend-product-builder",
+            "spec-driven-engineering"
+          ]
+        },
+        "contractOwner": {
+          "enum": [
+            "frontend-product-builder",
+            "spec-driven-engineering"
+          ]
+        },
+        "affectedContracts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "product-context",
+              "design-direction",
+              "design-system",
+              "recipe",
+              "screen-specification",
+              "component-catalog",
+              "composition-proof",
+              "styling-authority"
+            ]
+          }
+        },
+        "providerCommand": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "revalidationSet": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "craft-contract",
+              "frontend-readiness",
+              "screen-specification",
+              "component-catalog",
+              "design-system",
+              "composition-proof",
+              "browser-evidence",
+              "impeccable-detector",
+              "impeccable-critique",
+              "behavioral-ux-contract"
+            ]
+          }
+        }
+      }
+    },
+    "dimensionRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner",
+        "providerEligible",
+        "canonicalTargets",
+        "requiredSourceRoles"
+      ],
+      "properties": {
+        "owner": {
+          "enum": [
+            "frontend-product-builder",
+            "impeccable",
+            "spec-driven-engineering"
+          ]
+        },
+        "providerEligible": {
+          "type": "boolean"
+        },
+        "canonicalTargets": {
+          "$ref": "#/$defs/stringList"
+        },
+        "requiredSourceRoles": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "screen-spec",
+              "recipe",
+              "visual-direction",
+              "design-system",
+              "styling-authority",
+              "craft-policy",
+              "component-catalog",
+              "composition-proof"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "commandList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$"
+      },
+      "uniqueItems": true
+    },
+    "stringList": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

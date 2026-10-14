@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/frontend-product-builder/entity-projections.schema.json",
+  "title": "Frontend Entity Projection Registry",
+  "description": "Cross-screen registry of derived values (status, severity, count, eligibility) that are rendered for the same domain entity on more than one screen, naming the single canonical selector each one must come from. Required before ready-for-small-slice when an entity appears on 2+ validated screen-specs and exposes a shared derived value.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "meta",
+    "projections"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "product",
+        "updatedAt"
+      ],
+      "properties": {
+        "product": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "projections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/projection"
+      }
+    }
+  },
+  "$defs": {
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "entityType",
+        "value",
+        "sharedSelectorId",
+        "screens",
+        "sourceOfTruth"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "entityType": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The domain entity this derived value belongs to (e.g. 'case', 'process', 'task')."
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The semantic value name (e.g. 'severity', 'status', 'openTaskCount', 'eligibility')."
+        },
+        "sharedSelectorId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The one canonical, exported selector/computation name every listed screen must reference (screen-specification.schema.json dataDependency.sharedSelectorId / componentUsage.sharedSelectorId)."
+        },
+        "screens": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Screen ids (matching docs/frontend/screens/<screen-id>) that render this value for the same entity type."
+        },
+        "sourceOfTruth": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Where sharedSelectorId's implementation actually lives (file path or module reference)."
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

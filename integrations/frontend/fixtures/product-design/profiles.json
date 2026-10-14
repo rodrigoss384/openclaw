@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactKind": "product-design-profile-fixtures",
+  "profiles": [
+    {
+      "id": "operate-targeted",
+      "feature": "operate-review",
+      "product": { "name": "Evidence Control", "maturity": "greenfield" },
+      "changeMode": "new-direction",
+      "context": { "visitorMode": "Operate", "emotional": "confiança operacional" },
+      "localSources": [],
+      "openCapabilities": ["open-web", "openverse"],
+      "expectedIntensity": "targeted-research"
+    },
+    {
+      "id": "persuade-expanded",
+      "feature": "persuade-onboarding",
+      "product": { "name": "Trust Onboarding", "maturity": "greenfield" },
+      "changeMode": "new-direction",
+      "context": { "visitorMode": "Persuade", "emotional": "segurança sem pressão" },
+      "localSources": [],
+      "openCapabilities": ["open-web", "openverse"],
+      "expectedIntensity": "expanded-research"
+    },
+    {
+      "id": "established-extension",
+      "feature": "existing-filter",
+      "product": { "name": "Operations Console", "maturity": "established" },
+      "changeMode": "strict-extension",
+      "context": { "visitorMode": "Operate", "emotional": "continuidade" },
+      "localSources": [
+        { "kind": "design-direction", "status": "sufficient", "ref": "docs/frontend/design-direction.md" },
+        { "kind": "design-system", "status": "sufficient", "ref": "docs/frontend/design-system/design-system.json" }
+      ],
+      "openCapabilities": ["open-web", "openverse"],
+      "expectedIntensity": "research-not-required"
+    },
+    {
+      "id": "human-asset",
+      "feature": "asset-dependent-entry",
+      "product": { "name": "Document Assurance", "maturity": "greenfield" },
+      "changeMode": "new-direction",
+      "context": { "visitorMode": "Experience", "emotional": "clareza editorial" },
+      "localSources": [],
+      "openCapabilities": ["open-web", "openverse"],
+      "expectedIntensity": "expanded-research"
+    }
+  ]
+}

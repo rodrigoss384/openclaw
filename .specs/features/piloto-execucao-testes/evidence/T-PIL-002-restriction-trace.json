@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactKind": "task-restriction-trace",
+  "taskId": "T-PIL-002",
+  "sources": [
+    ".specs/features/piloto-execucao-testes/01-spec.md",
+    ".specs/features/piloto-execucao-testes/02-assumptions.md",
+    ".specs/features/piloto-execucao-testes/07-design.md",
+    ".specs/features/piloto-execucao-testes/08-test-plan.md",
+    ".specs/features/piloto-execucao-testes/09-tasks.md"
+  ],
+  "rows": [
+    {
+      "restriction": "Repo fork registrado e PR draft para main; sem merge/deploy.",
+      "owner": "Supervisor/publisher; T-PIL-004.",
+      "applicableToWorker": false,
+      "observableAction": "Nenhuma chamada GitHub, push, PR, merge ou deploy nesta task."
+    },
+    {
+      "restriction": "Roteamento de executor, quota e fallback conforme contrato.",
+      "owner": "Supervisor/dispatcher.",
+      "applicableToWorker": true,
+      "observableAction": "Executar somente a task grantada; nenhum roteamento manual, chamada de CLI autenticada ou troca por resultado de teste."
+    },
+    {
+      "restriction": "T-PIL-002 inicia em contexto limpo; intervenção humana é somente na task 001.",
+      "owner": "Supervisor inicia sessão; worker mantém escopo.",
+      "applicableToWorker": true,
+      "observableAction": "Esta execução recebeu somente o grant T-PIL-002; não há resposta/intervenção de T-PIL-001 no contexto corrente e nenhuma pergunta humana foi necessária."
+    },
+    {
+      "restriction": "Revisão exclusivamente Antigravity Pro 3.1 High em checkout readonly.",
+      "owner": "T-PIL-003/reviewer.",
+      "applicableToWorker": false,
+      "observableAction": "Nenhuma revisão independente foi iniciada nesta task."
+    },
+    {
+      "restriction": "Publicação em PR draft, issues apenas comprovadas; sem merge.",
+      "owner": "T-PIL-004/publisher.",
+      "applicableToWorker": false,
+      "observableAction": "Nenhuma escrita remota ou issue foi criada."
+    },
+    {
+      "restriction": "Usar apenas quota incluída e respeitar limites de quota.",
+      "owner": "Supervisor/dispatcher.",
+      "applicableToWorker": true,
+      "observableAction": "Nenhum serviço de IA/produto foi chamado pelos testes; nenhum custo externo adicional foi criado pela implementação local."
+    },
+    {
+      "restriction": "Checkout/container descartável, limites e preservação de WIP/credenciais.",
+      "owner": "Supervisor/launcher; worker preserva arquivos não relacionados.",
+      "applicableToWorker": true,
+      "observableAction": "Alterações limitadas a retry.test.ts, Status de T-PIL-002 e evidências T-PIL-002; contraexemplo isolado em /tmp e removido."
+    },
+    {
+      "restriction": "Grant de execução distinto da autorização de preparação.",
+      "owner": "Supervisor fornece grant; worker segue task ID.",
+      "applicableToWorker": true,
+      "observableAction": "Somente T-PIL-002 foi executada conforme a diretiva explícita; nenhum gate, checkpoint ou efeito remoto foi acionado."
+    },
+    {
+      "restriction": "Supervisor v1 sem Hermes.",
+      "owner": "Supervisor architecture/dispatcher.",
+      "applicableToWorker": false,
+      "observableAction": "Nenhum componente do supervisor foi implementado ou alterado."
+    }
+  ],
+  "note": "Status registra a conclusão task-local; não aprova gate de feature nem substitui validação/checkpoint do supervisor."
+}

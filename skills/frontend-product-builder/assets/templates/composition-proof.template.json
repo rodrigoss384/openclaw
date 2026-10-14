@@ -1,0 +1,60 @@
+{
+  "$schema": "../schemas/composition-proof.schema.json",
+  "meta": {
+    "feature": "<feature-name>",
+    "screenId": "<screen-id>",
+    "version": "1.1.0",
+    "status": "draft",
+    "createdAt": "<ISO-8601 timestamp>",
+    "updatedAt": "<ISO-8601 timestamp>"
+  },
+  "applicability": "full",
+  "baseProfile": "productive",
+  "screenSpec": "docs/frontend/screens/<screen-id>/screen-spec.json",
+  "designSystem": "docs/frontend/design-system/design-system.json",
+  "contentSource": "<real-content-source>",
+  "alternatives": [
+    {
+      "id": "alternative-a",
+      "profile": "productive",
+      "rationale": "<Why this composition supports the dominant task>",
+      "dominantTask": "<Dominant task>",
+      "focalPoint": "<Primary focal point>",
+      "readingPath": [
+        "<first element>",
+        "<second element>"
+      ],
+      "grayscale": true
+    },
+    {
+      "id": "alternative-b",
+      "profile": "productive",
+      "rationale": "<Why this competing composition is materially different, not a cosmetic variant>",
+      "dominantTask": "<Dominant task>",
+      "focalPoint": "<Different focal point>",
+      "readingPath": [
+        "<first element>",
+        "<second element>"
+      ],
+      "grayscale": true
+    }
+  ],
+  "viewports": [
+    { "width": 390, "height": 844, "purpose": "Compact mobile proof" },
+    { "width": 1440, "height": 900, "purpose": "Wide desktop proof" }
+  ],
+  "captures": [
+    "docs/frontend/screens/<screen-id>/screenshots/composition-proof-wide.png"
+  ],
+  "contractHashes": {
+    "screenSpecSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "designSystemSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "humanDecision": {
+    "status": "pending",
+    "approvedAlternative": null,
+    "approvedBy": null,
+    "decidedAt": null,
+    "notes": ""
+  }
+}

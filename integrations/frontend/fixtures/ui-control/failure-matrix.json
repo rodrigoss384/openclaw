@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactKind": "ui-failure-matrix-fixture",
+  "cases": [
+    {
+      "id": "UI-01",
+      "invalid": { "expected": { "elements": [{ "id": "root" }], "relations": { "grid": { "id": "metrics", "cardinality": 5, "columns": 4, "lastRowPolicy": null } } }, "rendered": { "elements": [{ "id": "root" }] } },
+      "valid": { "expected": { "elements": [{ "id": "root" }], "relations": { "grid": { "id": "metrics", "cardinality": 5, "columns": 4, "lastRowPolicy": "span-full" } } }, "rendered": { "elements": [{ "id": "root" }] } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }], "relations": { "grid": { "id": "metrics", "cardinality": 9, "columns": 4, "lastRowPolicy": null } } }, "rendered": { "elements": [{ "id": "root" }] } }
+    },
+    {
+      "id": "UI-02",
+      "invalid": { "expected": { "elements": [{ "id": "root" }], "relations": { "proximity": { "id": "row", "expectedGapPx": 8 } } }, "rendered": { "elements": [{ "id": "root" }], "relations": { "proximity": { "id": "row", "actualGapPx": 96 } } } },
+      "valid": { "expected": { "elements": [{ "id": "root" }], "relations": { "proximity": { "id": "row", "expectedGapPx": 8 } } }, "rendered": { "elements": [{ "id": "root" }], "relations": { "proximity": { "id": "row", "actualGapPx": 8 } } } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }], "relations": { "proximity": { "id": "row", "expectedGapPx": 8 } } }, "rendered": { "elements": [{ "id": "root" }], "relations": { "proximity": { "id": "row", "actualGapPx": 144 } } } }
+    },
+    {
+      "id": "UI-03",
+      "invalid": { "expected": { "elements": [{ "id": "root" }], "relations": { "typeRoles": { "label": { "fontSizePx": 12, "fontWeight": 500 }, "metric": { "fontSizePx": 32, "fontWeight": 700 } } } }, "rendered": { "elements": [{ "id": "root" }], "relations": { "typeRoles": { "label": { "fontSizePx": 16, "fontWeight": 400 }, "metric": { "fontSizePx": 18, "fontWeight": 500 } } } } },
+      "valid": { "expected": { "elements": [{ "id": "root" }], "relations": { "typeRoles": { "label": { "fontSizePx": 12, "fontWeight": 500 }, "metric": { "fontSizePx": 32, "fontWeight": 700 } } } }, "rendered": { "elements": [{ "id": "root" }], "relations": { "typeRoles": { "label": { "fontSizePx": 12, "fontWeight": 500 }, "metric": { "fontSizePx": 32, "fontWeight": 700 } } } } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }], "relations": { "typeRoles": { "label": { "fontSizePx": 12, "fontWeight": 500 }, "metric": { "fontSizePx": 32, "fontWeight": 700 } } } }, "rendered": { "elements": [{ "id": "root" }], "relations": { "typeRoles": { "label": { "fontSizePx": 14, "fontWeight": 500 }, "metric": { "fontSizePx": 14, "fontWeight": 500 } } } } }
+    },
+    {
+      "id": "UI-04",
+      "invalid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "statuses": [{ "domainValue": "approved", "semanticRole": "warning", "variant": "amber", "computedColor": "amber" }, { "domainValue": "pending", "semanticRole": "warning", "variant": "amber", "computedColor": "amber" }] } },
+      "valid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "statuses": [{ "domainValue": "approved", "semanticRole": "success", "variant": "success", "computedColor": "green" }, { "domainValue": "pending", "semanticRole": "warning", "variant": "warning", "computedColor": "amber" }] } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "statuses": [{ "domainValue": "failed", "semanticRole": "neutral", "variant": "gray", "computedColor": "gray" }, { "domainValue": "queued", "semanticRole": "neutral", "variant": "gray", "computedColor": "gray" }] } }
+    },
+    {
+      "id": "UI-05",
+      "invalid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "interactions": [{ "id": "row", "actionExpected": true, "tagName": "div", "keyboard": false, "focusVisible": false, "accessibleName": "" }] } },
+      "valid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "interactions": [{ "id": "row", "actionExpected": true, "tagName": "button", "keyboard": true, "focusVisible": true, "accessibleName": "Abrir pendência" }] } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "interactions": [{ "id": "fake-row", "actionExpected": false, "tagName": "div", "hover": true, "keyboard": false, "focusVisible": false, "accessibleName": "" }] } }
+    },
+    {
+      "id": "UI-06",
+      "invalid": { "expected": { "elements": [{ "id": "root" }], "relations": { "surfaces": { "canvas": "rgb(10,10,10)", "raised": "rgb(20,20,20)" } } }, "rendered": { "elements": [{ "id": "root" }], "relations": { "surfaces": { "canvas": "rgb(10,10,10)", "raised": "rgb(10,10,10)" } } } },
+      "valid": { "expected": { "elements": [{ "id": "root" }], "relations": { "surfaces": { "canvas": "rgb(10,10,10)", "raised": "rgb(20,20,20)" } } }, "rendered": { "elements": [{ "id": "root" }], "relations": { "surfaces": { "canvas": "rgb(10,10,10)", "raised": "rgb(20,20,20)" } } } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }], "relations": { "surfaces": { "canvas": "white", "raised": "gray" } } }, "rendered": { "elements": [{ "id": "root" }], "relations": { "surfaces": { "canvas": "white", "raised": "white" } } } }
+    },
+    {
+      "id": "UI-07",
+      "invalid": { "expected": { "elements": [{ "id": "root" }], "relations": { "regions": [{ "id": "financial", "expectedSpan": 3, "minimumUnitSpan": 3, "allowUnit": false }] } }, "rendered": { "elements": [{ "id": "root" }], "regions": [{ "id": "financial", "childCount": 1, "span": 1 }] } },
+      "valid": { "expected": { "elements": [{ "id": "root" }], "relations": { "regions": [{ "id": "financial", "expectedSpan": 3, "minimumUnitSpan": 3, "allowUnit": false }] } }, "rendered": { "elements": [{ "id": "root" }], "regions": [{ "id": "financial", "childCount": 2, "span": 3 }] } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }], "relations": { "regions": [{ "id": "summary", "expectedSpan": 2, "minimumUnitSpan": 2, "allowUnit": false }] } }, "rendered": { "elements": [{ "id": "root" }], "regions": [{ "id": "summary", "childCount": 1, "span": 1 }] } }
+    },
+    {
+      "id": "UI-08",
+      "invalid": { "expected": { "elements": [{ "id": "root" }], "relations": { "headings": [{ "id": "section", "role": "section-title", "textRole": "text-section-title", "fontFamily": "Inter" }] } }, "rendered": { "elements": [{ "id": "root" }], "headings": [{ "id": "section", "role": "section-title", "textRole": "custom", "fontFamily": "Georgia" }] } },
+      "valid": { "expected": { "elements": [{ "id": "root" }], "relations": { "headings": [{ "id": "section", "role": "section-title", "textRole": "text-section-title", "fontFamily": "Inter" }] } }, "rendered": { "elements": [{ "id": "root" }], "headings": [{ "id": "section", "role": "section-title", "textRole": "text-section-title", "fontFamily": "Inter" }] } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }], "relations": { "headings": [{ "id": "section", "role": "section-title", "textRole": "text-section-title", "fontFamily": "Inter" }] } }, "rendered": { "elements": [{ "id": "root" }], "headings": [{ "id": "section", "role": "section-title", "textRole": "text-section-title", "fontFamily": "Times" }] } }
+    },
+    {
+      "id": "UI-09",
+      "invalid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "outline": [{ "id": "title", "role": "page-title", "tagName": "legend" }] } },
+      "valid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "outline": [{ "id": "title", "role": "page-title", "tagName": "h1" }] } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "outline": [{ "id": "title", "role": "page-title", "tagName": "fieldset" }] } }
+    },
+    {
+      "id": "UI-10",
+      "invalid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "contentQuality": [{ "id": "title", "text": "Aprovacoes", "catalogMatch": false }] } },
+      "valid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "contentQuality": [{ "id": "title", "text": "Aprovações", "catalogMatch": true, "localeMatch": true }] } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "contentQuality": [{ "id": "empty", "text": "Nao ha analise", "localeMatch": false }] } }
+    },
+    {
+      "id": "UI-11",
+      "invalid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "relations": { "colorFamily": { "navActiveFamily": "warm-beige", "accentFamily": "cold-blue" } } } },
+      "valid": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "relations": { "colorFamily": { "navActiveFamily": "cold-blue", "accentFamily": "cold-blue" } } } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }] }, "rendered": { "elements": [{ "id": "root" }], "relations": { "colorFamily": { "navActiveFamily": "orange", "accentFamily": "violet", "exceptionApproved": false } } } }
+    },
+    {
+      "id": "UI-12",
+      "invalid": { "expected": { "elements": [{ "id": "root" }], "relations": { "decisionSupport": { "requiredSignals": ["task-context", "actions", "empty-state"] } } }, "rendered": { "elements": [{ "id": "root" }], "decisionSupport": { "signals": ["task-context"] } } },
+      "valid": { "expected": { "elements": [{ "id": "root" }], "relations": { "decisionSupport": { "requiredSignals": ["task-context", "actions", "empty-state"] } } }, "rendered": { "elements": [{ "id": "root" }], "decisionSupport": { "signals": ["task-context", "actions", "empty-state"] } } },
+      "mutation": { "expected": { "elements": [{ "id": "root" }], "relations": { "decisionSupport": { "requiredSignals": ["task-context", "actions", "error-state"] } } }, "rendered": { "elements": [{ "id": "root" }], "decisionSupport": { "signals": ["task-context"] } } }
+    },
+    {
+      "id": "UI-13",
+      "invalid": { "prompt": "Use $frontend-design e $web-design-guidelines como autoridades obrigatórias." },
+      "valid": { "prompt": "$impeccable é primária; $frontend-design é fallback e $web-design-guidelines é opcional." },
+      "mutation": { "prompt": "Além de $impeccable, exija $frontend-design e $web-design-guidelines como críticos obrigatórios." }
+    }
+  ]
+}

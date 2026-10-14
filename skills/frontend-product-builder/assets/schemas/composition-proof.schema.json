@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.frontend-product-builder.local/composition-proof.schema.json",
+  "title": "Frontend Composition Proof",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "meta",
+    "applicability",
+    "baseProfile",
+    "screenSpec",
+    "designSystem",
+    "contentSource",
+    "alternatives",
+    "viewports",
+    "captures",
+    "contractHashes",
+    "humanDecision"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["feature", "screenId", "version", "status"],
+      "properties": {
+        "feature": { "type": "string", "minLength": 1 },
+        "screenId": { "type": "string", "minLength": 1 },
+        "version": { "const": "1.1.0" },
+        "status": { "enum": ["draft", "ready", "approved", "rejected"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      }
+    },
+    "applicability": { "enum": ["full", "visual-impact-unchanged", "not-applicable"] },
+    "baseProfile": { "enum": ["productive", "expressive"] },
+    "screenSpec": { "type": "string", "minLength": 1 },
+    "designSystem": { "type": "string", "minLength": 1 },
+    "contentSource": { "type": "string", "minLength": 1 },
+    "alternatives": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "profile", "rationale", "dominantTask", "focalPoint", "readingPath"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "profile": { "enum": ["productive", "expressive"] },
+          "rationale": { "type": "string", "minLength": 1 },
+          "dominantTask": { "type": "string", "minLength": 1 },
+          "focalPoint": { "type": "string", "minLength": 1 },
+          "readingPath": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "grayscale": { "type": "boolean" }
+        }
+      }
+    },
+    "viewports": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["width", "height", "purpose"],
+        "properties": {
+          "width": { "type": "integer", "minimum": 1 },
+          "height": { "type": "integer", "minimum": 1 },
+          "purpose": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "captures": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "contractHashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["screenSpecSha256", "designSystemSha256"],
+      "properties": {
+        "screenSpecSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "designSystemSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "humanDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "approvedAlternative", "approvedBy", "decidedAt", "notes"],
+      "properties": {
+        "status": { "enum": ["pending", "approved", "approved-with-changes", "rejected"] },
+        "approvedAlternative": { "type": ["string", "null"] },
+        "approvedBy": { "type": ["string", "null"] },
+        "decidedAt": { "type": ["string", "null"] },
+        "notes": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "enum": ["approved", "approved-with-changes"] } },
+            "required": ["status"]
+          },
+          "then": {
+            "properties": {
+              "approvedBy": { "type": "string", "minLength": 1 },
+              "decidedAt": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

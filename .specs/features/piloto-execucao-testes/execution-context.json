@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "feature": "piloto-execucao-testes",
+  "baseCommit": "25b38b845de35a3aecfd8ef48600cc594adea33c",
+  "frontendPaths": [],
+  "backendPaths": [],
+  "testPaths": [
+    "src/infra/retry.test.ts"
+  ],
+  "applicabilitySha256": "e9607fe6c4b08cce970ab419a6c0a02a0f4cadb24230d9ec801db67029030e5a"
+}

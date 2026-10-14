@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/finding-route.schema.json",
+  "title": "Frontend Finding Route",
+  "description": "Temporary, non-canonical routing decision for one normalized frontend craft finding. The route maps an explicit finding class and defect kind to the canonical owner, affected contracts, repair strategy, optional governed provider command, return stage, and revalidation set.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "generated",
+    "generatedAt",
+    "finding",
+    "route"
+  ],
+  "properties": {
+    "$schema": { "const": "finding-route.schema.json" },
+    "schemaVersion": { "const": "1.0.0" },
+    "generated": { "const": true },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "finding": { "$ref": "#/$defs/finding" },
+    "route": { "$ref": "#/$defs/route" }
+  },
+  "$defs": {
+    "kebabId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "findingClass": {
+      "enum": [
+        "spatial-density",
+        "surface-layering",
+        "surface-economy",
+        "accent-overuse",
+        "semantic-color",
+        "semantic-presentation",
+        "text-hierarchy",
+        "interaction-affordance",
+        "system-status-visibility",
+        "control-presence",
+        "empty-recovery",
+        "wayfinding",
+        "information-scent",
+        "reference-utility",
+        "responsive-composition",
+        "content-clarity"
+      ]
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "class", "defectKind", "summary", "source"],
+      "properties": {
+        "id": { "$ref": "#/$defs/kebabId" },
+        "class": { "$ref": "#/$defs/findingClass" },
+        "defectKind": { "enum": ["implementation", "contract"] },
+        "summary": { "type": "string", "minLength": 1 },
+        "source": { "enum": ["impeccable-detector", "impeccable-critique", "objective-audit", "manual-review"] },
+        "severity": { "enum": ["p0", "p1", "p2", "p3", "info"] },
+        "target": { "type": "string", "minLength": 1 },
+        "sourceArtifact": { "type": "string", "minLength": 1 }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "class",
+        "owner",
+        "affectedContracts",
+        "repairStrategy",
+        "providerCommand",
+        "returnStage",
+        "revalidationSet",
+        "rationale"
+      ],
+      "properties": {
+        "class": { "$ref": "#/$defs/findingClass" },
+        "owner": { "enum": ["frontend-product-builder", "spec-driven-engineering"] },
+        "affectedContracts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "product-context",
+              "design-direction",
+              "design-system",
+              "recipe",
+              "screen-specification",
+              "component-catalog",
+              "composition-proof",
+              "styling-authority"
+            ]
+          }
+        },
+        "repairStrategy": { "enum": ["targeted-implementation-repair", "canonical-contract-repair"] },
+        "providerCommand": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "governance", "requiresExplicitApproval"],
+              "properties": {
+                "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+                "governance": { "enum": ["managed", "findingDriven", "explicitApproval", "strongExplicitApproval", "designSystemMaintenanceOnly"] },
+                "requiresExplicitApproval": { "type": "boolean" }
+              }
+            }
+          ]
+        },
+        "returnStage": { "enum": ["PATCH", "DESIGN_READINESS"] },
+        "revalidationSet": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "craft-contract",
+              "frontend-readiness",
+              "screen-specification",
+              "component-catalog",
+              "design-system",
+              "composition-proof",
+              "browser-evidence",
+              "impeccable-detector",
+              "impeccable-critique",
+              "behavioral-ux-contract"
+            ]
+          }
+        },
+        "rationale": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

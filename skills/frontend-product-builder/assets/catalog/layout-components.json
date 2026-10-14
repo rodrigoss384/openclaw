@@ -1,0 +1,2921 @@
+{
+  "$schema": "../schemas/component-catalog.schema.json",
+  "meta": {
+    "id": "frontend-product-builder-layout-components",
+    "name": "Frontend Product Builder Layout Components",
+    "version": "1.0.0",
+    "status": "approved",
+    "owner": "frontend-product-builder",
+    "category": "layout",
+    "source": "./assets/catalog/layout-components.json",
+    "designSystem": "docs/frontend/design-system/design-system.json",
+    "generated": false,
+    "description": "Canonical shared layout components that implement application shells, page structure, hierarchy, spacing ownership, responsive transformation, and content regions."
+  },
+  "components": {
+    "AppShell": {
+      "id": "app-shell",
+      "name": "AppShell",
+      "level": "shared-composite",
+      "category": "layout",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical authenticated application frame containing persistent navigation, global header, route content, and global feedback infrastructure.",
+      "capabilities": [
+        "Compose persistent application navigation and route content.",
+        "Define the primary application scroll owner.",
+        "Transform navigation between sidebar, rail, and drawer patterns.",
+        "Host global feedback portals and session-level overlays."
+      ],
+      "keywords": [
+        "shell",
+        "sidebar",
+        "navigation",
+        "header",
+        "application-layout"
+      ],
+      "owner": {
+        "layer": "application",
+        "team": "frontend-product-builder",
+        "directory": "src/components/layout"
+      },
+      "implementation": "src/components/layout/app-shell.tsx",
+      "publicImport": "@/components/layout/app-shell",
+      "contract": "docs/frontend/design-system/components/app-shell.md",
+      "foundation": {
+        "type": "custom",
+        "source": "Application shell recipe",
+        "components": [
+          "SidebarNavigation",
+          "GlobalHeader",
+          "RouteOutlet",
+          "ToastViewport"
+        ],
+        "reason": "The product requires explicit scroll, navigation, context, and responsive-shell ownership beyond a generic primitive."
+      },
+      "tokens": [
+        "semantic.background.canvas",
+        "semantic.background.surface",
+        "reference.zIndex.sticky",
+        "layout.navigation.width",
+        "layout.header.height"
+      ],
+      "variants": {
+        "authenticated": {
+          "intent": "Standard persistent authenticated product shell.",
+          "default": true,
+          "allowedUse": [
+            "Authenticated product routes."
+          ],
+          "prohibitedUse": [
+            "Authentication routes.",
+            "Public marketing routes.",
+            "Focused full-screen workflow that explicitly replaces the shell."
+          ],
+          "tokens": [
+            "semantic.background.canvas",
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "error"
+          ]
+        }
+      },
+      "sizes": {},
+      "states": [
+        "default",
+        "loading",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "navigation",
+          "description": "Persistent or off-canvas primary product navigation.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "SidebarNavigation",
+            "NavigationRail",
+            "MobileNavigationDrawer"
+          ],
+          "contentRestrictions": [
+            "Navigation must use user-oriented product grouping.",
+            "Feature-specific forms are prohibited."
+          ]
+        },
+        {
+          "name": "header",
+          "description": "Global context and utility header.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "GlobalHeader"
+          ],
+          "contentRestrictions": [
+            "Page-specific primary actions normally remain outside the global header."
+          ]
+        },
+        {
+          "name": "content",
+          "description": "Active route content canvas.",
+          "required": true,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "RouteOutlet",
+            "RouteErrorBoundary"
+          ],
+          "contentRestrictions": [
+            "Only one main landmark may be active."
+          ]
+        },
+        {
+          "name": "feedback",
+          "description": "Global portals, toasts, command menus, and session dialogs.",
+          "required": true,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "ToastViewport",
+            "GlobalDialogPortal",
+            "CommandMenu"
+          ],
+          "contentRestrictions": [
+            "Local field errors do not belong here."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "navigationMode",
+          "type": "sidebar | rail | drawer",
+          "required": false,
+          "default": "sidebar",
+          "description": "Resolved navigation presentation selected by responsive application behavior.",
+          "semantic": true,
+          "restrictions": [
+            "Screens must not set this independently."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Application root"
+        ],
+        "allowedChildren": [
+          "SidebarNavigation",
+          "NavigationRail",
+          "GlobalHeader",
+          "RouteOutlet",
+          "ToastViewport"
+        ],
+        "prohibitedParents": [
+          "PageContainer",
+          "Route screen",
+          "Dialog"
+        ],
+        "prohibitedChildren": [
+          "Nested AppShell",
+          "Feature-specific form"
+        ],
+        "spacingOwnership": [
+          "AppShell owns spacing and dimensions between navigation, global header, and content canvas.",
+          "Route recipes own spacing inside the content canvas."
+        ],
+        "surfaceOwnership": "AppShell owns the application canvas and persistent shell surfaces.",
+        "rules": [
+          "Use one AppShell per authenticated application root.",
+          "Use one primary vertical route-content scroll owner.",
+          "Tenant or organization changes must not leave previous-context content visible."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "GlobalHeader",
+          "PageContainer"
+        ],
+        "libraries": [
+          "React Router"
+        ],
+        "contexts": [
+          "Authentication context",
+          "Organization context",
+          "Theme context"
+        ],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "application-shell",
+          "regions": [
+            "primaryNavigation",
+            "globalHeader",
+            "contentCanvas",
+            "globalFeedback"
+          ],
+          "status": "required",
+          "notes": "Canonical implementation of the application-shell recipe."
+        },
+        {
+          "recipe": "authentication",
+          "regions": [
+            "authenticationPanel"
+          ],
+          "status": "prohibited",
+          "notes": "Authentication uses a focused standalone layout."
+        }
+      ],
+      "dataAccess": {
+        "policy": "generic-context-only",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [
+          "useAuthenticationContext",
+          "useOrganizationContext",
+          "useNavigationState"
+        ],
+        "prohibited": [
+          "Feature-specific API calls.",
+          "Feature mutations.",
+          "Direct token access in presentation components."
+        ]
+      },
+      "stateOwnership": {
+        "model": "route-owned",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Application infrastructure owns navigation presentation and global context.",
+          "Route state remains outside the shell."
+        ]
+      },
+      "sideEffects": {
+        "navigation": true,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Navigation and skip-link focus are owned by shell infrastructure.",
+          "Organization switching is delegated to application context."
+        ]
+      },
+      "responsive": {
+        "strategy": "Transform persistent navigation from sidebar to rail to drawer while preserving one route-content canvas.",
+        "compact": "Off-canvas navigation drawer, compact global header, single route-content column.",
+        "medium": "Compact navigation rail and flexible route-content canvas.",
+        "wide": "Persistent labeled sidebar and flexible route-content canvas.",
+        "ultrawide": "Persistent constrained sidebar; route recipes determine content width.",
+        "overflowPolicy": "Navigation may scroll vertically; route content must not cause shell-level horizontal overflow.",
+        "containerQueries": false,
+        "zoomExpectation": "Shell must remain navigable at 200% text scaling and 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "application layout containing labeled nav, header, and one main landmark",
+        "accessibleName": "Primary navigation and utility regions use explicit labels.",
+        "keyboard": [
+          "Provide a skip link to route content.",
+          "Navigation is fully keyboard operable.",
+          "Compact drawer traps and restores focus."
+        ],
+        "focus": [
+          "Focus order follows navigation, global utilities, and route content.",
+          "Hidden navigation is not focusable."
+        ],
+        "announcements": [
+          "Route changes update document title and orientation.",
+          "Session and organization-context changes are perceivable."
+        ],
+        "aria": [
+          "Do not create duplicate unlabeled navigation landmarks.",
+          "Use one active main landmark."
+        ],
+        "colorIndependence": "Active navigation and organization context do not depend only on color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "Navigation, global header, and one active route.",
+        "typical": "Grouped navigation, organization context, utilities, route content, and feedback portals.",
+        "maximum": "Several grouped product areas without rendering every route simultaneously.",
+        "wrapping": "Navigation labels support localization according to the navigation component contract.",
+        "truncation": "Organization names may truncate only when full value remains accessible.",
+        "localization": "Shell controls must support expanded labels without consuming excessive route width.",
+        "emptyBehavior": "A shell without an active route renders a safe route fallback.",
+        "technicalContent": "Raw tenant IDs, tokens, route implementation details, and backend module names are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/layout/app-shell.stories.tsx",
+        "requiredStories": [
+          "WideSidebar",
+          "MediumRail",
+          "CompactDrawer",
+          "LongNavigationLabels",
+          "OrganizationSwitcher",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/layout/app-shell.test.tsx",
+        "requiredTests": [
+          "Landmark structure",
+          "Skip link",
+          "Navigation transformation",
+          "Drawer focus restoration",
+          "Single scroll owner"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "1440x900 sidebar",
+          "1024x768 navigation rail",
+          "390x844 drawer",
+          "125% zoom",
+          "Keyboard navigation"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "AuthenticatedApplication"
+        ]
+      },
+      "notes": []
+    },
+    "PageContainer": {
+      "id": "page-container",
+      "name": "PageContainer",
+      "level": "shared-composite",
+      "category": "layout",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical route-level container that applies approved horizontal padding, maximum width, centering, and full-bleed behavior.",
+      "capabilities": [
+        "Apply consistent route horizontal padding.",
+        "Select constrained, fluid, hybrid, or full-bleed page width.",
+        "Keep content aligned across route regions.",
+        "Prevent arbitrary page-level width decisions."
+      ],
+      "keywords": [
+        "container",
+        "page",
+        "width",
+        "padding",
+        "layout"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/layout"
+      },
+      "implementation": "src/components/layout/page-container.tsx",
+      "publicImport": "@/components/layout/page-container",
+      "contract": "docs/frontend/design-system/components/page-container.md",
+      "foundation": {
+        "type": "custom",
+        "source": "Design-system layout tokens",
+        "components": [],
+        "reason": "Page-width and padding ownership must remain centralized and semantic."
+      },
+      "tokens": [
+        "layout.page.padding",
+        "layout.container.reading",
+        "layout.container.form",
+        "layout.container.data",
+        "layout.container.dashboard",
+        "layout.container.detail"
+      ],
+      "variants": {
+        "constrained": {
+          "intent": "Constrain reading, authentication, or form content.",
+          "allowedUse": [
+            "Forms.",
+            "Authentication.",
+            "Long-form content."
+          ],
+          "prohibitedUse": [
+            "Wide operational data tables."
+          ],
+          "tokens": [
+            "layout.container.form"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "fluid": {
+          "intent": "Use available route width for tables, dashboards, and workspaces.",
+          "allowedUse": [
+            "Data tables.",
+            "Dashboards.",
+            "Operational workspaces."
+          ],
+          "prohibitedUse": [
+            "Long textual reading without inner constraint."
+          ],
+          "tokens": [
+            "layout.container.data"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "hybrid": {
+          "intent": "Combine fluid route width with constrained inner regions.",
+          "default": true,
+          "allowedUse": [
+            "Entity detail.",
+            "Administration.",
+            "Mixed data and form routes."
+          ],
+          "prohibitedUse": [
+            "Screen-specific arbitrary width overrides."
+          ],
+          "tokens": [
+            "layout.container.detail"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "fullBleed": {
+          "intent": "Allow approved content to reach the content-canvas edges.",
+          "allowedUse": [
+            "Split review workspace.",
+            "Special map or canvas.",
+            "Application shell internals."
+          ],
+          "prohibitedUse": [
+            "Ordinary forms.",
+            "Ordinary page sections."
+          ],
+          "tokens": [],
+          "states": [
+            "default"
+          ]
+        }
+      },
+      "sizes": {},
+      "states": [
+        "default"
+      ],
+      "slots": [
+        {
+          "name": "content",
+          "description": "Route-level page regions.",
+          "required": true,
+          "multiple": true,
+          "order": 1,
+          "allowedComponents": [
+            "PageHeader",
+            "Section",
+            "Feature component",
+            "Screen region"
+          ],
+          "contentRestrictions": [
+            "Nested PageContainer usage requires an explicit layout reason."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "constrained | fluid | hybrid | fullBleed",
+          "required": false,
+          "default": "hybrid",
+          "description": "Semantic page-width policy.",
+          "semantic": true,
+          "restrictions": [
+            "Select according to the layout recipe."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "AppShell content canvas",
+          "AuthenticationLayout",
+          "Standalone route"
+        ],
+        "allowedChildren": [
+          "PageHeader",
+          "Section",
+          "ContentGrid",
+          "SplitPane",
+          "Feature component"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "FormField",
+          "DialogContent"
+        ],
+        "prohibitedChildren": [
+          "Nested PageContainer without explicit approval"
+        ],
+        "spacingOwnership": [
+          "PageContainer owns route horizontal padding.",
+          "The selected recipe owns vertical spacing between major regions."
+        ],
+        "surfaceOwnership": "PageContainer does not own a visual card surface.",
+        "rules": [
+          "Use one primary PageContainer per route.",
+          "Do not wrap every section in another width container.",
+          "Inner reading or form constraints use approved nested layout components."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [
+          "class-variance-authority"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "pageHeader",
+            "primaryMetrics",
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "required",
+          "notes": "Use fluid dashboard width."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "pageHeader",
+            "results"
+          ],
+          "status": "required",
+          "notes": "Use fluid data width."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader",
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "required",
+          "notes": "Use hybrid width."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "pageHeader",
+            "formSections",
+            "formActions"
+          ],
+          "status": "required",
+          "notes": "Use constrained form width."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Route data fetching.",
+          "Permission logic."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": []
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Adjust horizontal padding and width constraints according to the approved design-system breakpoints.",
+        "compact": "Uses compact horizontal padding and full available width.",
+        "medium": "Uses medium page padding and selected width policy.",
+        "wide": "Uses standard page padding and selected maximum width.",
+        "ultrawide": "Preserves maximum widths for reading and forms while allowing fluid data layouts.",
+        "overflowPolicy": "Children must not create unexpected page-level horizontal overflow.",
+        "containerQueries": false,
+        "zoomExpectation": "Horizontal padding must not consume excessive space at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "div or semantic element provided by the consumer",
+        "accessibleName": "Not required; meaningful child regions provide headings and landmarks.",
+        "keyboard": [
+          "No direct keyboard behavior."
+        ],
+        "focus": [
+          "Does not alter focus order."
+        ],
+        "announcements": [],
+        "aria": [
+          "Do not add unnecessary landmark roles."
+        ],
+        "colorIndependence": "Not applicable to structural width behavior.",
+        "contrastTarget": "Inherited from contained components."
+      },
+      "content": {
+        "minimum": "One route-level region.",
+        "typical": "Page header followed by several recipe regions.",
+        "maximum": "Several route regions while retaining explicit spacing ownership.",
+        "wrapping": "Children control content wrapping.",
+        "truncation": "PageContainer does not truncate content.",
+        "localization": "Width policies must tolerate expanded labels and text.",
+        "emptyBehavior": "An empty PageContainer is normally invalid.",
+        "technicalContent": "Not applicable."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/layout/page-container.stories.tsx",
+        "requiredStories": [
+          "Constrained",
+          "Fluid",
+          "Hybrid",
+          "FullBleed",
+          "CompactViewport",
+          "Ultrawide"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/layout/page-container.test.tsx",
+        "requiredTests": [
+          "Variant contract",
+          "Semantic class mapping",
+          "No implicit surface"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "390x844",
+          "1024x768",
+          "1366x768",
+          "1920x1080",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": false
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "DashboardRoute",
+          "SearchableListRoute",
+          "EntityDetailRoute",
+          "FormRoute"
+        ]
+      },
+      "notes": []
+    },
+    "PageHeader": {
+      "id": "page-header",
+      "name": "PageHeader",
+      "level": "shared-composite",
+      "category": "layout",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical route-orientation header containing breadcrumbs, title, description, metadata, freshness, and a constrained action hierarchy.",
+      "capabilities": [
+        "Identify the current route and primary user task.",
+        "Present supporting description and metadata.",
+        "Place one dominant page action and secondary utilities.",
+        "Transform action placement for compact layouts."
+      ],
+      "keywords": [
+        "header",
+        "title",
+        "page-title",
+        "actions",
+        "breadcrumbs"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/layout"
+      },
+      "implementation": "src/components/layout/page-header.tsx",
+      "publicImport": "@/components/layout/page-header",
+      "contract": "docs/frontend/design-system/components/page-header.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Stack, ContentGrid, Button, Breadcrumbs",
+        "components": [
+          "Stack",
+          "ContentGrid",
+          "Button",
+          "Breadcrumbs"
+        ],
+        "reason": "Route orientation requires named slots, action hierarchy, responsive transformation, and shared spacing ownership."
+      },
+      "tokens": [
+        "reference.space.2",
+        "reference.space.4",
+        "reference.space.6",
+        "reference.font.size.2xl",
+        "semantic.text.primary",
+        "semantic.text.secondary"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Standard route header.",
+          "default": true,
+          "allowedUse": [
+            "Ordinary application route."
+          ],
+          "prohibitedUse": [
+            "Entity identity requiring EntityHeader.",
+            "Global application header."
+          ],
+          "tokens": [
+            "semantic.text.primary",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "compact": {
+          "intent": "Reduced route header for dense operational contexts.",
+          "allowedUse": [
+            "Embedded administration subsection.",
+            "Dense list route."
+          ],
+          "prohibitedUse": [
+            "Authentication.",
+            "Large onboarding experience."
+          ],
+          "tokens": [
+            "reference.font.size.xl"
+          ],
+          "states": [
+            "default"
+          ]
+        }
+      },
+      "sizes": {},
+      "states": [
+        "default"
+      ],
+      "slots": [
+        {
+          "name": "breadcrumbs",
+          "description": "Optional route-hierarchy orientation.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Breadcrumbs",
+            "BackLink"
+          ],
+          "contentRestrictions": [
+            "Do not repeat technical route structure."
+          ]
+        },
+        {
+          "name": "title",
+          "description": "Route-level h1.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Exactly one route-level h1."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Optional concise route-purpose explanation.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not repeat obvious title wording."
+          ]
+        },
+        {
+          "name": "metadata",
+          "description": "Optional supporting scope, freshness, or context.",
+          "required": false,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "Badge",
+            "FreshnessIndicator",
+            "MetadataList"
+          ],
+          "contentRestrictions": [
+            "Do not place the complete page dataset here."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Primary and secondary page-level actions.",
+          "required": false,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "Normally one primary action.",
+            "Exports and low-frequency utilities remain secondary."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "default | compact",
+          "required": false,
+          "default": "default",
+          "description": "Semantic density of the page header.",
+          "semantic": true,
+          "restrictions": [
+            "Do not select compact only to reduce an incorrectly large title."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "PageContainer",
+          "Dashboard screen",
+          "Searchable list screen",
+          "Form workflow"
+        ],
+        "allowedChildren": [
+          "Breadcrumbs",
+          "Text",
+          "MetadataList",
+          "Button",
+          "DropdownMenu"
+        ],
+        "prohibitedParents": [
+          "Card used only as an additional wrapper",
+          "Dialog"
+        ],
+        "prohibitedChildren": [
+          "Large metric grid",
+          "Complete form",
+          "DataTable"
+        ],
+        "spacingOwnership": [
+          "PageHeader owns spacing between breadcrumbs, title, description, metadata, and actions.",
+          "The route recipe owns spacing between PageHeader and the next major region."
+        ],
+        "surfaceOwnership": "PageHeader normally renders directly on the page canvas.",
+        "rules": [
+          "One PageHeader per ordinary route.",
+          "Do not repeat the same action elsewhere without a workflow reason.",
+          "Header height remains restrained in operational products."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Button",
+          "DropdownMenu",
+          "Stack",
+          "ContentGrid"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "pageHeader"
+          ],
+          "status": "required",
+          "notes": "Includes scope, freshness, and limited actions."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "pageHeader"
+          ],
+          "status": "required",
+          "notes": "One collection-level primary action."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "pageHeader"
+          ],
+          "status": "required",
+          "notes": "Does not duplicate form submission."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "pageHeader"
+          ],
+          "status": "required",
+          "notes": "Sensitive actions remain outside the header."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Direct route queries.",
+          "Direct permission evaluation.",
+          "Direct navigation mutation."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The screen supplies title, metadata, and actions."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Keep orientation first, stack actions when necessary, and move secondary utilities to overflow.",
+        "compact": "Breadcrumbs may collapse; title, description, metadata, and primary action stack.",
+        "medium": "Title group remains primary while actions wrap beside or below.",
+        "wide": "Title group and actions align horizontally.",
+        "ultrawide": "Header remains constrained and does not enlarge.",
+        "overflowPolicy": "Secondary actions move to overflow before title or primary action becomes unreadable.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain readable and operable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "header containing one h1",
+        "accessibleName": "The route-level h1 identifies the page.",
+        "keyboard": [
+          "All actions and breadcrumbs are keyboard operable."
+        ],
+        "focus": [
+          "Header content follows route and document order.",
+          "Route navigation may move focus to the h1 or main content according to application policy."
+        ],
+        "announcements": [
+          "Route title updates document title.",
+          "Freshness or critical context is announced by owning components."
+        ],
+        "aria": [
+          "Do not apply banner role inside the application main content when it would duplicate the global header."
+        ],
+        "colorIndependence": "Action hierarchy and metadata meaning do not depend only on color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One route-level title.",
+        "typical": "Breadcrumbs, title, concise description, metadata, one primary action, and secondary overflow.",
+        "maximum": "A compact route orientation region; complex datasets belong below.",
+        "wrapping": "Titles, descriptions, metadata, and actions wrap according to named slots.",
+        "truncation": "Do not truncate the route title; lower-priority metadata may truncate with full-value access.",
+        "localization": "Support expanded titles and actions without fixed heights.",
+        "emptyBehavior": "A PageHeader without a title is invalid.",
+        "technicalContent": "Raw route IDs, backend modules, DTO names, and UUIDs are prohibited unless explicitly user-relevant."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/layout/page-header.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "WithBreadcrumbs",
+          "WithMetadata",
+          "ManyActions",
+          "LongTitle",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/layout/page-header.test.tsx",
+        "requiredTests": [
+          "One h1",
+          "Slot order",
+          "Primary action hierarchy",
+          "Responsive overflow behavior"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "390x844",
+          "1024x768",
+          "1366x768",
+          "Long localization",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "DashboardRoute",
+          "SearchableListRoute",
+          "FormWorkflowRoute"
+        ]
+      },
+      "notes": []
+    },
+    "EntityHeader": {
+      "id": "entity-header",
+      "name": "EntityHeader",
+      "level": "shared-composite",
+      "category": "layout",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical compact orientation header for one entity, including identity, current status, essential metadata, freshness, and limited entity-level actions.",
+      "capabilities": [
+        "Identify one domain entity.",
+        "Present current status and essential metadata.",
+        "Expose one entity-level primary action and secondary utilities.",
+        "Preserve entity orientation across detail sections."
+      ],
+      "keywords": [
+        "entity",
+        "header",
+        "identity",
+        "status",
+        "metadata"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/layout"
+      },
+      "implementation": "src/components/layout/entity-header.tsx",
+      "publicImport": "@/components/layout/entity-header",
+      "contract": "docs/frontend/design-system/components/entity-header.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Section, Stack, ContentGrid, Badge, Button",
+        "components": [
+          "Section",
+          "Stack",
+          "ContentGrid",
+          "Badge",
+          "Button"
+        ],
+        "reason": "Entity orientation needs named slots, action constraints, responsive transformation, and reusable spacing ownership."
+      },
+      "tokens": [
+        "semantic.background.surface",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.border.default",
+        "reference.space.4",
+        "reference.space.6"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Standard entity-detail orientation.",
+          "default": true,
+          "allowedUse": [
+            "Case detail.",
+            "Customer detail.",
+            "Tenant detail.",
+            "Document detail."
+          ],
+          "prohibitedUse": [
+            "Collection route.",
+            "Global application header."
+          ],
+          "tokens": [
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "error"
+          ]
+        },
+        "compact": {
+          "intent": "Reduced entity orientation inside a nested workspace.",
+          "allowedUse": [
+            "Contextual entity preview.",
+            "Nested detail panel."
+          ],
+          "prohibitedUse": [
+            "Primary route orientation when critical metadata would be hidden."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle"
+          ],
+          "states": [
+            "default"
+          ]
+        }
+      },
+      "sizes": {},
+      "states": [
+        "default",
+        "loading",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "identity",
+          "description": "Entity title and optional user-facing secondary identifier.",
+          "required": true,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "EntityIdentity",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Raw UUIDs remain secondary unless operationally required."
+          ]
+        },
+        {
+          "name": "status",
+          "description": "Current entity status.",
+          "required": false,
+          "multiple": true,
+          "order": 2,
+          "allowedComponents": [
+            "StatusBadge",
+            "Badge"
+          ],
+          "contentRestrictions": [
+            "Machine recommendation must not be represented as confirmed status."
+          ]
+        },
+        {
+          "name": "metadata",
+          "description": "Small collection of essential orientation metadata.",
+          "required": false,
+          "multiple": true,
+          "order": 3,
+          "allowedComponents": [
+            "MetadataList",
+            "DefinitionList",
+            "FreshnessIndicator"
+          ],
+          "contentRestrictions": [
+            "Do not include complete entity details."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Entity-level actions.",
+          "required": false,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "One dominant entity-level action.",
+            "Destructive actions remain separated."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "default | compact",
+          "required": false,
+          "default": "default",
+          "description": "Entity-orientation density.",
+          "semantic": true,
+          "restrictions": [
+            "Compact variant must not remove essential orientation."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "PageContainer",
+          "Entity detail screen",
+          "Contextual preview"
+        ],
+        "allowedChildren": [
+          "EntityIdentity",
+          "StatusBadge",
+          "MetadataList",
+          "Button",
+          "DropdownMenu"
+        ],
+        "prohibitedParents": [
+          "PageHeader",
+          "Button"
+        ],
+        "prohibitedChildren": [
+          "Complete form",
+          "Large table",
+          "Full audit history"
+        ],
+        "spacingOwnership": [
+          "EntityHeader owns spacing among identity, status, metadata, and actions.",
+          "The entity-detail recipe owns spacing below the header."
+        ],
+        "surfaceOwnership": "EntityHeader may own one compact orientation surface.",
+        "rules": [
+          "One primary EntityHeader per entity-detail route.",
+          "Do not repeat it inside every section.",
+          "Use domain components to map entity values into the slots."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Badge",
+          "Button",
+          "DropdownMenu",
+          "Stack",
+          "ContentGrid"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader"
+          ],
+          "status": "required",
+          "notes": "Canonical implementation of entity orientation."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "scopeSummary"
+          ],
+          "status": "allowed",
+          "notes": "Use when one organization, user, or integration is being administered."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "reviewHeader"
+          ],
+          "status": "allowed",
+          "notes": "Review status must remain distinct from entity status."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Entity query hooks.",
+          "Direct mutation.",
+          "Permission evaluation.",
+          "Raw DTO rendering."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The entity or feature owner supplies mapped identity, status, metadata, and actions."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Stack identity, essential metadata, and actions before hiding secondary content.",
+        "compact": "Identity, status, metadata, and primary action stack; secondary actions move to overflow.",
+        "medium": "Identity and metadata remain primary; actions wrap.",
+        "wide": "Horizontal compact orientation.",
+        "ultrawide": "Remains constrained and does not add low-value metadata.",
+        "overflowPolicy": "Long identity values wrap; secondary metadata may truncate with full-value access.",
+        "containerQueries": true,
+        "zoomExpectation": "Must remain readable and actionable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "header containing the route-level entity h1",
+        "accessibleName": "Entity title.",
+        "keyboard": [
+          "All entity actions remain keyboard operable."
+        ],
+        "focus": [
+          "Actions follow identity and metadata in logical order."
+        ],
+        "announcements": [
+          "Material status changes are announced by the owning status component."
+        ],
+        "aria": [
+          "Do not create a duplicate route-level heading."
+        ],
+        "colorIndependence": "Entity status and action hierarchy do not depend only on color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One entity identity.",
+        "typical": "Identity, status, several essential metadata values, one primary action, and overflow utilities.",
+        "maximum": "A compact orientation summary; complete details belong below.",
+        "wrapping": "Identity and metadata wrap according to content contracts.",
+        "truncation": "Primary identity remains accessible in full.",
+        "localization": "Support long domain names and expanded status labels.",
+        "emptyBehavior": "EntityHeader without identity is invalid.",
+        "technicalContent": "Raw UUIDs, database keys, transport states, and DTO names are prohibited unless explicitly operational."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/layout/entity-header.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "Compact",
+          "LongIdentity",
+          "ManyMetadataItems",
+          "WithActions",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/layout/entity-header.test.tsx",
+        "requiredTests": [
+          "Heading semantics",
+          "Slot order",
+          "Primary action constraint",
+          "Compact transformation"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Long entity name",
+          "390x844",
+          "1024x768",
+          "1366x768",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "CaseDetailRoute",
+          "TenantDetailRoute"
+        ]
+      },
+      "notes": []
+    },
+    "Section": {
+      "id": "section",
+      "name": "Section",
+      "level": "shared-composite",
+      "category": "layout",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical semantic content section with optional heading, description, actions, and controlled heading-to-content spacing.",
+      "capabilities": [
+        "Create a meaningful document section.",
+        "Own spacing between section heading and content.",
+        "Place optional section-level actions.",
+        "Render without forcing a card surface."
+      ],
+      "keywords": [
+        "section",
+        "heading",
+        "content",
+        "region",
+        "layout"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/layout"
+      },
+      "implementation": "src/components/layout/section.tsx",
+      "publicImport": "@/components/layout/section",
+      "contract": "docs/frontend/design-system/components/section.md",
+      "foundation": {
+        "type": "native-html",
+        "source": "HTML section",
+        "components": [
+          "Stack",
+          "ContentGrid"
+        ],
+        "reason": "Native section semantics combined with shared spacing and action composition provide reusable structural hierarchy."
+      },
+      "tokens": [
+        "reference.space.3",
+        "reference.space.4",
+        "reference.space.6",
+        "reference.font.size.xl",
+        "semantic.text.primary",
+        "semantic.text.secondary"
+      ],
+      "variants": {
+        "default": {
+          "intent": "Ordinary semantic content section without an independent surface.",
+          "default": true,
+          "allowedUse": [
+            "Route section.",
+            "Feature section.",
+            "Detail section."
+          ],
+          "prohibitedUse": [
+            "Floating overlay.",
+            "Form field group without a section concept."
+          ],
+          "tokens": [
+            "semantic.text.primary"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "surface": {
+          "intent": "Section requiring a distinct interaction or content surface.",
+          "allowedUse": [
+            "Grouped comparison.",
+            "Nested context.",
+            "Independent action boundary."
+          ],
+          "prohibitedUse": [
+            "Every ordinary page region."
+          ],
+          "tokens": [
+            "semantic.background.surface",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "subtle": {
+          "intent": "Supporting or contextual section using a subdued surface.",
+          "allowedUse": [
+            "Contextual help.",
+            "Audit details.",
+            "Secondary metadata."
+          ],
+          "prohibitedUse": [
+            "Critical alert."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle"
+          ],
+          "states": [
+            "default"
+          ]
+        }
+      },
+      "sizes": {},
+      "states": [
+        "default"
+      ],
+      "slots": [
+        {
+          "name": "title",
+          "description": "Optional visible section heading.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Heading level follows document hierarchy rather than visual size."
+          ]
+        },
+        {
+          "name": "description",
+          "description": "Optional concise supporting explanation.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not duplicate field-level help."
+          ]
+        },
+        {
+          "name": "actions",
+          "description": "Optional section-level actions.",
+          "required": false,
+          "multiple": true,
+          "order": 3,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "One dominant action at most."
+          ]
+        },
+        {
+          "name": "content",
+          "description": "Section body.",
+          "required": true,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "Shared composite",
+            "Feature component",
+            "Entity component"
+          ],
+          "contentRestrictions": []
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "default | surface | subtle",
+          "required": false,
+          "default": "default",
+          "description": "Semantic surface treatment.",
+          "semantic": true,
+          "restrictions": [
+            "Do not select surface merely to make the page look more designed."
+          ]
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4",
+          "required": false,
+          "default": 2,
+          "description": "Document heading level for the optional title.",
+          "semantic": true,
+          "restrictions": [
+            "Must follow the screen heading hierarchy."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "PageContainer",
+          "Feature component",
+          "Entity detail",
+          "DialogContent"
+        ],
+        "allowedChildren": [
+          "Shared composite",
+          "Feature component",
+          "Entity component"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "FormField"
+        ],
+        "prohibitedChildren": [
+          "Another Section used only to add padding"
+        ],
+        "spacingOwnership": [
+          "Section owns spacing between title, description, actions, and content.",
+          "The parent recipe owns spacing between sibling sections."
+        ],
+        "surfaceOwnership": "Section owns a surface only when the selected semantic variant requires it.",
+        "rules": [
+          "Use Section for meaningful document structure.",
+          "Do not wrap every content fragment in a Section.",
+          "Do not use heading levels to obtain visual sizes."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Button",
+          "DropdownMenu",
+          "Stack",
+          "ContentGrid"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "primaryMetrics",
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "recommended",
+          "notes": "Sections group metrics, analysis, and queues."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside",
+            "auditDetails"
+          ],
+          "status": "required",
+          "notes": "Active entity content uses semantic sections."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "sensitiveActions",
+            "auditAndDiagnostics"
+          ],
+          "status": "recommended",
+          "notes": "Sensitive actions require distinct semantic treatment."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Feature queries.",
+          "Permission evaluation.",
+          "Direct mutation."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": []
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Preserve document hierarchy while allowing heading actions to wrap below the title.",
+        "compact": "Title, description, and actions stack.",
+        "medium": "Title and actions may wrap.",
+        "wide": "Title group and actions may align horizontally.",
+        "ultrawide": "Content remains governed by its parent width policy.",
+        "overflowPolicy": "Content wraps or uses explicitly owned local overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Heading, description, actions, and content remain readable at 200% text scaling."
+      },
+      "accessibility": {
+        "semanticElement": "section when a meaningful accessible heading exists; otherwise a neutral container",
+        "accessibleName": "Visible section heading or explicit accessible label.",
+        "keyboard": [
+          "Section itself has no keyboard interaction."
+        ],
+        "focus": [
+          "Section does not alter document focus order."
+        ],
+        "announcements": [],
+        "aria": [
+          "Avoid unlabeled section landmarks.",
+          "Do not add role=region to every visual group."
+        ],
+        "colorIndependence": "Surface hierarchy does not communicate critical meaning without textual context.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "Meaningful content with an appropriate semantic relationship.",
+        "typical": "Heading, concise description, optional action, and content body.",
+        "maximum": "A coherent content region rather than an entire unrelated route.",
+        "wrapping": "Heading, description, actions, and content wrap naturally.",
+        "truncation": "Do not truncate section headings.",
+        "localization": "Support expanded headings and descriptions.",
+        "emptyBehavior": "A section with no content should not render unless it represents an explicit empty state.",
+        "technicalContent": "Technical content is allowed only in explicitly approved audit or diagnostic sections."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/layout/section.stories.tsx",
+        "requiredStories": [
+          "Default",
+          "WithDescription",
+          "WithActions",
+          "Surface",
+          "Subtle",
+          "LongHeading",
+          "CompactContainer"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/layout/section.test.tsx",
+        "requiredTests": [
+          "Heading level",
+          "Landmark behavior",
+          "Slot order",
+          "Variant contract"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Compact action wrapping",
+          "Long heading",
+          "Nested detail layout"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "EntityDetailRoute",
+          "DashboardRoute",
+          "AdministrationRoute"
+        ]
+      },
+      "notes": []
+    },
+    "Stack": {
+      "id": "stack",
+      "name": "Stack",
+      "level": "shared-composite",
+      "category": "layout",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical one-dimensional layout utility that owns vertical or horizontal spacing between sibling elements.",
+      "capabilities": [
+        "Apply consistent gap between sibling elements.",
+        "Arrange content vertically or horizontally.",
+        "Wrap horizontal groups when allowed.",
+        "Eliminate conflicting child margins."
+      ],
+      "keywords": [
+        "stack",
+        "gap",
+        "flex",
+        "vertical",
+        "horizontal"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/layout"
+      },
+      "implementation": "src/components/layout/stack.tsx",
+      "publicImport": "@/components/layout/stack",
+      "contract": "docs/frontend/design-system/components/stack.md",
+      "foundation": {
+        "type": "custom",
+        "source": "CSS flex layout and spacing tokens",
+        "components": [],
+        "reason": "Spacing ownership requires a constrained semantic alternative to repeated arbitrary flex and gap declarations."
+      },
+      "tokens": [
+        "reference.space.1",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.space.4",
+        "reference.space.6",
+        "reference.space.8"
+      ],
+      "variants": {
+        "vertical": {
+          "intent": "Arrange sibling elements vertically.",
+          "default": true,
+          "allowedUse": [
+            "Section content.",
+            "Form groups.",
+            "Feedback composition."
+          ],
+          "prohibitedUse": [
+            "Two-dimensional data layout."
+          ],
+          "tokens": [],
+          "states": [
+            "default"
+          ]
+        },
+        "horizontal": {
+          "intent": "Arrange sibling elements horizontally with controlled wrapping.",
+          "allowedUse": [
+            "Action groups.",
+            "Metadata groups.",
+            "Compact controls."
+          ],
+          "prohibitedUse": [
+            "Complex responsive grid."
+          ],
+          "tokens": [],
+          "states": [
+            "default"
+          ]
+        }
+      },
+      "sizes": {
+        "xs": {
+          "intent": "Very compact relationship.",
+          "allowedUse": [
+            "Icon and metadata details."
+          ],
+          "tokens": [
+            "reference.space.1"
+          ]
+        },
+        "sm": {
+          "intent": "Compact sibling relationship.",
+          "allowedUse": [
+            "Labels and metadata.",
+            "Compact action groups."
+          ],
+          "tokens": [
+            "reference.space.2"
+          ]
+        },
+        "md": {
+          "intent": "Default component relationship.",
+          "default": true,
+          "allowedUse": [
+            "Component content.",
+            "Form groups."
+          ],
+          "tokens": [
+            "reference.space.4"
+          ]
+        },
+        "lg": {
+          "intent": "Large internal section relationship.",
+          "allowedUse": [
+            "Subsections.",
+            "Large content groups."
+          ],
+          "tokens": [
+            "reference.space.6"
+          ]
+        },
+        "xl": {
+          "intent": "Major region relationship.",
+          "allowedUse": [
+            "Screen-level region composition when the recipe permits it."
+          ],
+          "tokens": [
+            "reference.space.8"
+          ]
+        }
+      },
+      "states": [
+        "default"
+      ],
+      "slots": [
+        {
+          "name": "children",
+          "description": "Sibling elements arranged by the stack.",
+          "required": true,
+          "multiple": true,
+          "order": 1,
+          "allowedComponents": [
+            "Any non-conflicting child"
+          ],
+          "contentRestrictions": [
+            "Children must not add margins to recreate the same gap."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "direction",
+          "type": "vertical | horizontal",
+          "required": false,
+          "default": "vertical",
+          "description": "Primary arrangement axis.",
+          "semantic": true,
+          "restrictions": [
+            "Use ContentGrid for two-dimensional layout."
+          ]
+        },
+        {
+          "name": "gap",
+          "type": "xs | sm | md | lg | xl",
+          "required": false,
+          "default": "md",
+          "description": "Approved spacing relationship between children.",
+          "semantic": true,
+          "restrictions": [
+            "Arbitrary gap values are prohibited."
+          ]
+        },
+        {
+          "name": "wrap",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Allows horizontal children to wrap.",
+          "semantic": true,
+          "restrictions": [
+            "Vertical stacks normally do not require wrap."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Any layout or composite component"
+        ],
+        "allowedChildren": [
+          "Primitive",
+          "Shared composite",
+          "Entity component",
+          "Feature component"
+        ],
+        "prohibitedParents": [
+          "None"
+        ],
+        "prohibitedChildren": [
+          "Children using margins to duplicate the stack gap"
+        ],
+        "spacingOwnership": [
+          "Stack exclusively owns the gap between its direct children."
+        ],
+        "surfaceOwnership": "Stack owns no visual surface.",
+        "rules": [
+          "Use one Stack when one-dimensional spacing is the actual relationship.",
+          "Do not nest stacks only to obtain arbitrary gaps.",
+          "Do not add child margins for the same sibling relationship."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [
+          "class-variance-authority"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "criticalAttention",
+            "primaryMetrics",
+            "actionQueue"
+          ],
+          "status": "allowed",
+          "notes": "Use for internal one-dimensional grouping."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSections",
+            "formActions"
+          ],
+          "status": "recommended",
+          "notes": "FormSection and FormField may compose Stack internally."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "recommended",
+          "notes": "Use to own subsection and panel gaps."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Any data or feature access."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": []
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Preserve one-dimensional spacing while allowing approved direction or wrapping changes through parent composition.",
+        "compact": "Horizontal stacks may wrap or become vertical when the owning component defines it.",
+        "medium": "Uses approved direction and gap.",
+        "wide": "Uses approved direction and gap.",
+        "ultrawide": "Spacing does not expand automatically.",
+        "overflowPolicy": "Children determine content overflow; Stack must not force page-level overflow.",
+        "containerQueries": true,
+        "zoomExpectation": "Gap and wrapping remain usable at enlarged text sizes."
+      },
+      "accessibility": {
+        "semanticElement": "div or semantic element supplied by the consumer",
+        "accessibleName": "Not required for purely structural use.",
+        "keyboard": [
+          "No direct keyboard behavior."
+        ],
+        "focus": [
+          "Does not alter child focus order."
+        ],
+        "announcements": [],
+        "aria": [
+          "Do not add unnecessary ARIA roles."
+        ],
+        "colorIndependence": "Not applicable.",
+        "contrastTarget": "Inherited from children."
+      },
+      "content": {
+        "minimum": "Two or more elements with a meaningful one-dimensional spacing relationship.",
+        "typical": "Several sibling components.",
+        "maximum": "A manageable sibling group; complex spatial layouts require another component.",
+        "wrapping": "Controlled by direction and wrap contract.",
+        "truncation": "Stack does not truncate children.",
+        "localization": "Wrapping must support expanded child content.",
+        "emptyBehavior": "An empty Stack normally should not render.",
+        "technicalContent": "Not applicable."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/layout/stack.stories.tsx",
+        "requiredStories": [
+          "Vertical",
+          "Horizontal",
+          "Wrapping",
+          "GapScale",
+          "LongContent",
+          "NarrowContainer"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/layout/stack.test.tsx",
+        "requiredTests": [
+          "Direction mapping",
+          "Gap mapping",
+          "Wrap behavior"
+        ],
+        "browserValidationRequired": false,
+        "browserScenarios": [],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": false
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "PageHeader",
+          "Section",
+          "FormField",
+          "EmptyState"
+        ]
+      },
+      "notes": []
+    },
+    "ContentGrid": {
+      "id": "content-grid",
+      "name": "ContentGrid",
+      "level": "shared-composite",
+      "category": "layout",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical responsive two-dimensional layout for content regions using approved column strategies, minimum widths, and token-backed gaps.",
+      "capabilities": [
+        "Arrange peer content in responsive columns.",
+        "Collapse columns according to content requirements.",
+        "Apply consistent row and column gaps.",
+        "Prevent arbitrary screen-level grid definitions."
+      ],
+      "keywords": [
+        "grid",
+        "columns",
+        "responsive",
+        "cards",
+        "content"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/layout"
+      },
+      "implementation": "src/components/layout/content-grid.tsx",
+      "publicImport": "@/components/layout/content-grid",
+      "contract": "docs/frontend/design-system/components/content-grid.md",
+      "foundation": {
+        "type": "custom",
+        "source": "CSS Grid and design-system breakpoints",
+        "components": [],
+        "reason": "Content grids require semantic column policies rather than repeated arbitrary grid utility combinations."
+      },
+      "tokens": [
+        "reference.space.4",
+        "reference.space.6",
+        "reference.space.8",
+        "layout.grid.minimumCardWidth",
+        "layout.grid.minimumPanelWidth"
+      ],
+      "variants": {
+        "autoFit": {
+          "intent": "Create as many readable columns as fit within an approved minimum item width.",
+          "default": true,
+          "allowedUse": [
+            "Metric groups.",
+            "Small peer panels.",
+            "Feature summary items."
+          ],
+          "prohibitedUse": [
+            "Complex forms.",
+            "Data tables.",
+            "Layouts requiring one dominant column."
+          ],
+          "tokens": [
+            "layout.grid.minimumCardWidth"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "balanced": {
+          "intent": "Use a constrained fixed column count that collapses predictably.",
+          "allowedUse": [
+            "Two- or three-panel analytical layouts.",
+            "Administration summaries."
+          ],
+          "prohibitedUse": [
+            "Unknown unbounded item collections."
+          ],
+          "tokens": [
+            "layout.grid.minimumPanelWidth"
+          ],
+          "states": [
+            "default"
+          ]
+        },
+        "dominant": {
+          "intent": "Provide one dominant content column and one supporting column.",
+          "allowedUse": [
+            "Detail content with contextual support.",
+            "Dashboard main chart and secondary panel."
+          ],
+          "prohibitedUse": [
+            "Symmetric peer content."
+          ],
+          "tokens": [],
+          "states": [
+            "default"
+          ]
+        }
+      },
+      "sizes": {
+        "sm": {
+          "intent": "Compact grid gap.",
+          "allowedUse": [
+            "Dense metric groups."
+          ],
+          "tokens": [
+            "reference.space.4"
+          ]
+        },
+        "md": {
+          "intent": "Default panel grid gap.",
+          "default": true,
+          "allowedUse": [
+            "Ordinary dashboard and content grids."
+          ],
+          "tokens": [
+            "reference.space.6"
+          ]
+        },
+        "lg": {
+          "intent": "Large region grid gap.",
+          "allowedUse": [
+            "Major analytical or detail layout."
+          ],
+          "tokens": [
+            "reference.space.8"
+          ]
+        }
+      },
+      "states": [
+        "default"
+      ],
+      "slots": [
+        {
+          "name": "children",
+          "description": "Peer or intentionally weighted grid items.",
+          "required": true,
+          "multiple": true,
+          "order": 1,
+          "allowedComponents": [
+            "Shared composite",
+            "Feature component",
+            "Entity component"
+          ],
+          "contentRestrictions": [
+            "Items must follow the selected grid semantic relationship."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "autoFit | balanced | dominant",
+          "required": false,
+          "default": "autoFit",
+          "description": "Semantic column strategy.",
+          "semantic": true,
+          "restrictions": [
+            "Do not select solely to achieve a desired column count."
+          ]
+        },
+        {
+          "name": "gap",
+          "type": "sm | md | lg",
+          "required": false,
+          "default": "md",
+          "description": "Approved grid spacing.",
+          "semantic": true,
+          "restrictions": [
+            "Arbitrary gaps are prohibited."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Section",
+          "PageContainer",
+          "Dashboard region",
+          "Entity detail region"
+        ],
+        "allowedChildren": [
+          "Shared composite",
+          "Feature component",
+          "Entity component"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Button"
+        ],
+        "prohibitedChildren": [
+          "Children using absolute positioning for ordinary alignment"
+        ],
+        "spacingOwnership": [
+          "ContentGrid owns row and column gaps between direct children."
+        ],
+        "surfaceOwnership": "ContentGrid owns no visual surface.",
+        "rules": [
+          "Items must remain readable at their minimum width.",
+          "Do not use a universal equal card grid for unrelated content priorities.",
+          "Use SplitPane when panels have asymmetric scroll or resize behavior."
+        ]
+      },
+      "dependencies": {
+        "components": [],
+        "libraries": [
+          "class-variance-authority"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "primaryMetrics",
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "recommended",
+          "notes": "Metrics and analytical panels use different grid policies."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "allowed",
+          "notes": "Use only when peer or dominant/supporting relationships are clear."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "scopeSummary",
+            "administrationContent"
+          ],
+          "status": "allowed",
+          "notes": "Forms remain constrained and should not be forced into arbitrary grids."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Any data access."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": []
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": []
+      },
+      "responsive": {
+        "strategy": "Collapse columns according to minimum readable item widths and semantic priority.",
+        "compact": "Normally one column.",
+        "medium": "One or two columns according to item complexity.",
+        "wide": "Uses the approved grid variant.",
+        "ultrawide": "Adds columns only when item readability and hierarchy remain valid.",
+        "overflowPolicy": "Grid items must shrink safely or stack; page-level horizontal overflow is prohibited.",
+        "containerQueries": true,
+        "zoomExpectation": "Columns collapse before text or controls become unreadable."
+      },
+      "accessibility": {
+        "semanticElement": "div or semantic parent supplied by the consumer",
+        "accessibleName": "Not required for purely structural use.",
+        "keyboard": [
+          "No direct keyboard behavior."
+        ],
+        "focus": [
+          "DOM order must remain logical across visual column changes."
+        ],
+        "announcements": [],
+        "aria": [
+          "Do not use grid role unless implementing an interactive ARIA grid."
+        ],
+        "colorIndependence": "Not applicable.",
+        "contrastTarget": "Inherited from children."
+      },
+      "content": {
+        "minimum": "Two peer or intentionally weighted items.",
+        "typical": "Several metric, panel, or summary components.",
+        "maximum": "A bounded region collection; large server collections require DataTable or list patterns.",
+        "wrapping": "Items stack according to the selected layout strategy.",
+        "truncation": "ContentGrid does not truncate children.",
+        "localization": "Column collapse must tolerate localized expansion.",
+        "emptyBehavior": "An empty ContentGrid should not render.",
+        "technicalContent": "Not applicable."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/layout/content-grid.stories.tsx",
+        "requiredStories": [
+          "AutoFit",
+          "Balanced",
+          "Dominant",
+          "LongContent",
+          "CompactContainer",
+          "Ultrawide"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/layout/content-grid.test.tsx",
+        "requiredTests": [
+          "Variant mapping",
+          "Gap mapping",
+          "DOM order preservation"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Metric grid",
+          "Analytical grid",
+          "390x844",
+          "1024x768",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": false
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "MetricGroup",
+          "DashboardRoute",
+          "EntitySummary"
+        ]
+      },
+      "notes": []
+    },
+    "SplitPane": {
+      "id": "split-pane",
+      "name": "SplitPane",
+      "level": "shared-composite",
+      "category": "layout",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical asymmetric multi-panel workspace for master-detail, evidence-review, comparison, or contextual-side-panel layouts with explicit scroll and responsive ownership.",
+      "capabilities": [
+        "Arrange primary and secondary panels asymmetrically.",
+        "Assign panel width and scroll ownership.",
+        "Transform secondary panels into stacked content or overlays.",
+        "Preserve the primary task when horizontal space decreases."
+      ],
+      "keywords": [
+        "split",
+        "pane",
+        "master-detail",
+        "review",
+        "aside"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/layout"
+      },
+      "implementation": "src/components/layout/split-pane.tsx",
+      "publicImport": "@/components/layout/split-pane",
+      "contract": "docs/frontend/design-system/components/split-pane.md",
+      "foundation": {
+        "type": "custom",
+        "source": "CSS Grid, layout recipes, and optional resizable-panel foundation",
+        "components": [
+          "Section",
+          "Dialog"
+        ],
+        "reason": "Multi-panel workspaces require explicit panel roles, scroll ownership, width constraints, and compact transformation."
+      },
+      "tokens": [
+        "layout.panel.navigationWidth",
+        "layout.panel.contextWidth",
+        "layout.panel.reviewWidth",
+        "semantic.border.default",
+        "reference.space.4",
+        "reference.space.6"
+      ],
+      "variants": {
+        "primaryAside": {
+          "intent": "One flexible primary panel and one constrained supporting aside.",
+          "default": true,
+          "allowedUse": [
+            "Entity detail.",
+            "Administration context.",
+            "Dashboard supporting panel."
+          ],
+          "prohibitedUse": [
+            "Symmetric comparison requiring equal emphasis."
+          ],
+          "tokens": [
+            "layout.panel.contextWidth"
+          ],
+          "states": [
+            "default",
+            "collapsed",
+            "expanded"
+          ]
+        },
+        "masterDetail": {
+          "intent": "Persistent selection list and flexible selected-item detail.",
+          "allowedUse": [
+            "Search result preview.",
+            "Inbox workflow.",
+            "Evidence navigation."
+          ],
+          "prohibitedUse": [
+            "Unrelated independent panels."
+          ],
+          "tokens": [
+            "layout.panel.navigationWidth"
+          ],
+          "states": [
+            "default",
+            "selected",
+            "collapsed"
+          ]
+        },
+        "review": {
+          "intent": "Evidence navigation, authoritative source, and constrained proposal or recommendation panel.",
+          "allowedUse": [
+            "Human review and approval workspace."
+          ],
+          "prohibitedUse": [
+            "Ordinary dashboard.",
+            "Simple form."
+          ],
+          "tokens": [
+            "layout.panel.reviewWidth"
+          ],
+          "states": [
+            "default",
+            "processing",
+            "error"
+          ]
+        },
+        "comparison": {
+          "intent": "Present two peer states or versions for direct comparison.",
+          "allowedUse": [
+            "Current versus proposed configuration.",
+            "Before and after comparison."
+          ],
+          "prohibitedUse": [
+            "Primary content with unrelated sidebar."
+          ],
+          "tokens": [],
+          "states": [
+            "default"
+          ]
+        }
+      },
+      "sizes": {},
+      "states": [
+        "default",
+        "selected",
+        "collapsed",
+        "expanded",
+        "processing",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "navigation",
+          "description": "Optional master list or evidence navigator.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Navigation",
+            "OperationalList",
+            "EvidenceNavigator"
+          ],
+          "contentRestrictions": [
+            "Must have an accessible label.",
+            "Independent scroll requires explicit ownership."
+          ]
+        },
+        {
+          "name": "primary",
+          "description": "Main task or authoritative content panel.",
+          "required": true,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Feature component",
+            "Entity component",
+            "Section",
+            "EvidenceViewer"
+          ],
+          "contentRestrictions": [
+            "Primary panel retains the greatest usable width."
+          ]
+        },
+        {
+          "name": "secondary",
+          "description": "Supporting context, proposal, or details panel.",
+          "required": false,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "ContextPanel",
+            "ProposalPanel",
+            "EntitySummary",
+            "Feature component"
+          ],
+          "contentRestrictions": [
+            "Critical information must not exist only in a collapsible secondary panel."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "primaryAside | masterDetail | review | comparison",
+          "required": false,
+          "default": "primaryAside",
+          "description": "Semantic panel relationship.",
+          "semantic": true,
+          "restrictions": [
+            "Select according to the layout recipe and dominant task."
+          ]
+        },
+        {
+          "name": "secondaryCollapsible",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Allows the secondary panel to collapse when the workflow supports progressive disclosure.",
+          "semantic": true,
+          "restrictions": [
+            "Critical content must not be hidden by default."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "PageContainer",
+          "ReviewWorkspace",
+          "Entity detail",
+          "Searchable list"
+        ],
+        "allowedChildren": [
+          "Navigation panel",
+          "Primary panel",
+          "Secondary panel"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Button",
+          "Small Dialog"
+        ],
+        "prohibitedChildren": [
+          "Independent application shells",
+          "Unbounded nested vertical scroll regions"
+        ],
+        "spacingOwnership": [
+          "SplitPane owns gaps and dividers between direct panels.",
+          "Each panel owns its internal content spacing."
+        ],
+        "surfaceOwnership": "SplitPane does not require one outer surface; individual panels own surfaces according to their roles.",
+        "rules": [
+          "The primary panel retains task priority.",
+          "Scroll ownership is explicit per panel.",
+          "Compact transformation must be defined before implementation.",
+          "Do not use SplitPane solely to create visual variety."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Section",
+          "Dialog"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside"
+          ],
+          "status": "recommended",
+          "notes": "Contextual aside moves below the primary content on medium layouts."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results",
+            "contextualDetails"
+          ],
+          "status": "allowed",
+          "notes": "Preview remains optional and must not compress comparison columns."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "evidenceNavigator",
+            "evidenceViewer",
+            "proposalAndRecommendation"
+          ],
+          "status": "required",
+          "notes": "Canonical wide-layout review workspace."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationNavigation",
+            "administrationContent"
+          ],
+          "status": "allowed",
+          "notes": "Administration navigation remains constrained."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching panel data.",
+          "Selecting domain entities.",
+          "Mutating layout-independent feature state."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Panel selection and visibility are supplied by the owning screen or feature.",
+          "Shareable selected entities may be URL-owned outside SplitPane."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Responsive overlay transformation requires focus management.",
+          "Independent panel scrolling must be explicit."
+        ]
+      },
+      "responsive": {
+        "strategy": "Remove persistent secondary panels before compressing the primary task below usable width.",
+        "compact": "Panels become sequential content or navigation and secondary drawers.",
+        "medium": "Navigation or secondary panel moves to a drawer or below primary content.",
+        "wide": "Persistent split panels according to the selected semantic variant.",
+        "ultrawide": "Panel widths remain constrained; primary content gains additional space.",
+        "overflowPolicy": "Independent panel scrolling is allowed only when declared and tested; page-level horizontal overflow is prohibited.",
+        "containerQueries": true,
+        "zoomExpectation": "Panels must stack or collapse before content becomes unusable at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "structural container with labeled nav, main section, and optional aside",
+        "accessibleName": "Each semantic panel has a visible heading or accessible label.",
+        "keyboard": [
+          "Panel navigation is keyboard operable.",
+          "Drawers trap and restore focus.",
+          "Independent scroll regions are reachable and escapable by keyboard."
+        ],
+        "focus": [
+          "DOM order follows navigation, primary, and secondary reading order.",
+          "Visual reordering must not create illogical focus order."
+        ],
+        "announcements": [
+          "Selected master item or evidence changes update orientation when necessary.",
+          "Collapsed and expanded state is exposed."
+        ],
+        "aria": [
+          "Do not use ARIA grid for ordinary layout.",
+          "Label independent navigation and aside regions."
+        ],
+        "colorIndependence": "Selected panel item, active evidence, and differences must not depend only on color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One primary panel and one meaningful panel relationship.",
+        "typical": "Navigation or primary content with one supporting panel.",
+        "maximum": "Three controlled panels in a review workflow.",
+        "wrapping": "Panel content wraps or uses explicitly owned internal overflow.",
+        "truncation": "Primary decision content must remain accessible in full.",
+        "localization": "Panel minimum widths and collapse points tolerate expanded text.",
+        "emptyBehavior": "Missing secondary content removes or replaces the secondary panel without reserving blank space.",
+        "technicalContent": "Technical content is allowed only in explicitly approved diagnostic or audit panels."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/layout/split-pane.stories.tsx",
+        "requiredStories": [
+          "PrimaryAside",
+          "MasterDetail",
+          "Review",
+          "Comparison",
+          "CollapsedSecondary",
+          "CompactDrawer",
+          "LongContent"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/layout/split-pane.test.tsx",
+        "requiredTests": [
+          "Panel order",
+          "Controlled collapse",
+          "Accessible panel labels",
+          "Focus restoration",
+          "Variant contract"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "1440x900 review workspace",
+          "1024x768 stacked transformation",
+          "390x844 drawer transformation",
+          "Independent scrolling",
+          "125% zoom"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "ReviewWorkspace",
+          "EntityDetailRoute",
+          "SearchableListPreview"
+        ]
+      },
+      "notes": []
+    }
+  },
+  "validation": {
+    "schema": "~/.agents/skills/frontend-product-builder/assets/schemas/component-catalog.schema.json",
+    "checks": [
+      {
+        "id": "LAYOUT-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The layout component catalog must validate against the component catalog schema.",
+        "command": "node scripts/validate-component-catalog.mjs ~/.agents/skills/frontend-product-builder/assets/catalog/layout-components.json",
+        "remediation": "Correct invalid or missing layout catalog fields."
+      },
+      {
+        "id": "LAYOUT-002",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Layout components must not duplicate canonical ownership or public import paths.",
+        "command": "node scripts/audit-component-catalog-collisions.mjs",
+        "remediation": "Resolve duplicate layout ownership."
+      },
+      {
+        "id": "LAYOUT-003",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Shared layout components must not import feature, entity, route, query, permission, or transport modules.",
+        "command": "node scripts/audit-component-dependencies.mjs",
+        "remediation": "Move domain and data behavior to the owning entity, feature, or route."
+      },
+      {
+        "id": "LAYOUT-004",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Layout components must not introduce unexpected page-level horizontal overflow at approved viewports and zoom levels.",
+        "command": "npm run test:e2e:layout",
+        "remediation": "Correct width, wrapping, panel transformation, or scroll ownership."
+      },
+      {
+        "id": "LAYOUT-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Every structural gap, surface, scroll container, and responsive transformation must have one explicit owner.",
+        "remediation": "Correct component contracts or selected layout composition."
+      },
+      {
+        "id": "LAYOUT-006",
+        "severity": "warning",
+        "method": "script",
+        "blocking": false,
+        "description": "Page-local flex, grid, container, and header patterns similar to canonical layout components require review.",
+        "command": "node scripts/audit-component-duplicates.mjs",
+        "remediation": "Reuse the canonical layout component or document why the local pattern remains distinct."
+      }
+    ]
+  },
+  "deprecations": []
+}

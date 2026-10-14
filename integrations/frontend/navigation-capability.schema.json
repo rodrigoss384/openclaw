@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.frontend-product-builder.local/navigation-capability.schema.json",
+  "title": "Frontend Navigation Capability Contract",
+  "description": "Executable product-navigation contract projected from approved product context and bound to the canonical application-shell screen specification. It defines which product modules may be rendered and how unavailable capabilities may be represented; it is not a visual-style policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "status",
+    "owner",
+    "productContextRef",
+    "applicationShellScreenRef",
+    "navigationMode",
+    "modules"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "../../integrations/frontend/navigation-capability.schema.json"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "status": {
+      "enum": ["draft", "ready", "approved", "implemented", "deprecated"]
+    },
+    "owner": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "productContextRef": {
+      "$ref": "#/$defs/repositoryRef"
+    },
+    "applicationShellScreenRef": {
+      "$ref": "#/$defs/repositoryRef"
+    },
+    "navigationMode": {
+      "enum": ["single-module", "multi-module", "entitlement-aware", "hybrid"]
+    },
+    "modules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/module"
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repositoryRef": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(?:^|/)\\.\\.(?:/|$)).+"
+    },
+    "nullableRepositoryRef": {
+      "oneOf": [
+        { "$ref": "#/$defs/repositoryRef" },
+        { "type": "null" }
+      ]
+    },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "capabilityRef",
+        "availability",
+        "presentation",
+        "sourceRef",
+        "route",
+        "roadmapRef",
+        "commercialCapabilityRef",
+        "behavioralUxRef",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "capabilityRef": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "availability": {
+          "enum": ["active", "entitlement-locked", "approved-coming-soon"]
+        },
+        "presentation": {
+          "enum": ["navigate", "hidden", "disabled-with-reason", "upsell-entry"]
+        },
+        "sourceRef": {
+          "$ref": "#/$defs/repositoryRef"
+        },
+        "route": {
+          "type": ["string", "null"]
+        },
+        "roadmapRef": {
+          "$ref": "#/$defs/nullableRepositoryRef"
+        },
+        "commercialCapabilityRef": {
+          "$ref": "#/$defs/nullableRepositoryRef"
+        },
+        "behavioralUxRef": {
+          "$ref": "#/$defs/nullableRepositoryRef"
+        },
+        "reason": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}

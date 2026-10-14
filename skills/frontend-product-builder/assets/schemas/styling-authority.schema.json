@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/frontend-product-builder/styling-authority.schema.json",
+  "title": "Frontend Styling Authority Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "status",
+    "repositoryEvidence",
+    "authority",
+    "policies",
+    "visualReferences",
+    "exceptions"
+  ],
+  "properties": {
+    "$schema": { "const": "../schemas/styling-authority.schema.json" },
+    "version": { "enum": ["1.0.0", "2.0.0"] },
+    "status": { "enum": ["draft", "ready", "approved", "blocked"] },
+    "repositoryEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inspectedFiles", "detectedMechanisms", "classOwnershipTraces"],
+      "properties": {
+        "inspectedFiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "detectedMechanisms": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/stylingMechanism" }
+        },
+        "classOwnershipTraces": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/classOwnershipTrace" }
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primaryMechanism",
+        "tokenSources",
+        "componentSources",
+        "globalStylesheets"
+      ],
+      "properties": {
+        "primaryMechanism": { "$ref": "#/$defs/stylingMechanism" },
+        "tokenSources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "componentSources": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "globalStylesheets": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/globalStylesheet" }
+        }
+      }
+    },
+    "policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "preserveExistingArchitecture",
+        "parallelStylingArchitectureAllowed",
+        "classOwnershipTraceRequired",
+        "unresolvedClassMayBeOverridden",
+        "componentSelectorsInGlobalStyles",
+        "rawValuesInFeatureCode",
+        "arbitraryUtilityValues",
+        "inlineStyles",
+        "rawValuesInTokenAuthority"
+      ],
+      "properties": {
+        "preserveExistingArchitecture": { "const": true },
+        "parallelStylingArchitectureAllowed": { "const": false },
+        "classOwnershipTraceRequired": { "const": true },
+        "unresolvedClassMayBeOverridden": { "const": false },
+        "componentSelectorsInGlobalStyles": {
+          "const": "forbidden-unless-legacy-authority-or-approved-exception"
+        },
+        "rawValuesInFeatureCode": { "const": "forbidden-unless-approved-exception" },
+        "arbitraryUtilityValues": { "const": "forbidden-unless-approved-exception" },
+        "inlineStyles": { "const": "runtime-only-with-rationale" },
+        "rawValuesInTokenAuthority": { "const": "allowed" }
+      }
+    },
+    "visualReferences": {
+      "type": "array",
+      "minItems": 1
+    },
+    "visualResearch": { "$ref": "#/$defs/visualResearch" },
+    "exceptions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/exception" }
+    },
+    "tenantBrandLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicationPoints",
+        "brandNeverEncodesState",
+        "removalLeavesProductIntact"
+      ],
+      "description": "Optional. Required whenever the build applies a commercial/tenant brand skin (a client-specific wordmark, color, or copy) over the reusable design system, e.g. a white-label demo or multi-tenant product.",
+      "properties": {
+        "applicationPoints": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Where the tenant brand layer is allowed to appear (e.g. 'login', 'topbar', 'sidebar-header', 'favicon', 'footer'). Any point not listed here must not carry tenant-specific styling."
+        },
+        "brandTokenPrefix": {
+          "type": ["string", "null"],
+          "description": "Token namespace reserved for tenant brand values (e.g. '--tenant-'), kept separate from functional/semantic tokens."
+        },
+        "brandNeverEncodesState": {
+          "const": true,
+          "description": "A tenant brand color/token must never be reused to signal status, severity, or priority."
+        },
+        "removalLeavesProductIntact": {
+          "const": true,
+          "description": "Removing the tenant brand layer must leave the product functionally and visually coherent using only the base design system."
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "version": { "const": "1.0.0" } }, "required": ["version"] },
+      "then": {
+        "properties": { "visualReferences": { "type": "array", "items": { "$ref": "#/$defs/legacyVisualReference" } } }
+      }
+    },
+    {
+      "if": { "properties": { "version": { "const": "2.0.0" } }, "required": ["version"] },
+      "then": {
+        "required": ["visualResearch"],
+        "properties": {
+          "visualResearch": { "$ref": "#/$defs/visualResearch" },
+          "visualReferences": { "type": "array", "items": { "$ref": "#/$defs/visualReferenceV2" } }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "stylingMechanism": {
+      "enum": [
+        "tailwind-utilities",
+        "css-modules",
+        "css-in-js",
+        "vanilla-extract",
+        "sass-modules",
+        "component-library-native",
+        "global-css-legacy",
+        "other-approved"
+      ]
+    },
+    "classOwnershipTrace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selectorOrClass", "usages", "definitions", "owner", "decision", "evidence"],
+      "properties": {
+        "selectorOrClass": { "type": "string", "minLength": 1 },
+        "usages": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "definitions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "owner": { "type": "string", "minLength": 1 },
+        "decision": {
+          "enum": ["reuse", "modify-owner", "replace-through-approved-migration", "blocked-unresolved"]
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "globalStylesheet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "allowedRoles", "allowedSelectors", "componentSelectors", "rationale"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "allowedRoles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "reset",
+              "font-face",
+              "root-semantic-tokens",
+              "theme-selectors",
+              "base-elements",
+              "global-keyframes",
+              "document-shell",
+              "approved-third-party-override",
+              "legacy-global-components"
+            ]
+          }
+        },
+        "allowedSelectors": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "componentSelectors": { "enum": ["forbidden", "legacy-only", "approved-exception"] },
+        "rationale": { "type": "string", "minLength": 3 }
+      }
+    },
+    "visualResearch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "semanticDigest"],
+      "properties": {
+        "ref": { "type": "string", "minLength": 1, "pattern": "^(?!\\.\\.(?:/|$))(?!/).+" },
+        "semanticDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "visualReferenceV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["referenceId", "status", "appliedTo", "visualResearchDigest"],
+      "properties": {
+        "referenceId": { "type": "string", "minLength": 1 },
+        "status": { "const": "adopted" },
+        "appliedTo": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "visualResearchDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "legacyVisualReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "source", "status", "approvedAspects", "excludedAspects", "evidence"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^VREF-[A-Z0-9][A-Z0-9-]*-\\d{3}$" },
+        "kind": {
+          "enum": [
+            "existing-product",
+            "storybook",
+            "figma",
+            "screenshot",
+            "reference-project",
+            "brand-guide",
+            "approved-probe",
+            "design-direction"
+          ]
+        },
+        "source": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["candidate", "approved", "rejected"] },
+        "approvedAspects": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "excludedAspects": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "exception": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "scope", "rationale", "status", "approvedBy", "approvedAt"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^STY-EXC-[A-Z0-9][A-Z0-9-]*-\\d{3}$" },
+        "scope": { "type": "string", "minLength": 1 },
+        "rationale": { "type": "string", "minLength": 3 },
+        "status": { "enum": ["proposed", "approved", "rejected", "expired"] },
+        "approvedBy": { "type": ["string", "null"] },
+        "approvedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  }
+}

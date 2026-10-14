@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0.0",
+  "sessionId": "execute-T-PIL-001-codex-20261013",
+  "feature": "piloto-execucao-testes",
+  "questionId": "T-PIL-001",
+  "gate": "implementation",
+  "task": "T-PIL-001",
+  "snapshot": "34fc97f78e3c9a80e2d0081ef7121b33d2ca890d1fa8e431d94bf9ab1436861c",
+  "decision": "Qual identificador textual deve ser usado para rotular a evidência do piloto desta task?",
+  "whyHuman": "O contrato congelado exige perguntar ao operador antes de editar e o valor deve vir dele; inferi-lo apagaria a intervenção deliberada.",
+  "owner": "Operador autorizado do piloto",
+  "recommendation": "Informe o identificador textual exato que deve aparecer na evidência de T-PIL-001.",
+  "alternatives": [
+    "Fornecer um identificador textual escolhido pelo operador; ele será usado somente na evidência.",
+    "Indicar explicitamente T-PIL-001 como identificador, caso essa seja a intenção do operador; sem resposta explícita não haverá edição."
+  ],
+  "scope": "Responder somente o identificador textual da evidência de T-PIL-001; sem mudança de contrato, produção, dependências, lockfile, autorização ou gate.",
+  "prerequisites": [
+    {
+      "description": "Handoff revision 1 seleciona T-PIL-001 como única task autorizada e a task está in-progress.",
+      "status": "passed",
+      "evidence": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-preflight.json",
+        "sha256": "f7041feab09daf4b7746fe101d6fbc2bd539ff7d8a9e9fea6b6db370a63a9a70"
+      }
+    },
+    {
+      "description": "Bootstrap de policy de implementation concluído em stdout como artefato temporário não canônico.",
+      "status": "passed",
+      "evidence": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-preflight.json",
+        "sha256": "f7041feab09daf4b7746fe101d6fbc2bd539ff7d8a9e9fea6b6db370a63a9a70"
+      }
+    },
+    {
+      "description": "A intervenção da linha 12 de 09-tasks.md foi confirmada; nenhum arquivo de produção ou teste foi alterado.",
+      "status": "passed",
+      "evidence": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-preflight.json",
+        "sha256": "f7041feab09daf4b7746fe101d6fbc2bd539ff7d8a9e9fea6b6db370a63a9a70"
+      }
+    }
+  ],
+  "commands": [],
+  "commandsNotApplicable": "Esta é uma pergunta textual deliberada do contrato; nenhum comando do projeto pode responder pelo operador. Após a resposta, o worker retoma a task na mesma sessão.",
+  "checklist": [
+    "A resposta contém o identificador textual exato, sem depender de inferência do worker.",
+    "O identificador será usado somente ao rotular a evidência de T-PIL-001.",
+    "A task e a autorização permanecem T-PIL-001; a resposta não aprova gate nem altera contrato."
+  ],
+  "expectedEvidence": "A resposta textual exata do operador, vinculada a T-PIL-001 nesta mesma conversa; o worker registrará task/run/session antes e depois na evidência autorizada.",
+  "afterApproval": "Consumir o identificador recebido nesta mesma sessão, registrar a intervenção na evidência e retomar o teste restrito a src/infra/retry.test.ts.",
+  "afterRejection": "Manter T-PIL-001 in-progress e sem edições; qualquer mudança do contrato deve voltar ao owner de autoria antes de uma nova execução.",
+  "references": [
+    {
+      "ref": ".specs/features/piloto-execucao-testes/09-tasks.md",
+      "sha256": "fbf5132239a0478a30ece2689c2a5bfeea2d9ccf5b9775d67c1b79bee4667bca"
+    }
+  ]
+}

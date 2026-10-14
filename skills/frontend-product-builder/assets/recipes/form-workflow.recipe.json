@@ -1,0 +1,1108 @@
+{
+  "$schema": "../schemas/layout-recipe.schema.json",
+  "meta": {
+    "id": "form-workflow",
+    "name": "Structured Form Workflow",
+    "version": "1.1.0",
+    "status": "stable",
+    "category": "form",
+    "description": "Focused creation or editing workflow with explicit field grouping, validation, progress, contextual help, and controlled actions.",
+    "owner": "frontend-product-builder",
+    "source": "assets/recipes/form-workflow.recipe.json",
+    "tags": [
+      "form",
+      "create",
+      "edit",
+      "validation",
+      "structured-input"
+    ]
+  },
+  "purpose": "Help users create or edit structured information accurately while preserving context, minimizing validation friction, preventing accidental data loss, and keeping submission actions semantically clear.",
+  "useWhen": [
+    "The dominant task is creating or editing structured data.",
+    "The workflow contains several related fields requiring validation.",
+    "The user must understand field relationships before submission.",
+    "Submission may fail through validation, conflict, or permission rules.",
+    "Unsaved changes may be operationally significant."
+  ],
+  "doNotUseWhen": [
+    "The task is primarily read-only review.",
+    "The interaction contains only one simple inline field.",
+    "The task is approving or rejecting existing evidence.",
+    "The workflow is better represented as a small confirmation dialog.",
+    "A long form is being split into steps only for decorative effect."
+  ],
+  "requiredInputs": [
+    "Approved field inventory",
+    "Approved form schema",
+    "Required and optional field rules",
+    "Server validation contract",
+    "Permission requirements",
+    "Dirty-state behavior",
+    "Submission and conflict behavior",
+    "Expected content lengths",
+    "Responsive form requirements"
+  ],
+  "screenContract": {
+    "requiredFields": [
+      "purpose",
+      "primaryUser",
+      "primaryTask",
+      "route",
+      "dataDependencies",
+      "primaryAction",
+      "secondaryActions",
+      "permissions",
+      "states",
+      "responsiveTransformations",
+      "accessibilityRequirements",
+      "acceptanceCriteria"
+    ],
+    "selectionQuestions": [
+      "Is this a create, edit, duplicate, filter, or multi-step form?",
+      "Which field groups represent meaningful user concepts?",
+      "Which fields depend on previous values?",
+      "Which values are loaded from the server?",
+      "Can background refresh overwrite unsaved values?",
+      "When must the user be warned about unsaved changes?",
+      "Which errors belong to fields and which belong to the complete form?",
+      "Should submission keep the user on the page, close an overlay, or navigate?"
+    ]
+  },
+  "regions": [
+    {
+      "id": "pageHeader",
+      "name": "Form Page Header",
+      "role": "Orient the user, identify whether the workflow creates or edits data, and provide concise task context.",
+      "required": true,
+      "order": 1,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "PageHeader",
+        "Breadcrumbs",
+        "BackLink",
+        "DraftStatus",
+        "EntityIdentity"
+      ],
+      "prohibitedComponents": [
+        "Duplicate submit button",
+        "Several export actions",
+        "Large decorative hero content",
+        "Complete entity metadata"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "header",
+      "labelRequirement": "not-required",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible for route-level forms.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Top of the workflow.",
+          "layout": "Stack breadcrumb or return action, title, description, and draft state.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "wrap",
+          "notes": "Do not repeat the submit action here when a dedicated action region exists."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Top of the workflow.",
+          "layout": "Compact title and workflow context.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "wrap",
+          "notes": "Keep the header subordinate to the form."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Top of the constrained form container.",
+          "layout": "Horizontal orientation and optional draft metadata.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Do not place several actions in the header."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Top of the constrained form container.",
+          "layout": "Horizontal orientation and optional draft metadata.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "The form remains constrained despite additional viewport width."
+        }
+      },
+      "rules": [
+        "The title clearly distinguishes create, edit, duplicate, or review mode.",
+        "The header does not repeat the complete entity detail header.",
+        "Unsaved or draft state is visible when operationally meaningful."
+      ]
+    },
+    {
+      "id": "workflowProgress",
+      "name": "Workflow Progress",
+      "role": "Communicate steps, completion state, and current position in a genuinely multi-stage workflow.",
+      "required": false,
+      "order": 2,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "StepNavigation",
+        "ProgressIndicator",
+        "ProgressSummary"
+      ],
+      "prohibitedComponents": [
+        "Decorative progress for a single-page form",
+        "Clickable future steps without approved navigation behavior",
+        "Step labels taken from backend field groups"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "nav",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only when the workflow has meaningful stages.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Below the page header.",
+          "layout": "Current step, total step count, and concise progress summary.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "collapse",
+          "notes": "Do not force a wide horizontal stepper."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Below the page header.",
+          "layout": "Compact horizontal or vertical step navigation.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "wrap",
+          "notes": "Future-step navigation depends on workflow rules."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Above the active form section or in a constrained side rail.",
+          "layout": "Horizontal or vertical step navigation.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Do not create steps for visual decoration."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Above the active form section or in a constrained side rail.",
+          "layout": "Vertical or horizontal step navigation.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "The step navigation remains visually secondary."
+        }
+      },
+      "rules": [
+        "Steps represent meaningful task stages.",
+        "The current step is exposed semantically.",
+        "Completed, current, and unavailable steps do not depend only on color.",
+        "Navigation to previous or future steps follows the approved save and validation policy."
+      ]
+    },
+    {
+      "id": "formSummary",
+      "name": "Form Context and Summary",
+      "role": "Provide concise contextual information required before editing or creating the data.",
+      "required": false,
+      "order": 3,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "InlineAlert",
+        "DefinitionList",
+        "ContextSummary",
+        "RelatedEntitySummary"
+      ],
+      "prohibitedComponents": [
+        "Complete read-only detail screen",
+        "Raw API payload",
+        "Large unrelated dashboard"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only when contextual information materially changes user input.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Before the first field group.",
+          "layout": "Single-column concise summary.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Long context may move into disclosure."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Before the first field group.",
+          "layout": "Single-column summary.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Keep contextual data concise."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Before the form or in a contextual side region.",
+          "layout": "Constrained summary.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Do not reduce the primary form width unnecessarily."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Before the form or in a constrained aside.",
+          "layout": "Constrained summary.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Remain subordinate to the form."
+        }
+      },
+      "rules": [
+        "Context is limited to information required to complete the form.",
+        "Technical identifiers remain hidden unless operationally necessary.",
+        "Warnings use warning semantics rather than neutral help styling."
+      ]
+    },
+    {
+      "id": "formErrors",
+      "name": "Form-Level Errors and Warnings",
+      "role": "Present cross-field, server, conflict, or workflow errors that cannot be assigned to one field.",
+      "required": false,
+      "order": 4,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "critical",
+      "allowedComponents": [
+        "FormErrorSummary",
+        "InlineAlert",
+        "ConflictAlert",
+        "RetryPanel"
+      ],
+      "prohibitedComponents": [
+        "Raw server response",
+        "HTTP status-only message",
+        "Toast as the only error presentation"
+      ],
+      "ownsSpacing": true,
+      "surface": "critical",
+      "landmark": "section",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when form-level error, warning, or conflict exists.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Before the affected form sections.",
+          "layout": "Stacked summary with links or focus movement to affected fields.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "wrap",
+          "notes": "Do not hide conflict details in a toast."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Before the affected form sections.",
+          "layout": "Constrained alert summary.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "wrap",
+          "notes": "Preserve user input."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Before the affected form sections.",
+          "layout": "Constrained alert summary.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Provide recovery actions."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Before the affected form sections.",
+          "layout": "Constrained alert summary.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Do not stretch the alert across excessive width."
+        }
+      },
+      "rules": [
+        "Field errors remain associated with fields.",
+        "Cross-field and conflict errors appear here.",
+        "Recoverable errors preserve entered values.",
+        "The first invalid field receives appropriate focus after failed submission."
+      ]
+    },
+    {
+      "id": "formSections",
+      "name": "Form Sections",
+      "role": "Group fields according to user concepts, dependencies, and task sequence.",
+      "required": true,
+      "order": 5,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": "unbounded"
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "Form",
+        "FormSection",
+        "FormField",
+        "Input",
+        "Textarea",
+        "Select",
+        "Combobox",
+        "Checkbox",
+        "RadioGroup",
+        "DatePicker",
+        "FileUpload",
+        "FieldArray",
+        "InlineHelp"
+      ],
+      "prohibitedComponents": [
+        "Placeholder-only input",
+        "Unregistered form primitive",
+        "Every field stretched to full page width",
+        "Absolute positioning",
+        "Raw DTO field labels"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "form",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Main workflow content.",
+          "layout": "Single-column field groups.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Related short fields may remain grouped only when targets and labels remain usable."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Main workflow content.",
+          "layout": "Primarily single-column with approved two-column short-field groups.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Long text and complex selectors remain full row."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Main constrained form column.",
+          "layout": "One or two columns based on semantic grouping and expected input length.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "The form does not expand to the complete data-table width."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Main constrained form column.",
+          "layout": "One or two columns; optional contextual help aside.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Do not create additional columns merely to fill space."
+        }
+      },
+      "rules": [
+        "Fields are grouped by user meaning rather than DTO nesting.",
+        "Field width reflects expected input.",
+        "Labels remain visible.",
+        "Required and optional conventions are consistent.",
+        "Conditional fields preserve or clear hidden values intentionally.",
+        "Read-only values use read-only presentation rather than disabled controls when appropriate."
+      ]
+    },
+    {
+      "id": "contextualHelp",
+      "name": "Contextual Help",
+      "role": "Provide optional guidance for complex fields or workflow concepts without cluttering every label.",
+      "required": false,
+      "order": 6,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "contextual",
+      "allowedComponents": [
+        "HelpAside",
+        "InlineHelp",
+        "Disclosure",
+        "DocumentationLink",
+        "ExamplePanel"
+      ],
+      "prohibitedComponents": [
+        "Information icon beside every label",
+        "Critical requirement available only in tooltip",
+        "Large documentation page embedded in the form"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "aside",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": true,
+        "container": "form layout",
+        "offsetToken": "reference.space.4",
+        "zIndexToken": "reference.zIndex.sticky",
+        "compactBehavior": "Move help inline or into disclosures near the relevant section."
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only when the form contains concepts requiring sustained guidance.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Inline within the relevant form section.",
+          "layout": "Disclosure or concise help block.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Do not detach help from the relevant field."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Inline or below the relevant section.",
+          "layout": "Constrained help panel.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Sticky behavior disabled."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Right contextual column.",
+          "layout": "Single help column.",
+          "width": "280px",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Remain subordinate to the form."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Right contextual column.",
+          "layout": "Single help column.",
+          "width": "320px",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Do not widen indefinitely."
+        }
+      },
+      "rules": [
+        "Essential instructions remain visible without hover.",
+        "Help content uses user-facing terminology.",
+        "External documentation links identify destination and behavior."
+      ]
+    },
+    {
+      "id": "formActions",
+      "name": "Form Actions",
+      "role": "Present submission, cancellation, draft, and destructive actions with explicit semantic hierarchy.",
+      "required": true,
+      "order": 7,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "FormActionBar",
+        "StickyActionBar",
+        "Button",
+        "OverflowMenu",
+        "ConfirmationDialog",
+        "UnsavedChangesDialog"
+      ],
+      "prohibitedComponents": [
+        "Several primary buttons",
+        "Destructive action styled as primary",
+        "Submit action repeated at top and bottom without justification",
+        "Action enabled during incompatible pending state"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-elevated",
+      "landmark": "section",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": true,
+        "container": "form content canvas",
+        "offsetToken": "reference.space.0",
+        "zIndexToken": "reference.zIndex.sticky",
+        "compactBehavior": "Use a compact bottom action surface only when it does not cover fields or errors."
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible for submittable forms.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "After form sections or in an approved bottom action surface.",
+          "layout": "Primary submit full width; secondary action below or in overflow.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "move-to-overflow",
+          "notes": "Do not obscure focused fields, virtual keyboards, or validation messages."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "After form sections.",
+          "layout": "Horizontal wrapping action bar.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "wrap",
+          "notes": "Primary action remains identifiable."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "After form sections or sticky inside the form container.",
+          "layout": "Horizontal action bar.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "visible",
+          "notes": "Destructive actions remain separated."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "After form sections or sticky inside the constrained form container.",
+          "layout": "Horizontal action bar.",
+          "width": "100%",
+          "order": 7,
+          "overflow": "visible",
+          "notes": "Actions remain aligned to form content rather than viewport edge."
+        }
+      },
+      "rules": [
+        "One primary submission action is visually dominant.",
+        "Pending state prevents duplicate submission.",
+        "Cancellation preserves or discards values according to explicit policy.",
+        "Destructive actions require separation and confirmation.",
+        "Success behavior follows the next likely user task."
+      ]
+    }
+  ],
+  "composition": {
+    "layoutModel": "single-column",
+    "widthPolicy": "constrained",
+    "container": {
+      "component": "FormPageContainer",
+      "maxWidthToken": "layout.container.form",
+      "paddingToken": "layout.page.padding"
+    },
+    "columnPolicy": "One primary form column with approved local two-column field groups and an optional contextual help aside on wide layouts.",
+    "verticalRhythmToken": "reference.space.8",
+    "regionGapToken": "reference.space.6",
+    "spacingOwnership": [
+      "The recipe owns spacing between header, progress, summary, errors, form sections, and actions.",
+      "FormSection owns spacing between its heading and fields.",
+      "FormField owns label, control, help, and error spacing.",
+      "FormActionBar owns action spacing."
+    ],
+    "surfacePolicy": [
+      "The form may use one primary surface.",
+      "Sections do not each require an independent card.",
+      "Contextual help may use a subtle surface.",
+      "Form-level errors use semantic warning or danger treatment."
+    ],
+    "scrollOwner": "application content canvas",
+    "rules": [
+      "Field groups follow user concepts.",
+      "The form remains constrained on wide screens.",
+      "Actions remain visually connected to the form.",
+      "Error states preserve entered values whenever recovery is possible."
+    ],
+    "prohibited": [
+      "Every input stretched across the entire application canvas.",
+      "Three or more arbitrary field columns.",
+      "Placeholder text replacing labels.",
+      "Duplicate local and form-library state for the same value.",
+      "Resetting dirty values during background refetch.",
+      "Fixed-height form sections.",
+      "Absolute positioning for ordinary field layout."
+    ]
+  },
+  "actions": {
+    "primaryPlacement": "Dedicated form action region after the active form content.",
+    "secondaryPlacement": "Beside or below the primary submission action according to width.",
+    "destructivePlacement": "Separated from save and cancel actions in a dedicated danger area or overflow workflow.",
+    "bulkPlacement": "Not applicable.",
+    "contextualPlacement": "Inside the relevant field or section only when the action affects that local context.",
+    "overflowPolicy": "Low-frequency actions such as duplicate, reset, or advanced utilities move to overflow.",
+    "maxDominantActionsPerRegion": 1,
+    "compactBehavior": "Primary submission may become full width; secondary actions stack or move to overflow.",
+    "rules": [
+      "The primary action uses a verb describing the outcome.",
+      "Cancel is not visually equivalent to submit.",
+      "Save draft and final submit remain semantically distinct when both exist.",
+      "Destructive actions never use the ordinary primary variant."
+    ]
+  },
+  "content": {
+    "density": "comfortable",
+    "headingPolicy": "One h1 identifies the workflow; form sections use h2; nested groups use descriptive labels or h3 when semantically appropriate.",
+    "longContentPolicy": "Labels, help text, validation messages, and prefilled values must support realistic domain lengths.",
+    "truncationPolicy": "Do not truncate field labels, validation messages, or critical read-only context.",
+    "emptyStatePlacement": "A missing required prerequisite replaces the affected form region with a prerequisite state rather than rendering unusable controls.",
+    "loadingStrategy": "Load authoritative edit data before initialization, show stable skeletons, and avoid resetting dirty forms during background refresh.",
+    "errorScope": "Field errors remain local; cross-field, conflict, and submission errors appear in the form-level error region.",
+    "rules": [
+      "Required, optional, unknown, and unavailable values remain semantically distinct.",
+      "Help text explains constraints before users fail where appropriate.",
+      "Server validation remains authoritative.",
+      "Form content uses domain language rather than DTO property names."
+    ]
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "minimumViewport": "320 CSS pixels with single-column form sections.",
+    "primaryViewport": "1024×768 and wider application forms.",
+    "zoomExpectation": "The form must remain operable at 125% browser zoom and increased text size.",
+    "pageOverflowPolicy": "No unexpected page-level horizontal overflow.",
+    "internalOverflowPolicy": "Complex tables or file lists nested in forms may use approved local overflow; ordinary fields must wrap or stack.",
+    "transformations": [
+      {
+        "from": "ultrawide",
+        "to": "wide",
+        "change": "Keep the form container constrained and preserve the contextual help column only when it materially assists completion.",
+        "reason": "Additional viewport width should not reduce reading and input accuracy."
+      },
+      {
+        "from": "wide",
+        "to": "medium",
+        "change": "Move contextual help below relevant sections and reduce two-column field groups.",
+        "reason": "The primary input column requires sufficient width for labels, values, and validation."
+      },
+      {
+        "from": "medium",
+        "to": "compact",
+        "change": "Stack all ordinary field groups, simplify progress navigation, and make the primary action prominent without covering content.",
+        "reason": "Compact viewports cannot safely sustain side-by-side fields and persistent contextual columns."
+      }
+    ]
+  },
+  "states": [
+    {
+      "id": "initial-loading",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render stable form-header and field-group skeletons before authoritative edit data is available.",
+      "userAction": "Wait.",
+      "notes": "Do not initialize editable controls with incomplete placeholder values."
+    },
+    {
+      "id": "data",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render initialized form sections, validation support, context, and eligible actions.",
+      "userAction": "Enter, review, and submit information."
+    },
+    {
+      "id": "warning",
+      "scope": "region",
+      "required": false,
+      "rendering": "Render a non-blocking warning when user input remains allowed but requires attention.",
+      "userAction": "Review and continue or correct the relevant data."
+    },
+    {
+      "id": "error",
+      "scope": "region",
+      "required": true,
+      "rendering": "Render field or form-level errors while preserving recoverable user input.",
+      "userAction": "Correct fields, retry, or resolve conflict."
+    },
+    {
+      "id": "forbidden",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render read-only or forbidden behavior according to capability and disclosure policy.",
+      "userAction": "Return or continue in read-only mode."
+    },
+    {
+      "id": "stale",
+      "scope": "region",
+      "required": false,
+      "rendering": "Warn when authoritative server data changed while the user has unsaved edits.",
+      "userAction": "Compare, reload, or continue according to conflict policy."
+    },
+    {
+      "id": "processing",
+      "scope": "region",
+      "required": true,
+      "rendering": "Show local submission progress, disable duplicate execution, and preserve the form.",
+      "userAction": "Wait or cancel only when supported."
+    },
+    {
+      "id": "partial",
+      "scope": "region",
+      "required": false,
+      "rendering": "Render successfully loaded form sections while isolating optional failed dependencies.",
+      "userAction": "Continue where safe or retry the affected dependency."
+    }
+  ],
+  "accessibility": {
+    "landmarkMap": [
+      "The workflow uses the inherited main landmark.",
+      "The form uses a form landmark with an accessible name when multiple forms exist.",
+      "Step navigation uses a labeled nav landmark.",
+      "Contextual help uses an aside when persistent.",
+      "Form-level errors use an alert or labeled summary region."
+    ],
+    "headingStructure": [
+      "One h1 identifies the workflow.",
+      "Form sections use h2.",
+      "Nested conceptual groups use h3 only when they represent meaningful sections."
+    ],
+    "focusOrder": [
+      "Page orientation and return navigation.",
+      "Workflow progress when present.",
+      "Form-level warnings or errors.",
+      "Form sections in task order.",
+      "Contextual help associated with relevant sections.",
+      "Form actions."
+    ],
+    "keyboard": [
+      "All fields and custom controls are keyboard operable.",
+      "Failed submission moves focus to the error summary or first invalid field according to form length.",
+      "Dialogs for discard or conflict trap and restore focus.",
+      "File upload provides a non-drag interaction."
+    ],
+    "announcements": [
+      "Field errors are programmatically associated.",
+      "Submission pending and completion are perceivable.",
+      "Step changes update orientation.",
+      "Unsaved-change and conflict states are announced appropriately."
+    ],
+    "minimumTargetToken": "reference.control.target.minimum",
+    "contrastTarget": "WCAG 2.2 AA",
+    "colorIndependence": "Required, invalid, pending, success, warning, and destructive meaning do not depend only on color.",
+    "rules": [
+      "Placeholder text does not replace visible labels.",
+      "Disabled and read-only semantics remain distinct.",
+      "Conditional fields preserve logical focus order.",
+      "Sticky action regions must not hide focused controls."
+    ]
+  },
+  "constraints": {
+    "requiredComponents": [
+      "FormPageContainer",
+      "Form",
+      "FormSection",
+      "FormField",
+      "FormErrorSummary",
+      "FormActionBar",
+      "Button"
+    ],
+    "prohibitedPatterns": [
+      "Unlabeled inputs.",
+      "Form values duplicated in local component state.",
+      "Direct submission from uncontrolled ad hoc handlers.",
+      "Server errors exposed directly.",
+      "Destructive action styled as primary.",
+      "Form reset on every query-data change.",
+      "Several unrelated primary actions.",
+      "Artificial multi-step form without task justification."
+    ],
+    "dataMagnitude": [
+      "Labels and validation messages may be substantially longer than fixture examples.",
+      "Edit forms may contain prefilled long values.",
+      "Field arrays and uploads require their own content and state contracts."
+    ],
+    "performance": [
+      "Avoid rerendering the complete form for unrelated field changes.",
+      "Lazy-load expensive selectors when appropriate.",
+      "Do not add memoization without measured need.",
+      "Prevent duplicate mutation execution."
+    ],
+    "implementation": [
+      "React Hook Form owns form state.",
+      "Zod or the approved schema layer owns client validation.",
+      "TanStack Query owns authoritative server data.",
+      "Mutation mapping converts form values into API input.",
+      "Dirty-state and conflict policies are explicit.",
+      "Machine presence conditions come from presenceDefaults; visibilityCondition prose is explanatory only."
+    ]
+  },
+  "craftDefaults": {
+    "spatialComposition": {
+      "maxVisualNestingDepth": 2,
+      "regionAssignments": [
+        {
+          "regionId": "pageHeader",
+          "widthStrategy": "constrained",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "workflowProgress",
+          "widthStrategy": "constrained",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "formSummary",
+          "widthStrategy": "constrained",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "formErrors",
+          "widthStrategy": "constrained",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "formSections",
+          "widthStrategy": "constrained",
+          "heightStrategy": "natural",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "contextualHelp",
+          "widthStrategy": "constrained",
+          "heightStrategy": "natural",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "formActions",
+          "widthStrategy": "constrained",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        }
+      ]
+    },
+    "perceptualHierarchy": {
+      "surfaceAssignments": [
+        {
+          "regionId": "pageHeader",
+          "role": "canvas"
+        },
+        {
+          "regionId": "workflowProgress",
+          "role": "surface-subtle"
+        },
+        {
+          "regionId": "formSummary",
+          "role": "surface-subtle"
+        },
+        {
+          "regionId": "formErrors",
+          "role": "surface-elevated"
+        },
+        {
+          "regionId": "formSections",
+          "role": "surface"
+        },
+        {
+          "regionId": "contextualHelp",
+          "role": "surface-subtle"
+        },
+        {
+          "regionId": "formActions",
+          "role": "surface-elevated"
+        }
+      ]
+    }
+  },
+  "presenceDefaults": [
+    {
+      "targetType": "region",
+      "targetId": "pageHeader",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Route-level form workflows always need task orientation and create/edit mode context."
+    },
+    {
+      "targetType": "region",
+      "targetId": "workflowProgress",
+      "policy": "conditional",
+      "condition": {
+        "signal": "workflow.steps.count",
+        "operator": "gt",
+        "value": 1
+      },
+      "rationale": "Progress navigation exists only for genuinely multi-stage workflows."
+    },
+    {
+      "targetType": "region",
+      "targetId": "formSummary",
+      "policy": "conditional",
+      "condition": {
+        "signal": "form.contextSummaryPresent",
+        "operator": "truthy"
+      },
+      "rationale": "Context summary appears only when external context materially changes how the form should be completed."
+    },
+    {
+      "targetType": "region",
+      "targetId": "formErrors",
+      "policy": "conditional",
+      "condition": {
+        "signal": "form.formLevelIssues.count",
+        "operator": "gt",
+        "value": 0
+      },
+      "rationale": "The form-level issue region collapses when there is no cross-field, conflict, or submission-level issue."
+    },
+    {
+      "targetType": "region",
+      "targetId": "formSections",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The structured input sections are the primary content of a form workflow."
+    },
+    {
+      "targetType": "region",
+      "targetId": "contextualHelp",
+      "policy": "conditional",
+      "condition": {
+        "signal": "form.contextualHelp.enabled",
+        "operator": "truthy"
+      },
+      "rationale": "Persistent contextual help exists only for workflows whose concepts require sustained guidance."
+    },
+    {
+      "targetType": "region",
+      "targetId": "formActions",
+      "policy": "always",
+      "condition": null,
+      "rationale": "A create/edit form workflow always exposes its submission/cancellation action region; eligibility and pending state control actions inside it."
+    }
+  ],
+  "validation": {
+    "schema": "assets/schemas/layout-recipe.schema.json",
+    "checks": [
+      {
+        "id": "FORM-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The form-workflow recipe must validate against the layout recipe schema.",
+        "remediation": "Correct invalid or missing recipe fields."
+      },
+      {
+        "id": "FORM-002",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Visible labels, error associations, keyboard submission, and first-invalid-field behavior must work.",
+        "remediation": "Correct canonical form-field composition and submission focus behavior."
+      },
+      {
+        "id": "FORM-003",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Recoverable submission errors and conflicts must preserve user-entered values.",
+        "remediation": "Correct mutation handling, form reset behavior, or conflict orchestration."
+      },
+      {
+        "id": "FORM-004",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Form sections and action surfaces must remain operable without page-level horizontal overflow or covered controls.",
+        "remediation": "Correct field grouping, container width, or sticky action behavior."
+      },
+      {
+        "id": "FORM-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Field grouping and widths must reflect user concepts and expected input rather than DTO structure.",
+        "remediation": "Reorganize form sections and field layout."
+      },
+      {
+        "id": "FORM-006",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Form progress, contextual summary, form-level errors, help, and action regions must follow typed workflow semantics rather than prose inference.",
+        "remediation": "Correct craftDefaults/presenceDefaults and keep conditional regions required=false with cardinality.minimum=0."
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "Create legal case",
+      "description": "Grouped case identity, parties, procedural classification, financial information, documents, validation, and final submission."
+    },
+    {
+      "name": "Edit tenant configuration",
+      "description": "Organization identity, administrator context, enabled modules, limits, validation, and sensitive save behavior."
+    }
+  ]
+}

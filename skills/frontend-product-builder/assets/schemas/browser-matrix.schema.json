@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/frontend-product-builder/browser-matrix.schema.json",
+  "title": "Frontend Browser Validation Matrix",
+  "description": "Project-specific override of the default browser/viewport coverage used by BROWSER/SCREENSHOTS stages. Absence means the SKILL.md default applies.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["engines", "viewports"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "engines": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["low", "standard", "critical"],
+      "properties": {
+        "low": { "type": "array", "minItems": 1, "items": { "enum": ["chromium", "firefox", "webkit"] } },
+        "standard": { "type": "array", "minItems": 1, "items": { "enum": ["chromium", "firefox", "webkit"] } },
+        "critical": { "type": "array", "minItems": 1, "items": { "enum": ["chromium", "firefox", "webkit"] } }
+      }
+    },
+    "viewports": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "width", "height"],
+        "properties": {
+          "label": { "type": "string", "minLength": 1 },
+          "width": { "type": "integer", "minimum": 1 },
+          "height": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+    "zoomLevels": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["125%"]
+    },
+    "textScalingLevels": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["200%"]
+    }
+  }
+}

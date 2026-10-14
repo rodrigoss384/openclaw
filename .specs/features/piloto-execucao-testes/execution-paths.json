@@ -1,0 +1,5 @@
+{
+  "frontendPaths": [],
+  "backendPaths": [],
+  "testPaths": ["src/infra/retry.test.ts"]
+}

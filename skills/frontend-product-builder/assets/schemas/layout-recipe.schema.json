@@ -1,0 +1,385 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/frontend-product-builder/layout-recipe.schema.json",
+  "title": "Frontend Layout Recipe",
+  "description": "Machine-readable structural and visual-craft contract for composing a frontend screen or application shell.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "purpose", "useWhen", "doNotUseWhen", "requiredInputs", "screenContract", "regions", "composition", "actions", "content", "responsive", "states", "accessibility", "constraints", "validation"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "extends": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "meta": { "$ref": "#/$defs/meta" },
+    "purpose": { "type": "string", "minLength": 20 },
+    "useWhen": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 5 } },
+    "doNotUseWhen": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 5 } },
+    "requiredInputs": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 3 } },
+    "screenContract": { "$ref": "#/$defs/screenContract" },
+    "regions": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/region" } },
+    "composition": { "$ref": "#/$defs/composition" },
+    "actions": { "$ref": "#/$defs/actions" },
+    "content": { "$ref": "#/$defs/content" },
+    "responsive": { "$ref": "#/$defs/responsive" },
+    "states": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/state" } },
+    "accessibility": { "$ref": "#/$defs/accessibility" },
+    "constraints": { "$ref": "#/$defs/constraints" },
+    "craftDefaults": { "$ref": "#/$defs/craftDefaults" },
+    "presenceDefaults": { "type": "array", "items": { "$ref": "#/$defs/presenceDefault" }, "uniqueItems": true, "default": [] },
+    "validation": { "$ref": "#/$defs/validation" },
+    "examples": { "type": "array", "items": { "$ref": "#/$defs/example" }, "default": [] },
+    "deprecation": { "$ref": "#/$defs/deprecation" }
+  },
+  "$defs": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "version", "status", "category", "description", "owner", "source"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "name": { "type": "string", "minLength": 3 },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "status": { "type": "string", "enum": ["experimental", "stable", "deprecated"] },
+        "category": { "type": "string", "enum": ["shell", "dashboard", "list", "detail", "form", "administration", "authentication", "review-approval", "wizard", "custom"] },
+        "description": { "type": "string", "minLength": 10 },
+        "owner": { "type": "string", "minLength": 2 },
+        "source": { "type": "string", "minLength": 1 },
+        "derivedFrom": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$", "description": "meta.id of another recipe this recipe deliberately reuses most regions/structure from, with rationale in description. Required whenever a recipe shares a large majority of region ids with another distinct recipe." },
+        "createdAt": { "type": "string", "format": "date" },
+        "updatedAt": { "type": "string", "format": "date" },
+        "tags": { "type": "array", "uniqueItems": true, "items": { "type": "string" }, "default": [] }
+      }
+    },
+    "screenContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredFields", "selectionQuestions"],
+      "properties": {
+        "requiredFields": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "enum": ["purpose", "primaryUser", "primaryTask", "route", "dataDependencies", "primaryAction", "secondaryActions", "permissions", "states", "responsiveTransformations", "accessibilityRequirements", "acceptanceCriteria"] } },
+        "selectionQuestions": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 5 } }
+      }
+    },
+    "region": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "role", "required", "order", "cardinality", "contentPriority", "allowedComponents", "prohibitedComponents", "ownsSpacing", "sticky", "scroll", "responsive"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9]*$" },
+        "name": { "type": "string", "minLength": 2 },
+        "role": { "type": "string", "minLength": 5 },
+        "required": { "type": "boolean" },
+        "order": { "type": "integer", "minimum": 1 },
+        "cardinality": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["minimum", "maximum"],
+          "properties": {
+            "minimum": { "type": "integer", "minimum": 0 },
+            "maximum": { "oneOf": [{ "type": "integer", "minimum": 1 }, { "type": "string", "const": "unbounded" }] }
+          }
+        },
+        "contentPriority": { "type": "string", "enum": ["critical", "primary", "supporting", "contextual", "audit"] },
+        "allowedComponents": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+        "prohibitedComponents": { "type": "array", "uniqueItems": true, "items": { "type": "string" }, "default": [] },
+        "ownsSpacing": { "type": "boolean" },
+        "surface": { "type": "string", "enum": ["canvas", "surface", "surface-subtle", "surface-elevated", "critical", "none"], "default": "none" },
+        "landmark": { "type": "string", "enum": ["header", "nav", "main", "aside", "section", "form", "footer", "none"], "default": "section" },
+        "labelRequirement": { "type": "string", "enum": ["visible-heading", "accessible-label", "inherited", "not-required"], "default": "visible-heading" },
+        "sticky": { "$ref": "#/$defs/stickyBehavior" },
+        "scroll": { "$ref": "#/$defs/scrollBehavior" },
+        "visibilityCondition": { "type": "string", "description": "Human-readable explanation only. Machine presence semantics belong in presenceDefaults." },
+        "responsive": { "$ref": "#/$defs/regionResponsive" },
+        "rules": { "type": "array", "items": { "type": "string" }, "default": [] }
+      }
+    },
+    "stickyBehavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "container": { "type": "string" },
+        "offsetToken": { "type": "string" },
+        "zIndexToken": { "type": "string" },
+        "compactBehavior": { "type": "string" }
+      }
+    },
+    "scrollBehavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ownership", "axis"],
+      "properties": {
+        "ownership": { "type": "string", "enum": ["document", "application-canvas", "region", "overlay", "none"] },
+        "axis": { "type": "string", "enum": ["vertical", "horizontal", "both", "none"] },
+        "maximumHeight": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "regionResponsive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["compact", "medium", "wide"],
+      "properties": {
+        "compact": { "$ref": "#/$defs/regionViewportBehavior" },
+        "medium": { "$ref": "#/$defs/regionViewportBehavior" },
+        "wide": { "$ref": "#/$defs/regionViewportBehavior" },
+        "ultrawide": { "$ref": "#/$defs/regionViewportBehavior" }
+      }
+    },
+    "regionViewportBehavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["display", "placement", "layout", "overflow"],
+      "properties": {
+        "display": { "type": "string", "enum": ["visible", "hidden", "conditional", "overlay"] },
+        "placement": { "type": "string" },
+        "layout": { "type": "string" },
+        "width": { "type": "string" },
+        "order": { "type": "integer", "minimum": 1 },
+        "overflow": { "type": "string", "enum": ["visible", "wrap", "clip", "scroll-x", "scroll-y", "scroll-both", "collapse", "move-to-overflow"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["layoutModel", "widthPolicy", "container", "columnPolicy", "verticalRhythmToken", "regionGapToken", "spacingOwnership", "surfacePolicy", "scrollOwner", "rules", "prohibited"],
+      "properties": {
+        "layoutModel": { "type": "string", "enum": ["single-column", "grid", "split", "master-detail", "stack", "shell", "custom"] },
+        "widthPolicy": { "type": "string", "enum": ["constrained", "fluid", "hybrid", "split", "full-bleed"] },
+        "container": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["component", "maxWidthToken", "paddingToken"],
+          "properties": { "component": { "type": "string" }, "maxWidthToken": { "type": "string" }, "paddingToken": { "type": "string" } }
+        },
+        "columnPolicy": { "type": "string" },
+        "verticalRhythmToken": { "type": "string" },
+        "regionGapToken": { "type": "string" },
+        "spacingOwnership": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "surfacePolicy": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "scrollOwner": { "type": "string" },
+        "rules": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "prohibited": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "actions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primaryPlacement", "secondaryPlacement", "destructivePlacement", "overflowPolicy", "maxDominantActionsPerRegion", "compactBehavior", "rules"],
+      "properties": {
+        "primaryPlacement": { "type": "string" },
+        "secondaryPlacement": { "type": "string" },
+        "destructivePlacement": { "type": "string" },
+        "bulkPlacement": { "type": "string" },
+        "contextualPlacement": { "type": "string" },
+        "overflowPolicy": { "type": "string" },
+        "maxDominantActionsPerRegion": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "compactBehavior": { "type": "string" },
+        "rules": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["density", "headingPolicy", "longContentPolicy", "truncationPolicy", "emptyStatePlacement", "loadingStrategy", "errorScope", "rules"],
+      "properties": {
+        "density": { "type": "string", "enum": ["spacious", "comfortable", "comfortable-compact", "compact", "dense"] },
+        "headingPolicy": { "type": "string" },
+        "longContentPolicy": { "type": "string" },
+        "truncationPolicy": { "type": "string" },
+        "emptyStatePlacement": { "type": "string" },
+        "loadingStrategy": { "type": "string" },
+        "errorScope": { "type": "string" },
+        "rules": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "responsive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mobileFirst", "minimumViewport", "primaryViewport", "zoomExpectation", "pageOverflowPolicy", "internalOverflowPolicy", "transformations"],
+      "properties": {
+        "mobileFirst": { "type": "boolean" },
+        "minimumViewport": { "type": "string" },
+        "primaryViewport": { "type": "string" },
+        "zoomExpectation": { "type": "string" },
+        "pageOverflowPolicy": { "type": "string" },
+        "internalOverflowPolicy": { "type": "string" },
+        "transformations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/transformation" } }
+      }
+    },
+    "transformation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "change", "reason"],
+      "properties": {
+        "from": { "type": "string", "enum": ["compact", "medium", "wide", "ultrawide"] },
+        "to": { "type": "string", "enum": ["compact", "medium", "wide", "ultrawide"] },
+        "change": { "type": "string", "minLength": 5 },
+        "reason": { "type": "string", "minLength": 5 }
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "scope", "required", "rendering", "userAction"],
+      "properties": {
+        "id": { "type": "string", "enum": ["initial-loading", "refreshing", "data", "empty", "no-results", "warning", "partial", "error", "unauthorized", "forbidden", "unavailable", "stale", "processing"] },
+        "scope": { "type": "string", "enum": ["application", "route", "region", "component", "overlay"] },
+        "required": { "type": "boolean" },
+        "rendering": { "type": "string", "minLength": 5 },
+        "userAction": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["landmarkMap", "headingStructure", "focusOrder", "keyboard", "announcements", "minimumTargetToken", "contrastTarget", "colorIndependence", "rules"],
+      "properties": {
+        "landmarkMap": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "headingStructure": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "focusOrder": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "keyboard": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "announcements": { "type": "array", "items": { "type": "string" } },
+        "minimumTargetToken": { "type": "string" },
+        "contrastTarget": { "type": "string" },
+        "colorIndependence": { "type": "string" },
+        "rules": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredComponents", "prohibitedPatterns", "dataMagnitude", "performance", "implementation"],
+      "properties": {
+        "requiredComponents": { "type": "array", "items": { "type": "string" } },
+        "prohibitedPatterns": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "dataMagnitude": { "type": "array", "items": { "type": "string" } },
+        "performance": { "type": "array", "items": { "type": "string" } },
+        "implementation": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    },
+    "craftDefaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "spatialComposition": { "$ref": "#/$defs/recipeSpatialComposition" },
+        "perceptualHierarchy": { "$ref": "#/$defs/recipePerceptualHierarchy" }
+      }
+    },
+    "recipeSpatialComposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxVisualNestingDepth", "regionAssignments"],
+      "properties": {
+        "maxVisualNestingDepth": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "regionAssignments": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/recipeRegionGeometry" } }
+      }
+    },
+    "recipeRegionGeometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["regionId", "widthStrategy", "heightStrategy", "emptyBehavior", "allowNestedSurface"],
+      "properties": {
+        "regionId": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9]*$" },
+        "widthStrategy": { "enum": ["content-width", "constrained", "fill-available"] },
+        "heightStrategy": { "enum": ["content-driven", "natural", "fill-available", "reserved"] },
+        "emptyBehavior": { "enum": ["collapse", "natural", "reserved"] },
+        "allowNestedSurface": { "type": "boolean" }
+      }
+    },
+    "recipePerceptualHierarchy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["surfaceAssignments"],
+      "properties": {
+        "surfaceAssignments": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/recipeSurfaceAssignment" } }
+      }
+    },
+    "recipeSurfaceAssignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["regionId", "role"],
+      "properties": {
+        "regionId": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9]*$" },
+        "role": { "type": "string", "minLength": 1 }
+      }
+    },
+    "presenceDefault": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["targetType", "targetId", "policy", "condition"],
+      "properties": {
+        "targetType": { "const": "region" },
+        "targetId": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9]*$" },
+        "policy": { "enum": ["always", "conditional", "never"] },
+        "condition": { "oneOf": [{ "$ref": "#/$defs/presenceCondition" }, { "type": "null" }] },
+        "rationale": { "type": "string", "minLength": 3 }
+      }
+    },
+    "presenceCondition": {
+      "oneOf": [
+        { "$ref": "#/$defs/presencePredicate" },
+        { "type": "object", "additionalProperties": false, "required": ["all"], "properties": { "all": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/presenceCondition" } } } },
+        { "type": "object", "additionalProperties": false, "required": ["any"], "properties": { "any": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/presenceCondition" } } } },
+        { "type": "object", "additionalProperties": false, "required": ["not"], "properties": { "not": { "$ref": "#/$defs/presenceCondition" } } }
+      ]
+    },
+    "presencePredicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signal", "operator"],
+      "properties": {
+        "signal": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9]*(?:\\.[a-zA-Z][a-zA-Z0-9]*)*$" },
+        "operator": { "enum": ["truthy", "falsy", "eq", "neq", "gt", "gte", "lt", "lte", "nonempty", "empty"] },
+        "value": { "type": ["string", "number", "boolean", "null"] }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "checks"],
+      "properties": {
+        "schema": { "type": "string" },
+        "checks": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/validationCheck" } }
+      }
+    },
+    "validationCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "method", "blocking", "description"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3}$" },
+        "severity": { "type": "string", "enum": ["error", "warning", "info"] },
+        "method": { "type": "string", "enum": ["schema", "script", "lint", "test", "browser", "manual"] },
+        "blocking": { "type": "boolean" },
+        "description": { "type": "string", "minLength": 5 },
+        "command": { "type": "string" },
+        "remediation": { "type": "string" }
+      }
+    },
+    "example": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "description"],
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "screen": { "type": "string" },
+        "route": { "type": "string" }
+      }
+    },
+    "deprecation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["replacement", "reason", "migration"],
+      "properties": {
+        "replacement": { "type": "string" },
+        "reason": { "type": "string" },
+        "migration": { "type": "string" },
+        "removeAfterVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" }
+      }
+    }
+  }
+}

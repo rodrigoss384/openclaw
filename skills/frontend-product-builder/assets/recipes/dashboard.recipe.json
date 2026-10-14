@@ -1,0 +1,981 @@
+{
+  "$schema": "../schemas/layout-recipe.schema.json",
+  "meta": {
+    "id": "dashboard",
+    "name": "Operational Dashboard",
+    "version": "1.1.0",
+    "status": "stable",
+    "category": "dashboard",
+    "description": "Decision-oriented dashboard that prioritizes critical attention, grouped metrics, filters, analytical context, and actionable work.",
+    "owner": "frontend-product-builder",
+    "source": "assets/recipes/dashboard.recipe.json",
+    "tags": [
+      "monitoring",
+      "metrics",
+      "prioritization",
+      "operational"
+    ]
+  },
+  "purpose": "Help users understand current operational conditions, identify exceptions, compare meaningful metrics, and choose the next action without displaying every available number at equal prominence.",
+  "useWhen": [
+    "The user must monitor several related operational indicators.",
+    "The screen must help prioritize work or identify exceptions.",
+    "Metrics require grouping by business meaning.",
+    "The screen combines summary information with actionable queues or drill-downs."
+  ],
+  "doNotUseWhen": [
+    "The user is primarily locating individual records.",
+    "The screen contains only one or two static statistics.",
+    "The dominant task is editing one entity.",
+    "Cards are being used only because a dashboard appears visually attractive."
+  ],
+  "requiredInputs": [
+    "Approved metric definitions",
+    "Metric freshness requirements",
+    "Primary user decisions",
+    "Critical-alert criteria",
+    "Filter and date-range behavior",
+    "Drill-down routes",
+    "Representative data magnitudes"
+  ],
+  "screenContract": {
+    "requiredFields": [
+      "purpose",
+      "primaryUser",
+      "primaryTask",
+      "route",
+      "dataDependencies",
+      "primaryAction",
+      "secondaryActions",
+      "permissions",
+      "states",
+      "responsiveTransformations",
+      "accessibilityRequirements",
+      "acceptanceCriteria"
+    ],
+    "selectionQuestions": [
+      "What decision must the dashboard help the user make?",
+      "Which metrics are critical, financial, operational, quality, or informational?",
+      "Which indicators require comparison periods or trends?",
+      "Which items require immediate action?",
+      "How fresh must each data source be?",
+      "Which filters affect every dashboard region?"
+    ]
+  },
+  "regions": [
+    {
+      "id": "pageHeader",
+      "name": "Page Header",
+      "role": "Orient the user, state dashboard scope, expose freshness, and present limited page-level actions.",
+      "required": true,
+      "order": 1,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "PageHeader",
+        "DateRangeControl",
+        "RefreshControl",
+        "OverflowMenu",
+        "FreshnessIndicator"
+      ],
+      "prohibitedComponents": [
+        "Large metric cards",
+        "Every export format as a primary button",
+        "Decorative hero content"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "header",
+      "labelRequirement": "not-required",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Top of page.",
+          "layout": "Stack title, scope, freshness, and primary action.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "wrap",
+          "notes": "Secondary actions move to overflow."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Top of page.",
+          "layout": "Title and context left; compact actions right or below.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "wrap",
+          "notes": "Avoid a tall multi-row header."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Top of page.",
+          "layout": "Horizontal page header.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Keep dashboard content visible without excessive scrolling."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Top of page.",
+          "layout": "Horizontal page header.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Do not enlarge the title merely because more width exists."
+        }
+      },
+      "rules": [
+        "The page header does not contain dashboard metrics.",
+        "Refresh and freshness are visually distinct.",
+        "Exports are secondary or overflow actions.",
+        "Date scope must be explicit when metrics depend on a period."
+      ]
+    },
+    {
+      "id": "criticalAttention",
+      "name": "Critical Attention",
+      "role": "Surface exceptions, deadlines, failures, or risks requiring immediate user attention.",
+      "required": false,
+      "order": 2,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "critical",
+      "allowedComponents": [
+        "CriticalAlertGroup",
+        "ActionRequiredBanner",
+        "ExceptionSummary",
+        "AlertList"
+      ],
+      "prohibitedComponents": [
+        "Ordinary informational metrics",
+        "Decorative promotional content"
+      ],
+      "ownsSpacing": true,
+      "surface": "critical",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible only when critical or actionable exceptions exist.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Immediately below the page header.",
+          "layout": "Single stacked critical summary.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "wrap",
+          "notes": "Do not hide critical issues in horizontal carousels."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Immediately below the page header.",
+          "layout": "Stacked or two-column critical summaries.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "wrap",
+          "notes": "Each critical item must expose a clear next action."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Immediately below the page header.",
+          "layout": "One prominent summary or constrained alert grid.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Do not compete with several equally red panels."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Immediately below the page header.",
+          "layout": "Constrained alert row.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Critical alerts remain grouped."
+        }
+      },
+      "rules": [
+        "Only actionable or materially risky conditions appear in this region.",
+        "Critical meaning uses text and icon in addition to color.",
+        "The region disappears when no critical condition exists.",
+        "Do not display neutral empty state as a critical alert."
+      ]
+    },
+    {
+      "id": "globalFilters",
+      "name": "Global Dashboard Filters",
+      "role": "Control the shared scope of dashboard metrics and analytical regions.",
+      "required": false,
+      "order": 3,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 1
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "FilterBar",
+        "DateRangePicker",
+        "Select",
+        "Combobox",
+        "ActiveFilterChips",
+        "FilterDrawer"
+      ],
+      "prohibitedComponents": [
+        "Independent filters that affect only one distant widget without clear labeling",
+        "Large advanced-search form by default"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "form",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when users can meaningfully change dashboard scope.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Compact trigger and active-filter summary below critical attention.",
+          "layout": "Filter trigger opens a drawer; active filters remain visible.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Do not render a large vertical filter form before dashboard content."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Below critical attention.",
+          "layout": "Two-row wrapping filter toolbar.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Low-frequency filters may remain inside a drawer."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Below critical attention.",
+          "layout": "Horizontal filter bar.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "wrap",
+          "notes": "Preserve active-filter visibility."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Below critical attention.",
+          "layout": "Horizontal filter bar with constrained control widths.",
+          "width": "100%",
+          "order": 3,
+          "overflow": "visible",
+          "notes": "Do not stretch selects across unused space."
+        }
+      },
+      "rules": [
+        "Shared filters must affect clearly identified dashboard regions.",
+        "URL state owns shareable date ranges and filters.",
+        "Changing filters resets incompatible drill-down state.",
+        "Active filters remain visible outside compact drawers."
+      ]
+    },
+    {
+      "id": "primaryMetrics",
+      "name": "Primary Metrics",
+      "role": "Present the smallest set of decision-critical metrics grouped by business meaning.",
+      "required": true,
+      "order": 4,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 8
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "MetricGroup",
+        "MetricCard",
+        "TrendIndicator",
+        "ComparisonLabel",
+        "FreshnessIndicator"
+      ],
+      "prohibitedComponents": [
+        "Unclassified metric card",
+        "Decorative statistic without decision value",
+        "Large grid of equally prominent values"
+      ],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Always visible when authoritative metric data is available.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Below filters.",
+          "layout": "Single-column grouped metric stack.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Do not use horizontal metric carousels for critical information."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Below filters.",
+          "layout": "Two-column metric grid grouped by semantic category.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Groups may span full width."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Below filters.",
+          "layout": "Up to four metric columns per semantic group.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Group critical, financial, operational, and quality metrics."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Below filters.",
+          "layout": "Four to six columns only when card content remains readable.",
+          "width": "100%",
+          "order": 4,
+          "overflow": "visible",
+          "notes": "Do not expand to many columns merely to fill width."
+        }
+      },
+      "rules": [
+        "Each metric belongs to a documented semantic group.",
+        "Metrics include comparison or context when raw values are ambiguous.",
+        "Zero, unavailable, and not-calculated values are visually distinct.",
+        "Metric cards do not all use the primary accent."
+      ]
+    },
+    {
+      "id": "analyticalContent",
+      "name": "Analytical Content",
+      "role": "Provide charts, distributions, trends, and comparisons that explain metric movement or composition.",
+      "required": false,
+      "order": 5,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 6
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "ChartPanel",
+        "DistributionChart",
+        "TrendChart",
+        "BreakdownTable",
+        "Legend",
+        "DataFreshness"
+      ],
+      "prohibitedComponents": [
+        "Chart without a user decision or explanatory purpose",
+        "Color-only chart encoding",
+        "Large decorative visualization"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when analytical context materially improves interpretation.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Below primary metrics.",
+          "layout": "Single-column analytical panels with simplified legends.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Charts must remain readable and may switch to an accessible table summary."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Below primary metrics.",
+          "layout": "Single or two-column grid based on chart complexity.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Avoid compressing complex charts into narrow columns."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Below primary metrics.",
+          "layout": "Two-column analytical grid with explicit panel hierarchy.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "A dominant chart may span both columns."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Below primary metrics.",
+          "layout": "Two or three analytical columns according to data complexity.",
+          "width": "100%",
+          "order": 5,
+          "overflow": "visible",
+          "notes": "Do not reduce chart height below readability requirements."
+        }
+      },
+      "rules": [
+        "Every chart must have a title, context, and accessible interpretation.",
+        "Charts do not duplicate metric cards without adding explanation.",
+        "Color is not the only encoding.",
+        "Unknown or incomplete data is communicated."
+      ]
+    },
+    {
+      "id": "actionQueue",
+      "name": "Action Queue",
+      "role": "Translate dashboard insight into prioritized records or tasks requiring user action.",
+      "required": false,
+      "order": 6,
+      "cardinality": {
+        "minimum": 0,
+        "maximum": 2
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "PrioritizedList",
+        "CompactDataTable",
+        "TaskQueue",
+        "ExceptionList",
+        "Pagination",
+        "ViewAllLink"
+      ],
+      "prohibitedComponents": [
+        "Unsorted generic record list",
+        "All records from the underlying collection",
+        "Bulk destructive actions without an explicit workflow"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "section",
+      "labelRequirement": "visible-heading",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible when the dashboard supports a clear next-work decision.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Below analytical content or immediately after metrics when more important.",
+          "layout": "Prioritized stacked list with essential metadata.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Use a separate searchable-list route for the full collection."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Below analytical content.",
+          "layout": "Compact table or prioritized list.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "scroll-x",
+          "notes": "Limit columns to decision-relevant content."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Below analytical content.",
+          "layout": "Compact table or split prioritized queues.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Provide a clear route to the full list."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Below analytical content.",
+          "layout": "One or two prioritized queues.",
+          "width": "100%",
+          "order": 6,
+          "overflow": "visible",
+          "notes": "Do not fill extra width with low-priority columns."
+        }
+      },
+      "rules": [
+        "Queue ordering reflects an approved operational priority.",
+        "The dashboard queue is a curated subset, not a replacement for full search.",
+        "Each item provides the minimum context required to act.",
+        "View-all navigation preserves relevant dashboard filters when appropriate."
+      ]
+    }
+  ],
+  "composition": {
+    "layoutModel": "grid",
+    "widthPolicy": "fluid",
+    "container": {
+      "component": "PageContainer",
+      "maxWidthToken": "layout.container.dashboard",
+      "paddingToken": "layout.page.padding"
+    },
+    "columnPolicy": "Regions define their own constrained grids; the page does not use one universal card grid.",
+    "verticalRhythmToken": "reference.space.8",
+    "regionGapToken": "reference.space.8",
+    "spacingOwnership": [
+      "The dashboard recipe owns spacing between major regions.",
+      "MetricGroup owns spacing between semantic metric groups.",
+      "Analytical panels own their internal padding.",
+      "The action queue owns row and item spacing."
+    ],
+    "surfacePolicy": [
+      "Page header and metric grid may render directly on the canvas.",
+      "Charts and queues may use distinct surfaces when they form interaction boundaries.",
+      "Critical attention uses semantic critical styling.",
+      "Do not wrap the complete dashboard in one additional card."
+    ],
+    "scrollOwner": "application content canvas",
+    "rules": [
+      "Critical attention precedes ordinary metrics.",
+      "Metrics are grouped by business meaning.",
+      "Analytical panels explain rather than duplicate metrics.",
+      "Action queues connect insight to the next task."
+    ],
+    "prohibited": [
+      "A single grid containing every metric with equal prominence.",
+      "Charts added without a documented decision purpose.",
+      "Independent filters with unclear scope.",
+      "Large blank dashboard regions reserved for hypothetical future data.",
+      "Fixed-height cards that clip long content."
+    ]
+  },
+  "actions": {
+    "primaryPlacement": "Page header when one clear dashboard-level action exists; otherwise inside the relevant action queue.",
+    "secondaryPlacement": "Page header overflow, panel headers, or contextual drill-down links.",
+    "destructivePlacement": "Not presented as a dashboard-level primary action.",
+    "bulkPlacement": "Only inside an explicit action queue with selection and permission context.",
+    "contextualPlacement": "Metric drill-down, chart exploration, and queue item actions.",
+    "overflowPolicy": "Exports, configuration, and low-frequency utilities move to the page-header overflow menu.",
+    "maxDominantActionsPerRegion": 1,
+    "compactBehavior": "Preserve one primary action; move exports and utilities into overflow.",
+    "rules": [
+      "The dashboard must not expose several equally dominant actions.",
+      "Metric cards are not buttons unless drill-down behavior is explicit.",
+      "Destructive actions require navigation to or opening of an appropriate workflow."
+    ]
+  },
+  "content": {
+    "density": "comfortable-compact",
+    "headingPolicy": "One h1 in the page header; each metric group, analytical section, and queue uses an h2 or appropriately nested heading.",
+    "longContentPolicy": "Metric labels and queue content must support realistic domain lengths without fixed-height clipping.",
+    "truncationPolicy": "Truncate only secondary content and provide full-value access when the value affects decisions.",
+    "emptyStatePlacement": "An entirely empty dashboard explains missing configuration or data source status; individual empty panels remain local.",
+    "loadingStrategy": "Use stable region skeletons for initial loading, preserve populated regions during background refresh, and show local refresh indicators.",
+    "errorScope": "Widget failures remain local when other dashboard regions can still operate; shared filter or authorization failures may affect the route.",
+    "rules": [
+      "Freshness is visible when stale data changes interpretation.",
+      "Zero and unavailable values are distinct.",
+      "Use realistic financial and operational formatting.",
+      "Do not use lorem ipsum or generic metric names."
+    ]
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "minimumViewport": "320 CSS pixels with reduced simultaneous analytical content.",
+    "primaryViewport": "1366×768 and wider desktop dashboards.",
+    "zoomExpectation": "The dashboard must remain usable at 125% browser zoom.",
+    "pageOverflowPolicy": "No unexpected page-level horizontal overflow.",
+    "internalOverflowPolicy": "Tables may use controlled horizontal scrolling; charts must resize or switch representation.",
+    "transformations": [
+      {
+        "from": "ultrawide",
+        "to": "wide",
+        "change": "Reduce analytical columns before shrinking chart content below readability limits.",
+        "reason": "Chart comprehension is more important than filling every column."
+      },
+      {
+        "from": "wide",
+        "to": "medium",
+        "change": "Primary metric groups move from up to four columns to two columns; complex analytical panels span full width.",
+        "reason": "Preserve readable labels, values, and chart legends."
+      },
+      {
+        "from": "medium",
+        "to": "compact",
+        "change": "Metrics become one-column groups, filters move to a drawer, analytical panels stack, and the action queue uses essential metadata only.",
+        "reason": "Compact layouts cannot sustain simultaneous metric, filter, and table density."
+      }
+    ]
+  },
+  "states": [
+    {
+      "id": "initial-loading",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render region-shaped skeletons preserving the expected dashboard hierarchy.",
+      "userAction": "Wait.",
+      "notes": "Do not render identical card skeletons when regions have different structures."
+    },
+    {
+      "id": "refreshing",
+      "scope": "route",
+      "required": true,
+      "rendering": "Preserve existing data and show freshness or local refresh indicators.",
+      "userAction": "Continue working or wait for refreshed values."
+    },
+    {
+      "id": "data",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render critical attention, metrics, analytical panels, and action queues according to available data.",
+      "userAction": "Interpret, drill down, or act."
+    },
+    {
+      "id": "empty",
+      "scope": "route",
+      "required": true,
+      "rendering": "Explain whether no source data, no configuration, or no activity exists.",
+      "userAction": "Configure, import, change scope, or wait according to product context."
+    },
+    {
+      "id": "partial",
+      "scope": "region",
+      "required": true,
+      "rendering": "Render successful regions and isolate unavailable or failed widgets.",
+      "userAction": "Continue using available information or retry the failed region."
+    },
+    {
+      "id": "error",
+      "scope": "region",
+      "required": true,
+      "rendering": "Render local recovery when one widget fails; route-level recovery when shared dependencies fail.",
+      "userAction": "Retry or contact support using safe details."
+    },
+    {
+      "id": "forbidden",
+      "scope": "route",
+      "required": true,
+      "rendering": "Render an approved permission state or omit restricted dashboard sections according to disclosure policy.",
+      "userAction": "Return to an available route."
+    },
+    {
+      "id": "stale",
+      "scope": "region",
+      "required": true,
+      "rendering": "Keep data visible with an explicit freshness warning when it remains useful.",
+      "userAction": "Refresh or interpret with caution."
+    },
+    {
+      "id": "unavailable",
+      "scope": "region",
+      "required": true,
+      "rendering": "Explain that the data source or calculation is unavailable without representing it as zero.",
+      "userAction": "Retry later or inspect source status."
+    }
+  ],
+  "accessibility": {
+    "landmarkMap": [
+      "Page content uses one main landmark inherited from the application shell.",
+      "Dashboard groups use labeled section elements.",
+      "Global filters use a labeled form landmark when applicable.",
+      "Critical attention uses an appropriate alert or labeled section pattern."
+    ],
+    "headingStructure": [
+      "One h1 identifies the dashboard.",
+      "Metric groups, analytical sections, and action queues use h2 headings.",
+      "Panel titles use h3 only when nested inside an h2 section."
+    ],
+    "focusOrder": [
+      "Page header and primary action.",
+      "Global filters.",
+      "Critical attention actions when present.",
+      "Primary metrics and drill-downs.",
+      "Analytical panels.",
+      "Action queue."
+    ],
+    "keyboard": [
+      "All filter controls and chart alternatives are keyboard accessible.",
+      "Data visualizations expose accessible summaries.",
+      "Queue row actions follow table or list keyboard semantics."
+    ],
+    "announcements": [
+      "Material filter-result changes should be perceivable without excessive live announcements.",
+      "Critical state changes require appropriate status communication.",
+      "Background refresh should not repeatedly interrupt assistive technology."
+    ],
+    "minimumTargetToken": "reference.control.target.minimum",
+    "contrastTarget": "WCAG 2.2 AA",
+    "colorIndependence": "Metric status, chart series, trends, and critical states use labels, icons, patterns, or shapes in addition to color.",
+    "rules": [
+      "Charts require accessible summaries or equivalent data access.",
+      "Metric cards must have meaningful labels.",
+      "Do not use color-only positive and negative indicators."
+    ]
+  },
+  "constraints": {
+    "requiredComponents": [
+      "PageHeader",
+      "MetricGroup",
+      "MetricCard",
+      "FilterBar or FilterDrawer",
+      "EmptyState",
+      "ErrorState",
+      "FreshnessIndicator"
+    ],
+    "prohibitedPatterns": [
+      "Every available metric displayed at equal prominence.",
+      "Charts without explanatory purpose.",
+      "Horizontal metric carousels containing critical data.",
+      "A separate card around every small value.",
+      "Raw timestamps or backend metric identifiers.",
+      "Critical alerts rendered as ordinary informational cards."
+    ],
+    "dataMagnitude": [
+      "The recipe supports a small curated set of top-level metrics rather than unlimited cards.",
+      "Action queues represent a prioritized subset of a larger collection.",
+      "Metric labels and values must support realistic localization and number lengths."
+    ],
+    "performance": [
+      "Independent regions may load concurrently.",
+      "Avoid rerendering every dashboard region for one local interaction.",
+      "Charts should not load heavy libraries when an accessible table or compact visualization is sufficient."
+    ],
+    "implementation": [
+      "Use TanStack Query for server state.",
+      "Use URL state for shareable global filters.",
+      "Use semantic status and chart tokens.",
+      "Use project-approved chart components and accessible alternatives.",
+      "Machine presence conditions come from presenceDefaults; visibilityCondition prose is explanatory only."
+    ]
+  },
+  "craftDefaults": {
+    "spatialComposition": {
+      "maxVisualNestingDepth": 2,
+      "regionAssignments": [
+        {
+          "regionId": "pageHeader",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "criticalAttention",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "globalFilters",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "primaryMetrics",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": true
+        },
+        {
+          "regionId": "analyticalContent",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": true
+        },
+        {
+          "regionId": "actionQueue",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": false
+        }
+      ]
+    },
+    "perceptualHierarchy": {
+      "surfaceAssignments": [
+        {
+          "regionId": "pageHeader",
+          "role": "canvas"
+        },
+        {
+          "regionId": "criticalAttention",
+          "role": "surface-elevated"
+        },
+        {
+          "regionId": "globalFilters",
+          "role": "surface-subtle"
+        },
+        {
+          "regionId": "primaryMetrics",
+          "role": "canvas"
+        },
+        {
+          "regionId": "analyticalContent",
+          "role": "surface"
+        },
+        {
+          "regionId": "actionQueue",
+          "role": "surface"
+        }
+      ]
+    }
+  },
+  "presenceDefaults": [
+    {
+      "targetType": "region",
+      "targetId": "pageHeader",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Operational dashboards always require orientation, scope, and freshness context."
+    },
+    {
+      "targetType": "region",
+      "targetId": "criticalAttention",
+      "policy": "conditional",
+      "condition": {
+        "signal": "criticalAttention.items.count",
+        "operator": "gt",
+        "value": 0
+      },
+      "rationale": "Critical attention disappears when there are no actionable or materially risky conditions."
+    },
+    {
+      "targetType": "region",
+      "targetId": "globalFilters",
+      "policy": "conditional",
+      "condition": {
+        "signal": "dashboard.filters.enabled",
+        "operator": "truthy"
+      },
+      "rationale": "Global filter chrome exists only when users can meaningfully alter shared dashboard scope."
+    },
+    {
+      "targetType": "region",
+      "targetId": "primaryMetrics",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Primary metrics are structural to the dashboard and remain present to render honest zero, unavailable, or not-calculated states."
+    },
+    {
+      "targetType": "region",
+      "targetId": "analyticalContent",
+      "policy": "conditional",
+      "condition": {
+        "signal": "dashboard.analytics.enabled",
+        "operator": "truthy"
+      },
+      "rationale": "Analytical panels appear only when the product defines analytical context that adds explanatory value."
+    },
+    {
+      "targetType": "region",
+      "targetId": "actionQueue",
+      "policy": "conditional",
+      "condition": {
+        "signal": "dashboard.actionQueue.enabled",
+        "operator": "truthy"
+      },
+      "rationale": "An action queue exists only when the dashboard is designed to support a next-work decision; its own empty state may still communicate that no work is pending."
+    }
+  ],
+  "validation": {
+    "schema": "assets/schemas/layout-recipe.schema.json",
+    "checks": [
+      {
+        "id": "DASH-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The dashboard recipe must validate against the layout recipe schema.",
+        "remediation": "Correct invalid or missing recipe fields."
+      },
+      {
+        "id": "DASH-002",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Every primary metric must belong to an approved semantic group and support a user decision.",
+        "remediation": "Remove, regroup, or demote metrics that do not support the primary task."
+      },
+      {
+        "id": "DASH-003",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Metric grids, filters, charts, and queues must not create page-level horizontal overflow.",
+        "remediation": "Correct responsive transformations or internal overflow ownership."
+      },
+      {
+        "id": "DASH-004",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Zero, unavailable, stale, and not-calculated values must remain distinguishable.",
+        "remediation": "Correct value presentation and state semantics."
+      },
+      {
+        "id": "DASH-005",
+        "severity": "warning",
+        "method": "manual",
+        "blocking": false,
+        "description": "The dashboard should not contain visually prominent but non-actionable decoration.",
+        "remediation": "Remove or demote content without operational purpose."
+      },
+      {
+        "id": "DASH-006",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Dashboard optional regions must follow typed availability/capability signals while primary metrics retain an honest empty or unavailable region.",
+        "remediation": "Correct craftDefaults/presenceDefaults and keep conditional regions required=false with cardinality.minimum=0."
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "Legal operations dashboard",
+      "description": "Critical deadlines, financial exposure, operational metrics, case distribution, and a prioritized action queue."
+    },
+    {
+      "name": "Infrastructure operations dashboard",
+      "description": "Service health, active incidents, capacity indicators, trends, and actionable alerts."
+    }
+  ]
+}

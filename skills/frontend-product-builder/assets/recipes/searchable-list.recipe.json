@@ -1,0 +1,378 @@
+{
+  "$schema": "../schemas/layout-recipe.schema.json",
+  "meta": {
+    "id": "searchable-list",
+    "name": "Searchable Operational List",
+    "version": "1.1.0",
+    "status": "stable",
+    "category": "list",
+    "description": "Search, filter, compare, select, and act on a server-backed collection while preserving state in the URL.",
+    "owner": "frontend-product-builder",
+    "source": "assets/recipes/searchable-list.recipe.json",
+    "tags": ["search", "filters", "table", "collection", "pagination"]
+  },
+  "purpose": "Enable users to locate and compare records efficiently, preserve search context, perform contextual or bulk actions, and navigate to detailed workflows.",
+  "useWhen": [
+    "The dominant task is locating records in a medium or large collection.",
+    "Users need search, filters, sorting, or pagination.",
+    "Users compare several records before selecting one.",
+    "The collection supports contextual or bulk actions."
+  ],
+  "doNotUseWhen": [
+    "The collection is very small, static, and requires no search.",
+    "The primary task is monitoring aggregated metrics.",
+    "The user primarily reviews one entity.",
+    "The workflow is a sequential creation process."
+  ],
+  "requiredInputs": [
+    "Approved search fields",
+    "Approved filters",
+    "Approved sort fields",
+    "Pagination contract",
+    "Column priority",
+    "Permissions and bulk-action rules",
+    "Expected collection magnitude",
+    "URL state contract"
+  ],
+  "screenContract": {
+    "requiredFields": ["purpose", "primaryUser", "primaryTask", "route", "dataDependencies", "primaryAction", "secondaryActions", "permissions", "states", "responsiveTransformations", "accessibilityRequirements", "acceptanceCriteria"],
+    "selectionQuestions": [
+      "Which fields do users search most frequently?",
+      "Which filters must remain immediately visible?",
+      "Which columns are required for comparison?",
+      "Does the workflow require row selection or bulk actions?",
+      "How many records are typical and high volume?",
+      "Which state must be preserved in the URL?",
+      "What should happen when the user returns from a detail screen?"
+    ]
+  },
+  "regions": [
+    {
+      "id": "pageHeader",
+      "name": "Page Header",
+      "role": "Orient the user, describe the collection, and expose one primary collection-level action.",
+      "required": true,
+      "order": 1,
+      "cardinality": { "minimum": 1, "maximum": 1 },
+      "contentPriority": "primary",
+      "allowedComponents": ["PageHeader", "Button", "OverflowMenu", "CollectionFreshness"],
+      "prohibitedComponents": ["Search input duplicated from the filter region", "Several equally dominant creation and export actions"],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "header",
+      "labelRequirement": "not-required",
+      "sticky": { "enabled": false },
+      "scroll": { "ownership": "none", "axis": "none" },
+      "visibilityCondition": "Always visible.",
+      "responsive": {
+        "compact": { "display": "visible", "placement": "Top of page.", "layout": "Stack title, description, and primary action.", "width": "100%", "order": 1, "overflow": "wrap", "notes": "Export and utilities move to overflow." },
+        "medium": { "display": "visible", "placement": "Top of page.", "layout": "Title and actions wrap when required.", "width": "100%", "order": 1, "overflow": "wrap", "notes": "Keep the header compact." },
+        "wide": { "display": "visible", "placement": "Top of page.", "layout": "Horizontal page header.", "width": "100%", "order": 1, "overflow": "visible", "notes": "One primary action." },
+        "ultrawide": { "display": "visible", "placement": "Top of page.", "layout": "Horizontal page header.", "width": "100%", "order": 1, "overflow": "visible", "notes": "Do not increase heading scale." }
+      },
+      "rules": ["The header normally contains one collection-level primary action.", "Export and configuration are secondary or overflow actions.", "The collection name uses user-facing terminology."]
+    },
+    {
+      "id": "searchAndFilters",
+      "name": "Search and Filters",
+      "role": "Control server-backed search, filters, sorting scope, and active result criteria.",
+      "required": true,
+      "order": 2,
+      "cardinality": { "minimum": 1, "maximum": 1 },
+      "contentPriority": "primary",
+      "allowedComponents": ["SearchInput", "FilterBar", "FilterDrawer", "Select", "Combobox", "DateRangePicker", "Button"],
+      "prohibitedComponents": ["Unlabeled native input", "Every possible filter displayed simultaneously", "Local state that diverges from URL state"],
+      "ownsSpacing": true,
+      "surface": "surface-subtle",
+      "landmark": "form",
+      "labelRequirement": "accessible-label",
+      "sticky": { "enabled": false },
+      "scroll": { "ownership": "none", "axis": "none" },
+      "visibilityCondition": "Always visible for this searchable-list recipe.",
+      "responsive": {
+        "compact": { "display": "visible", "placement": "Below the page header.", "layout": "Search input plus filter-drawer trigger.", "width": "100%", "order": 2, "overflow": "wrap", "notes": "Active filter summary remains outside the drawer." },
+        "medium": { "display": "visible", "placement": "Below the page header.", "layout": "Search plus immediately useful filters; advanced filters in drawer.", "width": "100%", "order": 2, "overflow": "wrap", "notes": "Controls use content-appropriate widths." },
+        "wide": { "display": "visible", "placement": "Below the page header.", "layout": "Horizontal search and filter toolbar.", "width": "100%", "order": 2, "overflow": "wrap", "notes": "Do not stretch all controls equally." },
+        "ultrawide": { "display": "visible", "placement": "Below the page header.", "layout": "Horizontal toolbar with constrained control widths and optional advanced-filter trigger.", "width": "100%", "order": 2, "overflow": "visible", "notes": "Unused horizontal space remains intentional." }
+      },
+      "rules": ["Search and filter state is validated from the URL.", "Changing search or material filters resets pagination.", "Text search cancels stale requests.", "Clear-all behavior is explicit.", "Filter scope matches request parameters."]
+    },
+    {
+      "id": "activeFilterSummary",
+      "name": "Active Filter Summary",
+      "role": "Make the current result scope visible and allow users to remove active criteria.",
+      "required": false,
+      "order": 3,
+      "cardinality": { "minimum": 0, "maximum": 1 },
+      "contentPriority": "supporting",
+      "allowedComponents": ["ActiveFilterChips", "FilterSummary", "ClearFiltersButton"],
+      "prohibitedComponents": ["Duplicate full filter controls", "Unremovable active-filter labels"],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "section",
+      "labelRequirement": "accessible-label",
+      "sticky": { "enabled": false },
+      "scroll": { "ownership": "none", "axis": "none" },
+      "visibilityCondition": "Visible when one or more non-default filters are active.",
+      "responsive": {
+        "compact": { "display": "conditional", "placement": "Below the search and filter controls.", "layout": "Wrapping filter chips and clear-all action.", "width": "100%", "order": 3, "overflow": "wrap", "notes": "Do not require reopening the drawer to understand active scope." },
+        "medium": { "display": "conditional", "placement": "Below search and filters.", "layout": "Wrapping chips.", "width": "100%", "order": 3, "overflow": "wrap", "notes": "Long filter values may truncate with accessible full text." },
+        "wide": { "display": "conditional", "placement": "Below search and filters.", "layout": "Inline wrapping chips.", "width": "100%", "order": 3, "overflow": "wrap", "notes": "Keep result summary separate." },
+        "ultrawide": { "display": "conditional", "placement": "Below search and filters.", "layout": "Inline wrapping chips.", "width": "100%", "order": 3, "overflow": "wrap", "notes": "Do not create a horizontal chip scroller." }
+      },
+      "rules": ["Default filters do not appear as active chips unless product context requires it.", "Removing a filter updates the URL and query.", "Clear-all preserves mandatory scope such as tenant context."]
+    },
+    {
+      "id": "bulkActions",
+      "name": "Bulk Actions",
+      "role": "Present actions that apply to the current explicit selection.",
+      "required": false,
+      "order": 4,
+      "cardinality": { "minimum": 0, "maximum": 1 },
+      "contentPriority": "contextual",
+      "allowedComponents": ["BulkActionToolbar", "SelectionSummary", "Button", "DropdownMenu", "ConfirmationDialog"],
+      "prohibitedComponents": ["Bulk action without explicit selection count", "Irreversible action without confirmation", "Action based on hidden selection"],
+      "ownsSpacing": true,
+      "surface": "surface-elevated",
+      "landmark": "section",
+      "labelRequirement": "accessible-label",
+      "sticky": { "enabled": true, "container": "results region", "offsetToken": "reference.space.0", "zIndexToken": "reference.zIndex.sticky", "compactBehavior": "Render a compact sticky selection bar or bottom action surface." },
+      "scroll": { "ownership": "none", "axis": "none" },
+      "visibilityCondition": "Visible only when one or more rows are selected and the user has an eligible capability.",
+      "responsive": {
+        "compact": { "display": "conditional", "placement": "Sticky compact action bar associated with selected results.", "layout": "Selection count, one primary bulk action, overflow for secondary actions.", "width": "100%", "order": 4, "overflow": "move-to-overflow", "notes": "Do not obscure pagination or essential content." },
+        "medium": { "display": "conditional", "placement": "Above results.", "layout": "Horizontal toolbar.", "width": "100%", "order": 4, "overflow": "move-to-overflow", "notes": "Display selection count." },
+        "wide": { "display": "conditional", "placement": "Above results.", "layout": "Horizontal toolbar.", "width": "100%", "order": 4, "overflow": "visible", "notes": "Destructive actions remain separated." },
+        "ultrawide": { "display": "conditional", "placement": "Above results.", "layout": "Horizontal toolbar.", "width": "100%", "order": 4, "overflow": "visible", "notes": "Do not expand action spacing unnecessarily." }
+      },
+      "rules": ["Selection count is explicit.", "Selection is cleared or reconciled when filters materially change.", "Bulk destructive actions use confirmation and permission checks.", "The backend remains authoritative for eligibility."]
+    },
+    {
+      "id": "resultsSummary",
+      "name": "Results Summary",
+      "role": "Communicate result count, current range, sorting context, and refresh state.",
+      "required": false,
+      "order": 5,
+      "cardinality": { "minimum": 0, "maximum": 1 },
+      "contentPriority": "supporting",
+      "allowedComponents": ["ResultsCount", "SortControl", "RefreshIndicator", "ColumnVisibilityControl"],
+      "prohibitedComponents": ["Large page title", "Duplicate pagination controls without reason"],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "section",
+      "labelRequirement": "accessible-label",
+      "sticky": { "enabled": false },
+      "scroll": { "ownership": "none", "axis": "none" },
+      "visibilityCondition": "Visible when the query has completed successfully.",
+      "responsive": {
+        "compact": { "display": "conditional", "placement": "Above results.", "layout": "Wrap result count and compact sort control.", "width": "100%", "order": 5, "overflow": "wrap", "notes": "Column controls may move to overflow." },
+        "medium": { "display": "conditional", "placement": "Above results.", "layout": "Horizontal summary and controls.", "width": "100%", "order": 5, "overflow": "wrap", "notes": "Preserve result count visibility." },
+        "wide": { "display": "conditional", "placement": "Above results.", "layout": "Horizontal summary and table utilities.", "width": "100%", "order": 5, "overflow": "visible", "notes": "Do not compete with the page header." },
+        "ultrawide": { "display": "conditional", "placement": "Above results.", "layout": "Horizontal summary and table utilities.", "width": "100%", "order": 5, "overflow": "visible", "notes": "Keep controls grouped." }
+      },
+      "rules": ["Result count distinguishes total records from current page range.", "Background refresh does not erase existing result context.", "Sort labels are user-facing."]
+    },
+    {
+      "id": "results",
+      "name": "Results",
+      "role": "Present records in a comparison-oriented table, list, or master-detail structure.",
+      "required": false,
+      "order": 6,
+      "cardinality": { "minimum": 0, "maximum": 1 },
+      "contentPriority": "primary",
+      "allowedComponents": ["DataTable", "OperationalList", "MasterList", "RowActionMenu", "StatusBadge", "SelectionControl"],
+      "prohibitedComponents": ["Page-local table implementation when a canonical DataTable exists", "Every backend field as a column", "Unlabeled icon-only row actions"],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "section",
+      "labelRequirement": "accessible-label",
+      "sticky": { "enabled": false },
+      "scroll": { "ownership": "region", "axis": "horizontal", "notes": "Controlled horizontal scrolling is allowed when column comparison remains the correct compact pattern." },
+      "visibilityCondition": "Visible when successful query data contains records.",
+      "responsive": {
+        "compact": { "display": "conditional", "placement": "Main content region.", "layout": "Reduced-column table, summary list, or master-detail trigger according to approved screen contract.", "width": "100%", "order": 6, "overflow": "scroll-x", "notes": "Do not automatically convert all tables into cards." },
+        "medium": { "display": "conditional", "placement": "Main content region.", "layout": "Table with prioritized columns and controlled horizontal overflow.", "width": "100%", "order": 6, "overflow": "scroll-x", "notes": "Sticky header may be used within the correct scroll owner." },
+        "wide": { "display": "conditional", "placement": "Main content region.", "layout": "Full operational data table.", "width": "100%", "order": 6, "overflow": "visible", "notes": "Column width reflects data shape." },
+        "ultrawide": { "display": "conditional", "placement": "Main content region.", "layout": "Full operational data table with optional persistent contextual details.", "width": "100%", "order": 6, "overflow": "visible", "notes": "Do not add low-value columns merely to fill width." }
+      },
+      "rules": ["Columns are selected according to comparison needs.", "Row actions remain secondary to row content.", "Selection controls have accessible labels.", "Clicking a row must not conflict with interactive cells.", "Long critical values remain accessible."]
+    },
+    {
+      "id": "pagination",
+      "name": "Pagination",
+      "role": "Navigate the server-backed result collection while preserving filters and sorting.",
+      "required": false,
+      "order": 7,
+      "cardinality": { "minimum": 0, "maximum": 1 },
+      "contentPriority": "supporting",
+      "allowedComponents": ["Pagination", "PageSizeSelect", "RangeSummary"],
+      "prohibitedComponents": ["Infinite scroll without approved workflow", "Pagination state disconnected from the URL"],
+      "ownsSpacing": true,
+      "surface": "none",
+      "landmark": "nav",
+      "labelRequirement": "accessible-label",
+      "sticky": { "enabled": false },
+      "scroll": { "ownership": "none", "axis": "none" },
+      "visibilityCondition": "Visible when the collection exceeds one page or page-size control remains relevant.",
+      "responsive": {
+        "compact": { "display": "conditional", "placement": "Below results.", "layout": "Compact previous, range, and next controls.", "width": "100%", "order": 7, "overflow": "wrap", "notes": "Avoid rendering many page-number buttons." },
+        "medium": { "display": "conditional", "placement": "Below results.", "layout": "Range, page navigation, and page-size control.", "width": "100%", "order": 7, "overflow": "wrap", "notes": "Maintain accessible navigation labels." },
+        "wide": { "display": "conditional", "placement": "Below results.", "layout": "Horizontal pagination.", "width": "100%", "order": 7, "overflow": "visible", "notes": "Preserve current filters." },
+        "ultrawide": { "display": "conditional", "placement": "Below results.", "layout": "Horizontal pagination.", "width": "100%", "order": 7, "overflow": "visible", "notes": "Do not detach pagination visually from the results." }
+      },
+      "rules": ["Page and page size are validated.", "Changing page size resets to a valid page.", "Returning from details restores list context where product requirements support it."]
+    },
+    {
+      "id": "contextualDetails",
+      "name": "Contextual Details",
+      "role": "Provide optional preview or selected-record context without replacing the full entity-detail route.",
+      "required": false,
+      "order": 8,
+      "cardinality": { "minimum": 0, "maximum": 1 },
+      "contentPriority": "contextual",
+      "allowedComponents": ["DetailsDrawer", "PreviewPanel", "EntitySummary", "QuickActions"],
+      "prohibitedComponents": ["Complete duplicated entity-detail screen", "Sensitive data without permission evaluation"],
+      "ownsSpacing": true,
+      "surface": "surface-elevated",
+      "landmark": "aside",
+      "labelRequirement": "visible-heading",
+      "sticky": { "enabled": true, "container": "results layout", "offsetToken": "reference.space.4", "zIndexToken": "reference.zIndex.sticky", "compactBehavior": "Open as a modal drawer or navigate to the detail route." },
+      "scroll": { "ownership": "region", "axis": "vertical" },
+      "visibilityCondition": "Visible when the approved workflow supports previewing a selected result.",
+      "responsive": {
+        "compact": { "display": "overlay", "placement": "Drawer or full detail navigation.", "layout": "Single-column selected-record summary.", "width": "min(100vw, 420px)", "order": 8, "overflow": "scroll-y", "notes": "Do not leave the results region unusably narrow." },
+        "medium": { "display": "overlay", "placement": "Side drawer.", "layout": "Selected-record summary.", "width": "min(72vw, 480px)", "order": 8, "overflow": "scroll-y", "notes": "Focus management is required." },
+        "wide": { "display": "conditional", "placement": "Optional persistent aside or drawer.", "layout": "Contextual selected-record summary.", "width": "minmax(320px, 30%)", "order": 8, "overflow": "scroll-y", "notes": "Use persistent aside only when comparison benefits." },
+        "ultrawide": { "display": "conditional", "placement": "Persistent aside when approved.", "layout": "Contextual selected-record summary.", "width": "360px", "order": 8, "overflow": "scroll-y", "notes": "Do not expand the aside excessively." }
+      },
+      "rules": ["Preview content is a curated subset.", "The full detail route remains authoritative for complete workflows.", "Selection state is explicit and keyboard accessible.", "Closing the overlay restores focus."]
+    }
+  ],
+  "composition": {
+    "layoutModel": "stack",
+    "widthPolicy": "fluid",
+    "container": { "component": "PageContainer", "maxWidthToken": "layout.container.data", "paddingToken": "layout.page.padding" },
+    "columnPolicy": "Single primary results column with optional contextual details aside or overlay.",
+    "verticalRhythmToken": "reference.space.6",
+    "regionGapToken": "reference.space.4",
+    "spacingOwnership": ["The recipe owns gaps between page header, filters, results summary, results, and pagination.", "The filter bar owns control gaps.", "The DataTable owns cell and row spacing.", "Pagination owns spacing between navigation controls."],
+    "surfacePolicy": ["Filters may use a subtle surface.", "Results use one coherent data surface.", "Do not wrap each row in an independent card unless the approved compact pattern is a list.", "Contextual details use an elevated surface."],
+    "scrollOwner": "application content canvas with optional internal horizontal results scrolling",
+    "rules": ["Search and filters precede results.", "Bulk actions appear only after explicit selection.", "Results and pagination remain visually connected when pagination is present.", "Optional contextual detail does not replace the full detail workflow."],
+    "prohibited": ["Every backend field rendered as a column.", "Filters stored only in transient component state.", "Page-level horizontal overflow.", "Several independent search controls.", "Bulk actions visible without selection.", "Infinite scrolling by default."]
+  },
+  "actions": {
+    "primaryPlacement": "Page header for create or collection-level primary action.",
+    "secondaryPlacement": "Page header overflow, result utilities, or selected-record context.",
+    "destructivePlacement": "Row or bulk workflow with explicit confirmation and permission context.",
+    "bulkPlacement": "Bulk action toolbar visible only for explicit selection.",
+    "contextualPlacement": "Row action menu or contextual details panel.",
+    "overflowPolicy": "Export, column configuration, and low-frequency utilities move to overflow.",
+    "maxDominantActionsPerRegion": 1,
+    "compactBehavior": "Keep one collection-level primary action and move utility or secondary actions to overflow.",
+    "rules": ["Row actions do not visually dominate row content.", "Bulk actions display selection count.", "Clicking a row must not accidentally invoke an action when interacting with controls."]
+  },
+  "content": {
+    "density": "compact",
+    "headingPolicy": "One h1 in the page header; results and optional contextual details use labeled regions.",
+    "longContentPolicy": "Column and list content follows explicit wrapping, truncation, and full-value access rules.",
+    "truncationPolicy": "Critical comparison values remain visible; secondary metadata may truncate with accessible full text.",
+    "emptyStatePlacement": "Replace the results region, not the complete page header and filter context.",
+    "loadingStrategy": "Use table or list skeletons for initial loading and preserve existing data during background requests.",
+    "errorScope": "Search or results errors affect the results region; authentication and permission failures may affect the route.",
+    "rules": ["No-results state preserves active filters and offers adjustment.", "Empty collection state may offer the primary creation action.", "Result counts distinguish total and current range.", "Dates, currency, and statuses use centralized formatting."]
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "minimumViewport": "320 CSS pixels with approved reduced-column or list representation.",
+    "primaryViewport": "1366×768 desktop operational environment.",
+    "zoomExpectation": "The list must remain operable at 125% browser zoom.",
+    "pageOverflowPolicy": "No unexpected page-level horizontal overflow.",
+    "internalOverflowPolicy": "The results region may own controlled horizontal scrolling when table comparison remains appropriate.",
+    "transformations": [
+      { "from": "ultrawide", "to": "wide", "change": "Remove low-priority columns or switch persistent preview to an optional drawer before compressing essential columns.", "reason": "Preserve readable comparison content." },
+      { "from": "wide", "to": "medium", "change": "Move advanced filters to a drawer, reduce table columns, and use controlled horizontal scrolling.", "reason": "Maintain search efficiency and essential comparison." },
+      { "from": "medium", "to": "compact", "change": "Use search plus filter drawer, compact result summary, reduced-column table or approved list pattern, and compact pagination when pagination is present.", "reason": "Compact viewports cannot display full filters and wide result tables simultaneously." }
+    ]
+  },
+  "states": [
+    { "id": "initial-loading", "scope": "region", "required": true, "rendering": "Render stable result skeletons while preserving the page header and filter structure.", "userAction": "Wait." },
+    { "id": "refreshing", "scope": "region", "required": true, "rendering": "Preserve current results and communicate that the new query is loading.", "userAction": "Continue reviewing current data or wait." },
+    { "id": "data", "scope": "region", "required": true, "rendering": "Render result summary, data table or list, conditionally applicable pagination, and eligible actions.", "userAction": "Search, compare, select, act, or open details." },
+    { "id": "empty", "scope": "region", "required": true, "rendering": "Explain that the collection contains no records in the current base scope.", "userAction": "Create, import, configure, or return according to product context." },
+    { "id": "no-results", "scope": "region", "required": true, "rendering": "Preserve search and filters, explain that no records match, and expose filter-adjustment actions.", "userAction": "Change search, remove filters, or clear all." },
+    { "id": "error", "scope": "region", "required": true, "rendering": "Render a result-region recovery state without removing the user's search criteria.", "userAction": "Retry." },
+    { "id": "forbidden", "scope": "route", "required": true, "rendering": "Render the approved permission state or redirect according to disclosure policy.", "userAction": "Return." },
+    { "id": "stale", "scope": "region", "required": false, "rendering": "Keep current results with a visible freshness indication when they remain useful.", "userAction": "Refresh." }
+  ],
+  "accessibility": {
+    "landmarkMap": ["Page content uses the inherited main landmark.", "Search and filters use a labeled form.", "Results use a labeled section or table region.", "Pagination uses a labeled navigation landmark when present.", "Contextual details use an aside or dialog according to presentation."],
+    "headingStructure": ["One h1 identifies the collection.", "Results require an accessible region label even when no visible h2 is necessary.", "Contextual details use a nested heading."],
+    "focusOrder": ["Page header and primary collection action.", "Search and filters.", "Active filter controls when present.", "Bulk actions when visible.", "Results summary when present.", "Results when present.", "Pagination when present.", "Contextual details when present."],
+    "keyboard": ["Search, filters, sorting, pagination when present, selection, and row actions are keyboard operable.", "Table headers communicate sorting state.", "Contextual drawers trap and restore focus.", "Selection controls have row-specific accessible names."],
+    "announcements": ["Material result-count changes should be perceivable without announcing every keystroke.", "Bulk selection count changes should be available to assistive technology.", "Loading and error states must be associated with the results region."],
+    "minimumTargetToken": "reference.control.target.minimum",
+    "contrastTarget": "WCAG 2.2 AA",
+    "colorIndependence": "Status, selection, sorting, and validation do not depend only on color.",
+    "rules": ["Do not use clickable table rows without preserving keyboard and nested-control behavior.", "Pagination controls require accessible labels when rendered.", "Hidden compact columns must not leave orphaned header associations."]
+  },
+  "constraints": {
+    "requiredComponents": ["PageHeader", "SearchInput", "FilterBar or FilterDrawer", "DataTable or approved OperationalList", "EmptyState", "ErrorState"],
+    "prohibitedPatterns": ["Fetch through useEffect.", "Incomplete query keys.", "URL and visual filter divergence.", "Every DTO field rendered as a column.", "Unlabeled row action icons.", "Bulk action without explicit selection.", "Page-level horizontal overflow.", "Infinite scrolling without approved task rationale.", "Pagination rendered only because the recipe contains a pagination region."],
+    "dataMagnitude": ["The collection may contain thousands or tens of thousands of server-backed records.", "Names, identifiers, and statuses may contain long localized values.", "The visible page represents only a subset of the collection."],
+    "performance": ["Use server pagination for large collections.", "Cancel stale text-search requests.", "Avoid rerendering the entire table for unrelated toolbar state.", "Use virtualization only when measured or required."],
+    "implementation": ["TanStack Query owns server state.", "URL search parameters own shareable filters, sorting, and pagination.", "Query keys include every response-shaping parameter.", "Formatting and enum presentation use centralized mappings.", "Machine presence conditions come from presenceDefaults; visibilityCondition prose is explanatory only."]
+  },
+  "craftDefaults": {
+    "spatialComposition": {
+      "maxVisualNestingDepth": 2,
+      "regionAssignments": [
+        { "regionId": "pageHeader", "widthStrategy": "fill-available", "heightStrategy": "content-driven", "emptyBehavior": "natural", "allowNestedSurface": false },
+        { "regionId": "searchAndFilters", "widthStrategy": "fill-available", "heightStrategy": "content-driven", "emptyBehavior": "natural", "allowNestedSurface": false },
+        { "regionId": "activeFilterSummary", "widthStrategy": "fill-available", "heightStrategy": "content-driven", "emptyBehavior": "collapse", "allowNestedSurface": false },
+        { "regionId": "bulkActions", "widthStrategy": "fill-available", "heightStrategy": "content-driven", "emptyBehavior": "collapse", "allowNestedSurface": false },
+        { "regionId": "resultsSummary", "widthStrategy": "fill-available", "heightStrategy": "content-driven", "emptyBehavior": "collapse", "allowNestedSurface": false },
+        { "regionId": "results", "widthStrategy": "fill-available", "heightStrategy": "content-driven", "emptyBehavior": "collapse", "allowNestedSurface": false },
+        { "regionId": "pagination", "widthStrategy": "fill-available", "heightStrategy": "content-driven", "emptyBehavior": "collapse", "allowNestedSurface": false },
+        { "regionId": "contextualDetails", "widthStrategy": "content-width", "heightStrategy": "content-driven", "emptyBehavior": "collapse", "allowNestedSurface": false }
+      ]
+    },
+    "perceptualHierarchy": {
+      "surfaceAssignments": [
+        { "regionId": "pageHeader", "role": "canvas" },
+        { "regionId": "searchAndFilters", "role": "surface-subtle" },
+        { "regionId": "activeFilterSummary", "role": "canvas" },
+        { "regionId": "bulkActions", "role": "surface-elevated" },
+        { "regionId": "resultsSummary", "role": "canvas" },
+        { "regionId": "results", "role": "surface" },
+        { "regionId": "pagination", "role": "canvas" },
+        { "regionId": "contextualDetails", "role": "surface-elevated" }
+      ]
+    }
+  },
+  "presenceDefaults": [
+    { "targetType": "region", "targetId": "pageHeader", "policy": "always", "condition": null, "rationale": "The collection route always needs orientation and its collection-level action context." },
+    { "targetType": "region", "targetId": "searchAndFilters", "policy": "always", "condition": null, "rationale": "Search/filter control is structural to the searchable-list recipe." },
+    { "targetType": "region", "targetId": "activeFilterSummary", "policy": "conditional", "condition": { "signal": "activeFilters.count", "operator": "gt", "value": 0 }, "rationale": "Do not reserve space for active-filter presentation when the effective filter set is default." },
+    { "targetType": "region", "targetId": "bulkActions", "policy": "conditional", "condition": { "all": [{ "signal": "selection.count", "operator": "gt", "value": 0 }, { "signal": "selection.hasEligibleBulkAction", "operator": "truthy" }] }, "rationale": "Bulk actions exist only for an explicit actionable selection." },
+    { "targetType": "region", "targetId": "resultsSummary", "policy": "conditional", "condition": { "signal": "query.status", "operator": "eq", "value": "success" }, "rationale": "Result summary belongs to a successfully evaluated query state." },
+    { "targetType": "region", "targetId": "results", "policy": "conditional", "condition": { "signal": "results.count", "operator": "gt", "value": 0 }, "rationale": "The results surface must collapse in empty and no-results states." },
+    { "targetType": "region", "targetId": "pagination", "policy": "conditional", "condition": { "any": [{ "signal": "pagination.totalPages", "operator": "gt", "value": 1 }, { "signal": "pagination.pageSizeControlRelevant", "operator": "truthy" }] }, "rationale": "A one-page collection must not render pagination chrome unless page-size control remains a real user decision." },
+    { "targetType": "region", "targetId": "contextualDetails", "policy": "conditional", "condition": { "all": [{ "signal": "selectedRecord.present", "operator": "truthy" }, { "signal": "preview.enabled", "operator": "truthy" }] }, "rationale": "Preview context requires both a selected record and an approved preview capability." }
+  ],
+  "validation": {
+    "schema": "assets/schemas/layout-recipe.schema.json",
+    "checks": [
+      { "id": "LIST-001", "severity": "error", "method": "schema", "blocking": true, "description": "The searchable-list recipe must validate against the layout recipe schema.", "remediation": "Correct missing or invalid recipe fields." },
+      { "id": "LIST-002", "severity": "error", "method": "test", "blocking": true, "description": "Search, filters, sorting, page, and page size must remain synchronized with validated URL state.", "remediation": "Correct URL parsing, normalization, or query-key construction." },
+      { "id": "LIST-003", "severity": "error", "method": "browser", "blocking": true, "description": "The page must not introduce horizontal overflow outside the approved results scroll region.", "remediation": "Correct table width, column policy, or responsive transformation." },
+      { "id": "LIST-004", "severity": "error", "method": "test", "blocking": true, "description": "Empty collection and no-results states must remain semantically distinct.", "remediation": "Provide separate content and next actions." },
+      { "id": "LIST-005", "severity": "error", "method": "browser", "blocking": true, "description": "Row selection, sorting, pagination when present, and contextual actions must be keyboard operable.", "remediation": "Correct DataTable semantics and control labeling." },
+      { "id": "LIST-006", "severity": "error", "method": "test", "blocking": true, "description": "Pagination and other conditional regions must follow presenceDefaults rather than region existence or explanatory prose.", "remediation": "Bind rendered presence to the typed condition signal and keep conditional regions cardinality-minimum zero." }
+    ]
+  },
+  "examples": [
+    { "name": "Case portfolio", "description": "Server-backed legal case collection with search, procedural filters, sorting, selection, exports, and detail navigation." },
+    { "name": "Tenant administration list", "description": "Organization collection with status filters, administrator counts, contextual actions, and pagination." }
+  ]
+}

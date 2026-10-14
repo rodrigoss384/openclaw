@@ -1,0 +1,2449 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.frontend-product-builder.local/screen-specification.schema.json",
+  "title": "Frontend Product Builder Screen Specification",
+  "description": "Executable planning contract for one frontend screen or bounded interaction surface.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "meta",
+    "screen",
+    "productContext",
+    "visualDirection",
+    "architecture",
+    "recipe",
+    "layout",
+    "componentMap",
+    "dataDependencies",
+    "states",
+    "actions",
+    "responsive",
+    "accessibility",
+    "content",
+    "implementation",
+    "representativeGate",
+    "validation"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "meta": {
+      "$ref": "#/$defs/meta"
+    },
+    "screen": {
+      "$ref": "#/$defs/screen"
+    },
+    "productContext": {
+      "$ref": "#/$defs/productContext"
+    },
+    "visualDirection": {
+      "$ref": "#/$defs/visualDirection"
+    },
+    "visualHierarchy": {
+      "$ref": "#/$defs/visualHierarchy",
+      "description": "Required by the workflow 2.2 composition validator for substantial frontend work."
+    },
+    "architecture": {
+      "$ref": "#/$defs/architecture"
+    },
+    "recipe": {
+      "$ref": "#/$defs/recipe"
+    },
+    "layout": {
+      "$ref": "#/$defs/layout"
+    },
+    "componentMap": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/componentUsage"
+      }
+    },
+    "semanticPresentation": {
+      "$ref": "#/$defs/semanticPresentation",
+      "description": "Explicit screen-level mapping from semantic data roles to component usages. Registry mode must resolve through design-system.json#visualGrammar.perceptualPolicy.presentationRoles; absence remains unresolved rather than inferred from prose."
+    },
+    "dataDependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/dataDependency"
+      }
+    },
+    "states": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/screenState"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/action"
+      }
+    },
+    "responsive": {
+      "$ref": "#/$defs/responsive"
+    },
+    "accessibility": {
+      "$ref": "#/$defs/accessibility"
+    },
+    "content": {
+      "$ref": "#/$defs/content"
+    },
+    "implementation": {
+      "$ref": "#/$defs/implementation"
+    },
+    "representativeGate": {
+      "$ref": "#/$defs/representativeGate"
+    },
+    "validation": {
+      "$ref": "#/$defs/validation"
+    },
+    "decisionSupport": {
+      "$ref": "#/$defs/decisionSupport",
+      "description": "Canonical screen decision question and required rendered signals. Absence remains unresolved."
+    },
+    "wayfinding": {
+      "$ref": "#/$defs/wayfinding",
+      "description": "Canonical navigation relation for drill-down or active-navigation orientation. Absence remains unresolved."
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "kebabId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "camelId": {
+      "type": "string",
+      "pattern": "^[a-z][A-Za-z0-9]*$"
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner",
+        "source",
+        "generated",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "ready",
+            "approved",
+            "implemented",
+            "deprecated"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "generated": {
+          "type": "boolean"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "createdAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "updatedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        }
+      }
+    },
+    "screen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "route",
+        "surface",
+        "category",
+        "feature",
+        "primaryTask",
+        "secondaryTasks",
+        "actors",
+        "entryPoints",
+        "exitPoints",
+        "prerequisites"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "route": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "surface": {
+          "type": "string",
+          "enum": [
+            "route",
+            "application-shell",
+            "dialog",
+            "drawer",
+            "sheet",
+            "embedded",
+            "other"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "application-shell",
+            "dashboard",
+            "searchable-list",
+            "entity-detail",
+            "form",
+            "administration",
+            "authentication",
+            "review-approval",
+            "custom"
+          ]
+        },
+        "feature": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "primaryTask": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "secondaryTasks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "actors": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "entryPoints": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "exitPoints": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "prerequisites": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "successDefinition": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "productContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "journey",
+        "jobs",
+        "terminology",
+        "permissions",
+        "scope",
+        "assumptions",
+        "openQuestions"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "journey": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "jobs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "terminology": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/term"
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/permission"
+          }
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "source",
+            "switchingBehavior"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "global",
+                "tenant",
+                "organization",
+                "workspace",
+                "project",
+                "entity",
+                "session",
+                "none",
+                "other"
+              ]
+            },
+            "source": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "switchingBehavior": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "scopeHierarchy": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "description": "Ordered ancestor-to-descendant scope levels for this product (e.g. ['tenant','client','case','process']). Required whenever the product has a nested entity hierarchy where a finer-grained entity has siblings sharing a coarser ancestor id. Each dataDependency.scopeResolution.requestedLevel and .allowedForLevels must reference a level declared here."
+            }
+          }
+        },
+        "assumptions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "openQuestions": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "term": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "term",
+        "meaning",
+        "prohibitedAlternatives"
+      ],
+      "properties": {
+        "term": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "meaning": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "prohibitedAlternatives": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "permission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capability",
+        "userMeaning",
+        "frontendTreatment",
+        "backendAuthoritative"
+      ],
+      "properties": {
+        "capability": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "userMeaning": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "frontendTreatment": {
+          "type": "string",
+          "enum": [
+            "route-forbidden",
+            "hidden",
+            "disabled-with-reason",
+            "read-only",
+            "redacted",
+            "unavailable",
+            "allowed"
+          ]
+        },
+        "backendAuthoritative": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "visualDirection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "archetype",
+        "density",
+        "adjectives",
+        "enforcedRules",
+        "prohibitedRules"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "archetype": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "density": {
+          "type": "string",
+          "enum": [
+            "compact",
+            "balanced",
+            "comfortable",
+            "mixed"
+          ]
+        },
+        "adjectives": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "enforcedRules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "prohibitedRules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "visitorMode": {
+          "type": "string",
+          "enum": [
+            "operate",
+            "persuade",
+            "read",
+            "experience"
+          ],
+          "description": "Explicit craft visitor mode for a project-owned recipe/category that has no canonical policy mapping. Canonical policy mappings cannot be overridden."
+        }
+      }
+    },
+    "visualPriority": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "primary",
+        "supporting",
+        "contextual",
+        "audit"
+      ]
+    },
+    "textRole": {
+      "type": "string",
+      "enum": [
+        "display",
+        "pageTitle",
+        "sectionTitle",
+        "subsectionTitle",
+        "body",
+        "bodyStrong",
+        "label",
+        "metadata",
+        "caption",
+        "metric",
+        "code"
+      ]
+    },
+    "visualHierarchy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicability",
+        "baseProfile",
+        "dominantTask",
+        "focalPointByState",
+        "semanticOutline",
+        "visualPriorityLadder",
+        "readingPath",
+        "textRoleAssignments",
+        "alignmentAnchors",
+        "proximityGroups",
+        "whitespaceZones",
+        "repetitionRules",
+        "balanceStrategy",
+        "emphasisBudget",
+        "responsivePriority",
+        "exceptions"
+      ],
+      "properties": {
+        "applicability": {
+          "type": "string",
+          "enum": [
+            "not-applicable",
+            "visual-impact-unchanged",
+            "full"
+          ]
+        },
+        "baseProfile": {
+          "type": "string",
+          "enum": [
+            "productive",
+            "expressive"
+          ]
+        },
+        "dominantTask": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "focalPointByState": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/focalPoint"
+          }
+        },
+        "semanticOutline": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/semanticOutlineItem"
+          }
+        },
+        "visualPriorityLadder": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/visualPriorityItem"
+          }
+        },
+        "readingPath": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/readingPathStep"
+          }
+        },
+        "textRoleAssignments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/textRoleAssignment"
+          }
+        },
+        "alignmentAnchors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/alignmentAnchor"
+          }
+        },
+        "proximityGroups": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/proximityGroup"
+          }
+        },
+        "whitespaceZones": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/whitespaceZone"
+          }
+        },
+        "repetitionRules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "balanceStrategy": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "emphasisBudget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "maxDominantFocalPointsPerState",
+            "maxPrimaryActionsPerState",
+            "colorOnlyHierarchyAllowed"
+          ],
+          "properties": {
+            "maxDominantFocalPointsPerState": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2
+            },
+            "maxPrimaryActionsPerState": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3
+            },
+            "colorOnlyHierarchyAllowed": {
+              "type": "boolean",
+              "const": false
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        },
+        "responsivePriority": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/responsivePriorityRule"
+          }
+        },
+        "exceptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/visualException"
+          }
+        }
+      }
+    },
+    "focalPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stateId",
+        "elementId",
+        "priority",
+        "rationale"
+      ],
+      "properties": {
+        "stateId": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "elementId": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "priority": {
+          "$ref": "#/$defs/visualPriority"
+        },
+        "rationale": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "semanticOutlineItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "level",
+        "text",
+        "regionId",
+        "purpose"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "regionId": {
+          "$ref": "#/$defs/camelId"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "visualPriorityItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "elementId",
+        "priority",
+        "visualRole",
+        "signals"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "elementId": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "priority": {
+          "$ref": "#/$defs/visualPriority"
+        },
+        "visualRole": {
+          "$ref": "#/$defs/textRole"
+        },
+        "signals": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "readingPathStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order",
+        "elementId",
+        "expectedAttention"
+      ],
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "elementId": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "expectedAttention": {
+          "$ref": "#/$defs/visualPriority"
+        }
+      }
+    },
+    "textRoleAssignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "elementId",
+        "semanticElement",
+        "textRole",
+        "tokenSource"
+      ],
+      "properties": {
+        "elementId": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "semanticElement": {
+          "type": "string",
+          "pattern": "^(h[1-6]|p|span|label|code|dt|dd|li|button|a)$"
+        },
+        "textRole": {
+          "$ref": "#/$defs/textRole"
+        },
+        "tokenSource": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "alignmentAnchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "axis",
+        "owner",
+        "elements",
+        "tolerancePx"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "axis": {
+          "type": "string",
+          "enum": [
+            "x",
+            "y",
+            "both"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "elements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "tolerancePx": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "proximityGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "elements",
+        "relationship",
+        "closerThan"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "elements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "relationship": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "closerThan": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "whitespaceZone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "owner",
+        "purpose",
+        "token"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "token": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "responsivePriorityRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "viewport",
+        "preservedPriorities",
+        "transformations"
+      ],
+      "properties": {
+        "viewport": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "preservedPriorities": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "transformations": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "visualException": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "reason",
+        "approval"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "approval": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "featureBoundary",
+        "routeOwnership",
+        "serverStateOwnership",
+        "clientStateOwnership",
+        "formStateOwnership",
+        "urlStateOwnership",
+        "dataBoundary",
+        "errorStrategy",
+        "performanceStrategy"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "featureBoundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "routeOwnership": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "serverStateOwnership": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "clientStateOwnership": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "formStateOwnership": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "urlStateOwnership": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "dataBoundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "errorStrategy": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "performanceStrategy": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "integrationContracts": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "architectureDecisions": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source",
+        "selectionStatus",
+        "selectionRationale",
+        "rejectedAlternatives",
+        "regions"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "selectionStatus": {
+          "type": "string",
+          "enum": [
+            "selected",
+            "extended",
+            "custom"
+          ]
+        },
+        "selectionRationale": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "rejectedAlternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rejectedRecipe"
+          }
+        },
+        "extensionReason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "regions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/regionMapping"
+          }
+        }
+      }
+    },
+    "rejectedRecipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "regionMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recipeRegionId",
+        "screenRegionId",
+        "status",
+        "priority",
+        "purpose",
+        "content",
+        "scrollOwnership",
+        "stickyBehavior"
+      ],
+      "properties": {
+        "recipeRegionId": {
+          "$ref": "#/$defs/camelId"
+        },
+        "screenRegionId": {
+          "$ref": "#/$defs/camelId"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "required",
+            "optional-used",
+            "optional-omitted",
+            "extended",
+            "replaced"
+          ]
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "content": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "scrollOwnership": {
+          "type": "string",
+          "enum": [
+            "none",
+            "document",
+            "main-content",
+            "region",
+            "overlay"
+          ]
+        },
+        "stickyBehavior": {
+          "type": "string",
+          "enum": [
+            "none",
+            "top",
+            "bottom",
+            "contextual"
+          ]
+        },
+        "exceptionReason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shell",
+        "contentWidth",
+        "primaryScrollOwner",
+        "localScrollRegions",
+        "stickyElements",
+        "surfaceStrategy",
+        "spacingStrategy",
+        "overflowPolicy"
+      ],
+      "properties": {
+        "shell": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "contentWidth": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "primaryScrollOwner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "localScrollRegions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "stickyElements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "surfaceStrategy": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "spacingStrategy": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "overflowPolicy": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "componentUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "regionId",
+        "component",
+        "catalogSource",
+        "responsibility",
+        "reuseStatus",
+        "variant",
+        "size",
+        "stateOwner",
+        "dataOwner",
+        "interactionOwner",
+        "states",
+        "fallback"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "regionId": {
+          "$ref": "#/$defs/camelId"
+        },
+        "component": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "catalogSource": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "responsibility": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "reuseStatus": {
+          "type": "string",
+          "enum": [
+            "canonical",
+            "extended",
+            "new-proposed",
+            "feature-specific"
+          ]
+        },
+        "variant": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "size": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stateOwner": {
+          "type": "string",
+          "enum": [
+            "stateless",
+            "local",
+            "controlled",
+            "form-owned",
+            "query-owned",
+            "url-owned",
+            "feature-owned",
+            "route-owned"
+          ]
+        },
+        "dataOwner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "interactionOwner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "states": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "fallback": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "extensionContract": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "proposedComponentContract": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sharedSelectorId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Canonical, exported selector/computation name this component reads its derived value from. Required whenever the same action id or the same semantic derived value (status, severity, eligibility) is exposed by more than one componentUsage/screen-spec — every such usage must declare the same sharedSelectorId, never an independently recomputed value."
+        },
+        "guardFunction": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Canonical, exported pure function name this component calls to compute an action's eligibility/guard result. Required whenever this componentUsage exposes an action also exposed elsewhere (e.g. a list-row quick action and the same action's dialog/detail control) — both must declare the same guardFunction, and the mutation/execution handler must re-invoke it immediately before mutating rather than trusting a UI-computed flag."
+        },
+        "referenceResolution": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "routed",
+            "overlay-resolved",
+            null
+          ],
+          "description": "For a componentUsage that cites/links another domain object: 'routed' when a real route exists and is in this slice's scope (render as a native link/Link with a resolvable href); 'overlay-resolved' when no route exists yet or the route is out of this slice's scope (render as a non-navigational trigger opening a centralized, single-selector-resolved overlay, never a dead '#' href or a guessed route)."
+        }
+      }
+    },
+    "semanticPresentation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "assignments",
+            "rationale"
+          ],
+          "properties": {
+            "mode": {
+              "const": "registry"
+            },
+            "assignments": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/semanticPresentationAssignment"
+              }
+            },
+            "rationale": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "assignments",
+            "rationale"
+          ],
+          "properties": {
+            "mode": {
+              "const": "not-applicable"
+            },
+            "assignments": {
+              "type": "array",
+              "maxItems": 0,
+              "items": {
+                "$ref": "#/$defs/semanticPresentationAssignment"
+              }
+            },
+            "rationale": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          }
+        }
+      ]
+    },
+    "semanticPresentationAssignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "componentUsageId",
+        "semanticRole"
+      ],
+      "properties": {
+        "componentUsageId": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "semanticRole": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "referenceUtility": {
+          "$ref": "#/$defs/referenceUtility",
+          "description": "Required when semanticRole is reusable-reference. Utility remains explicit instead of inferred from styling."
+        }
+      }
+    },
+    "dataDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "purpose",
+        "owner",
+        "authoritativeSource",
+        "contract",
+        "mapping",
+        "loadingBehavior",
+        "emptyBehavior",
+        "errorBehavior",
+        "staleBehavior",
+        "permissionBehavior",
+        "cachePolicy",
+        "retryPolicy"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "query",
+            "mutation",
+            "route",
+            "url",
+            "form",
+            "context",
+            "feature",
+            "static"
+          ]
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "authoritativeSource": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "contract": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "mapping": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "loadingBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "emptyBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "errorBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "staleBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "permissionBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "cachePolicy": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "retryPolicy": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "cancellationPolicy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "invalidationPolicy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fixtureSource": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scopeKey": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The exact foreign key this dependency filters by (e.g. 'caseId'), never a coarser ancestor key (e.g. 'clientId') when the screen is a detail view of the finer-grained entity. Required whenever productContext.scope.scopeHierarchy is declared and this screen is a detail view of a non-root level."
+        },
+        "originField": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Where each displayed item's provenance/parent chain comes from (e.g. a resolved origin object naming case/process/event). Required for any dependency that consolidates items reached through more than one relation chain (e.g. a client-level 360/consolidated view)."
+        },
+        "scopeResolution": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "requestedLevel",
+            "resolvedVia"
+          ],
+          "properties": {
+            "requestedLevel": {
+              "$ref": "#/$defs/nonEmptyString",
+              "description": "Which level of productContext.scope.scopeHierarchy this dependency reads at."
+            },
+            "resolvedVia": {
+              "type": "string",
+              "enum": [
+                "exact-parent-chain",
+                "ancestor-aggregate"
+              ],
+              "description": "'exact-parent-chain': every item is reached by walking explicit parent-id references down to requestedLevel, never inferred from a coarser shared key. 'ancestor-aggregate': items are gathered by a broader/ancestor key (e.g. clientId) and therefore may include siblings; only valid on a dependency explicitly designated as a consolidated/360 view, and every aggregated item must carry its own derived originField."
+            },
+            "allowedForLevels": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "description": "Levels from scopeHierarchy that may legitimately consume an 'ancestor-aggregate' dependency (normally only the ancestor level itself, e.g. a client-level dossier). A screen whose own classification is a descendant level must not declare a dependency with resolvedVia 'ancestor-aggregate' unless its own level appears here."
+            }
+          }
+        },
+        "sharedSelectorId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Canonical, exported selector/computation name that produces this dependency's derived value (e.g. a status, severity, or count). Required whenever the same semantic value is rendered by more than one screen-spec under docs/frontend/screens/ (e.g. a list screen and that entity's own detail screen) — every such screen-spec must declare the same sharedSelectorId for that value, never an independently reimplemented formula."
+        },
+        "mutabilityPolicy": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "mutable",
+            "append-only-linked",
+            "versioned",
+            null
+          ],
+          "description": "For a mutation-type dependency: whether the target entity may be overwritten in place ('mutable'), must remain immutable once created with changes captured only as new linked records ('append-only-linked'), or is explicitly versioned ('versioned'). Required for any mutation dependency whose purpose implies validating, approving, or certifying a document or other evidentiary/audit-sensitive record."
+        }
+      }
+    },
+    "screenState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "trigger",
+        "userUnderstanding",
+        "authoritativeData",
+        "visibleRegions",
+        "hiddenRegions",
+        "componentStates",
+        "enabledActions",
+        "disabledActions",
+        "focusBehavior",
+        "announcementBehavior",
+        "recovery",
+        "screenshotRequired"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "initial-loading",
+            "data",
+            "empty",
+            "partial",
+            "error",
+            "forbidden",
+            "unavailable",
+            "processing",
+            "success",
+            "stale",
+            "custom"
+          ]
+        },
+        "trigger": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "userUnderstanding": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "authoritativeData": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "visibleRegions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "hiddenRegions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "componentStates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/componentState"
+          }
+        },
+        "enabledActions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "disabledActions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/disabledAction"
+          }
+        },
+        "focusBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "announcementBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "recovery": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "screenshotRequired": {
+          "type": "boolean"
+        },
+        "emptyKind": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "actionable",
+            "no-results",
+            "missing-prerequisite",
+            "permission-blocked",
+            "informational",
+            null
+          ],
+          "description": "Operational meaning of category=empty. Required by Phase 5 evidence when an empty state is exercised."
+        }
+      }
+    },
+    "componentState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "componentUsageId",
+        "state"
+      ],
+      "properties": {
+        "componentUsageId": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "state": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "disabledAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actionId",
+        "reason"
+      ],
+      "properties": {
+        "actionId": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "reasonKind": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "permission",
+            "dependency",
+            "pending-human-decision",
+            "business-block",
+            "status-ineligible",
+            "technical-error",
+            null
+          ],
+          "description": "Disjoint classification of why the action is disabled, separate from the free-text 'reason'. A dependency the action itself will resolve must never be classified 'business-block'. Strongly recommended for any disabledAction whose screen also uses a confidence-qualifier prefix (e.g. 'Candidato') elsewhere, so pending-human-decision/dependency are never confused with a confirmed business-block."
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "kind",
+        "regionId",
+        "owner",
+        "permission",
+        "eligibility",
+        "confirmation",
+        "pendingBehavior",
+        "successBehavior",
+        "errorBehavior",
+        "duplicatePrevention"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "secondary",
+            "destructive",
+            "navigation",
+            "mutation",
+            "local",
+            "recovery"
+          ]
+        },
+        "regionId": {
+          "$ref": "#/$defs/camelId"
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "permission": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "eligibility": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "confirmation": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "pendingBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "successBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "errorBehavior": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "duplicatePrevention": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "idempotency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "optimisticBehavior": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "navigationAfterSuccess": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "targetRoute": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "For kind: 'navigation', the exact route path this action navigates to. Must not be a placeholder ('#', 'javascript:void(0)') or a guessed path; must exist in the project's real route inventory."
+        },
+        "referenceResolution": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "routed",
+            "overlay-resolved",
+            null
+          ],
+          "description": "Same contract as componentUsage.referenceResolution. For kind: 'navigation', 'routed' requires targetRoute to name a real, in-scope route; 'overlay-resolved' means no route exists yet and this action opens a resolver-backed overlay instead."
+        },
+        "guardChecks": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "dimension",
+              "description"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/kebabId"
+              },
+              "dimension": {
+                "type": "string",
+                "enum": [
+                  "permission",
+                  "dependency",
+                  "pending-human-decision",
+                  "business-block",
+                  "status-ineligible",
+                  "technical-error"
+                ]
+              },
+              "description": {
+                "$ref": "#/$defs/nonEmptyString"
+              }
+            }
+          },
+          "description": "Itemized, disjoint guard checklist evaluated by one shared pure function (see componentUsage.guardFunction) before this action is eligible. Required when kind is 'mutation' or 'destructive' and the action's effect is a decision, approval, or conflict resolution."
+        },
+        "auditTrail": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "required",
+            "capturedFields",
+            "correlationIdRequired"
+          ],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "capturedFields": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "actor",
+                  "timestamp",
+                  "justification",
+                  "result",
+                  "rejectedAlternative"
+                ]
+              }
+            },
+            "correlationIdRequired": {
+              "type": "boolean"
+            }
+          },
+          "description": "Durable audit-record contract for this action. Required (required: true, capturedFields including at least actor/timestamp/justification/result, correlationIdRequired: true) when the action's successBehavior/label indicates a decision, approval, or conflict resolution; a conflict resolution must additionally capture 'rejectedAlternative'."
+        }
+      }
+    },
+    "responsive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "ranges",
+        "verificationViewports",
+        "zoomRequirements",
+        "contentPriority"
+      ],
+      "properties": {
+        "strategy": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "ranges": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/responsiveRange"
+          }
+        },
+        "verificationViewports": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/viewport"
+          }
+        },
+        "zoomRequirements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "contentPriority": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "responsiveRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "condition",
+        "layout",
+        "regionTransformations",
+        "actionBehavior",
+        "collectionBehavior",
+        "scrollBehavior",
+        "stickyBehavior"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "condition": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "layout": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "regionTransformations": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "actionBehavior": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "collectionBehavior": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "scrollBehavior": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "stickyBehavior": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "viewport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "width",
+        "height",
+        "purpose"
+      ],
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 240
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 320
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "landmarks",
+        "headingHierarchy",
+        "accessibleNames",
+        "keyboardModel",
+        "focusModel",
+        "errorNavigation",
+        "announcements",
+        "reducedMotion",
+        "zoomAndReflow"
+      ],
+      "properties": {
+        "landmarks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "headingHierarchy": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "accessibleNames": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "keyboardModel": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "focusModel": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "errorNavigation": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "announcements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "reducedMotion": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "zoomAndReflow": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "screenTitle",
+        "titlePattern",
+        "terminologyRules",
+        "formattingRules",
+        "localizationRules",
+        "wrappingRules",
+        "truncationRules",
+        "emptyStateCopy",
+        "errorCopy",
+        "prohibitedContent"
+      ],
+      "properties": {
+        "screenTitle": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "titlePattern": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "terminologyRules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "formattingRules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "localizationRules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "wrappingRules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "truncationRules": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "emptyStateCopy": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "errorCopy": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "prohibitedContent": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "representativeSlice",
+        "files",
+        "sequence",
+        "fixtures",
+        "stories",
+        "tests",
+        "browserScenarios",
+        "migrations",
+        "blockers",
+        "outOfScope"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "new-build",
+            "integration",
+            "migration",
+            "extension",
+            "repair"
+          ]
+        },
+        "representativeSlice": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/implementationFile"
+          }
+        },
+        "sequence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/implementationStep"
+          }
+        },
+        "fixtures": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "stories": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "tests": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "browserScenarios": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "migrations": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "blockers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "outOfScope": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "implementationFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "purpose",
+        "action"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "create",
+            "modify",
+            "reuse",
+            "remove",
+            "inspect"
+          ]
+        }
+      }
+    },
+    "implementationStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order",
+        "id",
+        "description",
+        "dependencies",
+        "completionEvidence"
+      ],
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "dependencies": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "completionEvidence": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "representativeGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "representative",
+        "rationale",
+        "slice",
+        "status",
+        "requiredChecks",
+        "approval"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "representative": {
+          "type": "boolean"
+        },
+        "rationale": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "slice": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "blocked",
+            "ready",
+            "approved",
+            "rejected",
+            "not-required"
+          ]
+        },
+        "requiredChecks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gateCheck"
+          }
+        },
+        "approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "approvedBy",
+            "approvedAt",
+            "notes"
+          ],
+          "properties": {
+            "approvedBy": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "approvedAt": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "notes": {
+              "$ref": "#/$defs/stringArray"
+            }
+          }
+        }
+      }
+    },
+    "gateCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "status",
+        "evidence",
+        "blocking"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^GATE-[0-9]{3}$"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "passed",
+            "failed",
+            "not-applicable"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "blocking": {
+          "type": "boolean"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "checks"
+      ],
+      "properties": {
+        "schema": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/validationCheck"
+          }
+        }
+      }
+    },
+    "validationCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "severity",
+        "method",
+        "blocking",
+        "description",
+        "remediation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^SCREEN-[0-9]{3}$"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning",
+            "info"
+          ]
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "schema",
+            "script",
+            "manual",
+            "test",
+            "browser",
+            "screenshot",
+            "audit"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "command": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "remediation": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "decisionSupport": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "decisionQuestion",
+            "signals",
+            "rationale"
+          ],
+          "properties": {
+            "mode": {
+              "const": "required"
+            },
+            "decisionQuestion": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "signals": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/decisionSignal"
+              }
+            },
+            "rationale": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "decisionQuestion",
+            "signals",
+            "rationale"
+          ],
+          "properties": {
+            "mode": {
+              "const": "not-applicable"
+            },
+            "decisionQuestion": {
+              "type": "null"
+            },
+            "signals": {
+              "type": "array",
+              "maxItems": 0,
+              "items": {
+                "$ref": "#/$defs/decisionSignal"
+              }
+            },
+            "rationale": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          }
+        }
+      ]
+    },
+    "decisionSignal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "role",
+        "renderTargetType",
+        "renderTargetId"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "role": {
+          "enum": [
+            "identity",
+            "state",
+            "urgency",
+            "relevance",
+            "comparison",
+            "context"
+          ]
+        },
+        "renderTargetType": {
+          "enum": [
+            "region",
+            "component",
+            "element"
+          ]
+        },
+        "renderTargetId": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "wayfinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "parentRoute",
+        "rationale"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "breadcrumb",
+            "back-link",
+            "active-navigation",
+            "not-applicable"
+          ]
+        },
+        "parentRoute": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rationale": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "referenceUtility": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "actionId",
+            "rationale"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "copy",
+                "open",
+                "verify",
+                "custom"
+              ]
+            },
+            "actionId": {
+              "$ref": "#/$defs/kebabId"
+            },
+            "rationale": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "actionId",
+            "rationale"
+          ],
+          "properties": {
+            "mode": {
+              "const": "none-with-rationale"
+            },
+            "actionId": {
+              "type": "null"
+            },
+            "rationale": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

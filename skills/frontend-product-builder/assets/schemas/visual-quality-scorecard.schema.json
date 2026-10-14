@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.frontend-product-builder.local/visual-quality-scorecard.schema.json",
+  "title": "Frontend Visual Quality Scorecard",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "meta",
+    "criteria",
+    "decision"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["screenId", "version", "reviewedAt", "reviewer"],
+      "properties": {
+        "screenId": { "type": "string", "minLength": 1 },
+        "version": { "const": "1.1.0" },
+        "reviewedAt": { "type": "string", "minLength": 1 },
+        "reviewer": { "type": "string", "minLength": 1 }
+      }
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "result", "evidence", "blocking"],
+        "properties": {
+          "id": {
+            "enum": [
+              "semantic-outline",
+              "visual-priority",
+              "reading-path",
+              "typographic-distinction",
+              "proximity",
+              "alignment",
+              "whitespace",
+              "emphasis-budget",
+              "responsive-priority",
+              "non-success-state",
+              "aesthetic-critique"
+            ]
+          },
+          "result": { "enum": ["passed", "failed", "partial", "not-run"] },
+          "evidence": { "type": "string", "minLength": 1 },
+          "blocking": { "type": "boolean", "const": true }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "humanApprovalRequired", "approvedBy", "approvedAt", "notes", "risk"],
+      "properties": {
+        "status": { "enum": ["awaiting-review", "approved", "approved-with-accepted-risk", "rejected"] },
+        "humanApprovalRequired": { "type": "boolean", "const": true },
+        "approvedBy": { "type": ["string", "null"] },
+        "approvedAt": { "type": ["string", "null"] },
+        "notes": { "type": "string" },
+        "risk": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["id", "owner", "scope", "expiry", "mitigation"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "owner": { "type": "string", "minLength": 1 },
+            "scope": { "type": "string", "minLength": 1 },
+            "expiry": { "type": "string", "minLength": 1 },
+            "mitigation": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

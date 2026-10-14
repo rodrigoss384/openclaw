@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/frontend-family-consistency-report.schema.json",
+  "title": "Frontend Family Consistency Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "generated",
+    "generatedAt",
+    "visualFamilyId",
+    "designSystem",
+    "samples",
+    "coverage",
+    "checks",
+    "evidenceGaps",
+    "findings",
+    "transition",
+    "status"
+  ],
+  "properties": {
+    "$schema": { "const": "frontend-family-consistency-report.schema.json" },
+    "schemaVersion": { "const": "1.0.0" },
+    "generated": { "const": true },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "visualFamilyId": { "type": "string", "minLength": 1 },
+    "designSystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "samples": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "screenId",
+          "stateId",
+          "themeId",
+          "screenSpec",
+          "craftContract",
+          "evidence",
+          "craftContractSha256",
+          "contractSetSha256"
+        ],
+        "properties": {
+          "screenId": { "type": "string", "minLength": 1 },
+          "stateId": { "type": "string", "minLength": 1 },
+          "themeId": { "type": "string", "minLength": 1 },
+          "screenSpec": { "type": "string", "minLength": 1 },
+          "craftContract": { "type": "string", "minLength": 1 },
+          "evidence": { "type": "string", "minLength": 1 },
+          "craftContractSha256": { "$ref": "#/$defs/sha256" },
+          "contractSetSha256": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["screenIds", "requiredThemes", "observedThemes"],
+      "properties": {
+        "screenIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "requiredThemes": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "observedThemes": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["individualEvidence", "themeCoverage", "crossTheme", "crossScreen"],
+      "properties": {
+        "individualEvidence": { "$ref": "#/$defs/checkStatus" },
+        "themeCoverage": { "$ref": "#/$defs/checkStatus" },
+        "crossTheme": { "$ref": "#/$defs/checkStatus" },
+        "crossScreen": { "$ref": "#/$defs/checkStatus" }
+      }
+    },
+    "evidenceGaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "screenId", "stateId", "missingTheme", "transition", "summary"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "screenId": { "type": "string", "minLength": 1 },
+          "stateId": { "type": "string", "minLength": 1 },
+          "missingTheme": { "type": "string", "minLength": 1 },
+          "transition": { "const": "CAPTURE_EVIDENCE" },
+          "summary": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "scope",
+          "class",
+          "defectKind",
+          "summary",
+          "subjects",
+          "route"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "scope": { "enum": ["cross-theme", "cross-screen"] },
+          "class": { "type": "string", "minLength": 1 },
+          "defectKind": { "enum": ["implementation", "contract"] },
+          "summary": { "type": "string", "minLength": 1 },
+          "subjects": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "route": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "owner",
+              "affectedContracts",
+              "repairStrategy",
+              "providerCommand",
+              "returnStage",
+              "revalidationSet"
+            ],
+            "properties": {
+              "owner": { "type": "string", "minLength": 1 },
+              "affectedContracts": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 },
+                "uniqueItems": true
+              },
+              "repairStrategy": { "type": "string", "minLength": 1 },
+              "providerCommand": { "type": ["object", "null"] },
+              "returnStage": { "enum": ["PATCH", "DESIGN_READINESS"] },
+              "revalidationSet": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 },
+                "uniqueItems": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "transition": {
+      "enum": ["CONSISTENT", "CAPTURE_EVIDENCE", "PATCH", "DESIGN_READINESS", "BLOCKED"]
+    },
+    "status": {
+      "enum": ["passed", "failed", "blocked"]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "checkStatus": {
+      "enum": ["passed", "failed", "blocked", "not-applicable"]
+    }
+  }
+}

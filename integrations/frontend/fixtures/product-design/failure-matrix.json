@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactKind": "product-design-failure-matrix-fixture",
+  "cases": [
+    { "id": "PDA-01", "runner": "brief", "invalid": "missing-task", "valid": "complete-context", "mutation": "missing-audience" },
+    { "id": "PDA-02", "runner": "brief", "invalid": "visual-question", "valid": "agent-decides", "mutation": "preference-phrase" },
+    { "id": "PDA-03", "runner": "decision", "invalid": "missing-thesis", "valid": "contextual-decision", "mutation": "missing-comparison-evidence" },
+    { "id": "PDA-04", "runner": "decision", "invalid": "generic-context", "valid": "contextual-decision", "mutation": "missing-task-context" },
+    { "id": "PDA-05", "runner": "research", "invalid": "one-reference", "valid": "targeted-coverage", "mutation": "one-origin" },
+    { "id": "PDA-06", "runner": "research", "invalid": "missing-origin-url", "valid": "targeted-coverage", "mutation": "missing-access-date" },
+    { "id": "PDA-07", "runner": "research", "invalid": "copied-implementation", "valid": "targeted-coverage", "mutation": "mirrored-library" },
+    { "id": "PDA-08", "runner": "research", "invalid": "unverified-production-license", "valid": "verified-production-license", "mutation": "share-alike-license" },
+    { "id": "PDA-09", "runner": "asset-request", "invalid": "vague-request", "valid": "executable-request", "mutation": "equivalent-exists" },
+    { "id": "PDA-10", "runner": "asset-ingest", "invalid": "dimension-mismatch", "valid": "matching-delivery", "mutation": "sensitive-metadata" },
+    { "id": "PDA-11", "runner": "brief", "invalid": "claim-without-source", "valid": "sourced-claim", "mutation": "testimonial-without-source" },
+    { "id": "PDA-12", "runner": "brief", "invalid": "critical-hypothesis-only", "valid": "observed-critical-evidence", "mutation": "hypothesis-without-plan" },
+    { "id": "PDA-13", "runner": "decision", "invalid": "human-visual-selection", "valid": "contextual-decision", "mutation": "wrong-autonomy-class" }
+  ]
+}

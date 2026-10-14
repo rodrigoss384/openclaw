@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/backend-product-builder/backend-validator-evidence.schema.json",
+  "title": "Backend Contract Validator Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "interfaceId", "command", "cwd", "contractPath", "contractSha256", "startedAt", "endedAt", "exitCode", "result", "stdout", "stderr"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "interfaceId": { "type": "string", "minLength": 1 },
+    "command": { "type": "string", "minLength": 1 },
+    "cwd": { "type": "string", "minLength": 1 },
+    "contractPath": { "type": "string", "minLength": 1 },
+    "contractSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "startedAt": { "type": "string", "minLength": 1 },
+    "endedAt": { "type": "string", "minLength": 1 },
+    "exitCode": { "type": "integer" },
+    "result": { "enum": ["passed", "failed"] },
+    "stdout": { "type": "string" },
+    "stderr": { "type": "string" }
+  }
+}

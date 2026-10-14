@@ -1,0 +1,324 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./autonomy-decision.schema.json",
+  "title": "Autonomy Decision Runtime Contract",
+  "description": "Runtime contract for deterministic autonomy resolution and consumption. The request supplies classified authority context and bounded candidates; the result records disposition and selection; the consumption directive maps that validated result to permitted workflow behavior.",
+  "oneOf": [
+    { "$ref": "#/$defs/request" },
+    { "$ref": "#/$defs/result" },
+    { "$ref": "#/$defs/directive" }
+  ],
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "stage": {
+      "enum": [
+        "discovery",
+        "specification",
+        "acceptance",
+        "design-readiness",
+        "implementation",
+        "backend-representative",
+        "frontend-representative",
+        "adversarial",
+        "evidence-release",
+        "session-closure"
+      ]
+    },
+    "decisionClass": {
+      "enum": [
+        "reversible-internal",
+        "reversible-contract-bounded",
+        "equivalent-variant",
+        "design-authority-bounded",
+        "product-consequential",
+        "security-consequential",
+        "data-consequential",
+        "cost-consequential",
+        "legal-consequential",
+        "brand-consequential",
+        "behavioral-high-risk",
+        "external-destructive",
+        "unknown-consequential"
+      ]
+    },
+    "disposition": {
+      "enum": [
+        "SAFE_AUTONOMOUS",
+        "AUTONOMOUS_WITH_AUDIT",
+        "HUMAN_REQUIRED",
+        "BLOCKED"
+      ]
+    },
+    "reasonCodes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }
+    },
+    "sourceId": {
+      "enum": [
+        "canonical-contracts",
+        "effective-policy",
+        "repository-precedent",
+        "approved-design-system",
+        "approved-product-context",
+        "task-contract",
+        "test-evidence",
+        "runtime-evidence",
+        "provider-contract",
+        "risk-assessment",
+        "visual-research",
+        "candidate-comparison",
+        "human-direction"
+      ]
+    },
+    "repositoryRef": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "nullableString": {
+      "oneOf": [
+        { "$ref": "#/$defs/nonEmptyString" },
+        { "type": "null" }
+      ]
+    },
+    "stringRefs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/repositoryRef" }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "ref"],
+      "properties": {
+        "source": { "$ref": "#/$defs/sourceId" },
+        "ref": { "$ref": "#/$defs/repositoryRef" }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "canonicalContractMatch",
+        "contractRefs",
+        "precedentMatch",
+        "precedentRefs",
+        "changeSize",
+        "complexity",
+        "riskSurface",
+        "objectiveScore",
+        "reversible",
+        "evidenceRefs",
+        "equivalenceEvidenceRefs"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "description": { "$ref": "#/$defs/nonEmptyString" },
+        "canonicalContractMatch": { "type": "boolean" },
+        "contractRefs": { "$ref": "#/$defs/stringRefs" },
+        "precedentMatch": { "type": "boolean" },
+        "precedentRefs": { "$ref": "#/$defs/stringRefs" },
+        "changeSize": { "type": "integer", "minimum": 0 },
+        "complexity": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "riskSurface": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "objectiveScore": { "type": "number", "minimum": 0, "maximum": 100 },
+        "reversible": { "type": "boolean" },
+        "evidenceRefs": { "$ref": "#/$defs/stringRefs" },
+        "equivalenceEvidenceRefs": { "$ref": "#/$defs/stringRefs" }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "$schema",
+        "schemaVersion",
+        "artifactKind",
+        "decisionClass",
+        "stage",
+        "feature",
+        "task",
+        "effectivePolicyRef",
+        "humanGateRequired",
+        "candidates",
+        "evidence"
+      ],
+      "properties": {
+        "$schema": { "const": "integrations/governance/autonomy-decision.schema.json" },
+        "schemaVersion": { "const": "1.0.0" },
+        "artifactKind": { "const": "autonomy-decision-request" },
+        "decisionClass": { "$ref": "#/$defs/decisionClass" },
+        "stage": { "$ref": "#/$defs/stage" },
+        "feature": { "$ref": "#/$defs/nonEmptyString" },
+        "task": { "$ref": "#/$defs/nullableString" },
+        "effectivePolicyRef": { "$ref": "#/$defs/repositoryRef" },
+        "humanGateRequired": { "type": "boolean" },
+        "candidates": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/candidate" }
+        },
+        "evidence": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/evidence" }
+        }
+      }
+    },
+    "rejectedOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "reasonCodes"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+        "reasonCodes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }
+        }
+      }
+    },
+    "policySource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "sha256"],
+      "properties": {
+        "ref": { "$ref": "#/$defs/repositoryRef" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "$schema",
+        "schemaVersion",
+        "artifactKind",
+        "decisionId",
+        "decisionClass",
+        "stage",
+        "feature",
+        "task",
+        "disposition",
+        "selectedOption",
+        "rejectedOptions",
+        "reasonCodes",
+        "rulesApplied",
+        "evidenceRefs",
+        "reversible",
+        "policyProvenance"
+      ],
+      "properties": {
+        "$schema": { "const": "integrations/governance/autonomy-decision.schema.json" },
+        "schemaVersion": { "const": "1.0.0" },
+        "artifactKind": { "const": "autonomy-decision-result" },
+        "decisionId": { "type": "string", "pattern": "^DEC-[A-F0-9]{16}$" },
+        "decisionClass": { "$ref": "#/$defs/decisionClass" },
+        "stage": { "$ref": "#/$defs/stage" },
+        "feature": { "$ref": "#/$defs/nonEmptyString" },
+        "task": { "$ref": "#/$defs/nullableString" },
+        "disposition": { "$ref": "#/$defs/disposition" },
+        "selectedOption": {
+          "oneOf": [
+            { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+            { "type": "null" }
+          ]
+        },
+        "rejectedOptions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/rejectedOption" }
+        },
+        "reasonCodes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }
+        },
+        "rulesApplied": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^RULE-[A-Z0-9]+(?:-[A-Z0-9]+)*-[0-9]{3}$" }
+        },
+        "evidenceRefs": { "$ref": "#/$defs/stringRefs" },
+        "reversible": {
+          "oneOf": [
+            { "type": "boolean" },
+            { "type": "null" }
+          ]
+        },
+        "policyProvenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["autonomyPolicy", "effectivePolicy"],
+          "properties": {
+            "autonomyPolicy": { "$ref": "#/$defs/policySource" },
+            "effectivePolicy": { "$ref": "#/$defs/policySource" }
+          }
+        }
+      }
+    },
+    "decisionProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "sha256"],
+      "properties": {
+        "ref": { "$ref": "#/$defs/repositoryRef" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "directive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "$schema",
+        "schemaVersion",
+        "artifactKind",
+        "decisionId",
+        "disposition",
+        "action",
+        "askHuman",
+        "executionAllowed",
+        "recordDecision",
+        "selectedOption",
+        "humanResolvableBlocker",
+        "humanReasonCodes",
+        "blockerReasonCodes",
+        "decisionProvenance"
+      ],
+      "properties": {
+        "$schema": { "const": "integrations/governance/autonomy-decision.schema.json" },
+        "schemaVersion": { "const": "1.0.0" },
+        "artifactKind": { "const": "autonomy-consumption-directive" },
+        "decisionId": { "type": "string", "pattern": "^DEC-[A-F0-9]{16}$" },
+        "disposition": { "$ref": "#/$defs/disposition" },
+        "action": {
+          "enum": [
+            "execute",
+            "record-and-execute",
+            "request-human-decision",
+            "report-blocker",
+            "report-blocker-and-request-human"
+          ]
+        },
+        "askHuman": { "type": "boolean" },
+        "executionAllowed": { "type": "boolean" },
+        "recordDecision": { "type": "boolean" },
+        "selectedOption": {
+          "oneOf": [
+            { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+            { "type": "null" }
+          ]
+        },
+        "humanResolvableBlocker": { "type": "boolean" },
+        "humanReasonCodes": { "$ref": "#/$defs/reasonCodes" },
+        "blockerReasonCodes": { "$ref": "#/$defs/reasonCodes" },
+        "decisionProvenance": { "$ref": "#/$defs/decisionProvenance" }
+      }
+    }
+  }
+}

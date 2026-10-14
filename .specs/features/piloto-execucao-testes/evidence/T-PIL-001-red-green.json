@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "disposable-counterexample-sensitivity",
+  "task": "T-PIL-001",
+  "runId": "execute-T-PIL-001-codex-20261013",
+  "nativeSessionId": "execute-T-PIL-001-codex-20261013",
+  "productionBranchRed": false,
+  "baselineResult": {
+    "status": "passed",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "src/infra/retry.test.ts",
+      "--config",
+      "vitest.unit.config.ts",
+      "--maxWorkers=1",
+      "--no-file-parallelism"
+    ],
+    "exitCode": 0,
+    "testsPassed": 15,
+    "output": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-vitest.log",
+    "outputSha256": "8037b322520fab9fad90838e0672e1235932a26b92c90257af203af42ec9fcbd",
+    "testedFileSha256": "fe6c90f9e956bb5377736d43dda81e82c2dc9837475c485bbb1cf4610220fede"
+  },
+  "disposableMutation": {
+    "tempDirectory": "/tmp/piloto-t-pil-001-counterexample-tpuexV",
+    "sourceFile": "src/infra/retry.ts",
+    "mutation": "Only in disposable copy, replace non-finite fallback return with return 0.",
+    "mutatedSourceSha256": "da0934c0d2a3986d8e9db18a9d499ca4f36a8a64b9deb79c57d9173824b8254f",
+    "copiedTestSha256": "fe6c90f9e956bb5377736d43dda81e82c2dc9837475c485bbb1cf4610220fede"
+  },
+  "sensitivityResult": {
+    "status": "expected-counterexample-detected",
+    "exitCode": 1,
+    "testsFailed": 3,
+    "testsPassed": 12,
+    "output": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-counterexample.log",
+    "outputSha256": "15c77e12734d2776d168dd633a931f4b14b990beb09d1c5d2d05df30e94d3b3d",
+    "failingCases": [
+      "uses defaults when overrides are absent",
+      "falls back per field for non-finite overrides",
+      "preserves explicit values when other overrides are absent"
+    ]
+  },
+  "cleanup": "Temporary source/test copy removed after retaining test output and source hashes.",
+  "limitation": "The existing implementation passed the new tests before addition. No historical RED is claimed; the disposable mutant demonstrates assertion sensitivity."
+}

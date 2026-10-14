@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "task-implementation-evidence",
+  "feature": "piloto-execucao-testes",
+  "task": "T-PIL-001",
+  "runId": "execute-T-PIL-001-codex-20261013",
+  "nativeSessionId": "execute-T-PIL-001-codex-20261013",
+  "evidenceLabel": "IDENTIFICADOR_ESCOLHIDO",
+  "traceability": {
+    "requirements": [
+      "REQ-PIL-001",
+      "REQ-PIL-004",
+      "REQ-PIL-006"
+    ],
+    "acceptanceCriteria": [
+      "AC-PIL-001",
+      "AC-PIL-002",
+      "AC-PIL-005"
+    ],
+    "scenarios": [
+      "SCN-PIL-001",
+      "SCN-PIL-002",
+      "SCN-PIL-005"
+    ],
+    "acceptanceTests": [
+      "AT-PIL-001",
+      "AT-PIL-002",
+      "AT-PIL-005"
+    ],
+    "properties": [
+      "PROP-PIL-001"
+    ]
+  },
+  "changes": [
+    {
+      "path": "src/infra/retry.test.ts",
+      "addedCases": 7,
+      "oldTestsPreserved": 8
+    }
+  ],
+  "productionChanged": false,
+  "redGreen": {
+    "status": "GREEN-before-new-tests; branch RED not applicable per frozen test plan; disposable counterexample sensitivity passed",
+    "evidence": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-red-green.json",
+    "sha256": "a097ca0a62d61e26b535643de0a32835155f1b93578deaf44e3fd62b9ad41ff7"
+  },
+  "restrictionTrace": {
+    "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-restriction-trace.json",
+    "sha256": "b9974d3e0a7c8e5390e9c696bda024f72654aaafccf7b93942b870808e2c4241"
+  },
+  "checks": [
+    {
+      "id": "install-temporary-pnpm",
+      "command": [
+        "npm",
+        "--cache=/tmp/npm-cache",
+        "--userconfig=/dev/null",
+        "install",
+        "--prefix=/tmp/pilot-tools",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--package-lock=false",
+        "pnpm@10.23.0"
+      ],
+      "exitCode": 0,
+      "result": "passed",
+      "output": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-install-pnpm.log",
+        "sha256": "8144a1b5b44581470086c8725b82e08791cd19b040f72af62fdf39e19f581cfc",
+        "outputBytes": 21
+      }
+    },
+    {
+      "id": "install-frozen",
+      "command": [
+        "node",
+        "/tmp/pilot-tools/node_modules/pnpm/bin/pnpm.cjs",
+        "install",
+        "--frozen-lockfile",
+        "--ignore-scripts",
+        "--store-dir=node_modules/.supervisor-store",
+        "--network-concurrency=4"
+      ],
+      "exitCode": 0,
+      "result": "passed",
+      "output": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-install-frozen.log",
+        "sha256": "a1d5275bdb8b0a93b9dc0912787f98491b39f9af4f8bf995176bea578b9c1d5f",
+        "outputBytes": 138
+      }
+    },
+    {
+      "id": "unit",
+      "command": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "src/infra/retry.test.ts",
+        "--config",
+        "vitest.unit.config.ts",
+        "--maxWorkers=1",
+        "--no-file-parallelism"
+      ],
+      "exitCode": 0,
+      "result": "passed",
+      "testsPassed": 15,
+      "output": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-vitest.log",
+        "sha256": "8037b322520fab9fad90838e0672e1235932a26b92c90257af203af42ec9fcbd",
+        "outputBytes": 242
+      }
+    },
+    {
+      "id": "format",
+      "command": [
+        "./node_modules/.bin/oxfmt",
+        "--check",
+        "src/infra/retry.test.ts"
+      ],
+      "exitCode": 0,
+      "result": "passed",
+      "output": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-format.log",
+        "sha256": "4dcd402c5dd77ea8c6e3c7f64501fd06e0fa4a49594c61a1c87610876e585586",
+        "outputBytes": 111
+      }
+    },
+    {
+      "id": "lint",
+      "command": [
+        "./node_modules/.bin/oxlint",
+        "--type-aware",
+        "src/infra/retry.test.ts"
+      ],
+      "exitCode": 0,
+      "result": "passed",
+      "warnings": 0,
+      "errors": 0,
+      "output": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-oxlint.log",
+        "sha256": "63c61bf8331393495ae3f4ef64bf1ecf2ea3e1cea53d4e9a15e916adad8041aa",
+        "outputBytes": 90
+      }
+    },
+    {
+      "id": "typecheck",
+      "command": [
+        "env",
+        "GOMAXPROCS=2",
+        "GOMEMLIMIT=1800MiB",
+        "./node_modules/.bin/tsgo",
+        "--noEmit"
+      ],
+      "exitCode": 0,
+      "result": "passed",
+      "output": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-tsgo.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "outputBytes": 0
+      },
+      "quietCommandRecord": true
+    },
+    {
+      "id": "out-of-scope-unchanged",
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "--",
+        "package.json",
+        "pnpm-lock.yaml",
+        "src/infra/retry.ts"
+      ],
+      "exitCode": 0,
+      "result": "passed",
+      "output": {
+        "ref": ".specs/features/piloto-execucao-testes/evidence/T-PIL-001-out-of-scope-diff.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "outputBytes": 0
+      }
+    }
+  ],
+  "applicability": {
+    "backend": "not-applicable",
+    "frontend": "not-applicable",
+    "fullProductReadinessClaimed": false
+  },
+  "completedAt": "2026-10-13T11:15:59.037Z",
+  "testSourceSha256": "fe6c90f9e956bb5377736d43dda81e82c2dc9837475c485bbb1cf4610220fede"
+}

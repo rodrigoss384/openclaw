@@ -1,0 +1,750 @@
+{
+  "$schema": "../schemas/layout-recipe.schema.json",
+  "meta": {
+    "id": "application-shell",
+    "name": "Application Shell",
+    "version": "1.1.0",
+    "status": "stable",
+    "category": "shell",
+    "description": "Persistent authenticated application structure with global navigation, account context, utilities, and a controlled content canvas.",
+    "owner": "frontend-product-builder",
+    "source": "assets/recipes/application-shell.recipe.json",
+    "tags": [
+      "authenticated",
+      "navigation",
+      "application-frame",
+      "responsive-shell"
+    ]
+  },
+  "purpose": "Provide a predictable authenticated environment that preserves global navigation and user context while giving product screens a consistent content canvas and scroll model.",
+  "useWhen": [
+    "The product contains several authenticated routes.",
+    "Users need persistent access to primary product areas.",
+    "Tenant, organization, workspace, or account context must remain visible.",
+    "Product screens share global utilities and identity controls."
+  ],
+  "doNotUseWhen": [
+    "The route is a focused authentication or account-recovery screen.",
+    "The product is a single isolated page without persistent navigation.",
+    "A public marketing or documentation experience is being created.",
+    "The workflow requires a distraction-free full-screen mode and explicitly replaces the shell."
+  ],
+  "requiredInputs": [
+    "Approved information architecture",
+    "Approved route groups",
+    "Approved authentication behavior",
+    "Approved tenant or organization context",
+    "Approved design direction",
+    "Approved navigation component contracts"
+  ],
+  "screenContract": {
+    "requiredFields": [
+      "purpose",
+      "primaryUser",
+      "primaryTask",
+      "route",
+      "permissions",
+      "responsiveTransformations",
+      "accessibilityRequirements",
+      "acceptanceCriteria"
+    ],
+    "selectionQuestions": [
+      "Which global product areas require persistent navigation?",
+      "Does organization or tenant context affect all route data?",
+      "Who owns vertical scrolling: the browser document or the application content canvas?",
+      "Which utilities must remain globally available?",
+      "Which routes intentionally suppress or replace the application shell?"
+    ]
+  },
+  "regions": [
+    {
+      "id": "primaryNavigation",
+      "name": "Primary Navigation",
+      "role": "Provide persistent access to major product areas using user-oriented grouping.",
+      "required": true,
+      "order": 1,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "SidebarNavigation",
+        "NavigationRail",
+        "MobileNavigationDrawer",
+        "NavigationGroup",
+        "NavigationItem",
+        "Brand",
+        "Logo"
+      ],
+      "prohibitedComponents": [
+        "Feature-specific forms",
+        "Dashboard metrics",
+        "Raw backend module lists",
+        "Brand markup inlined outside the isolated Brand/Logo component"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "nav",
+      "labelRequirement": "accessible-label",
+      "sticky": {
+        "enabled": true,
+        "container": "application viewport",
+        "offsetToken": "reference.space.0",
+        "zIndexToken": "reference.zIndex.sticky",
+        "compactBehavior": "Transform into an off-canvas navigation drawer."
+      },
+      "scroll": {
+        "ownership": "region",
+        "axis": "vertical",
+        "notes": "Navigation may scroll independently only when its item count exceeds the viewport."
+      },
+      "visibilityCondition": "Visible on authenticated product routes.",
+      "responsive": {
+        "compact": {
+          "display": "overlay",
+          "placement": "Off-canvas drawer triggered from the global header.",
+          "layout": "Single vertical navigation column.",
+          "width": "min(88vw, 320px)",
+          "order": 1,
+          "overflow": "scroll-y",
+          "notes": "Focus must be trapped while the drawer is open and restored to the trigger on close."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Persistent compact navigation rail.",
+          "layout": "Icon plus accessible tooltip or expandable label pattern.",
+          "width": "72px",
+          "order": 1,
+          "overflow": "scroll-y",
+          "notes": "Current destination must not depend only on color."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Persistent left sidebar.",
+          "layout": "Grouped icon and label navigation.",
+          "width": "256px",
+          "order": 1,
+          "overflow": "scroll-y",
+          "notes": "The sidebar must not consume the page content scroll."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Persistent left sidebar.",
+          "layout": "Grouped icon and label navigation with optional secondary metadata.",
+          "width": "272px",
+          "order": 1,
+          "overflow": "scroll-y",
+          "notes": "Do not widen the navigation merely because more viewport width exists."
+        }
+      },
+      "rules": [
+        "Navigation is organized by user tasks and product areas rather than database entities.",
+        "The active route is clearly indicated through text, shape, or icon in addition to color.",
+        "Navigation labels must support localization expansion.",
+        "Destructive or administrative actions do not appear as ordinary primary navigation items."
+      ]
+    },
+    {
+      "id": "globalHeader",
+      "name": "Global Header",
+      "role": "Provide compact global orientation, navigation trigger, account context, and approved utilities.",
+      "required": true,
+      "order": 2,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "supporting",
+      "allowedComponents": [
+        "GlobalHeader",
+        "MobileNavigationTrigger",
+        "OrganizationSwitcher",
+        "GlobalSearch",
+        "NotificationTrigger",
+        "UserMenu",
+        "Brand",
+        "Logo"
+      ],
+      "prohibitedComponents": [
+        "Page-specific primary actions",
+        "Large marketing content",
+        "Repeated route title when the page header already owns it",
+        "Brand markup inlined outside the isolated Brand/Logo component"
+      ],
+      "ownsSpacing": true,
+      "surface": "surface",
+      "landmark": "header",
+      "labelRequirement": "not-required",
+      "sticky": {
+        "enabled": true,
+        "container": "application content frame",
+        "offsetToken": "reference.space.0",
+        "zIndexToken": "reference.zIndex.sticky",
+        "compactBehavior": "Remain visible with reduced utilities and an overflow menu."
+      },
+      "scroll": {
+        "ownership": "none",
+        "axis": "none"
+      },
+      "visibilityCondition": "Visible on authenticated product routes.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Top of viewport.",
+          "layout": "Navigation trigger, compact product identity, context summary, user menu.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "move-to-overflow",
+          "notes": "Global search may move to a dedicated overlay or route."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Top of application content.",
+          "layout": "Context, compact utilities, and user menu.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "move-to-overflow",
+          "notes": "Hide low-frequency utility labels before removing their accessible names."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Top of application content.",
+          "layout": "Horizontal global utility bar.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Keep the header compact in operational products."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Top of application content.",
+          "layout": "Horizontal global utility bar.",
+          "width": "100%",
+          "order": 1,
+          "overflow": "visible",
+          "notes": "Do not add decorative empty space."
+        }
+      },
+      "rules": [
+        "The global header remains visually subordinate to route content.",
+        "Page-specific actions belong to the page recipe unless explicitly global.",
+        "Organization or tenant switching must trigger safe context reset and cache isolation.",
+        "Icon-only utilities require accessible names."
+      ]
+    },
+    {
+      "id": "contentCanvas",
+      "name": "Content Canvas",
+      "role": "Host route-level screen recipes inside a consistent width, spacing, and scrolling environment.",
+      "required": true,
+      "order": 3,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "primary",
+      "allowedComponents": [
+        "RouteOutlet",
+        "PageContainer",
+        "RouteErrorBoundary",
+        "RouteLoadingBoundary"
+      ],
+      "prohibitedComponents": [
+        "Duplicate global navigation",
+        "Duplicate user menu",
+        "Global context switcher reimplementation"
+      ],
+      "ownsSpacing": false,
+      "surface": "canvas",
+      "landmark": "main",
+      "labelRequirement": "inherited",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "application-canvas",
+        "axis": "vertical",
+        "notes": "The application must use one primary vertical content scroll container."
+      },
+      "visibilityCondition": "Always visible when the authenticated shell is active.",
+      "responsive": {
+        "compact": {
+          "display": "visible",
+          "placement": "Below the global header.",
+          "layout": "Single content column.",
+          "width": "100%",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Page recipes own internal responsive transformation."
+        },
+        "medium": {
+          "display": "visible",
+          "placement": "Beside the navigation rail and below the header.",
+          "layout": "Fluid content canvas.",
+          "width": "calc(100% - navigation rail)",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Avoid document-level horizontal overflow."
+        },
+        "wide": {
+          "display": "visible",
+          "placement": "Beside the sidebar and below the header.",
+          "layout": "Fluid content canvas.",
+          "width": "calc(100% - sidebar)",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Screen recipes select constrained, fluid, or hybrid page containers."
+        },
+        "ultrawide": {
+          "display": "visible",
+          "placement": "Beside the sidebar and below the header.",
+          "layout": "Fluid content canvas with recipe-controlled maximum widths.",
+          "width": "calc(100% - sidebar)",
+          "order": 2,
+          "overflow": "visible",
+          "notes": "Do not stretch reading or form content indefinitely."
+        }
+      },
+      "rules": [
+        "Route screens must expose one route-level heading.",
+        "The content canvas does not wrap every route in an additional card.",
+        "Screen recipes control page padding and maximum width through approved layout components.",
+        "Route errors should remain inside the content canvas unless authentication has failed."
+      ]
+    },
+    {
+      "id": "globalFeedback",
+      "name": "Global Feedback Layer",
+      "role": "Present application-wide overlays, toasts, command interfaces, and session-level feedback.",
+      "required": true,
+      "order": 4,
+      "cardinality": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "contentPriority": "contextual",
+      "allowedComponents": [
+        "ToastViewport",
+        "GlobalDialogPortal",
+        "CommandMenu",
+        "SessionExpiredDialog"
+      ],
+      "prohibitedComponents": [
+        "Persistent route content",
+        "Ordinary field validation",
+        "Every successful local mutation"
+      ],
+      "ownsSpacing": false,
+      "surface": "none",
+      "landmark": "none",
+      "labelRequirement": "not-required",
+      "sticky": {
+        "enabled": false
+      },
+      "scroll": {
+        "ownership": "overlay",
+        "axis": "vertical"
+      },
+      "visibilityCondition": "Rendered as infrastructure; visible only when feedback or overlay state is active.",
+      "responsive": {
+        "compact": {
+          "display": "conditional",
+          "placement": "Portal above the application shell.",
+          "layout": "Full-width or near-full-width overlays where appropriate.",
+          "width": "viewport",
+          "order": 4,
+          "overflow": "scroll-y",
+          "notes": "Dialogs must respect compact viewport height."
+        },
+        "medium": {
+          "display": "conditional",
+          "placement": "Portal above the application shell.",
+          "layout": "Centered or edge-aligned overlay according to component contract.",
+          "width": "viewport",
+          "order": 4,
+          "overflow": "scroll-y",
+          "notes": "Focus management is owned by overlay components."
+        },
+        "wide": {
+          "display": "conditional",
+          "placement": "Portal above the application shell.",
+          "layout": "Centered or contextual overlays.",
+          "width": "viewport",
+          "order": 4,
+          "overflow": "scroll-y",
+          "notes": "Use semantic z-index tokens."
+        },
+        "ultrawide": {
+          "display": "conditional",
+          "placement": "Portal above the application shell.",
+          "layout": "Centered or contextual overlays.",
+          "width": "viewport",
+          "order": 4,
+          "overflow": "scroll-y",
+          "notes": "Overlay width remains constrained by component contracts."
+        }
+      },
+      "rules": [
+        "Global toasts do not replace local field or form errors.",
+        "Session expiration must preserve safe recovery behavior.",
+        "Overlays use semantic z-index tokens.",
+        "Global feedback must not expose raw technical errors."
+      ]
+    }
+  ],
+  "composition": {
+    "layoutModel": "shell",
+    "widthPolicy": "full-bleed",
+    "container": {
+      "component": "AppShell",
+      "maxWidthToken": "none",
+      "paddingToken": "reference.space.0"
+    },
+    "columnPolicy": "Persistent navigation plus one flexible content column at medium and wider layouts; single content column with off-canvas navigation at compact width.",
+    "verticalRhythmToken": "reference.space.0",
+    "regionGapToken": "reference.space.0",
+    "spacingOwnership": [
+      "The shell owns the relationship between navigation, global header, and content canvas.",
+      "Individual screen recipes own padding and spacing inside the content canvas.",
+      "Global feedback overlays own their internal spacing."
+    ],
+    "surfacePolicy": [
+      "Navigation and global header use approved shell surfaces.",
+      "The content canvas uses the application canvas token.",
+      "Do not add an extra card around every route."
+    ],
+    "scrollOwner": "application content canvas",
+    "rules": [
+      "Use one primary vertical content scroll container.",
+      "Persistent navigation must not shift route layout unexpectedly.",
+      "Shell regions must remain independent of feature-specific data fetching.",
+      "Tenant or organization switching must not leave previous-context data visible."
+    ],
+    "prohibited": [
+      "Nested application shells.",
+      "Several independent full-height vertical scroll containers.",
+      "Page-specific actions placed globally without a product-wide reason.",
+      "Absolute positioning used to create the primary shell layout."
+    ]
+  },
+  "actions": {
+    "primaryPlacement": "Owned by the active screen recipe, not the global shell.",
+    "secondaryPlacement": "Global utilities may appear in the global header when they apply across routes.",
+    "destructivePlacement": "Never placed as an ordinary global shell action.",
+    "bulkPlacement": "Not applicable at shell level.",
+    "contextualPlacement": "User menu, organization switcher, and approved global utility menus.",
+    "overflowPolicy": "Low-frequency global utilities move to an accessible overflow menu before being removed.",
+    "maxDominantActionsPerRegion": 0,
+    "compactBehavior": "Preserve navigation trigger, active context, and user access; move secondary utilities to overflow.",
+    "rules": [
+      "The shell does not compete visually with the active screen.",
+      "Logout remains discoverable but is not styled as the screen's primary action.",
+      "Global utilities must have product-wide scope."
+    ]
+  },
+  "content": {
+    "density": "comfortable-compact",
+    "headingPolicy": "The shell does not own the route-level h1; each active screen owns one.",
+    "longContentPolicy": "Navigation labels may wrap only when the approved navigation component supports it; otherwise use concise labels and accessible full names.",
+    "truncationPolicy": "Organization or tenant names may truncate only when the full value remains accessible.",
+    "emptyStatePlacement": "The shell does not render feature empty states; route recipes own them.",
+    "loadingStrategy": "Application bootstrap may show a shell-level loading boundary before authenticated context is available; route loading occurs inside the content canvas.",
+    "errorScope": "Authentication or application-bootstrap failures may replace the content canvas; feature errors remain route-local.",
+    "rules": [
+      "The shell remains visually restrained.",
+      "Global context must be understandable without exposing technical identifiers.",
+      "Product identity must not consume excessive operational space."
+    ]
+  },
+  "responsive": {
+    "mobileFirst": true,
+    "minimumViewport": "320 CSS pixels with declared workflow limitations where applicable.",
+    "primaryViewport": "1366×768 and wider desktop operational environments.",
+    "zoomExpectation": "The shell must remain navigable at 125% browser zoom.",
+    "pageOverflowPolicy": "No unexpected page-level horizontal overflow.",
+    "internalOverflowPolicy": "Navigation may scroll vertically; overlays may scroll internally; the main route owns ordinary content overflow.",
+    "transformations": [
+      {
+        "from": "ultrawide",
+        "to": "wide",
+        "change": "Keep the persistent sidebar and remove any nonessential secondary metadata from navigation.",
+        "reason": "Preserve content width and reduce navigation visual weight."
+      },
+      {
+        "from": "wide",
+        "to": "medium",
+        "change": "Transform the full sidebar into a compact navigation rail and move low-frequency utilities to overflow.",
+        "reason": "Preserve useful content width while maintaining persistent route access."
+      },
+      {
+        "from": "medium",
+        "to": "compact",
+        "change": "Replace persistent navigation with an off-canvas drawer and simplify the global header.",
+        "reason": "A persistent rail would consume excessive compact viewport width."
+      }
+    ]
+  },
+  "states": [
+    {
+      "id": "initial-loading",
+      "scope": "application",
+      "required": true,
+      "rendering": "Show an application bootstrap state until authentication, runtime configuration, and organization context are resolved.",
+      "userAction": "Wait or recover when bootstrap fails.",
+      "notes": "Do not briefly render protected route content before authentication is resolved."
+    },
+    {
+      "id": "data",
+      "scope": "application",
+      "required": true,
+      "rendering": "Render the authenticated shell and active route.",
+      "userAction": "Navigate and perform route-level tasks."
+    },
+    {
+      "id": "error",
+      "scope": "application",
+      "required": true,
+      "rendering": "Render a safe application-level recovery state for bootstrap failures.",
+      "userAction": "Retry, sign in again, or contact support using a safe correlation identifier."
+    },
+    {
+      "id": "unauthorized",
+      "scope": "application",
+      "required": true,
+      "rendering": "Redirect to or render the approved authentication recovery flow.",
+      "userAction": "Authenticate."
+    },
+    {
+      "id": "forbidden",
+      "scope": "route",
+      "required": true,
+      "rendering": "Keep the shell when the user is authenticated but lacks route capability, unless disclosure is unsafe.",
+      "userAction": "Return to an available product area."
+    },
+    {
+      "id": "unavailable",
+      "scope": "application",
+      "required": true,
+      "rendering": "Render a controlled service-unavailable state without exposing raw infrastructure details.",
+      "userAction": "Retry later or contact support."
+    }
+  ],
+  "accessibility": {
+    "landmarkMap": [
+      "Primary navigation uses a labeled nav landmark.",
+      "Global header uses a header landmark.",
+      "Active route content uses exactly one main landmark.",
+      "Overlay components use their native dialog, menu, or status semantics."
+    ],
+    "headingStructure": [
+      "The shell does not create an additional route-level h1.",
+      "The active route supplies exactly one h1.",
+      "Navigation group labels do not replace route headings."
+    ],
+    "focusOrder": [
+      "Skip link.",
+      "Primary navigation or compact navigation trigger.",
+      "Global context and utilities.",
+      "Route page header.",
+      "Route content.",
+      "Contextual route actions."
+    ],
+    "keyboard": [
+      "Provide a skip link to the main route content.",
+      "Navigation is fully keyboard operable.",
+      "Off-canvas navigation traps focus while open and restores focus on close.",
+      "User and organization menus follow approved menu keyboard behavior."
+    ],
+    "announcements": [
+      "Route changes should update the document title and provide route orientation where required.",
+      "Session expiration and context changes must be perceivable."
+    ],
+    "minimumTargetToken": "reference.control.target.minimum",
+    "contrastTarget": "WCAG 2.2 AA",
+    "colorIndependence": "Active navigation, selected context, and system states must not depend only on color.",
+    "rules": [
+      "Do not create duplicate unlabeled navigation landmarks.",
+      "Hidden compact navigation must not remain focusable.",
+      "Persistent shell controls require visible focus."
+    ]
+  },
+  "constraints": {
+    "requiredComponents": [
+      "AppShell",
+      "SidebarNavigation or NavigationRail",
+      "GlobalHeader",
+      "PageContainer",
+      "RouteErrorBoundary",
+      "ToastViewport"
+    ],
+    "prohibitedPatterns": [
+      "Nested application shells.",
+      "Global page actions duplicated inside the shell.",
+      "Several primary vertical scroll containers.",
+      "Navigation organized directly from backend modules.",
+      "Raw tenant or account identifiers shown as ordinary labels.",
+      "Arbitrary z-index values."
+    ],
+    "dataMagnitude": [
+      "Navigation must support several grouped product areas without requiring every route to remain simultaneously visible.",
+      "Organization names may be significantly longer than fixture examples."
+    ],
+    "performance": [
+      "The shell should not rerender all route content for unrelated navigation-state changes.",
+      "Large route modules may use route-level lazy loading.",
+      "Global providers should remain minimal and stable."
+    ],
+    "implementation": [
+      "Use semantic design tokens.",
+      "Use approved navigation and overlay primitives.",
+      "Centralize route definitions and active-state calculation.",
+      "Do not access authentication tokens directly inside shell presentation components.",
+      "Machine presence conditions come from presenceDefaults; visibilityCondition prose is explanatory only."
+    ]
+  },
+  "craftDefaults": {
+    "spatialComposition": {
+      "maxVisualNestingDepth": 2,
+      "regionAssignments": [
+        {
+          "regionId": "primaryNavigation",
+          "widthStrategy": "constrained",
+          "heightStrategy": "fill-available",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "globalHeader",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "content-driven",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": false
+        },
+        {
+          "regionId": "contentCanvas",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "fill-available",
+          "emptyBehavior": "natural",
+          "allowNestedSurface": true
+        },
+        {
+          "regionId": "globalFeedback",
+          "widthStrategy": "fill-available",
+          "heightStrategy": "natural",
+          "emptyBehavior": "collapse",
+          "allowNestedSurface": true
+        }
+      ]
+    },
+    "perceptualHierarchy": {
+      "surfaceAssignments": [
+        {
+          "regionId": "primaryNavigation",
+          "role": "surface"
+        },
+        {
+          "regionId": "globalHeader",
+          "role": "surface"
+        },
+        {
+          "regionId": "contentCanvas",
+          "role": "canvas"
+        },
+        {
+          "regionId": "globalFeedback",
+          "role": "canvas"
+        }
+      ]
+    }
+  },
+  "presenceDefaults": [
+    {
+      "targetType": "region",
+      "targetId": "primaryNavigation",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The authenticated application shell always provides primary product navigation; compact layouts transform its presentation rather than removing the region."
+    },
+    {
+      "targetType": "region",
+      "targetId": "globalHeader",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The shell always provides global orientation and account/context utilities while the shell is active."
+    },
+    {
+      "targetType": "region",
+      "targetId": "contentCanvas",
+      "policy": "always",
+      "condition": null,
+      "rationale": "The shell is incomplete without the route content canvas that owns the active product screen."
+    },
+    {
+      "targetType": "region",
+      "targetId": "globalFeedback",
+      "policy": "always",
+      "condition": null,
+      "rationale": "Global feedback is structural portal infrastructure that remains mounted; individual toasts, dialogs, and command surfaces control their own visible state."
+    }
+  ],
+  "validation": {
+    "schema": "assets/schemas/layout-recipe.schema.json",
+    "checks": [
+      {
+        "id": "SHELL-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The application-shell recipe must validate against the layout recipe schema.",
+        "remediation": "Correct missing or invalid recipe fields."
+      },
+      {
+        "id": "SHELL-002",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "The shell must not introduce page-level horizontal overflow at approved viewports and 125% zoom.",
+        "remediation": "Correct navigation width, content sizing, or compact transformation."
+      },
+      {
+        "id": "SHELL-003",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Compact navigation must trap and restore focus correctly.",
+        "remediation": "Use the approved drawer primitive and correct focus lifecycle."
+      },
+      {
+        "id": "SHELL-004",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "The authenticated shell must not expose content from the previous tenant or organization after context switching.",
+        "remediation": "Correct query-cache isolation and context bootstrap behavior."
+      },
+      {
+        "id": "SHELL-005",
+        "severity": "warning",
+        "method": "manual",
+        "blocking": false,
+        "description": "The shell should remain visually subordinate to route-level tasks.",
+        "remediation": "Reduce shell height, decoration, or redundant content."
+      },
+      {
+        "id": "SHELL-006",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "Application-shell geometry and structural presence must come from typed recipe defaults; global feedback remains mounted infrastructure even when no overlay is visible.",
+        "remediation": "Correct craftDefaults/presenceDefaults and keep conditional regions required=false with cardinality.minimum=0."
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "Authenticated operational application",
+      "description": "Persistent sidebar, compact global header, fluid route content, and portal-based feedback layer."
+    }
+  ]
+}

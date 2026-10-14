@@ -1,0 +1,27 @@
+{
+  "$schema": "perceptual-calibration-policy.schema.json",
+  "schemaVersion": "1.0.0",
+  "surface": {
+    "model": "oklab-lightness-dominant",
+    "maxChromaticToLightnessRatio": 0.75,
+    "chromaNoiseFractionOfPrimaryTextDistance": 0.02,
+    "maxDistanceFractionOfPrimaryTextDistance": 0.35
+  },
+  "border": {
+    "defaultMustBeQuieterThanMutedText": true,
+    "defaultMustNotExceedStrong": true
+  },
+  "themeColor": {
+    "metric": "oklab-relative-to-surface-and-primary-text",
+    "maxRelativeSalienceDrift": 0.35,
+    "exactReuseRequiresContextValidation": true
+  },
+  "density": {
+    "contrastLoadTriggerRatio": 1.25,
+    "ordinaryMaxGeometryDeltaPx": 2,
+    "ordinaryMaxContentOccupancyDelta": 0.03,
+    "compensatedMaxGeometryDeltaPx": 8,
+    "compensatedMaxContentOccupancyDelta": 0.06,
+    "minimumOccupancyReduction": 0.01
+  }
+}

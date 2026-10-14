@@ -1,0 +1,2450 @@
+{
+  "$schema": "../schemas/component-catalog.schema.json",
+  "meta": {
+    "id": "frontend-product-builder-data-display-collection-components",
+    "name": "Frontend Product Builder Collection Data Components",
+    "version": "1.0.0",
+    "status": "approved",
+    "owner": "frontend-product-builder",
+    "category": "data-display",
+    "source": "./assets/catalog/data-display-collection-components.json",
+    "designSystem": "docs/frontend/design-system/design-system.json",
+    "generated": false,
+    "description": "Canonical components for structured collections, pagination, descriptive key-value information, and compact metadata."
+  },
+  "components": {
+    "DataTable": {
+      "id": "data-table",
+      "name": "DataTable",
+      "level": "shared-composite",
+      "category": "data-display",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical structured collection component for presenting sortable, selectable, paginated, server-backed, and action-oriented tabular data.",
+      "capabilities": [
+        "Present structured records through meaningful columns and rows.",
+        "Support controlled sorting, selection, expansion, visibility, and pagination.",
+        "Represent loading, empty, no-results, partial, error, and refreshing states.",
+        "Preserve semantic table behavior and keyboard-accessible controls.",
+        "Provide controlled local overflow without causing page-level horizontal overflow."
+      ],
+      "keywords": [
+        "table",
+        "data-grid",
+        "rows",
+        "columns",
+        "sorting",
+        "selection",
+        "pagination",
+        "collection"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/data-display"
+      },
+      "implementation": "src/components/data-display/data-table.tsx",
+      "publicImport": "@/components/data-display/data-table",
+      "contract": "docs/frontend/design-system/components/data-table.md",
+      "foundation": {
+        "type": "headless-library",
+        "source": "TanStack Table with native HTML table semantics",
+        "components": [
+          "Checkbox",
+          "DropdownMenu",
+          "Tooltip",
+          "EmptyState",
+          "LoadingState",
+          "ErrorState",
+          "Pagination"
+        ],
+        "reason": "TanStack Table provides controlled headless state and row models while the product design system retains semantic markup, presentation, accessibility, responsive policy, and server-state ownership."
+      },
+      "tokens": [
+        "component.table.header.background",
+        "component.table.row.background",
+        "component.table.row.hoverBackground",
+        "component.table.row.selectedBackground",
+        "component.table.border",
+        "component.table.cell.padding.compact",
+        "component.table.cell.padding.default",
+        "component.table.cell.padding.comfortable",
+        "semantic.background.surface",
+        "semantic.background.surfaceSubtle",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.border.default",
+        "semantic.focus.ring",
+        "reference.control.target.minimum"
+      ],
+      "variants": {
+        "standard": {
+          "intent": "Present an ordinary operational collection with moderate density and complete row context.",
+          "default": true,
+          "allowedUse": [
+            "Primary searchable collection.",
+            "Administrative collection.",
+            "Entity relationship collection.",
+            "Operational task queue."
+          ],
+          "prohibitedUse": [
+            "Small key-value summary.",
+            "Decorative static comparison.",
+            "Collection whose items require primarily visual card content."
+          ],
+          "tokens": [
+            "component.table.cell.padding.default",
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "empty",
+            "error",
+            "selected"
+          ]
+        },
+        "compact": {
+          "intent": "Present a dense operational collection where repeated short values and frequent scanning justify reduced spacing.",
+          "allowedUse": [
+            "Administrative user list.",
+            "Audit event index.",
+            "High-frequency operational queue.",
+            "Compact contextual collection."
+          ],
+          "prohibitedUse": [
+            "Long multiline cell content.",
+            "Touch-first workflow.",
+            "Collection requiring several large inline actions."
+          ],
+          "tokens": [
+            "component.table.cell.padding.compact",
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "empty",
+            "error",
+            "selected"
+          ]
+        },
+        "comfortable": {
+          "intent": "Present records containing longer labels, supporting text, or larger interactive targets.",
+          "allowedUse": [
+            "Document list with supporting metadata.",
+            "Review evidence collection.",
+            "Low-frequency collection with descriptive rows."
+          ],
+          "prohibitedUse": [
+            "Very large high-density administrative datasets."
+          ],
+          "tokens": [
+            "component.table.cell.padding.comfortable",
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "loading",
+            "empty",
+            "error",
+            "selected"
+          ]
+        },
+        "selectable": {
+          "intent": "Allow explicit selection for an approved bulk or comparison workflow.",
+          "allowedUse": [
+            "Bulk update.",
+            "Bulk export.",
+            "Batch assignment.",
+            "Evidence selection.",
+            "Explicit row comparison."
+          ],
+          "prohibitedUse": [
+            "Selection without any valid resulting action.",
+            "Selection used only to highlight a navigated row.",
+            "Hidden selection persistence across incompatible filters."
+          ],
+          "tokens": [
+            "component.table.row.selectedBackground",
+            "semantic.focus.ring"
+          ],
+          "states": [
+            "default",
+            "selected",
+            "disabled"
+          ]
+        },
+        "expandable": {
+          "intent": "Allow a row to disclose a bounded set of related details without navigating away.",
+          "allowedUse": [
+            "Small related-data summary.",
+            "Compact processing details.",
+            "Bounded audit metadata.",
+            "Row-level exception explanation."
+          ],
+          "prohibitedUse": [
+            "Complete entity-detail experience.",
+            "Large nested table.",
+            "Full edit form.",
+            "Unbounded historical content."
+          ],
+          "tokens": [
+            "semantic.background.surfaceSubtle",
+            "semantic.border.default"
+          ],
+          "states": [
+            "default",
+            "expanded",
+            "collapsed"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense rows for frequent scanning.",
+          "allowedUse": [
+            "Administrative and audit collections.",
+            "Short repeated values."
+          ],
+          "tokens": [
+            "component.table.cell.padding.compact"
+          ]
+        },
+        "default": {
+          "intent": "Default operational table density.",
+          "default": true,
+          "allowedUse": [
+            "Most product collections."
+          ],
+          "tokens": [
+            "component.table.cell.padding.default"
+          ]
+        },
+        "comfortable": {
+          "intent": "Rows with descriptive or multiline content.",
+          "allowedUse": [
+            "Evidence and document collections.",
+            "Rows with supporting summaries."
+          ],
+          "tokens": [
+            "component.table.cell.padding.comfortable"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "loading",
+        "empty",
+        "error",
+        "selected",
+        "expanded",
+        "collapsed",
+        "disabled",
+        "stale"
+      ],
+      "slots": [
+        {
+          "name": "caption",
+          "description": "Optional accessible description of the table purpose.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text",
+            "VisuallyHidden"
+          ],
+          "contentRestrictions": [
+            "The caption describes the collection rather than repeating the page title.",
+            "A visually hidden caption remains meaningful to assistive technology."
+          ]
+        },
+        {
+          "name": "toolbar",
+          "description": "Optional table-specific controls such as column visibility, density, export, and selected-row actions.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "TableToolbar",
+            "Button",
+            "DropdownMenu",
+            "SelectionSummary"
+          ],
+          "contentRestrictions": [
+            "Search and primary route filters normally belong to the searchable-list recipe.",
+            "Low-frequency utilities move to overflow.",
+            "Selection actions render only when selection exists."
+          ]
+        },
+        {
+          "name": "header",
+          "description": "Column headings, sorting controls, and optional select-all control.",
+          "required": true,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "TableHeader",
+            "TableHead",
+            "Checkbox",
+            "SortButton"
+          ],
+          "contentRestrictions": [
+            "Every data column requires an understandable heading.",
+            "Icon-only headings require an accessible name.",
+            "Select-all scope must be explicit."
+          ]
+        },
+        {
+          "name": "body",
+          "description": "Current collection rows and cells.",
+          "required": true,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "TableBody",
+            "TableRow",
+            "TableCell",
+            "RowActionMenu"
+          ],
+          "contentRestrictions": [
+            "Rows use stable record identifiers.",
+            "Cells must not render raw DTO objects.",
+            "Row actions remain separate from row navigation semantics."
+          ]
+        },
+        {
+          "name": "expandedContent",
+          "description": "Optional bounded content disclosed beneath an expanded row.",
+          "required": false,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "DefinitionList",
+            "MetadataList",
+            "InlineAlert",
+            "ProcessingState",
+            "Feature component"
+          ],
+          "contentRestrictions": [
+            "Expanded content must remain bounded.",
+            "Do not render a complete route or large nested table."
+          ]
+        },
+        {
+          "name": "state",
+          "description": "Loading, empty, no-results, error, permission, or unavailable collection state.",
+          "required": true,
+          "multiple": false,
+          "order": 6,
+          "allowedComponents": [
+            "LoadingState",
+            "EmptyState",
+            "ErrorState",
+            "PermissionState"
+          ],
+          "contentRestrictions": [
+            "Only the component matching the actual state renders.",
+            "Existing rows remain visible during non-blocking refresh."
+          ]
+        },
+        {
+          "name": "footer",
+          "description": "Pagination, result count, selection summary, and freshness context.",
+          "required": false,
+          "multiple": false,
+          "order": 7,
+          "allowedComponents": [
+            "Pagination",
+            "ResultCount",
+            "SelectionSummary",
+            "FreshnessIndicator"
+          ],
+          "contentRestrictions": [
+            "Do not duplicate result count in several regions.",
+            "Pagination is omitted when the complete collection fits on one page unless context still requires count."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "columns",
+          "type": "ColumnDef<TData, unknown>[]",
+          "required": true,
+          "description": "Approved semantic column definitions for the current collection.",
+          "semantic": true,
+          "restrictions": [
+            "Column definitions must not be created inline when doing so causes unstable identity or avoidable rerenders.",
+            "Raw backend field names must be mapped to user-facing headers and cell renderers.",
+            "Column order follows task priority."
+          ]
+        },
+        {
+          "name": "data",
+          "type": "TData[]",
+          "required": true,
+          "description": "Current page or locally available collection records.",
+          "semantic": true,
+          "restrictions": [
+            "The component does not fetch data.",
+            "Rows require stable identifiers."
+          ]
+        },
+        {
+          "name": "getRowId",
+          "type": "(row: TData) => string",
+          "required": true,
+          "description": "Returns the stable identity of one record.",
+          "semantic": true,
+          "restrictions": [
+            "Array index is prohibited as the row identity for mutable collections."
+          ]
+        },
+        {
+          "name": "density",
+          "type": "compact | default | comfortable",
+          "required": false,
+          "default": "default",
+          "description": "Semantic row and cell density.",
+          "semantic": true,
+          "restrictions": [
+            "Do not override individual cell padding arbitrarily."
+          ]
+        },
+        {
+          "name": "sorting",
+          "type": "SortingState",
+          "required": false,
+          "description": "Controlled active sorting state.",
+          "semantic": true,
+          "restrictions": [
+            "Server and client sorting must not be mixed accidentally.",
+            "The active sort must be reflected in query or URL state when shareability requires it."
+          ]
+        },
+        {
+          "name": "onSortingChange",
+          "type": "OnChangeFn<SortingState>",
+          "required": false,
+          "description": "Controlled sorting-change callback.",
+          "semantic": true,
+          "restrictions": [
+            "The table does not execute server requests directly."
+          ]
+        },
+        {
+          "name": "rowSelection",
+          "type": "RowSelectionState",
+          "required": false,
+          "description": "Controlled selected-row state.",
+          "semantic": true,
+          "restrictions": [
+            "Selection must be reconciled when filters, tenant, scope, or data identity changes."
+          ]
+        },
+        {
+          "name": "onRowSelectionChange",
+          "type": "OnChangeFn<RowSelectionState>",
+          "required": false,
+          "description": "Controlled row-selection callback.",
+          "semantic": true,
+          "restrictions": [
+            "Selection side effects remain outside the table."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates initial collection loading when no usable rows exist.",
+          "semantic": true,
+          "restrictions": [
+            "Background refreshing must not replace populated rows with skeletons."
+          ]
+        },
+        {
+          "name": "refreshing",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates background synchronization while current rows remain available.",
+          "semantic": true,
+          "restrictions": [
+            "Refreshing and loading must remain distinct."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Searchable list results region",
+          "Section",
+          "Administration content",
+          "Entity-detail related-data region",
+          "Dashboard action queue",
+          "Review evidence navigator"
+        ],
+        "allowedChildren": [
+          "TableToolbar",
+          "TableHeader",
+          "TableBody",
+          "TableRow",
+          "TableCell",
+          "Checkbox",
+          "DropdownMenu",
+          "Pagination",
+          "EmptyState",
+          "LoadingState",
+          "ErrorState",
+          "PermissionState"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Tooltip",
+          "Button",
+          "Small confirmation dialog"
+        ],
+        "prohibitedChildren": [
+          "Complete route",
+          "Application shell",
+          "Large unrelated form",
+          "Raw JSON object"
+        ],
+        "spacingOwnership": [
+          "DataTable owns spacing among table toolbar, table viewport, state presentation, and footer.",
+          "Table cells own their approved internal padding through the selected density.",
+          "The surrounding recipe region owns spacing around the complete table."
+        ],
+        "surfaceOwnership": "DataTable owns one collection surface and its internal borders; it must not place every row or cell inside independent cards.",
+        "rules": [
+          "Use semantic HTML table elements for genuinely tabular information.",
+          "Do not use ARIA grid unless implementing full interactive-grid behavior.",
+          "Column priority is defined before responsive hiding or adaptation.",
+          "Critical information must not disappear on compact layouts.",
+          "Row navigation and row actions must not create nested interactive conflicts.",
+          "Table state is controlled by the owning feature, screen, or URL contract."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Checkbox",
+          "DropdownMenu",
+          "Tooltip",
+          "EmptyState",
+          "LoadingState",
+          "ErrorState",
+          "PermissionState",
+          "Pagination"
+        ],
+        "libraries": [
+          "@tanstack/react-table"
+        ],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "actionQueue",
+            "analyticalContent"
+          ],
+          "status": "allowed",
+          "notes": "Use only when the data is genuinely tabular and operationally actionable."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results",
+            "bulkActions",
+            "resultsSummary"
+          ],
+          "status": "required",
+          "notes": "Primary implementation for tabular searchable collections."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "contextualAside",
+            "auditDetails"
+          ],
+          "status": "allowed",
+          "notes": "Use for related records or audit indexes, not for the complete entity summary."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "auditAndDiagnostics"
+          ],
+          "status": "recommended",
+          "notes": "User, role, integration, and audit collections require capability-aware actions."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "evidenceNavigator",
+            "auditContext"
+          ],
+          "status": "allowed",
+          "notes": "Evidence selection and review history may use tabular presentation when appropriate."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Executing API requests.",
+          "Owning TanStack Query hooks.",
+          "Parsing backend pagination responses.",
+          "Evaluating business permissions.",
+          "Mapping raw DTO values into user-facing content."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Sorting, filtering, pagination, visibility, expansion, and selection are supplied by the owning feature or screen.",
+          "Shareable table state may be URL-owned outside the component.",
+          "Server data remains TanStack Query-owned outside the component."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": true,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "The table may manage focus among its own sorting, selection, expansion, and action controls.",
+          "The local table viewport may own horizontal scrolling.",
+          "Navigation, mutation, export, and clipboard behavior are supplied by consumers."
+        ]
+      },
+      "responsive": {
+        "strategy": "Preserve task-critical columns, move low-priority utilities to overflow, and use a locally owned horizontal viewport before silently removing essential data.",
+        "compact": "Use approved critical columns, controlled local horizontal scrolling, or an explicit feature-level list adaptation. Row actions move to overflow.",
+        "medium": "Display primary columns and selected supporting columns; low-priority columns may be hidden through an approved column-priority policy.",
+        "wide": "Display the complete approved operational column set when width permits.",
+        "ultrawide": "Do not stretch text columns excessively; distribute remaining space according to column semantics.",
+        "overflowPolicy": "Horizontal overflow is owned by the table viewport. Page-level horizontal overflow is prohibited.",
+        "containerQueries": true,
+        "zoomExpectation": "Columns must adapt, wrap, or scroll locally before text, actions, or selection controls become unusable at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "native table, thead, tbody, tr, th, and td elements",
+        "accessibleName": "Visible or visually hidden table caption describing the collection.",
+        "keyboard": [
+          "Sorting controls are keyboard operable.",
+          "Selection controls are keyboard operable.",
+          "Expansion controls expose their state and are keyboard operable.",
+          "Row action menus are keyboard operable.",
+          "Ordinary non-interactive cells do not become unnecessary tab stops."
+        ],
+        "focus": [
+          "Focus order follows visible controls in DOM order.",
+          "Background refresh does not reset focus.",
+          "Pagination changes move focus according to the approved collection-navigation policy.",
+          "Expanded-row controls preserve logical focus when content closes."
+        ],
+        "announcements": [
+          "Sorted column and direction are exposed.",
+          "Selection count may be announced when it changes through explicit user action.",
+          "Loading, no-results, and errors are announced by their canonical feedback components.",
+          "Background refreshing does not produce excessive announcements."
+        ],
+        "aria": [
+          "Use aria-sort on sortable column headers.",
+          "Use native scope semantics for headers.",
+          "Use aria-expanded on expansion controls.",
+          "Use accessible labels for icon-only action and selection controls.",
+          "Do not apply role=grid without implementing the complete interaction model."
+        ],
+        "colorIndependence": "Sort, selection, expansion, status, disabled rows, and action eligibility use text, icons, semantics, or shape in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One meaningful column and one record, or a canonical collection state.",
+        "typical": "Several task-oriented columns, repeated records, optional row actions, and controlled pagination.",
+        "maximum": "A large server-backed collection whose current page remains bounded and whose columns follow explicit priority.",
+        "wrapping": "Text columns wrap when appropriate; compact identifiers may remain on one line; actions and badges follow their own contracts.",
+        "truncation": "Truncation is allowed only for secondary values when the full value remains accessible and critical distinctions remain visible.",
+        "localization": "Column headings, values, actions, empty states, and pagination support localized expansion.",
+        "emptyBehavior": "Initial empty and filtered no-results states use distinct EmptyState variants.",
+        "technicalContent": "Raw DTO keys, JSON payloads, internal enum values, database IDs, and transport errors are prohibited unless an explicitly approved administrative column requires safe technical data."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/data-display/data-table.stories.tsx",
+        "requiredStories": [
+          "Standard",
+          "Compact",
+          "Comfortable",
+          "Sortable",
+          "Selectable",
+          "Expandable",
+          "InitialLoading",
+          "Refreshing",
+          "EmptyFirstUse",
+          "NoResults",
+          "RegionError",
+          "PermissionRestricted",
+          "LongLocalizedContent",
+          "ManyColumns",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/data-display/data-table.test.tsx",
+        "requiredTests": [
+          "Native table semantics",
+          "Accessible caption",
+          "Stable row identity",
+          "Sorting behavior",
+          "aria-sort",
+          "Selection behavior",
+          "Select-all scope",
+          "Expansion semantics",
+          "Loading versus refreshing",
+          "Empty versus no-results",
+          "Row action keyboard behavior",
+          "Controlled state"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "1440x900 complete operational table",
+          "1366x768 long headings",
+          "1024x768 priority-column reduction",
+          "390x844 local overflow or approved list adaptation",
+          "125% browser zoom",
+          "Keyboard sorting and row actions",
+          "Background refresh preserving focus",
+          "Large result count",
+          "Long localized values"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "SearchableListRoute",
+          "AdministrationRoute",
+          "RelatedRecordsSection",
+          "AuditEventCollection"
+        ]
+      },
+      "notes": [
+        "The shared DataTable is not responsible for server filtering, pagination requests, domain mapping, or mutations.",
+        "Feature-level table adapters may define columns and data mapping without duplicating the canonical visual and interaction implementation."
+      ]
+    },
+    "Pagination": {
+      "id": "pagination",
+      "name": "Pagination",
+      "level": "shared-composite",
+      "category": "data-display",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical controlled navigation for moving through bounded pages of a collection while exposing result count, current position, and optional page-size control.",
+      "capabilities": [
+        "Navigate to previous, next, first, last, or numbered collection pages.",
+        "Communicate current page and total page context.",
+        "Expose result count and current visible range.",
+        "Allow an approved page-size selection.",
+        "Transform into a compact navigation model when width is limited."
+      ],
+      "keywords": [
+        "pagination",
+        "pages",
+        "next",
+        "previous",
+        "page-size",
+        "result-count"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/data-display"
+      },
+      "implementation": "src/components/data-display/pagination.tsx",
+      "publicImport": "@/components/data-display/pagination",
+      "contract": "docs/frontend/design-system/components/pagination.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Native navigation semantics, Button, Select",
+        "components": [
+          "Button",
+          "Select"
+        ],
+        "reason": "Collection pagination requires controlled state, accessible labels, bounded page calculation, responsive transformation, result-range semantics, and integration with server-backed collections."
+      },
+      "tokens": [
+        "reference.control.height.sm",
+        "reference.control.height.md",
+        "reference.control.target.minimum",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.space.4",
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.border.default"
+      ],
+      "variants": {
+        "numbered": {
+          "intent": "Expose neighboring page numbers with previous and next navigation.",
+          "default": true,
+          "allowedUse": [
+            "Desktop collection with a known total page count.",
+            "Collection where direct neighboring-page navigation is useful."
+          ],
+          "prohibitedUse": [
+            "Unknown total count.",
+            "Cursor-based collection without stable page numbers.",
+            "Compact region where numbered controls cannot fit."
+          ],
+          "tokens": [
+            "semantic.border.default",
+            "semantic.text.primary"
+          ],
+          "states": [
+            "default",
+            "disabled",
+            "selected"
+          ]
+        },
+        "compact": {
+          "intent": "Expose current page context and previous or next navigation without a full page-number sequence.",
+          "allowedUse": [
+            "Compact viewport.",
+            "Contextual panel.",
+            "Moderate collection with simple sequential navigation."
+          ],
+          "prohibitedUse": [
+            "Workflow requiring frequent direct access to distant pages."
+          ],
+          "tokens": [
+            "semantic.text.primary",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "disabled"
+          ]
+        },
+        "cursor": {
+          "intent": "Navigate a cursor-backed collection through previous and next availability rather than numeric pages.",
+          "allowedUse": [
+            "Unknown total result count.",
+            "Cursor-based API.",
+            "Continuously changing collection where offset pagination is unsafe."
+          ],
+          "prohibitedUse": [
+            "Displaying fabricated total page count.",
+            "Direct arbitrary page navigation."
+          ],
+          "tokens": [
+            "semantic.text.primary",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "disabled"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Compact collection footer or narrow layout.",
+          "allowedUse": [
+            "Contextual panels.",
+            "Compact tables.",
+            "Narrow viewports."
+          ],
+          "tokens": [
+            "reference.control.height.sm",
+            "reference.space.2"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary route-level collection pagination.",
+          "default": true,
+          "allowedUse": [
+            "Searchable lists.",
+            "Administrative tables.",
+            "Audit collections."
+          ],
+          "tokens": [
+            "reference.control.height.md",
+            "reference.space.3"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "disabled",
+        "selected",
+        "loading"
+      ],
+      "slots": [
+        {
+          "name": "rangeSummary",
+          "description": "Visible range and total-result context.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text",
+            "ResultCount"
+          ],
+          "contentRestrictions": [
+            "Do not claim a total count when the server does not provide one.",
+            "Use localized number formatting."
+          ]
+        },
+        {
+          "name": "pageSize",
+          "description": "Optional approved page-size selector.",
+          "required": false,
+          "multiple": false,
+          "order": 2,
+          "allowedComponents": [
+            "Select"
+          ],
+          "contentRestrictions": [
+            "Offer only approved values.",
+            "Changing size must resolve page bounds safely."
+          ]
+        },
+        {
+          "name": "navigation",
+          "description": "Previous, next, numbered, first, or last page controls.",
+          "required": true,
+          "multiple": false,
+          "order": 3,
+          "allowedComponents": [
+            "Button",
+            "PaginationItem"
+          ],
+          "contentRestrictions": [
+            "Every icon-only control requires an accessible name.",
+            "The current page is not presented as an ordinary navigation action."
+          ]
+        },
+        {
+          "name": "pageContext",
+          "description": "Compact current-page and total-page label.",
+          "required": false,
+          "multiple": false,
+          "order": 4,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Required in compact mode when numbered pages are not displayed."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "numbered | compact | cursor",
+          "required": false,
+          "default": "numbered",
+          "description": "Collection-navigation model matching the backend and available width.",
+          "semantic": true,
+          "restrictions": [
+            "Cursor-backed APIs must not use numbered pagination unless the backend supplies stable numeric pages."
+          ]
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "required": false,
+          "description": "Controlled one-based current page for numbered pagination.",
+          "semantic": true,
+          "restrictions": [
+            "Must remain within valid bounds.",
+            "Use one consistent indexing convention at the component boundary."
+          ]
+        },
+        {
+          "name": "pageCount",
+          "type": "number",
+          "required": false,
+          "description": "Authoritative total number of pages.",
+          "semantic": true,
+          "restrictions": [
+            "Required for numbered mode.",
+            "Do not estimate from incomplete data."
+          ]
+        },
+        {
+          "name": "pageSize",
+          "type": "number",
+          "required": false,
+          "description": "Controlled number of records requested per page.",
+          "semantic": true,
+          "restrictions": [
+            "Must be one of the approved page-size values."
+          ]
+        },
+        {
+          "name": "pageSizeOptions",
+          "type": "number[]",
+          "required": false,
+          "description": "Approved page-size values.",
+          "semantic": true,
+          "restrictions": [
+            "Avoid excessively large values that degrade performance or usability."
+          ]
+        },
+        {
+          "name": "totalCount",
+          "type": "number | null",
+          "required": false,
+          "default": null,
+          "description": "Authoritative total result count when available.",
+          "semantic": true,
+          "restrictions": [
+            "Null means the total is not known and must not be displayed as zero."
+          ]
+        },
+        {
+          "name": "onPageChange",
+          "type": "(page: number) => void",
+          "required": false,
+          "description": "Controlled numbered-page navigation callback.",
+          "semantic": true,
+          "restrictions": [
+            "The component does not execute the server request."
+          ]
+        },
+        {
+          "name": "onPageSizeChange",
+          "type": "(pageSize: number) => void",
+          "required": false,
+          "description": "Controlled page-size change callback.",
+          "semantic": true,
+          "restrictions": [
+            "The owning feature determines how the current page resets or reconciles."
+          ]
+        },
+        {
+          "name": "hasPreviousPage",
+          "type": "boolean",
+          "required": false,
+          "description": "Authoritative previous-page availability.",
+          "semantic": true,
+          "restrictions": [
+            "Required for cursor mode."
+          ]
+        },
+        {
+          "name": "hasNextPage",
+          "type": "boolean",
+          "required": false,
+          "description": "Authoritative next-page availability.",
+          "semantic": true,
+          "restrictions": [
+            "Required for cursor mode."
+          ]
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Indicates that a requested page transition is pending.",
+          "semantic": true,
+          "restrictions": [
+            "Current records should normally remain visible while the next page loads."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "DataTable footer",
+          "Searchable list results region",
+          "Audit collection",
+          "Contextual collection panel"
+        ],
+        "allowedChildren": [
+          "Button",
+          "Select",
+          "Text",
+          "PaginationItem"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Tooltip",
+          "Button"
+        ],
+        "prohibitedChildren": [
+          "Search form",
+          "Unrelated export controls",
+          "Large collection summary"
+        ],
+        "spacingOwnership": [
+          "Pagination owns spacing among result range, page-size selector, page context, and navigation controls.",
+          "The containing collection owns spacing above the pagination footer."
+        ],
+        "surfaceOwnership": "Pagination normally inherits the containing collection surface and does not create an independent card.",
+        "rules": [
+          "The pagination model must match the backend contract.",
+          "Unknown totals remain unknown rather than zero.",
+          "Current-page controls remain semantically distinct from available navigation.",
+          "Changing the page does not silently discard unrelated table state unless explicitly required."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Button",
+          "Select",
+          "Stack"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "results",
+            "resultsSummary"
+          ],
+          "status": "required",
+          "notes": "Use when the collection exceeds one server or local page."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "administrationContent",
+            "auditAndDiagnostics"
+          ],
+          "status": "recommended",
+          "notes": "Administrative and audit collections may use numbered or cursor pagination."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "primaryContent",
+            "auditDetails"
+          ],
+          "status": "allowed",
+          "notes": "Related-record and audit collections may require pagination."
+        },
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "actionQueue"
+          ],
+          "status": "prohibited",
+          "notes": "Dashboard queues should normally show a bounded priority subset and navigate to the full collection."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Executing collection requests.",
+          "Parsing pagination headers.",
+          "Owning TanStack Query state.",
+          "Changing URL parameters directly."
+        ]
+      },
+      "stateOwnership": {
+        "model": "controlled",
+        "controlled": true,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "Page, page size, cursor availability, total count, and pending state are supplied by the owning collection.",
+          "Shareable pagination may be URL-owned outside the component."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": true,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Callbacks request navigation but do not execute route or server behavior directly.",
+          "The owning collection controls any scroll-to-results behavior."
+        ]
+      },
+      "responsive": {
+        "strategy": "Reduce page-number controls before sacrificing result context, previous or next navigation, or usable targets.",
+        "compact": "Use compact mode with previous, current-page context, and next controls. Page-size selection may move to a secondary row or overflow.",
+        "medium": "Display a bounded page-number sequence and wrapping result context.",
+        "wide": "Display result range, page size, neighboring pages, and previous or next controls.",
+        "ultrawide": "Remain compact and aligned to the collection rather than expanding across the route.",
+        "overflowPolicy": "Controls wrap or collapse into compact mode; horizontal page overflow is prohibited.",
+        "containerQueries": true,
+        "zoomExpectation": "Pagination must transform before control labels or touch targets become unusable at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "nav landmark identifying collection pagination",
+        "accessibleName": "Explicit label such as Paginação da lista de processos.",
+        "keyboard": [
+          "All page controls and page-size selectors are keyboard operable.",
+          "Disabled unavailable controls cannot be activated.",
+          "Current-page state remains perceivable without activation."
+        ],
+        "focus": [
+          "Focus remains on the activated control until the owning collection applies its navigation-focus policy.",
+          "A changed page must not move focus to the browser top unexpectedly.",
+          "Compact transformation preserves logical DOM order."
+        ],
+        "announcements": [
+          "The owning collection may announce the new visible result range after navigation.",
+          "Loading transitions do not repeatedly announce every internal state change."
+        ],
+        "aria": [
+          "Use aria-current=page for the current numeric page.",
+          "Icon-only previous, next, first, and last controls require explicit labels.",
+          "The navigation landmark requires a meaningful accessible name."
+        ],
+        "colorIndependence": "Current page, disabled navigation, and pending state use semantics, text, shape, or icon in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "Previous and next availability or one current-page context.",
+        "typical": "Visible result range, page-size selector, page numbers, and previous or next controls.",
+        "maximum": "A bounded neighboring-page sequence rather than one control for every page.",
+        "wrapping": "Summary and controls may wrap into multiple rows.",
+        "truncation": "Do not truncate current-page or result-range context.",
+        "localization": "Support expanded page labels, number formatting, and pluralization.",
+        "emptyBehavior": "Pagination is normally omitted when the collection contains no records.",
+        "technicalContent": "Cursor values, offset values, request tokens, and backend pagination keys are prohibited."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/data-display/pagination.stories.tsx",
+        "requiredStories": [
+          "Numbered",
+          "Compact",
+          "Cursor",
+          "FirstPage",
+          "LastPage",
+          "UnknownTotal",
+          "WithPageSize",
+          "LoadingTransition",
+          "ManyPages",
+          "CompactViewport",
+          "LongLocalizedLabels",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/data-display/pagination.test.tsx",
+        "requiredTests": [
+          "Accessible navigation label",
+          "Current page semantics",
+          "Previous and next availability",
+          "Numbered page calculation",
+          "Unknown total behavior",
+          "Page-size callback",
+          "Pending duplicate prevention",
+          "Controlled state"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Large numbered collection",
+          "Cursor-backed collection",
+          "390x844 compact transformation",
+          "1024x768 wrapping footer",
+          "125% browser zoom",
+          "Keyboard navigation",
+          "Long localized summary"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "DataTable",
+          "SearchableListRoute",
+          "AuditEventCollection"
+        ]
+      },
+      "notes": []
+    },
+    "DefinitionList": {
+      "id": "definition-list",
+      "name": "DefinitionList",
+      "level": "shared-composite",
+      "category": "data-display",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical semantic presentation for labeled values, attributes, configuration details, summaries, and read-only entity information.",
+      "capabilities": [
+        "Present labels and corresponding values using semantic definition-list markup.",
+        "Distinguish zero, unknown, unavailable, restricted, and not-applicable values.",
+        "Support stacked, aligned, and responsive grid presentations.",
+        "Preserve readable line lengths for long descriptive values.",
+        "Expose optional value actions without turning the complete row into an interactive control."
+      ],
+      "keywords": [
+        "definition-list",
+        "key-value",
+        "details",
+        "attributes",
+        "summary",
+        "read-only"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/data-display"
+      },
+      "implementation": "src/components/data-display/definition-list.tsx",
+      "publicImport": "@/components/data-display/definition-list",
+      "contract": "docs/frontend/design-system/components/definition-list.md",
+      "foundation": {
+        "type": "native-html",
+        "source": "HTML dl, dt, and dd elements with shared layout tokens",
+        "components": [
+          "Stack",
+          "ContentGrid",
+          "Button",
+          "Tooltip"
+        ],
+        "reason": "Definition-list semantics correctly represent label-value relationships while shared composition controls spacing, responsive alignment, missing-value presentation, and optional actions."
+      },
+      "tokens": [
+        "semantic.text.primary",
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.border.default",
+        "semantic.background.surface",
+        "semantic.background.surfaceSubtle",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.space.4",
+        "reference.space.6"
+      ],
+      "variants": {
+        "stacked": {
+          "intent": "Present each label above its value for narrow layouts, long content, or irregular value lengths.",
+          "default": true,
+          "allowedUse": [
+            "Compact viewport.",
+            "Long descriptive values.",
+            "Mixed-value entity summary.",
+            "Dialog or contextual panel."
+          ],
+          "prohibitedUse": [
+            "Dense repeated short metadata where an aligned layout improves scanning."
+          ],
+          "tokens": [
+            "reference.space.2",
+            "reference.space.4"
+          ],
+          "states": [
+            "default",
+            "read-only",
+            "unavailable"
+          ]
+        },
+        "aligned": {
+          "intent": "Present labels in one constrained column and values in a flexible adjacent column.",
+          "allowedUse": [
+            "Desktop entity details.",
+            "Configuration summary.",
+            "Administrative identity details."
+          ],
+          "prohibitedUse": [
+            "Narrow containers.",
+            "Very long or highly variable labels.",
+            "Several unrelated definition groups forced into one list."
+          ],
+          "tokens": [
+            "reference.space.3",
+            "reference.space.6"
+          ],
+          "states": [
+            "default",
+            "read-only",
+            "unavailable"
+          ]
+        },
+        "grid": {
+          "intent": "Present several independent short label-value items through a responsive descriptive grid.",
+          "allowedUse": [
+            "Entity summary.",
+            "Scope summary.",
+            "Compact configuration overview."
+          ],
+          "prohibitedUse": [
+            "Sequential prose.",
+            "Values whose relationships require table semantics.",
+            "Arbitrary multi-column form emulation."
+          ],
+          "tokens": [
+            "reference.space.4",
+            "reference.space.6"
+          ],
+          "states": [
+            "default",
+            "read-only",
+            "unavailable"
+          ]
+        },
+        "bordered": {
+          "intent": "Separate a bounded group of operational attributes with subtle dividers.",
+          "allowedUse": [
+            "Audit details.",
+            "Configuration review.",
+            "Comparison summary."
+          ],
+          "prohibitedUse": [
+            "Every ordinary definition list.",
+            "Decorative card replacement."
+          ],
+          "tokens": [
+            "semantic.border.default",
+            "semantic.background.surface"
+          ],
+          "states": [
+            "default",
+            "read-only"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense short label-value information.",
+          "allowedUse": [
+            "Contextual aside.",
+            "Audit metadata.",
+            "Dialog summary."
+          ],
+          "tokens": [
+            "reference.space.2",
+            "reference.space.3"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary read-only data presentation.",
+          "default": true,
+          "allowedUse": [
+            "Entity detail.",
+            "Administration.",
+            "Review context."
+          ],
+          "tokens": [
+            "reference.space.3",
+            "reference.space.4"
+          ]
+        },
+        "comfortable": {
+          "intent": "Long explanatory or high-importance values.",
+          "allowedUse": [
+            "Review evidence summary.",
+            "Sensitive-action impact summary.",
+            "Configuration comparison."
+          ],
+          "tokens": [
+            "reference.space.4",
+            "reference.space.6"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "read-only",
+        "unavailable",
+        "loading",
+        "error"
+      ],
+      "slots": [
+        {
+          "name": "groupTitle",
+          "description": "Optional heading identifying a coherent definition group.",
+          "required": false,
+          "multiple": false,
+          "order": 1,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use only when the list represents a meaningful subsection.",
+            "Heading level follows the containing screen hierarchy."
+          ]
+        },
+        {
+          "name": "item",
+          "description": "One semantic label-value relationship.",
+          "required": true,
+          "multiple": true,
+          "order": 2,
+          "allowedComponents": [
+            "DefinitionItem"
+          ],
+          "contentRestrictions": [
+            "Every value requires a user-facing label.",
+            "Items must belong to one coherent group."
+          ]
+        },
+        {
+          "name": "label",
+          "description": "The term or attribute name.",
+          "required": true,
+          "multiple": true,
+          "order": 3,
+          "allowedComponents": [
+            "DefinitionTerm",
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Do not use raw DTO or database property names.",
+            "Do not encode required meaning only through punctuation."
+          ]
+        },
+        {
+          "name": "value",
+          "description": "The corresponding user-facing value.",
+          "required": true,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "DefinitionDescription",
+            "Text",
+            "StatusBadge",
+            "MetadataList",
+            "Link"
+          ],
+          "contentRestrictions": [
+            "Unknown, unavailable, zero, and not applicable remain distinct.",
+            "Technical values require explicit approval and safe formatting."
+          ]
+        },
+        {
+          "name": "supporting",
+          "description": "Optional supporting explanation, freshness, provenance, or restriction context.",
+          "required": false,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "Text",
+            "FreshnessIndicator",
+            "PermissionState"
+          ],
+          "contentRestrictions": [
+            "Supporting content remains subordinate to the value."
+          ]
+        },
+        {
+          "name": "action",
+          "description": "Optional value-specific action such as copy, open, or reveal.",
+          "required": false,
+          "multiple": true,
+          "order": 6,
+          "allowedComponents": [
+            "Button",
+            "DropdownMenu"
+          ],
+          "contentRestrictions": [
+            "Action applies only to the associated value.",
+            "Icon-only actions require accessible names.",
+            "The complete item must not become accidentally interactive."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "stacked | aligned | grid | bordered",
+          "required": false,
+          "default": "stacked",
+          "description": "Semantic presentation matching content length, relationship, and container width.",
+          "semantic": true,
+          "restrictions": [
+            "Do not select grid only to fill unused horizontal space."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default | comfortable",
+          "required": false,
+          "default": "default",
+          "description": "Density matching the value complexity and region priority.",
+          "semantic": true,
+          "restrictions": [
+            "Do not reduce density when it harms label-value association."
+          ]
+        },
+        {
+          "name": "columns",
+          "type": "1 | 2 | 3",
+          "required": false,
+          "default": 1,
+          "description": "Maximum approved grid columns when the grid variant is selected.",
+          "semantic": true,
+          "restrictions": [
+            "The component collapses columns before values become unreadable.",
+            "Three columns require short values and sufficient container width."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "Section",
+          "EntityHeader",
+          "Entity-detail content",
+          "Administration scope summary",
+          "Review context",
+          "ConfirmationDialog",
+          "Expanded DataTable row"
+        ],
+        "allowedChildren": [
+          "DefinitionItem",
+          "Text",
+          "StatusBadge",
+          "MetadataList",
+          "FreshnessIndicator",
+          "Button",
+          "DropdownMenu"
+        ],
+        "prohibitedParents": [
+          "Button",
+          "Tooltip",
+          "FormField"
+        ],
+        "prohibitedChildren": [
+          "Editable form controls presented as read-only values",
+          "Large data collection",
+          "Complete route"
+        ],
+        "spacingOwnership": [
+          "DefinitionList owns spacing among its direct definition items.",
+          "DefinitionItem owns spacing among label, value, supporting content, and action.",
+          "The containing section owns spacing around the complete list."
+        ],
+        "surfaceOwnership": "DefinitionList owns no surface by default; bordered treatment owns subtle separators and one coherent surface when selected.",
+        "rules": [
+          "Use semantic definition-list markup for label-value relationships.",
+          "Use DataTable when values form repeated records with meaningful columns.",
+          "Use FormField and form controls when values are editable.",
+          "Missing-value states use approved user-facing representations.",
+          "Labels and values remain associated at every responsive width."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Stack",
+          "ContentGrid",
+          "Button",
+          "DropdownMenu",
+          "Tooltip"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "allowed",
+          "notes": "Use for bounded context, not for primary metric presentation."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader",
+            "primaryContent",
+            "contextualAside",
+            "auditDetails"
+          ],
+          "status": "required",
+          "notes": "Primary component for read-only entity attributes."
+        },
+        {
+          "recipe": "form-workflow",
+          "regions": [
+            "formSummary",
+            "contextualHelp"
+          ],
+          "status": "recommended",
+          "notes": "Use for prerequisite or related-entity context, not editable fields."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "scopeSummary",
+            "administrationContent",
+            "sensitiveActions",
+            "auditAndDiagnostics"
+          ],
+          "status": "recommended",
+          "notes": "Use for configuration summary, identity, impact, and safe diagnostics."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "reviewHeader",
+            "criticalReviewContext",
+            "proposalAndRecommendation",
+            "auditContext"
+          ],
+          "status": "recommended",
+          "notes": "Use for provenance, impact, source details, and prior decision attributes."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching values.",
+          "Interpreting raw DTOs.",
+          "Evaluating permissions.",
+          "Formatting unknown backend data automatically."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning entity or feature maps domain values into user-facing label-value content."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Optional value actions receive explicit callbacks from the owning feature."
+        ]
+      },
+      "responsive": {
+        "strategy": "Collapse aligned and grid presentations into stacked label-value groups before labels, values, or actions become difficult to associate.",
+        "compact": "Use stacked presentation with labels above values and actions aligned to their associated values.",
+        "medium": "Use stacked or a constrained two-column grid according to content.",
+        "wide": "Use aligned or grid presentation when labels and values remain readable.",
+        "ultrawide": "Do not add columns merely to consume available width; preserve reading length.",
+        "overflowPolicy": "Labels, values, supporting content, and actions wrap. Long safe identifiers may use approved copy behavior.",
+        "containerQueries": true,
+        "zoomExpectation": "Aligned and grid variants must collapse before association or readability degrades at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "dl containing dt and dd elements",
+        "accessibleName": "Optional visible group heading supplied by the containing section or list.",
+        "keyboard": [
+          "Static definition content is not focusable.",
+          "Optional copy, reveal, and navigation actions are keyboard operable."
+        ],
+        "focus": [
+          "Interactive value actions follow their associated value in DOM order.",
+          "Responsive layout changes do not reorder semantic label-value relationships."
+        ],
+        "announcements": [
+          "Dynamic value changes are announced only when operationally meaningful through the owning feature.",
+          "Restricted or unavailable values use their canonical semantic components."
+        ],
+        "aria": [
+          "Use native dl, dt, and dd elements.",
+          "Do not use table or grid roles for ordinary definition content.",
+          "Icon-only value actions require explicit labels."
+        ],
+        "colorIndependence": "Unavailable, restricted, status, and changed values use text and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One labeled value.",
+        "typical": "Several related attributes with labels, values, and occasional supporting context.",
+        "maximum": "A coherent read-only information group; large repeated record sets require DataTable.",
+        "wrapping": "Labels and values wrap naturally and remain associated.",
+        "truncation": "Primary values are not truncated without full-value access; long secondary identifiers may truncate safely.",
+        "localization": "Support expanded labels, values, date formats, number formats, and missing-value terms.",
+        "emptyBehavior": "An empty list normally does not render; the owning region chooses an appropriate EmptyState when the complete information group is absent.",
+        "technicalContent": "Technical identifiers and diagnostic values are permitted only in explicitly approved administrative or audit contexts and require safe labels and formatting."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/data-display/definition-list.stories.tsx",
+        "requiredStories": [
+          "Stacked",
+          "Aligned",
+          "Grid",
+          "Bordered",
+          "Compact",
+          "Comfortable",
+          "LongLabels",
+          "LongValues",
+          "MissingValues",
+          "RestrictedValue",
+          "WithActions",
+          "CompactViewport",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/data-display/definition-list.test.tsx",
+        "requiredTests": [
+          "Native definition semantics",
+          "Label-value association",
+          "Variant mapping",
+          "Missing-value distinction",
+          "Interactive value action order",
+          "Responsive DOM-order preservation"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Entity detail attributes",
+          "Administration scope summary",
+          "Confirmation impact summary",
+          "390x844 stacked transformation",
+          "1024x768 grid collapse",
+          "125% browser zoom",
+          "Long localized labels"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "EntityDetailRoute",
+          "AdministrationRoute",
+          "ConfirmationDialog",
+          "ReviewWorkspace"
+        ]
+      },
+      "notes": []
+    },
+    "MetadataList": {
+      "id": "metadata-list",
+      "name": "MetadataList",
+      "level": "shared-composite",
+      "category": "data-display",
+      "status": "stable",
+      "version": "1.0.0",
+      "description": "Canonical compact presentation for small supporting facts such as ownership, timestamps, scope, category, source, and secondary identifiers.",
+      "capabilities": [
+        "Present a bounded set of supporting metadata.",
+        "Arrange metadata inline, wrapped, or stacked according to the containing region.",
+        "Expose labels when values would otherwise be ambiguous.",
+        "Support icons, status labels, timestamps, and safe value actions.",
+        "Remain visually subordinate to primary identity and content."
+      ],
+      "keywords": [
+        "metadata",
+        "secondary-information",
+        "timestamp",
+        "owner",
+        "source",
+        "scope"
+      ],
+      "owner": {
+        "layer": "shared",
+        "team": "frontend-product-builder",
+        "directory": "src/components/data-display"
+      },
+      "implementation": "src/components/data-display/metadata-list.tsx",
+      "publicImport": "@/components/data-display/metadata-list",
+      "contract": "docs/frontend/design-system/components/metadata-list.md",
+      "foundation": {
+        "type": "shared-component",
+        "source": "Native list semantics, Stack, Badge, Tooltip",
+        "components": [
+          "Stack",
+          "Badge",
+          "Tooltip"
+        ],
+        "reason": "Compact metadata needs bounded anatomy, semantic labels, consistent separators, responsive wrapping, safe truncation, and visual subordination."
+      },
+      "tokens": [
+        "semantic.text.secondary",
+        "semantic.text.muted",
+        "semantic.border.default",
+        "reference.font.size.xs",
+        "reference.font.size.sm",
+        "reference.space.1",
+        "reference.space.2",
+        "reference.space.3",
+        "reference.icon.size.sm"
+      ],
+      "variants": {
+        "inline": {
+          "intent": "Present a short sequence of supporting facts on one wrapping line.",
+          "default": true,
+          "allowedUse": [
+            "Page header metadata.",
+            "Entity header metadata.",
+            "Table-cell supporting context.",
+            "Compact card metadata."
+          ],
+          "prohibitedUse": [
+            "Long descriptive values.",
+            "More than a small bounded set of items.",
+            "Critical information."
+          ],
+          "tokens": [
+            "reference.space.2",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "unavailable"
+          ]
+        },
+        "wrapped": {
+          "intent": "Present a bounded metadata collection that may flow across multiple lines.",
+          "allowedUse": [
+            "Long entity header.",
+            "Compact summary with several short facts.",
+            "Narrow content region."
+          ],
+          "prohibitedUse": [
+            "Large detailed attribute set better represented by DefinitionList."
+          ],
+          "tokens": [
+            "reference.space.2",
+            "reference.space.3",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "unavailable"
+          ]
+        },
+        "stacked": {
+          "intent": "Present several supporting facts vertically in a narrow contextual region.",
+          "allowedUse": [
+            "Contextual aside.",
+            "Compact dialog summary.",
+            "Audit event metadata."
+          ],
+          "prohibitedUse": [
+            "Primary entity detail.",
+            "Large configuration summary."
+          ],
+          "tokens": [
+            "reference.space.2",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "unavailable"
+          ]
+        },
+        "labeled": {
+          "intent": "Present compact metadata whose values require visible short labels.",
+          "allowedUse": [
+            "Source and timestamp.",
+            "Owner and scope.",
+            "Version and status context."
+          ],
+          "prohibitedUse": [
+            "Long labels or complex values requiring DefinitionList."
+          ],
+          "tokens": [
+            "reference.space.1",
+            "reference.space.3",
+            "semantic.text.secondary"
+          ],
+          "states": [
+            "default",
+            "unavailable"
+          ]
+        }
+      },
+      "sizes": {
+        "compact": {
+          "intent": "Dense metadata in tables and compact headers.",
+          "default": true,
+          "allowedUse": [
+            "Table cell.",
+            "Entity header.",
+            "Small panel."
+          ],
+          "tokens": [
+            "reference.font.size.xs",
+            "reference.space.1"
+          ]
+        },
+        "default": {
+          "intent": "Ordinary supporting metadata.",
+          "allowedUse": [
+            "Page header.",
+            "Review context.",
+            "Entity summary."
+          ],
+          "tokens": [
+            "reference.font.size.sm",
+            "reference.space.2"
+          ]
+        }
+      },
+      "states": [
+        "default",
+        "unavailable",
+        "stale",
+        "read-only"
+      ],
+      "slots": [
+        {
+          "name": "item",
+          "description": "One supporting metadata fact.",
+          "required": true,
+          "multiple": true,
+          "order": 1,
+          "allowedComponents": [
+            "MetadataItem"
+          ],
+          "contentRestrictions": [
+            "The complete list remains bounded.",
+            "Items must support the current task context."
+          ]
+        },
+        {
+          "name": "icon",
+          "description": "Optional supporting icon associated with one metadata item.",
+          "required": false,
+          "multiple": true,
+          "order": 2,
+          "allowedComponents": [
+            "Approved icon"
+          ],
+          "contentRestrictions": [
+            "The icon is not the only source of meaning.",
+            "Decorative icons are hidden from assistive technology."
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Optional concise visible label for an ambiguous value.",
+          "required": false,
+          "multiple": true,
+          "order": 3,
+          "allowedComponents": [
+            "Text"
+          ],
+          "contentRestrictions": [
+            "Use user-facing terminology.",
+            "Long labels require DefinitionList."
+          ]
+        },
+        {
+          "name": "value",
+          "description": "Supporting metadata value.",
+          "required": true,
+          "multiple": true,
+          "order": 4,
+          "allowedComponents": [
+            "Text",
+            "Badge",
+            "StatusBadge",
+            "FreshnessIndicator",
+            "Link"
+          ],
+          "contentRestrictions": [
+            "Unknown, unavailable, and restricted remain distinct.",
+            "Raw enum keys and internal identifiers are prohibited by default."
+          ]
+        },
+        {
+          "name": "action",
+          "description": "Optional safe metadata-specific action.",
+          "required": false,
+          "multiple": true,
+          "order": 5,
+          "allowedComponents": [
+            "Button"
+          ],
+          "contentRestrictions": [
+            "Actions remain low emphasis.",
+            "Copy actions require meaningful labels."
+          ]
+        }
+      ],
+      "props": [
+        {
+          "name": "variant",
+          "type": "inline | wrapped | stacked | labeled",
+          "required": false,
+          "default": "inline",
+          "description": "Semantic arrangement matching item count, value ambiguity, and containing width.",
+          "semantic": true,
+          "restrictions": [
+            "Do not use inline for content requiring a persistent visible relationship between long labels and values."
+          ]
+        },
+        {
+          "name": "size",
+          "type": "compact | default",
+          "required": false,
+          "default": "compact",
+          "description": "Metadata density and typography scale.",
+          "semantic": true,
+          "restrictions": [
+            "Metadata remains subordinate to primary content."
+          ]
+        },
+        {
+          "name": "separator",
+          "type": "none | dot | divider",
+          "required": false,
+          "default": "dot",
+          "description": "Approved visual separator between inline metadata items.",
+          "semantic": false,
+          "restrictions": [
+            "Separators are hidden appropriately from assistive technology.",
+            "Stacked layouts normally use none."
+          ]
+        }
+      ],
+      "composition": {
+        "allowedParents": [
+          "PageHeader",
+          "EntityHeader",
+          "DefinitionList value",
+          "DataTable cell",
+          "Section",
+          "Dashboard panel",
+          "Timeline event",
+          "Review context"
+        ],
+        "allowedChildren": [
+          "MetadataItem",
+          "Text",
+          "Badge",
+          "StatusBadge",
+          "FreshnessIndicator",
+          "Button",
+          "Approved icon"
+        ],
+        "prohibitedParents": [
+          "FormField",
+          "Button",
+          "Tooltip as the complete metadata surface"
+        ],
+        "prohibitedChildren": [
+          "Large paragraph",
+          "Complete form",
+          "Large repeated collection",
+          "Critical alert"
+        ],
+        "spacingOwnership": [
+          "MetadataList owns spacing and separators among direct metadata items.",
+          "MetadataItem owns spacing among its icon, label, value, and action.",
+          "The containing component owns spacing around the complete list."
+        ],
+        "surfaceOwnership": "MetadataList owns no independent surface.",
+        "rules": [
+          "Metadata remains secondary to the primary identity or content.",
+          "Use DefinitionList when the collection grows or values require stronger label association.",
+          "Critical information must not be demoted into metadata.",
+          "Separators remain decorative and do not replace semantic list structure."
+        ]
+      },
+      "dependencies": {
+        "components": [
+          "Stack",
+          "Badge",
+          "Tooltip",
+          "Button"
+        ],
+        "libraries": [],
+        "contexts": [],
+        "hooks": []
+      },
+      "recipeCompatibility": [
+        {
+          "recipe": "dashboard",
+          "regions": [
+            "pageHeader",
+            "primaryMetrics",
+            "analyticalContent",
+            "actionQueue"
+          ],
+          "status": "recommended",
+          "notes": "Use for freshness, scope, source, and secondary metric context."
+        },
+        {
+          "recipe": "searchable-list",
+          "regions": [
+            "resultsSummary",
+            "results",
+            "contextualDetails"
+          ],
+          "status": "recommended",
+          "notes": "Use for row supporting context and collection scope."
+        },
+        {
+          "recipe": "entity-detail",
+          "regions": [
+            "entityHeader",
+            "primaryContent",
+            "contextualAside",
+            "auditDetails"
+          ],
+          "status": "required",
+          "notes": "Use for essential secondary entity orientation."
+        },
+        {
+          "recipe": "administration",
+          "regions": [
+            "pageHeader",
+            "scopeSummary",
+            "auditAndDiagnostics"
+          ],
+          "status": "recommended",
+          "notes": "Use for environment, organization, ownership, and audit context."
+        },
+        {
+          "recipe": "review-approval",
+          "regions": [
+            "reviewHeader",
+            "evidenceNavigator",
+            "evidenceViewer",
+            "proposalAndRecommendation",
+            "auditContext"
+          ],
+          "status": "recommended",
+          "notes": "Use for source, author, time, model provenance, and review context."
+        }
+      ],
+      "dataAccess": {
+        "policy": "none",
+        "serverState": false,
+        "transportAccess": false,
+        "domainTypes": false,
+        "allowedHooks": [],
+        "prohibited": [
+          "Fetching metadata.",
+          "Mapping raw DTO values.",
+          "Evaluating permissions.",
+          "Reading environment or tenant context directly."
+        ]
+      },
+      "stateOwnership": {
+        "model": "stateless",
+        "controlled": false,
+        "uncontrolled": false,
+        "urlState": false,
+        "formState": false,
+        "serverState": false,
+        "notes": [
+          "The owning screen, entity, or feature supplies user-facing metadata items."
+        ]
+      },
+      "sideEffects": {
+        "navigation": false,
+        "mutation": false,
+        "focus": false,
+        "scroll": false,
+        "clipboard": false,
+        "storage": false,
+        "telemetry": false,
+        "external": false,
+        "notes": [
+          "Optional navigation and copy callbacks are supplied by the owning feature."
+        ]
+      },
+      "responsive": {
+        "strategy": "Wrap or stack metadata before values become unreadable, while preserving visual subordination and semantic list order.",
+        "compact": "Inline lists wrap or transform into stacked items when labels and values no longer fit.",
+        "medium": "Use inline, wrapped, or labeled presentation according to the containing component.",
+        "wide": "Use concise inline or wrapped presentation.",
+        "ultrawide": "Remain bounded and do not add low-value metadata to fill space.",
+        "overflowPolicy": "Metadata wraps; approved identifiers may truncate only when full value remains accessible.",
+        "containerQueries": true,
+        "zoomExpectation": "Inline metadata must wrap or stack before association and readability degrade at 125% browser zoom."
+      },
+      "accessibility": {
+        "semanticElement": "ul and li elements or an equivalent semantic list",
+        "accessibleName": "Provided by the containing component when the metadata collection requires a label.",
+        "keyboard": [
+          "Static metadata is not focusable.",
+          "Optional links, copy controls, and actions are keyboard operable."
+        ],
+        "focus": [
+          "Interactive metadata actions follow their associated value.",
+          "Responsive transformation preserves DOM order."
+        ],
+        "announcements": [
+          "Dynamic freshness or status changes are announced by the specialized child component when required.",
+          "Static separators are hidden from assistive technology."
+        ],
+        "aria": [
+          "Use semantic list markup.",
+          "Decorative icons and separators are hidden from assistive technology.",
+          "Icon-only actions require explicit labels."
+        ],
+        "colorIndependence": "Status, freshness, unavailable, and restricted metadata use text and semantics in addition to color.",
+        "contrastTarget": "WCAG 2.2 AA"
+      },
+      "content": {
+        "minimum": "One concise supporting fact.",
+        "typical": "Two to five short metadata items.",
+        "maximum": "A bounded set of supporting facts; larger or more complex sets require DefinitionList.",
+        "wrapping": "Inline metadata wraps as whole item groups where possible.",
+        "truncation": "Secondary identifiers may truncate when the full value remains accessible; timestamps, statuses, and critical scope labels must remain understandable.",
+        "localization": "Support expanded labels, dates, names, statuses, and separators appropriate to locale.",
+        "emptyBehavior": "An empty MetadataList does not render.",
+        "technicalContent": "Technical identifiers are allowed only when explicitly relevant to an authorized administrative or audit task."
+      },
+      "quality": {
+        "storybookRequired": true,
+        "storyFile": "src/components/data-display/metadata-list.stories.tsx",
+        "requiredStories": [
+          "Inline",
+          "Wrapped",
+          "Stacked",
+          "Labeled",
+          "WithIcons",
+          "WithStatus",
+          "WithFreshness",
+          "WithAction",
+          "LongValues",
+          "UnavailableValue",
+          "CompactContainer",
+          "DarkTheme"
+        ],
+        "testsRequired": true,
+        "testFile": "src/components/data-display/metadata-list.test.tsx",
+        "requiredTests": [
+          "Semantic list structure",
+          "Variant mapping",
+          "Separator accessibility",
+          "Item ordering",
+          "Interactive action labels",
+          "Empty-list behavior"
+        ],
+        "browserValidationRequired": true,
+        "browserScenarios": [
+          "Page header metadata",
+          "Entity header metadata",
+          "Table-cell supporting metadata",
+          "390x844 wrapping",
+          "125% browser zoom",
+          "Long localized values"
+        ],
+        "visualRegressionRequired": true,
+        "accessibilityValidationRequired": true
+      },
+      "lifecycle": {
+        "representativeConsumers": [
+          "PageHeader",
+          "EntityHeader",
+          "DataTable",
+          "Timeline",
+          "ReviewWorkspace"
+        ]
+      },
+      "notes": []
+    }
+  },
+  "validation": {
+    "schema": "~/.agents/skills/frontend-product-builder/assets/schemas/component-catalog.schema.json",
+    "checks": [
+      {
+        "id": "COLLECTION-001",
+        "severity": "error",
+        "method": "schema",
+        "blocking": true,
+        "description": "The collection data-display catalog must validate against the component catalog schema.",
+        "command": "node scripts/validate-component-catalog.mjs ~/.agents/skills/frontend-product-builder/assets/catalog/data-display-collection-components.json",
+        "remediation": "Correct invalid or missing component catalog fields."
+      },
+      {
+        "id": "COLLECTION-002",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Collection component IDs, names, implementations, public imports, and canonical responsibilities must remain unique.",
+        "command": "node scripts/audit-component-catalog-collisions.mjs",
+        "remediation": "Resolve duplicate ownership or merge overlapping collection components."
+      },
+      {
+        "id": "COLLECTION-003",
+        "severity": "error",
+        "method": "script",
+        "blocking": true,
+        "description": "Shared collection and descriptive components must not execute queries, mutations, permission checks, routing, or transport parsing.",
+        "command": "node scripts/audit-component-dependencies.mjs",
+        "remediation": "Move data access, domain mapping, permissions, and side effects to the owning entity, feature, or route."
+      },
+      {
+        "id": "COLLECTION-004",
+        "severity": "error",
+        "method": "test",
+        "blocking": true,
+        "description": "DataTable must use semantic table markup and expose sorting, selection, expansion, state, and action behavior accessibly.",
+        "command": "npm run test:components -- data-table",
+        "remediation": "Correct table markup, control semantics, accessible labels, focus behavior, or state composition."
+      },
+      {
+        "id": "COLLECTION-005",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Tables, definition lists, metadata lists, and pagination must be selected according to the actual information relationship rather than visual preference.",
+        "remediation": "Replace the component with the canonical data presentation matching the semantic relationship."
+      },
+      {
+        "id": "COLLECTION-006",
+        "severity": "error",
+        "method": "browser",
+        "blocking": true,
+        "description": "Collection components must remain usable without page-level horizontal overflow across approved viewports and zoom levels.",
+        "command": "npm run test:e2e:data-display",
+        "remediation": "Correct table viewport ownership, column priority, wrapping, pagination transformation, or definition-list collapse."
+      },
+      {
+        "id": "COLLECTION-007",
+        "severity": "error",
+        "method": "manual",
+        "blocking": true,
+        "description": "Unknown, zero, unavailable, restricted, not applicable, and loading values must remain distinguishable.",
+        "remediation": "Correct value mapping and use the approved user-facing missing-value representation."
+      },
+      {
+        "id": "COLLECTION-008",
+        "severity": "warning",
+        "method": "script",
+        "blocking": false,
+        "description": "Page-local tables, pagination controls, key-value grids, and metadata rows similar to canonical components require review.",
+        "command": "node scripts/audit-component-duplicates.mjs",
+        "remediation": "Reuse the canonical component or document why the local composition is semantically distinct."
+      }
+    ]
+  },
+  "deprecations": []
+}

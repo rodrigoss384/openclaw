@@ -1,0 +1,1236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.frontend-product-builder.local/small-slice-manifest.schema.json",
+  "title": "Frontend Product Builder Small Slice Manifest",
+  "description": "Executable contract defining the bounded production-intended representative implementation slice.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "meta",
+    "screen",
+    "release",
+    "repository",
+    "slice",
+    "scope",
+    "architecture",
+    "fixtures",
+    "states",
+    "interactions",
+    "responsive",
+    "accessibility",
+    "files",
+    "sequence",
+    "evidence",
+    "stopConditions",
+    "validation"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "meta": {
+      "$ref": "#/$defs/meta"
+    },
+    "screen": {
+      "$ref": "#/$defs/screen"
+    },
+    "release": {
+      "$ref": "#/$defs/release"
+    },
+    "repository": {
+      "$ref": "#/$defs/repository"
+    },
+    "slice": {
+      "$ref": "#/$defs/slice"
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "architecture": {
+      "$ref": "#/$defs/architecture"
+    },
+    "fixtures": {
+      "$ref": "#/$defs/fixtures"
+    },
+    "states": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/stateProof"
+      }
+    },
+    "interactions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/interactionProof"
+      }
+    },
+    "responsive": {
+      "$ref": "#/$defs/responsive"
+    },
+    "accessibility": {
+      "$ref": "#/$defs/accessibility"
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/filePlan"
+      }
+    },
+    "sequence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/sequenceStep"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/evidenceItem"
+      }
+    },
+    "stopConditions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/stopCondition"
+      }
+    },
+    "validation": {
+      "$ref": "#/$defs/validation"
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      }
+    },
+    "kebabId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner",
+        "source",
+        "generated",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "ready",
+            "in-progress",
+            "validated",
+            "blocked",
+            "rejected"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "generated": {
+          "type": "boolean"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "createdAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "updatedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        }
+      }
+    },
+    "screen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "screenSpecification",
+        "stateMatrix",
+        "componentMap",
+        "implementationPlan",
+        "readinessReport"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "screenSpecification": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "stateMatrix": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "componentMap": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "implementationPlan": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "readinessReport": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "readinessStatus",
+        "nextAllowedStage",
+        "reportPath",
+        "reportGeneratedAt",
+        "structuralOnly",
+        "strictWarnings",
+        "validatedBeforeSlice"
+      ],
+      "properties": {
+        "readinessStatus": {
+          "type": "string",
+          "enum": [
+            "ready-for-small-slice",
+            "representative-ready-for-review",
+            "broad-build-approved"
+          ]
+        },
+        "nextAllowedStage": {
+          "type": "string",
+          "enum": [
+            "SMALL SLICE",
+            "BUILD"
+          ]
+        },
+        "reportPath": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "reportGeneratedAt": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "structuralOnly": {
+          "type": "boolean"
+        },
+        "strictWarnings": {
+          "type": "boolean"
+        },
+        "validatedBeforeSlice": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inspectionFile",
+        "root",
+        "workspaceType",
+        "applicationPackage",
+        "packageManager",
+        "commands",
+        "migrationRequired",
+        "migrationApproved",
+        "baselineCommit",
+        "baselineBranch",
+        "baselineCapturedAt",
+        "preExistingChanges"
+      ],
+      "properties": {
+        "inspectionFile": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "root": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "workspaceType": {
+          "type": "string",
+          "enum": [
+            "single-package",
+            "npm-workspaces",
+            "pnpm-workspace",
+            "yarn-workspaces",
+            "turborepo",
+            "nx",
+            "lerna",
+            "custom-monorepo",
+            "other"
+          ]
+        },
+        "applicationPackage": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "packageManager": {
+          "$ref": "#/$defs/packageManager"
+        },
+        "commands": {
+          "$ref": "#/$defs/repositoryCommands"
+        },
+        "migrationRequired": {
+          "type": "boolean"
+        },
+        "migrationApproved": {
+          "type": "boolean"
+        },
+        "baselineCommit": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "baselineBranch": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "baselineCapturedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "preExistingChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/preExistingChange"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "migrationRequired": {
+                "const": true
+              }
+            },
+            "required": [
+              "migrationRequired"
+            ]
+          },
+          "then": {
+            "properties": {
+              "migrationApproved": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "packageManager": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "lockfile",
+        "authority"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "enum": [
+            "npm",
+            "pnpm",
+            "yarn",
+            "bun",
+            "other"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lockfile": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "authority": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "repositoryCommands": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "install",
+        "dev",
+        "build",
+        "typecheck",
+        "lint",
+        "test",
+        "storybook",
+        "browserTest"
+      ],
+      "properties": {
+        "install": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dev": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "build": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "typecheck": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "test": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "storybook": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "browserTest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "slice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "purpose",
+        "routeOrSurface",
+        "entryPoint",
+        "extensionPath",
+        "architectureProof",
+        "stateProof",
+        "interactionProof",
+        "responsiveProof",
+        "accessibilityProof",
+        "completionDefinition"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "routeOrSurface": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "entryPoint": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "extensionPath": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "architectureProof": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "stateProof": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "interactionProof": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "responsiveProof": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "accessibilityProof": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "completionDefinition": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inScope",
+        "outOfScope",
+        "assumptions",
+        "blockers",
+        "approvedDependencyChanges"
+      ],
+      "properties": {
+        "inScope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "outOfScope": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "assumptions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "blockers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "approvedDependencyChanges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/approvedDependencyChange"
+          }
+        }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "routeOwner",
+        "featureBoundary",
+        "dataAdapter",
+        "fixtureAdapter",
+        "componentSources",
+        "tokenSources",
+        "stateOwners",
+        "sideEffectOwners",
+        "prohibitedShortcuts"
+      ],
+      "properties": {
+        "routeOwner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "featureBoundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "dataAdapter": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "fixtureAdapter": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "componentSources": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "tokenSources": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "stateOwners": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/ownershipEntry"
+          }
+        },
+        "sideEffectOwners": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ownershipEntry"
+          }
+        },
+        "prohibitedShortcuts": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "ownershipEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "concern",
+        "owner",
+        "boundary"
+      ],
+      "properties": {
+        "concern": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "boundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "fixtures": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategyFile",
+        "modelBoundary",
+        "deterministic",
+        "containsProductionData",
+        "items"
+      ],
+      "properties": {
+        "strategyFile": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "modelBoundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "deterministic": {
+          "type": "boolean",
+          "const": true
+        },
+        "containsProductionData": {
+          "type": "boolean",
+          "const": false
+        },
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/fixtureItem"
+          }
+        }
+      }
+    },
+    "fixtureItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "stateId",
+        "purpose",
+        "source",
+        "model",
+        "representative",
+        "safe",
+        "edgeCases"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "stateId": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "source": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "model": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "representative": {
+          "type": "boolean"
+        },
+        "safe": {
+          "type": "boolean",
+          "const": true
+        },
+        "edgeCases": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "stateProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "role",
+        "fixtureId",
+        "dataAuthority",
+        "preservedContext",
+        "visibleRegions",
+        "enabledActions",
+        "recovery",
+        "expectedEvidence"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "initial-loading",
+            "data",
+            "empty",
+            "partial",
+            "error",
+            "forbidden",
+            "unavailable",
+            "processing",
+            "success",
+            "stale",
+            "custom"
+          ]
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "non-success",
+            "supporting"
+          ]
+        },
+        "fixtureId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dataAuthority": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "preservedContext": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "visibleRegions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "enabledActions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "recovery": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "expectedEvidence": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "interactionProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "userGoal",
+        "trigger",
+        "owner",
+        "sideEffectBoundary",
+        "eligibility",
+        "success",
+        "failure",
+        "keyboard",
+        "focus"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "userGoal": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "trigger": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "sideEffectBoundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "eligibility": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "success": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "failure": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "keyboard": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "focus": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "responsive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proof",
+        "ranges",
+        "primaryScrollOwner",
+        "localScrollOwners",
+        "pageHorizontalOverflowAllowed"
+      ],
+      "properties": {
+        "proof": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "ranges": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/responsiveRange"
+          }
+        },
+        "primaryScrollOwner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "localScrollOwners": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "pageHorizontalOverflowAllowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "responsiveRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "condition",
+        "layout",
+        "regionTransformation",
+        "actionTransformation",
+        "scrollBehavior",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "condition": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "layout": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "regionTransformation": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "actionTransformation": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "scrollBehavior": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "evidence": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proof",
+        "semantics",
+        "accessibleNames",
+        "keyboard",
+        "focus",
+        "announcements",
+        "reducedMotion",
+        "zoomAndReflow",
+        "evidence"
+      ],
+      "properties": {
+        "proof": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "semantics": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "accessibleNames": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "keyboard": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "focus": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "announcements": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "reducedMotion": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "zoomAndReflow": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "evidence": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "filePlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "action",
+        "disposition",
+        "purpose",
+        "owner",
+        "planned",
+        "dependencies"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "inspect",
+            "reuse",
+            "create",
+            "modify",
+            "remove"
+          ]
+        },
+        "disposition": {
+          "type": "string",
+          "enum": [
+            "production",
+            "fixture",
+            "test",
+            "story",
+            "evidence",
+            "configuration"
+          ]
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "planned": {
+          "type": "boolean",
+          "const": true
+        },
+        "dependencies": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "sequenceStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "order",
+        "id",
+        "description",
+        "dependencies",
+        "completionEvidence",
+        "stopOnFailure"
+      ],
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "dependencies": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "completionEvidence": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "stopOnFailure": {
+          "type": "boolean"
+        }
+      }
+    },
+    "evidenceItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "required",
+        "path",
+        "description",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "source",
+            "fixture",
+            "story",
+            "unit-test",
+            "component-test",
+            "feature-test",
+            "browser-test",
+            "screenshot",
+            "accessibility-report",
+            "responsive-report",
+            "design-system-audit",
+            "component-audit",
+            "readiness-report",
+            "other",
+            "implementation-journal",
+            "browser-validation",
+            "screenshot-registry",
+            "defect-log",
+            "gate-preparation"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "available",
+            "passed",
+            "failed",
+            "not-applicable"
+          ]
+        }
+      }
+    },
+    "stopCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "condition",
+        "impact",
+        "requiredDecision",
+        "owner",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/kebabId"
+        },
+        "condition": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "impact": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "requiredDecision": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "owner": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "inactive",
+            "triggered",
+            "resolved",
+            "accepted"
+          ]
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "checks"
+      ],
+      "properties": {
+        "schema": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/validationCheck"
+          }
+        }
+      }
+    },
+    "validationCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "severity",
+        "method",
+        "blocking",
+        "description",
+        "remediation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^SLICE-[0-9]{3}$"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning",
+            "info"
+          ]
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "schema",
+            "script",
+            "manual",
+            "test",
+            "browser",
+            "screenshot",
+            "audit"
+          ]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "command": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "remediation": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "preExistingChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "status",
+        "handling"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "handling": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "approvedDependencyChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "packageFile",
+        "change",
+        "reason",
+        "approved"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "packageFile": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "change": {
+          "type": "string",
+          "enum": [
+            "add",
+            "update",
+            "remove"
+          ]
+        },
+        "reason": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "approved": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    }
+  }
+}

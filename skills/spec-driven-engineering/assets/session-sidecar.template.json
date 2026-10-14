@@ -1,0 +1,20 @@
+{
+  "_comment": "sessionId/agent/baseRevision/conflictingRevision/timestamp are filled atomically by scripts/update-handoff.mjs — leave the {{...}} tokens as-is, do not resolve them narratively.",
+  "sessionId": "{{SESSION_ID}}",
+  "agent": "{{AGENT}}",
+  "baseRevision": "{{BASE_REVISION}}",
+  "conflictingRevision": "{{CONFLICTING_REVISION}}",
+  "timestamp": "{{TIMESTAMP}}",
+  "feature": "<FEATURE_SLUG>",
+  "stageGateTask": "<estágio/gate/task exatos desta sessão>",
+  "exactStoppingPoint": "<ponto exato — arquivo/símbolo/linha quando aplicável>",
+  "completed": [],
+  "inProgress": [],
+  "blockers": [
+    "Conflito de escrita concorrente em .specs/HANDOFF.md — ver revision <baseRevision> vs <conflictingRevision>."
+  ],
+  "openQuestions": [],
+  "deferredIdeas": [],
+  "minimumFilesToReload": [],
+  "firstResumeAction": "Reconciliar este sidecar com .specs/HANDOFF.md atual antes de continuar."
+}

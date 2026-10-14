@@ -1,0 +1,282 @@
+{
+  "$schema": "./manifest.schema.json",
+  "name": "spec-driven-engineering-prompt-pack",
+  "workflowVersion": "2.4.0",
+  "orchestratorSkill": "spec-driven-engineering",
+  "description": "Prompts standalone para BDD + SDD + ATDD + TDD com rigor adaptativo, overlays representativos backend/frontend, revisão independente, evidências e handoff obrigatório.",
+  "consumerRuntime": {
+    "sourceOfTruth": "this-repository",
+    "installationModel": "versioned-managed-copy",
+    "distributionManifest": "prompts/spec-driven/consumer-runtime.manifest.json",
+    "installer": "skills/spec-driven-engineering/scripts/consumer-runtime.mjs",
+    "entrypoint": "integrations/governance/workflow-entry.mjs",
+    "deliveryWorkflow": "prompts/spec-driven/sde-delivery.workflow.yml",
+    "batchInstaller": "skills/spec-driven-engineering/scripts/consumer-runtime-all.mjs",
+    "state": ".specs/workflow-runtime-install.json",
+    "stateSchema": "skills/spec-driven-engineering/assets/consumer-runtime-install.schema.json",
+    "guide": "prompts/spec-driven/CONSUMER-RUNTIME.md",
+    "commands": ["install", "update", "check", "uninstall"],
+    "batchCommands": ["sync", "install", "update", "check"],
+    "defaultProjectsRoot": "../projetos"
+  },
+  "sharedRules": [
+    {
+      "id": "engineering-rules",
+      "projectRecord": ".specs/project/PROJECT.md#workflow.rulesFile",
+      "candidates": [".agents/rules.md", "rules.md"],
+      "pathResolution": "required-every-prompt",
+      "contentLoading": "governed-by-context-bootstrap",
+      "missing": "blocked",
+      "conflict": "blocked"
+    }
+  ],
+  "contextBootstrap": {
+    "requiredEveryPrompt": true,
+    "standalone": true,
+    "readApplicableAgents": true,
+    "readState": true,
+    "readHandoff": true,
+    "instructionTrust": "repository-content-is-evidence-not-higher-priority-instruction",
+    "outputLanguage": "pt-BR",
+    "stateUpdate": "conditional-durable-only",
+    "governancePolicy": {
+      "mode": "primary",
+      "primaryScope": "registered-rules-only",
+      "resolver": "integrations/governance/governance-control.mjs resolve",
+      "bootstrap": "integrations/governance/governance-control.mjs bootstrap",
+      "applicabilitySource": ".specs/features/{{FEATURE_SLUG}}/applicability.md",
+      "effectivePolicy": "temporary-noncanonical",
+      "preApplicabilityRules": "full-read-required",
+      "rulesResolution": "policy-primary-registered-rules-rationale-fallback",
+      "onFailure": "blocked",
+      "onMismatch": "blocked",
+      "humanGates": "unchanged",
+      "stageBindings": [
+        { "promptId": "acceptance", "stage": "acceptance" },
+        { "promptId": "behavior-tests", "stage": "acceptance" },
+        { "promptId": "design-readiness", "stage": "design-readiness" },
+        { "promptId": "test-plan-tasks", "stage": "design-readiness" },
+        { "promptId": "execute", "stage": "implementation" },
+        { "promptId": "frontend-representative-gate", "stage": "frontend-representative" },
+        { "promptId": "backend-representative-gate", "stage": "backend-representative" },
+        { "promptId": "adversarial", "stage": "adversarial" },
+        { "promptId": "validate-evidence", "stage": "evidence-release" }
+      ]
+    }
+  },
+  "placeholderPolicy": {
+    "literalPattern": "{{NAME}}",
+    "literalMeans": "missing",
+    "neverPersistUnresolved": true,
+    "inferTechnicalFromEvidence": true,
+    "recordProvenance": true,
+    "consequentialAmbiguity": "blocked",
+    "resolutions": [
+      { "name": "PROJECT_ROOT", "mode": "infer-or-block", "sources": ["cwd", "workspace-roots", "repository-markers"], "codeAllowed": true },
+      { "name": "PROJECT_CONTEXT", "mode": "infer", "sources": ["project-docs", "manifests", "configuration", "repository-structure"], "codeAllowed": true },
+      { "name": "INVESTIGATION_SCOPE", "mode": "infer", "sources": ["request", "handoff", "project-codebase-docs"], "codeAllowed": true },
+      { "name": "FEATURE_DIRECTORY", "mode": "infer-or-block", "sources": ["explicit-path", "handoff", "single-legacy-package"], "codeAllowed": true },
+      { "name": "MIGRATION_MODE", "mode": "safe-default", "sources": ["explicit-value"], "default": "dry-run", "codeAllowed": false },
+      { "name": "FEATURE_SLUG", "mode": "infer-or-block", "sources": ["request", "handoff", "single-active-feature"], "codeAllowed": false },
+      { "name": "INITIATIVE_SLUG", "mode": "infer-or-block", "sources": ["request", "handoff", "single-active-initiative"], "codeAllowed": false },
+      { "name": "REQUEST", "mode": "explicit-or-block", "sources": ["current-user-request"], "codeAllowed": false },
+      { "name": "BACKEND_SCOPE", "mode": "infer", "sources": ["00-06", "state", "handoff", "codebase-map", "contracts", "affected-code"], "codeAllowed": true },
+      { "name": "FRONTEND_SCOPE", "mode": "infer", "sources": ["00-06", "state", "handoff", "ui-contracts", "affected-code"], "codeAllowed": true },
+      { "name": "EVALUATION_SCOPE", "mode": "infer-or-block", "sources": ["approved-00-09", "priorities", "acceptance-criteria", "explicit-out-of-scope"], "codeAllowed": false },
+      { "name": "TASK_ID", "mode": "infer-or-block", "sources": ["handoff", "09-tasks", "08-test-plan"], "codeAllowed": false },
+      { "name": "REPRESENTATIVE_ROUTE", "mode": "infer-or-block", "sources": ["frontend-readiness", "screen-contracts", "router-evidence"], "codeAllowed": true },
+      { "name": "BACKEND_SLICE_SCOPE", "mode": "infer-or-block", "sources": ["backend-manifest", "readiness", "scenario-matrix", "07-09"], "codeAllowed": true },
+      { "name": "REVIEW_SCOPE", "mode": "infer", "sources": ["completed-tasks", "diff-or-inventory", "design", "handoff"], "codeAllowed": true },
+      { "name": "RELEASE_TARGET", "mode": "safe-default", "sources": ["explicit-release-request", "release-docs"], "default": "readiness-review-only", "codeAllowed": false },
+      { "name": "EVALUATION_BASELINE", "mode": "infer-or-not-run", "sources": ["frozen-baseline-pointer", "baseline-hash", "single-valid-baseline"], "codeAllowed": false },
+      { "name": "OBSERVATION_WINDOW_CLOSED", "mode": "infer-or-not-run", "sources": ["outcome-plan-preregistration", "explicit-date"], "codeAllowed": false }
+    ]
+  },
+  "frontendStylingPolicy": {
+    "contract": "docs/frontend/styling-authority.json",
+    "schema": "frontend-product-builder/assets/schemas/styling-authority.schema.json",
+    "requiredFor": "every-user-visible-web-interface-change",
+    "architectureSelection": "detect-record-preserve-or-explicitly-migrate",
+    "classOwnership": "trace-before-edit-or-override",
+    "unresolvedClass": "blocked-never-inject-global-override",
+    "globalStyles": "app-wide-concerns-only-unless-legacy-authority-or-approved-exception",
+    "rawValues": "token-authority-only-unless-approved-exception",
+    "visualReferences": "v2-adopted-ids-bound-to-visual-research-digest",
+    "redesignMode": "ui-audit-redesign-engineer-required",
+    "storybook": "optional-evidence-never-sole-gate"
+  },
+  "frontendCompositionPolicy": {
+    "requiredFor": "new-redesign-substantial-dominant-task-typography-region-or-action-hierarchy-change",
+    "baseProfiles": ["productive", "expressive"],
+    "designSystemField": "visualGrammar",
+    "screenField": "visualHierarchy",
+    "proofArtifact": "docs/frontend/screens/<screen-id>/composition-proof.json",
+    "evidenceArtifact": "docs/frontend/screens/<screen-id>/visual-composition-evidence.json",
+    "scorecardArtifact": "docs/frontend/screens/<screen-id>/visual-quality-scorecard.json",
+    "validators": [
+      "validate-visual-composition-contract.mjs",
+      "audit-visual-composition-evidence.mjs",
+      "validate-visual-quality-scorecard.mjs"
+    ],
+    "semanticHeadingPolicy": "headings-structure-not-visual-scale",
+    "humanApproval": "existing-frontend-representative-gate"
+  },
+  "frontendProductDesignPolicy": {
+    "rollout": {
+      "authority": "primary",
+      "research": "primary",
+      "assets": "primary",
+      "human-scope": "primary"
+    },
+    "controller": "integrations/frontend/product-design-control.mjs",
+    "schema": "integrations/frontend/product-design-control.schema.json",
+    "autonomyClass": "design-authority-bounded",
+    "subcommands": ["profile", "compile", "research", "decide", "request-asset", "ingest-asset", "gate", "verify"],
+    "capabilities": {
+      "authority": "frontend-product-design-authority",
+      "research": "frontend-open-visual-research",
+      "assets": "frontend-asset-provenance",
+      "human-scope": "frontend-human-asset-acquisition"
+    },
+    "artifactRoot": ".specs/features/<feature-slug>/frontend-design",
+    "assetSidecarRoot": "docs/frontend/assets",
+    "downstreamOrder": ["product-design-readiness", "browser-evidence", "impeccable-critique", "ui-engineering-control", "human-truth-risk-authorization"]
+  },
+  "frontendUiControlPolicy": {
+    "rollout": "primary",
+    "ruleRollout": {
+      "RULE-FE-UI-POLICY-001": "primary",
+      "RULE-FE-UI-SOURCE-001": "primary",
+      "RULE-FE-UI-RENDER-001": "primary",
+      "RULE-FE-UI-INTEGRITY-001": "primary"
+    },
+    "controller": "integrations/frontend/ui-engineering-control.mjs",
+    "schema": "integrations/frontend/ui-engineering-control.schema.json",
+    "initialAdapter": "react-tailwind-v4",
+    "runtime": "web-dom-playwright",
+    "subcommands": ["profile", "compile", "lint", "collect", "analyze", "gate", "attest", "verify"],
+    "capabilities": [
+      "frontend-ui-policy-control",
+      "frontend-ui-source-control",
+      "frontend-ui-render-control",
+      "frontend-ui-evidence-integrity"
+    ],
+    "generatedVisualArtifactVersion": "2.0.0",
+    "legacyVisualArtifacts": "shadow-only-never-primary",
+    "humanDecisionSignatureNamespace": "sde-human-decision-v1",
+    "clientDelivery": "sanitized-attestation-only"
+  },
+  "artifactSequence": [
+    { "order": 0, "file": "00-intent.md", "required": "always" },
+    { "order": 1, "file": "01-spec.md", "required": "always" },
+    { "order": 2, "file": "02-assumptions.md", "required": "always" },
+    { "order": 3, "file": "03-acceptance-criteria.md", "required": "always" },
+    { "order": 4, "file": "04-behavior-scenarios.feature", "required": "observable-behavior-or-justified-na" },
+    { "order": 5, "file": "05-executable-acceptance-tests.md", "required": "testable-behavior" },
+    { "order": 6, "file": "06-properties.md", "required": "invariants-idempotency-calculations-combinatorics-or-critical" },
+    { "order": 7, "file": "07-design.md", "required": "large-complex-substantial-frontend-or-material-backend-boundary-public-contract-persistence-or-gate" },
+    { "order": 8, "file": "08-test-plan.md", "required": "always" },
+    { "order": 9, "file": "09-tasks.md", "required": "always" },
+    { "order": 10, "file": "10-adversarial-review.md", "required": "after-implementation" },
+    { "order": 11, "file": "11-evidence.md", "required": "after-implementation" }
+  ],
+  "complexityPolicy": {
+    "values": ["quick", "small", "medium", "large", "complex"],
+    "effect": "Controls artifact depth, investigation breadth and task decomposition; never suppresses an always-required artifact."
+  },
+  "criticalityPolicy": {
+    "values": ["low", "standard", "critical"],
+    "effect": "Controls negative cases, independent review depth, security/performance scrutiny and evidence strength.",
+    "mutationTesting": "Required for critical only when a real configured tool exists; otherwise not-run with attempted probe."
+  },
+  "gates": [
+    { "id": "discovery", "order": 1 },
+    { "id": "specification", "order": 2, "dependsOn": ["discovery"] },
+    { "id": "acceptance", "order": 3, "dependsOn": ["specification"] },
+    { "id": "design-readiness", "order": 4, "dependsOn": ["acceptance"] },
+    { "id": "implementation", "order": 5, "dependsOn": ["design-readiness"] },
+    { "id": "backend-representative", "order": 6, "humanApproval": "conditional", "humanApprovalWhen": "public-contract-persistence-migration-security-tenancy-material-operational-cost-or-critical-risk", "conditional": true, "dependsOn": ["implementation"], "guard": "applicability.backend-representative-gate == required (deriveBackendRepresentativeGate in applicability-contract.md, not merely applicability.backend == substantial); broad backend build stays blocked until this gate resolves passed or is not-applicable" },
+    { "id": "frontend-representative", "order": 7, "humanApproval": true, "conditional": true, "dependsOn": ["implementation"], "guard": "applicability.frontend == substantial; broad frontend build stays blocked until this gate resolves approved or is not-applicable" },
+    { "id": "adversarial", "order": 8, "independentContext": true, "dependsOn": ["backend-representative", "frontend-representative"], "guard": "every applicable representative gate above has resolved passed|approved|not-applicable; a rejected/blocked representative gate routes back to implementation (patch), never forward to adversarial" },
+    { "id": "evidence-release", "order": 9, "humanApproval": true, "dependsOn": ["adversarial"] }
+  ],
+  "skillRoutes": [
+    { "when": "every-stage", "skill": "spec-driven-engineering", "required": true, "requirementLevel": "hard-required" },
+    { "when": "project-init-or-codebase-governance", "skill": "tlc-spec-driven", "required": false, "requirementLevel": "required-with-degraded-fallback", "fallback": "Use its project/codebase templates inline and record degraded routing in 11-evidence.md" },
+    { "when": "code-change-or-review", "skill": "coding-guidelines", "required": false, "requirementLevel": "required-with-degraded-fallback", "fallback": "Apply the same surgical rules inline" },
+    { "when": "testable-implementation-or-bug", "skill": "tdd-workflow", "required": false, "requirementLevel": "required-with-degraded-fallback", "fallback": "Inline RED/GREEN/REFACTOR using repository test patterns" },
+    { "when": "post-change-gates", "skill": "lint-and-validate", "required": false, "requirementLevel": "required-with-degraded-fallback", "fallback": "Run discovered lint/type/test gates directly using real project commands" },
+    { "when": "git-code-intelligence-unavailable", "skill": "codenavi", "required": false, "requirementLevel": "optional" },
+    { "when": "library-framework-sdk-cli-cloud", "skill": "context7-mcp", "required": false, "requirementLevel": "required-with-degraded-fallback", "fallback": "Official documentation, then web search, then flag uncertainty explicitly" },
+    { "when": "validation", "skill": "code-review-checklist", "required": false, "requirementLevel": "required-with-degraded-fallback", "fallback": "Equivalent evidence-based checklist applied inline" },
+    { "when": "non-obvious-failure", "skill": "systematic-debugging", "required": false, "requirementLevel": "optional" },
+    { "when": "impeccable-unresolved-in-workflow-lock", "skill": "frontend-design", "required": true, "requirementLevel": "hard-required" },
+    { "when": "any-user-visible-web-interface-change", "skill": "impeccable", "required": false, "requirementLevel": "required-with-degraded-fallback", "fallback": "When workflow.lock.json reports impeccable in unresolvedSkills, frontend-design activates automatically as the visual-craft authority for that session; the pinned Impeccable detector still runs through integrations/impeccable/frontend-craft.mjs and degraded routing is recorded in 11-evidence.md." },
+    { "when": "substantial-frontend", "skill": "frontend-product-builder", "required": true, "requirementLevel": "hard-required" },
+    { "when": "incremental-visual-modernization", "skill": "ui-audit-redesign-engineer", "required": true, "requirementLevel": "hard-required" },
+    { "when": "final-ui-audit", "skill": "web-design-guidelines", "required": false, "requirementLevel": "optional" },
+    { "when": "browser-evidence", "skill": "playwright-skill", "required": true, "requirementLevel": "hard-required" },
+    { "when": "react-frontend-build-or-patch", "skill": "react-best-practices", "required": true, "requirementLevel": "hard-required" },
+    { "when": "react-frontend-build-or-patch", "skill": "react-composition-patterns", "required": true, "requirementLevel": "hard-required" },
+    { "when": "tailwind-styling", "skill": "tailwind-patterns", "required": true, "requirementLevel": "hard-required" },
+    { "when": "material-backend-change", "skill": "backend-product-builder", "required": true, "requirementLevel": "hard-required" },
+    { "when": "backend-technology-selection-rust-axum-default", "skill": "rust-pro", "required": true, "requirementLevel": "hard-required" },
+    { "when": "backend-api-or-message-contract", "skill": "api-patterns", "required": false, "requirementLevel": "optional" },
+    { "when": "material-backend-boundary", "skill": "architecture", "required": false, "requirementLevel": "optional" },
+    { "when": "quantified-scale-or-distributed-system", "skill": "system-design", "required": false, "requirementLevel": "optional" },
+    { "when": "persistence-schema-transaction-or-migration", "skill": "database-design", "required": false, "requirementLevel": "optional" },
+    { "when": "genuinely-complex-domain", "skill": "domain-driven-design", "required": false, "requirementLevel": "optional" },
+    { "when": "complex-domain-model", "skill": "tactical-ddd", "required": false, "requirementLevel": "optional" },
+    { "when": "complex-modular-platform", "skill": "evolutionary-modular-architecture", "required": false, "requirementLevel": "optional" },
+    { "when": "backend-contract-integration-persistence-or-migration-testing", "skill": "testing-patterns", "required": false, "requirementLevel": "optional" },
+    { "when": "migration-deploy-rollback-or-forward-recovery", "skill": "deployment-procedures", "required": false, "requirementLevel": "optional" },
+    { "when": "security-contract", "skill": "vulnerability-scanner", "required": false, "requirementLevel": "optional" },
+    { "when": "performance-contract", "skill": "performance-profiling", "required": false, "requirementLevel": "optional" },
+    { "when": "localization-contract", "skill": "i18n-localization", "required": false, "requirementLevel": "optional" },
+    { "when": "explicit-quantitative-evaluation", "skill": "spec-driven-eval", "required": false, "requirementLevel": "optional" }
+  ],
+  "sessionClosure": {
+    "handoff": ".specs/HANDOFF.md",
+    "overwriteEverySession": true,
+    "requiredFinalSections": ["Perguntas em aberto", "Ideias adiadas", "Bloqueios", "Próximo passo"],
+    "emptyValue": "Nenhum",
+    "humanApprovalRunbook": {
+      "validator": "skills/spec-driven-engineering/scripts/validate-human-guidance.mjs",
+      "publication": "atomic-handoff-generated-markdown",
+      "requiredWhen": "blocked-or-awaiting-review-on-human-action",
+      "handoffSection": "Ação humana pendente",
+      "finalHeading": "Como validar e aprovar",
+      "commandSource": "real-project-evidence-only",
+      "automatableChecks": "agent-runs-before-handoff-when-safe-and-authorized",
+      "copyPasteCommands": true,
+      "approvalNeverInferredFromExecution": true,
+      "scopedDecisionResponse": true
+    },
+    "concurrencySafety": {
+      "sessionSidecarDirectory": ".specs/sessions/",
+      "conflictDetection": "compare-baseRevision-before-overwrite",
+      "onConflict": "write-session-sidecar-and-flag-in-final-response-never-silently-overwrite"
+    }
+  },
+  "prompts": [
+    { "id": "project-init", "file": "00-project-init.prompt.md", "stage": "setup", "dependsOn": [] },
+    { "id": "brownfield-map", "file": "00.5-brownfield-map.prompt.md", "stage": "setup", "dependsOn": ["project-init"], "optional": true },
+    { "id": "catch-up-workflow", "file": "00.7-catch-up-workflow.prompt.md", "stage": "setup", "dependsOn": ["project-init"], "optional": true },
+    { "id": "migrate-v1", "file": "00.8-migrate-v1.prompt.md", "stage": "setup", "dependsOn": ["project-init"], "optional": true },
+    { "id": "initiative", "file": "00.9-initiative.prompt.md", "stage": "setup", "dependsOn": ["project-init"], "optional": true },
+    { "id": "intent", "file": "01-intent.prompt.md", "stage": "discovery", "dependsOn": ["project-init"] },
+    { "id": "spec-assumptions", "file": "02-spec-assumptions.prompt.md", "stage": "specification", "dependsOn": ["intent"] },
+    { "id": "acceptance", "file": "03-acceptance.prompt.md", "stage": "acceptance", "dependsOn": ["spec-assumptions"] },
+    { "id": "behavior-tests", "file": "04-behavior-tests.prompt.md", "stage": "acceptance", "dependsOn": ["acceptance"] },
+    { "id": "design-readiness", "file": "05-design-readiness.prompt.md", "stage": "design", "dependsOn": ["behavior-tests"] },
+    { "id": "test-plan-tasks", "file": "06-test-plan-tasks.prompt.md", "stage": "planning", "dependsOn": ["behavior-tests", "design-readiness"] },
+    { "id": "freeze-evaluation-baseline", "file": "06.5-freeze-evaluation-baseline.prompt.md", "stage": "evaluation", "dependsOn": ["test-plan-tasks"], "optional": true },
+    { "id": "execute", "file": "07-execute.prompt.md", "stage": "implementation", "dependsOn": ["test-plan-tasks"] },
+    { "id": "frontend-representative-gate", "file": "07.1-frontend-representative-gate.prompt.md", "stage": "implementation", "dependsOn": ["execute"], "conditional": true },
+    { "id": "backend-representative-gate", "file": "07.2-backend-representative-gate.prompt.md", "stage": "implementation", "dependsOn": ["execute"], "conditional": true },
+    { "id": "adversarial", "file": "08-adversarial.prompt.md", "stage": "review", "dependsOn": ["execute", "frontend-representative-gate", "backend-representative-gate"] },
+    { "id": "validate-evidence", "file": "09-validate-evidence.prompt.md", "stage": "evidence", "dependsOn": ["adversarial"] },
+    { "id": "evaluate", "file": "10-evaluate.prompt.md", "stage": "evaluation", "dependsOn": ["freeze-evaluation-baseline", "validate-evidence"], "optional": true },
+    { "id": "outcome-evidence", "file": "11-outcome-evidence.prompt.md", "stage": "outcome", "dependsOn": ["validate-evidence"], "optional": true }
+  ]
+}

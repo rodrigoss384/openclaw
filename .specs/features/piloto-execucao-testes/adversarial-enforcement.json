@@ -1,0 +1,66 @@
+{
+  "$schema": null,
+  "schemaVersion": "1.0.0",
+  "artifactKind": "stage-enforcement-report",
+  "canonical": false,
+  "stage": "adversarial",
+  "feature": "piloto-execucao-testes",
+  "task": null,
+  "dryRun": false,
+  "snapshot": "bb0271095160b1655aede91235a5749de2c74e1019866d5b72fb7f933637b4a4",
+  "requiredEnforcements": [
+    "feature-package-validation",
+    "governance-rule-admission-validation",
+    "open-question-closure"
+  ],
+  "executions": [
+    {
+      "capabilityId": "feature-package-validation",
+      "status": "passed",
+      "command": "node skills/spec-driven-engineering/scripts/validate-feature-package.mjs .specs/features/piloto-execucao-testes",
+      "blocking": true,
+      "exitCode": 0,
+      "detail": null
+    },
+    {
+      "capabilityId": "governance-rule-admission-validation",
+      "status": "passed",
+      "command": "node integrations/governance/validate-governance-policy.mjs --root /home/rodrigo/.local/state/spec-driven-supervisor/workspaces/cd24bcf3-5715-473d-999f-2beea4f30e59",
+      "blocking": true,
+      "exitCode": 0,
+      "detail": null
+    },
+    {
+      "capabilityId": "open-question-closure",
+      "status": "passed",
+      "command": "node skills/spec-driven-engineering/scripts/validate-open-questions.mjs .specs/features/piloto-execucao-testes",
+      "blocking": true,
+      "exitCode": 0,
+      "detail": null
+    }
+  ],
+  "summary": {
+    "required": 3,
+    "passed": 3,
+    "failed": 0,
+    "notRun": 0,
+    "planned": 0,
+    "unresolvedInputs": 0,
+    "notExecutable": 0,
+    "blockingFailures": 0
+  },
+  "sources": {
+    "governancePolicy": {
+      "ref": "prompts/spec-driven/governance-policy.json",
+      "sha256": "c4f1980c184f3dfeab31b30cf34618daaff39978fe02b5e9f891f4d2706cd3d8"
+    },
+    "capabilityRegistry": {
+      "ref": "integrations/governance/enforcement-capabilities.json",
+      "sha256": "3b4b0fb3d980b2fd2b5b22ce9efba472672cc8be3475347d35c14afb0d61f68a"
+    },
+    "applicability": {
+      "ref": ".specs/features/piloto-execucao-testes/applicability.md",
+      "sha256": "e9607fe6c4b08cce970ab419a6c0a02a0f4cadb24230d9ec801db67029030e5a"
+    }
+  }
+}

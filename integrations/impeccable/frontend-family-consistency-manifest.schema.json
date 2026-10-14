@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local/spec-driven-engineering/frontend-family-consistency-manifest.schema.json",
+  "title": "Frontend Family Consistency Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "visualFamilyId",
+    "designSystem",
+    "samples"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "frontend-family-consistency-manifest.schema.json"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "visualFamilyId": {
+      "type": "string",
+      "pattern": "^(operate|persuade|read|experience)-[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "designSystem": {
+      "type": "string",
+      "minLength": 1
+    },
+    "samples": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["screenSpec", "craftContract", "evidence"],
+        "properties": {
+          "screenSpec": { "type": "string", "minLength": 1 },
+          "craftContract": { "type": "string", "minLength": 1 },
+          "evidence": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

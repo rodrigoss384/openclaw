@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Product Builder"
+  short_description: "Design and validate production backend changes"
+  default_prompt: "Use $backend-product-builder to design and validate this backend change."
