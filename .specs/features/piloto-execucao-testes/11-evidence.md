@@ -1,4 +1,4 @@
-<!-- supervisor-review-evidence:v1 body-sha256=f4d463a1928efd08846b91229919091e61c1915c67b4d670f7f00941150e06d6 -->
+<!-- explicit documentary consolidation candidate; not applied -->
 # Evidências de implementação e revisão independente
 
 Origem: projeção determinística do ledger pelo launcher confiável. Este documento não concede autorização e não substitui os relatórios canônicos de enforcement.
@@ -8,7 +8,7 @@ Origem: projeção determinística do ledger pelo launcher confiável. Este docu
 - Revisão independente: .specs/features/piloto-execucao-testes/10-adversarial-review.md; SHA256: 7145534d77ea06460bfc2796c4ed0f0a29d7c3be2aed872ddd868bdb2b4b1009.
 - Run de revisão: ee83d310-8423-4d8f-a184-0c87a90cacef; provider: antigravity; conta: antigravity; sessão: 1f1f6a68-395e-4e61-8da6-b2290ff732ac.
 - Referência privada da revisão (conteúdo não lido): /home/rodrigo/.local/state/spec-driven-supervisor/runs/ee83d310-8423-4d8f-a184-0c87a90cacef.
-- Resultado observado da revisão: retorno independente registrado como passed; estágio canônico adversarial ainda depende do advance validado.
+- Resultado observado da revisão: passed; avanço canônico adversarial comprovado no checkpoint documental 50e59969e65b0ff5ab6d7525ffac463dc2ce1944, antes desta consolidação. O parecer mantém seu vínculo original f71bb6139fe2f0669c86de5ffbdc96c7da0737e3.
 
 ## Contratos e rastreabilidade
 
@@ -52,9 +52,12 @@ IDs abaixo foram extraídos dos contratos existentes. Referenciá-los não prova
 - Check registrado: comando: ["./node_modules/.bin/oxlint","--type-aware","src/infra/retry.test.ts"]; cwd: .; exitCode: 0; status: passed; stdoutSHA256: aaf9c92938af2b44463d2f3fcd732fa79e9a369b045d21a076e760d4586f9e10; stderrSHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; receiptSHA256: 6eb384509d3da17239f2dc6ea41533d3c26bda95f0a585a3a43e0acfbb98d581; referência: /home/rodrigo/.local/state/spec-driven-supervisor/runs/d1394d1f-e467-4be6-a0ad-964747a3a428.
 - Check registrado: comando: ["env","GOMAXPROCS=2","GOMEMLIMIT=1800MiB","./node_modules/.bin/tsgo","--noEmit"]; cwd: .; exitCode: 0; status: passed; stdoutSHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; stderrSHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855; receiptSHA256: 6eb384509d3da17239f2dc6ea41533d3c26bda95f0a585a3a43e0acfbb98d581; referência: /home/rodrigo/.local/state/spec-driven-supervisor/runs/d1394d1f-e467-4be6-a0ad-964747a3a428.
 
-## Limitações e próximos probes
+## QA histórica, validade atual e próximos probes
 
-- QA de integração: not-run. Probe pendente: launcher validateIntegration em checkout separado; executar os comandos cadastrados conforme 08-test-plan.md, contra a branch principal atual, e comparar o baseline.
-- Build, lint, testes, migrations e smoke de stack independentes: not-run nesta combinação feature/main. Probe: plano 08-test-plan.md e perfil cadastrado; registros de checks das tasks acima não substituem QA de integração.
-- Histórico job.qa não foi promovido nem reutilizado como prova desta combinação de SHAs. O relatório de QA futuro deve registrar featureSha e mainSha.
-- Nenhuma afirmação de aprovação humana, evidence-release, prontidão de release, push, PR, issues, merge ou deploy é produzida por este renderer.
+- QA histórica: passed / integration-passed, feature 50e59969e65b0ff5ab6d7525ffac463dc2ce1944 contra main 7ecfc1d93c7947988e75fae1e7747158f32597fd. Seis checks baseline e seis integração, exit0/sem OOM.
+- Relatório histórico privado: /home/rodrigo/.local/state/spec-driven-supervisor/qa/cd24bcf3-5715-473d-999f-2beea4f30e59-1791900860741/report.json; SHA256 86a79143d0c2399b8de23b8a866ab8f40e6723e03a959c9bed7ea23c7a98273c.
+- Essa QA perdeu a validade operacional atual após mudanças de perfil/runtime. Não é prova para promover um SHA novo; registros antigos ficam preservados.
+- QA corrente desta consolidação: not-run. Probe necessário: uma validateIntegration com os seis comandos cadastrados no baseline main confirmado e na integração temporária, depois do checkpoint final; relatório externo liga o SHA final sem criar outra alteração de HEAD depois da QA.
+- Build/migrations/stack: not-applicable no piloto tests-only por D-PIL-005; os checks focalizados não certificam todo o OpenClaw.
+- Publicação histórica: PR #1 em rascunho, branch própria no SHA 50e59969. Prova de repetição após perda controlada de resposta: not-run; probe planejado: GitHubPublisher.draft no launcher confiável, com descarte controlado do resultado após push confirmado e retomada em novo processo. Executar somente com autorização própria. Não criar issues artificiais: parecer independente teve zero achados.
+- Nenhuma aprovação humana de evidence-release, prontidão de release, merge/deploy ou rollout é concedida por este documento.

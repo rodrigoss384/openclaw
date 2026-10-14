@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T18:27:42.045Z",
+  "generatedAt": "2026-10-13T20:49:17.561Z",
   "workflowVersion": "2.4.0",
   "unresolvedSkills": [
     "impeccable"
@@ -128,7 +128,7 @@
     {
       "name": "spec-driven-engineering",
       "source": "skills/spec-driven-engineering",
-      "sha256": "03831deb1d77dcd46b1fee6afdea665adac2cdd5210b5f5d42390d78fa505421",
+      "sha256": "a7cb4e716adc1a03c2ad3b5c665403e6dc2310a39f309bcbbc8a4859c5da2f2f",
       "files": 73
     },
     {
